@@ -2,6 +2,8 @@ This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next
 
 Project Inctagram Incubator
 
+Hello, dushevnie
+
 ## Getting Started
 
 First, run the development server:
