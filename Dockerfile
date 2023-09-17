@@ -1,7 +1,7 @@
 FROM node:18.15 as dependencies
 WORKDIR /app
 RUN npm install -g pnpm
-COPY package.json yarn.lock ./
+COPY package.json pnpm-lock.yaml ./
 RUN pnpm install
 
 FROM node:18.15 as builder
