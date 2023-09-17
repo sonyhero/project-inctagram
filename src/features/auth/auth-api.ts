@@ -9,8 +9,9 @@ import {
   ResendVerificationEmailType,
   SignUpType,
   VerificationEmailType,
-} from '@/auth/type'
-import { baseApi } from '@/base-api'
+} from '@/features/auth/type'
+import { baseApi } from '@/shared/api/base-api'
+import { Nullable } from '@/shared/types/nullable'
 
 const authApi = baseApi.injectEndpoints({
   endpoints: builder => {
@@ -98,7 +99,7 @@ const authApi = baseApi.injectEndpoints({
         }),
         invalidatesTags: ['Me'],
       }),
-      me: builder.query<MeResponseType | null, void>({
+      me: builder.query<Nullable<MeResponseType>, void>({
         query: () => ({
           url: 'v1/auth/me',
           method: 'GET',
