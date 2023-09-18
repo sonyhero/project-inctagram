@@ -4,6 +4,7 @@ Project Instagram Incubator--
 
 Hello, dushevnie
 
+We are start from deploy in inctag.ru or inctag.site
 ## Getting Started
 
 First, run the development server:
