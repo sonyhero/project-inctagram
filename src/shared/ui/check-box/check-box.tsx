@@ -12,9 +12,17 @@ export type CheckBoxProps = {
   disabled?: boolean
   checked?: boolean
   label?: ReactElement | string
+  name: string
 }
 
-export const CheckBox: FC<CheckBoxProps> = ({ disabled = false, onChange, checked, label }) => {
+export const CheckBox: FC<CheckBoxProps> = ({
+  disabled = false,
+  onChange,
+  checked,
+  label,
+  name, // FROM TEST
+  ...rest
+}) => {
   return (
     <Typography
       className={s.label}
@@ -27,6 +35,8 @@ export const CheckBox: FC<CheckBoxProps> = ({ disabled = false, onChange, checke
         checked={checked}
         onCheckedChange={onChange}
         disabled={disabled}
+        name={name} // FROM TEST
+        {...rest}
       >
         <Checkbox.Indicator className={s.checkboxIndicator}>
           <CheckIcon fill={disabled ? '#4c4c4c' : '#edf3fa'} />

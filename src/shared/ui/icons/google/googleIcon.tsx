@@ -37,4 +37,4 @@ const SvgComponent = (props: SVGProps<SVGSVGElement>, ref: Ref<SVGSVGElement>) =
 )
 const ForwardRef = forwardRef(SvgComponent)
 
-export const Google = memo(ForwardRef)
+export const GoogleIcon = memo(ForwardRef)
