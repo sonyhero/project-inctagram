@@ -1,0 +1,53 @@
+@mixin margin15 {
+  margin-bottom: 1.5rem;
+}
+
+.signBlock {
+  display: flex;
+  flex-direction: column;
+
+  width: 23.5rem;
+  margin: 2.25rem auto 0;
+  padding: 2.06rem 2.25rem;
+
+  .title {
+    text-align: center;
+    margin-bottom: 0.8125rem;
+  }
+
+  .iconsWrapper {
+    display: flex;
+    justify-content: center;
+    gap: 60px;
+    @include margin15;
+  }
+
+  .username {
+    @include margin15;
+  }
+
+  .email {
+    @include margin15;
+  }
+
+  .password {
+    @include margin15;
+  }
+
+  .passwordConfirm {
+    margin-bottom: 0.75rem;
+  }
+
+  .terms {
+    @include margin15;
+  }
+
+  .signUpBtn {
+    margin-bottom: 1.125rem;
+  }
+
+  .subtitle {
+    text-align: center;
+    margin-bottom: 0.375rem;
+  }
+}

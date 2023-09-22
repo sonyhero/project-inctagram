@@ -1,14 +1,14 @@
 import { Meta, StoryObj } from '@storybook/react'
 
-import { Google } from './google'
+import { GoogleIcon } from './googleIcon'
 
 const meta = {
   title: 'Components/Icons',
-  component: Google,
+  component: GoogleIcon,
   tags: ['autodocs'],
-} satisfies Meta<typeof Google>
+} satisfies Meta<typeof GoogleIcon>
 
 export default meta
 type Story = StoryObj<typeof meta>
 
-export const GoogleIcon: Story = {}
+export const GoogleIconPic: Story = {}
