@@ -1,4 +1,4 @@
-import { FC } from 'react'
+import { FC, ReactElement } from "react";
 
 import * as Checkbox from '@radix-ui/react-checkbox'
 // import { CheckIcon } from '@radix-ui/react-icons'
@@ -12,7 +12,7 @@ export type CheckBoxProps = {
   onChange?: (checked: boolean) => void
   disabled?: boolean
   checked?: boolean
-  label?: string
+  label?: ReactElement
 }
 
 export const CheckBox: FC<CheckBoxProps> = ({ disabled = false, onChange, checked, label }) => {

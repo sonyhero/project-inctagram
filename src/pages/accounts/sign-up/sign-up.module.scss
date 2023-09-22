@@ -25,10 +25,29 @@
   .username {
     @include margin15;
   }
+
   .email {
     @include margin15;
   }
+
   .password {
     @include margin15;
+  }
+
+  .passwordConfirm {
+    margin-bottom: 0.75rem;
+  }
+
+  .terms {
+    @include margin15;
+  }
+
+  .signUpBtn {
+    margin-bottom: 1.125rem;
+  }
+
+  .subtitle {
+    text-align: center;
+    margin-bottom: 0.375rem;
   }
 }
