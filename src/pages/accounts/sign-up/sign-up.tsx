@@ -60,7 +60,9 @@ const SignUp = () => {
           />
         </div>
         <Button className={s.signUpBtn}>Sign Up</Button>
-        <Typography className={s.subtitle} variant={'regular16'}>Do you have an account?</Typography>
+        <Typography className={s.subtitle} variant={'regular16'}>
+          Do you have an account?
+        </Typography>
         <Button variant={'text'}>Sign In</Button>
       </Card>
     </>
