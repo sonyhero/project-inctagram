@@ -68,3 +68,19 @@
   color: var(--color-accent-500);
   text-decoration: underline;
 }
+
+.primary {
+  color: var(--color-light-100);
+}
+
+.secondary {
+  color: var(--color-light-900);
+}
+
+.error {
+  color: var(--color-danger-500);
+}
+
+.disabled {
+  color: var(--color-dark-100);
+}
