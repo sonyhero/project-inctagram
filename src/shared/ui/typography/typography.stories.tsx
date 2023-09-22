@@ -23,6 +23,9 @@ const meta = {
         'link',
         's_link',
       ],
+      color: {
+        options: ['primary', 'secondary', 'error'],
+      },
       control: { type: 'radio' },
     },
   },
