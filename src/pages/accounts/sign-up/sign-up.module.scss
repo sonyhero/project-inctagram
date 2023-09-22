@@ -1,13 +1,34 @@
+@mixin margin15 {
+  margin-bottom: 1.5rem;
+}
+
 .signBlock {
   display: flex;
   flex-direction: column;
-  align-items: center;
 
-  width: 26.5rem;
+  width: 23.5rem;
   margin: 2.25rem auto 0;
   padding: 2.06rem 2.25rem;
-}
 
-.iconsWrapper {
-  display: flex;
+  .title {
+    text-align: center;
+    margin-bottom: 0.8125rem;
+  }
+
+  .iconsWrapper {
+    display: flex;
+    justify-content: center;
+    gap: 60px;
+    @include margin15;
+  }
+
+  .username {
+    @include margin15;
+  }
+  .email {
+    @include margin15;
+  }
+  .password {
+    @include margin15;
+  }
 }
