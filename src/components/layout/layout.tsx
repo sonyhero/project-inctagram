@@ -6,14 +6,13 @@ import s from './layout.module.scss'
 
 import { HeadMeta } from '@/components/head-meta/head-meta'
 import { Navbar } from '@/components/navbar/navbar'
+import { Header } from '@/widgets/header'
 
 export const Layout: NextPage<PropsWithChildren> = ({ children }) => {
   return (
     <>
       <HeadMeta title={'NextJS Inctagram'} />
-      <header className={s.header}>
-        <h2>Inctargram</h2>
-      </header>
+      <Header />
       <div className={s.container}>
         <Navbar />
         <main>{children}</main>
