@@ -1,4 +1,4 @@
-import { getBaseLayout } from '@/components/layout/layout'
+import { getBaseLayout } from '@/providers/layout/layout'
 
 const SignIn = () => {
   return <div>Sign In</div>
