@@ -15,7 +15,6 @@ import { Typography } from '@/shared/ui/typography'
 const sigInSchema = z.object({
   email: z.string().email(),
   password: z.string().min(3),
-  rememberMe: z.boolean().default(false),
 })
 
 type SignInFormShem = z.infer<typeof sigInSchema>
@@ -28,7 +27,6 @@ export const SignIn: FC<PropsType> = ({ onSubmit }) => {
     defaultValues: {
       email: '',
       password: '',
-      rememberMe: false,
     },
     resolver: zodResolver(sigInSchema),
   })

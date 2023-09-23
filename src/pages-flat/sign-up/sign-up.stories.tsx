@@ -1,6 +1,6 @@
 import { Meta, StoryObj } from '@storybook/react'
 
-import SignUp from '@/pages/accounts/sign-up/sign-up'
+import SignUp from '@/pages-flat/sign-up/sign-up'
 
 const meta = {
   title: 'Auth/SignUp',
