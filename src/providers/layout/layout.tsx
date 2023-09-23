@@ -4,8 +4,8 @@ import { NextPage } from 'next'
 
 import s from './layout.module.scss'
 
-import { HeadMeta } from '@/components/head-meta/head-meta'
-import { Navbar } from '@/components/navbar/navbar'
+import { HeadMeta } from '@/shared/ui/head-meta'
+import { SideBar } from '@/shared/ui/side-bar'
 import { Header } from '@/widgets/header'
 
 export const Layout: NextPage<PropsWithChildren> = ({ children }) => {
@@ -14,7 +14,7 @@ export const Layout: NextPage<PropsWithChildren> = ({ children }) => {
       <HeadMeta title={'NextJS Inctagram'} />
       <Header />
       <div className={s.container}>
-        <Navbar />
+        <SideBar />
         <main>{children}</main>
       </div>
     </>

@@ -5,7 +5,7 @@ import { z } from 'zod'
 
 import s from './sign-up.module.scss'
 
-import { getBaseLayout } from '@/components/layout/layout'
+import { getBaseLayout } from '@/providers/layout/layout'
 import { Button } from '@/shared/ui/button'
 import { Card } from '@/shared/ui/card'
 import { ControlledCheckbox, ControlledTextField } from '@/shared/ui/controlled'

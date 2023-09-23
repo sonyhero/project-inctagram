@@ -1,8 +1,8 @@
 import Link from 'next/link'
 
-import s from '@/components/layout/layout.module.scss'
+import s from '@/providers/layout/layout.module.scss'
 
-export const Navbar = () => {
+export const SideBar = () => {
   return (
     <div className={s.navbar}>
       <Link href={'/accounts/forgot-password'}>forgot-password</Link>
