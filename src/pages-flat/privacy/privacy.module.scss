@@ -1,0 +1,25 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  .link {
+    display: flex;
+
+    width: 100%;
+    margin-top: 1.5rem;
+    margin-bottom: 1.44rem;
+    padding-left: 4rem;
+
+    text-decoration: none;
+
+    .linkText {
+      padding-left: 0.75rem;
+    }
+  }
+
+  .description {
+    margin: 1.44rem 10.06rem 14.19rem;
+    text-align: center;
+  }
+}
