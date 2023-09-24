@@ -1,4 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/react'
+import Image from 'next/image'
+
+import ru from '../icons/ru-flag/ru.png'
+import en from '../icons/uk-flag/en.png'
 
 import { SelectBox } from './select-box'
 
@@ -35,5 +39,29 @@ export const SelectStoryDisabled: Story = {
     placeholder: 'Select item',
     disabled: true,
     options: people,
+  },
+}
+
+const languages = [
+  {
+    value: 'English',
+    img: <Image src={en} alt={'en'} style={{ width: '1.5rem', height: '1.5rem' }} />,
+  },
+  {
+    value: 'Russian',
+    img: <Image src={ru} alt={'ru'} style={{ width: '1.5rem', height: '1.5rem' }} />,
+  },
+]
+
+export const SelectLangSwitcher: Story = {
+  args: {
+    label: 'Select',
+    placeholder: (
+      <div style={{ display: 'flex', alignItems: 'center', gap: '0.62rem' }}>
+        <Image style={{ width: '1.5rem', height: '1.5rem' }} src={en} alt={'en'} />
+        {languages[0].value}
+      </div>
+    ),
+    options: languages,
   },
 }

@@ -49,16 +49,25 @@ export const SelectBox: FC<SelectPropsType> = ({
         tabIndex={1}
       >
         <div>
-          <Select.Value placeholder={placeholder} />
+          <Select.Value className={s.selectValue} placeholder={placeholder} />
           <ArrowIosDown className={disabled ? s.iconDisabled : s.icon} />
         </div>
       </Select.Trigger>
       <Select.Portal>
         <Select.Content position={'popper'} className={s.content} sideOffset={-1}>
           <Select.Viewport>
-            {options.map(el => (
-              <Select.Item key={el.value} value={el.value} className={s.item}>
-                <Select.ItemText>{el.value}</Select.ItemText>
+            {options.map((el, index) => (
+              <Select.Item key={index} value={el.value} className={s.item}>
+                {el.img ? (
+                  <Select.ItemText>
+                    <div className={s.langSwitcher}>
+                      {el.img}
+                      {el.value}
+                    </div>
+                  </Select.ItemText>
+                ) : (
+                  <Select.ItemText>{el.value}</Select.ItemText>
+                )}
               </Select.Item>
             ))}
           </Select.Viewport>
