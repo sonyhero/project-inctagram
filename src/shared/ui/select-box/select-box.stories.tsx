@@ -1,10 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react'
-import Image from 'next/image'
 
-import ru from '../icons/ru-flag/ru.png'
-import en from '../icons/uk-flag/en.png'
-
-import { SelectBox } from './select-box'
+import { SelectBox } from '@/shared'
 
 const meta = {
   title: 'Components/Select',
@@ -17,11 +13,11 @@ export default meta
 type Story = StoryObj<typeof meta>
 
 const people = [
-  { value: '1', label: 'Durward Reynolds' },
-  { value: '2', label: 'Kenton Towne' },
-  { value: '3', label: 'Therese Wunsch' },
-  { value: '4', label: 'Benedict Kessler' },
-  { value: '5', label: 'Katelyn Rohan' },
+  { id: '1', value: 'Durward Reynolds' },
+  { id: '2', value: 'Kenton Towne' },
+  { id: '3', value: 'Therese Wunsch' },
+  { id: '4', value: 'Benedict Kessler' },
+  { id: '5', value: 'Katelyn Rohan' },
 ]
 
 export const SelectStory: Story = {
@@ -30,6 +26,7 @@ export const SelectStory: Story = {
     placeholder: 'Select item',
     disabled: false,
     options: people,
+    value: people[1].value,
   },
 }
 
@@ -39,29 +36,6 @@ export const SelectStoryDisabled: Story = {
     placeholder: 'Select item',
     disabled: true,
     options: people,
-  },
-}
-
-const languages = [
-  {
-    value: 'English',
-    img: <Image src={en} alt={'en'} style={{ width: '1.5rem', height: '1.5rem' }} />,
-  },
-  {
-    value: 'Russian',
-    img: <Image src={ru} alt={'ru'} style={{ width: '1.5rem', height: '1.5rem' }} />,
-  },
-]
-
-export const SelectLangSwitcher: Story = {
-  args: {
-    label: 'Select',
-    placeholder: (
-      <div style={{ display: 'flex', alignItems: 'center', gap: '0.62rem' }}>
-        <Image style={{ width: '1.5rem', height: '1.5rem' }} src={en} alt={'en'} />
-        {languages[0].value}
-      </div>
-    ),
-    options: languages,
+    value: people[1].value,
   },
 }

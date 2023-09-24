@@ -2,18 +2,15 @@ import { FC, ReactNode } from 'react'
 
 import * as Select from '@radix-ui/react-select'
 
-import { Typography } from '../typography'
-
 import s from './select-box.module.scss'
 
+import { Typography } from '@/shared'
 import { ArrowIosDown } from '@/shared/ui/icons'
-
-// import { SelectArrow } from '@/assets'
 
 export type SelectPropsType = {
   label?: string
   placeholder?: ReactNode
-  value?: string
+  value?: any
   onValueChange?: (value: any) => void
   defaultValue?: any
   options: any[]
@@ -32,47 +29,47 @@ export const SelectBox: FC<SelectPropsType> = ({
   disabled,
   required,
   classname,
-}) => (
-  <Typography variant={'regular14'} as={'label'} color={'secondary'}>
-    {label}
+}) => {
+  const onChange = (lang: string) => {
+    onValueChange?.(lang)
+  }
 
-    <Select.Root
-      defaultValue={defaultValue}
-      value={value}
-      onValueChange={onValueChange}
-      disabled={disabled}
-      required={required}
-    >
-      <Select.Trigger
-        className={`${disabled ? s.triggerDisabled : s.trigger} ${classname}`}
-        asChild
-        tabIndex={1}
+  return (
+    <Typography variant={'regular14'} as={'label'} color={'secondary'}>
+      {label}
+
+      <Select.Root
+        defaultValue={defaultValue}
+        onValueChange={onChange}
+        disabled={disabled}
+        required={required}
       >
-        <div>
-          <Select.Value className={s.selectValue} placeholder={placeholder} />
-          <ArrowIosDown className={disabled ? s.iconDisabled : s.icon} />
-        </div>
-      </Select.Trigger>
-      <Select.Portal>
-        <Select.Content position={'popper'} className={s.content} sideOffset={-1}>
-          <Select.Viewport>
-            {options.map((el, index) => (
-              <Select.Item key={index} value={el.value} className={s.item}>
-                {el.img ? (
-                  <Select.ItemText>
-                    <div className={s.langSwitcher}>
-                      {el.img}
-                      {el.value}
-                    </div>
-                  </Select.ItemText>
-                ) : (
-                  <Select.ItemText>{el.value}</Select.ItemText>
-                )}
-              </Select.Item>
-            ))}
-          </Select.Viewport>
-        </Select.Content>
-      </Select.Portal>
-    </Select.Root>
-  </Typography>
-)
+        <Select.Trigger
+          className={`${disabled ? s.triggerDisabled : s.trigger} ${classname}`}
+          asChild
+          tabIndex={1}
+        >
+          <div>
+            <Select.Value placeholder={placeholder}>
+              {value?.img}
+              <Typography>{value.value}</Typography>
+            </Select.Value>
+            <ArrowIosDown className={disabled ? s.iconDisabled : s.icon} />
+          </div>
+        </Select.Trigger>
+        <Select.Portal>
+          <Select.Content position={'popper'} className={s.content} sideOffset={-1}>
+            <Select.Viewport>
+              {options.map(el => (
+                <Select.Item key={el.id} value={el.id} className={s.item}>
+                  {el?.img}
+                  <Typography>{el.value}</Typography>
+                </Select.Item>
+              ))}
+            </Select.Viewport>
+          </Select.Content>
+        </Select.Portal>
+      </Select.Root>
+    </Typography>
+  )
+}
