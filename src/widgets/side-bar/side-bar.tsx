@@ -2,17 +2,27 @@ import { useState } from 'react'
 
 import s from './side-bar.module.scss'
 
-import { Home, Nullable, PlusSquare } from '@/shared'
+import {
+  Bookmark,
+  Home,
+  MessageCircle,
+  Nullable,
+  Person,
+  PlusSquare,
+  Search,
+  TrendingUp,
+} from '@/shared'
 import { LinkSideBar } from '@/widgets/side-bar/link-side-bar/link-side-bar'
 
 export type VariantIconType =
   | 'home'
-  | 'search'
-  | 'my-profile'
   | 'create'
-  | 'message'
-  | 'logout'
+  | 'my-profile'
+  | 'messenger'
+  | 'search'
+  | 'statistics'
   | 'favorites'
+  | 'logout'
 
 export const SideBar = () => {
   const [variantIcon, setVariantIcon] = useState<Nullable<VariantIconType>>()
@@ -44,13 +54,55 @@ export const SideBar = () => {
           color={variantIcon === 'create' ? '#397df6' : 'white'}
         />
       </LinkSideBar>
-      {/*<Link href={'/home'}>Home</Link>*/}
-      {/*<Link href={'/create'}>Create</Link>*/}
-      {/*<Link href={'/my-profile'}>My Profile</Link>*/}
-      {/*<Link href={'/messenger'}>Messenger</Link>*/}
-      {/*<Link href={'/search'}>Search</Link>*/}
-      {/*<Link href={'/statistics'}>Statistics</Link>*/}
-      {/*<Link href={'/favorites'}>Favorites</Link>*/}
+      <LinkSideBar
+        variantIcon={variantIcon}
+        handleClick={() => handleItemClick('my-profile')}
+        nameLink={'My Profile'}
+        link={'my-profile'}
+      >
+        <Person
+          outline={variantIcon !== 'my-profile'}
+          color={variantIcon === 'my-profile' ? '#397df6' : 'white'}
+        />
+      </LinkSideBar>
+      <LinkSideBar
+        variantIcon={variantIcon}
+        handleClick={() => handleItemClick('messenger')}
+        nameLink={'Messenger'}
+        link={'messenger'}
+      >
+        <MessageCircle
+          outline={variantIcon !== 'messenger'}
+          color={variantIcon === 'messenger' ? '#397df6' : 'white'}
+        />
+      </LinkSideBar>
+      <LinkSideBar
+        variantIcon={variantIcon}
+        handleClick={() => handleItemClick('search')}
+        nameLink={'Search'}
+        link={'search'}
+      >
+        <Search color={variantIcon === 'search' ? '#397df6' : 'white'} />
+      </LinkSideBar>
+      <LinkSideBar
+        variantIcon={variantIcon}
+        handleClick={() => handleItemClick('statistics')}
+        nameLink={'Statistics'}
+        link={'statistics'}
+      >
+        <TrendingUp color={variantIcon === 'statistics' ? '#397df6' : 'white'} />
+      </LinkSideBar>
+      <LinkSideBar
+        variantIcon={variantIcon}
+        handleClick={() => handleItemClick('favorites')}
+        nameLink={'Favorites'}
+        link={'favorites'}
+      >
+        <Bookmark
+          outline={variantIcon !== 'favorites'}
+          color={variantIcon === 'favorites' ? '#397df6' : 'white'}
+        />
+      </LinkSideBar>
     </div>
   )
 }
