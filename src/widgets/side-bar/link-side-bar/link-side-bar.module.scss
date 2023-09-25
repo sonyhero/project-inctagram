@@ -2,22 +2,25 @@
   display: flex;
   align-items: center;
 
-  .linkContainer {
+  .link {
     cursor: pointer;
 
     display: flex;
     align-items: center;
 
+    padding-right: 0.2rem;
+
+    text-decoration: none;
+
     border: none;
     border-radius: 0.125rem;
 
-    .link {
+    .nameLink {
       padding-left: 0.75rem;
-      text-decoration: none;
+    }
 
-      .active {
-        color: var(--color-accent-500);
-      }
+    .active {
+      color: var(--color-accent-500);
     }
 
     &:hover {
@@ -31,7 +34,7 @@
         color: var(--color-accent-100);
       }
 
-      .unActive {
+      .nameLink {
         color: var(--color-accent-100);
       }
     }

@@ -5,7 +5,8 @@ import Link from 'next/link'
 
 import s from './link-side-bar.module.scss'
 
-import { Nullable, Typography, VariantIconType } from '@/shared'
+import { Nullable, Typography } from '@/shared'
+import { VariantIconType } from '@/widgets/side-bar'
 
 type PropsType = {
   nameLink: string
@@ -27,19 +28,19 @@ export const LinkSideBar: FC<PropsType> = ({
   }
   const styles = {
     // check: clsx(router.pathname == link ? s.active : ''),
-    check: clsx(s.unActive, link === variantIcon && s.active),
+    check: clsx(s.nameLink, link === variantIcon && s.active),
   }
 
   return (
     <div className={s.container} onClick={handleItemClick}>
-      <div tabIndex={0} className={s.linkContainer}>
+      {/*<div tabIndex={0} className={s.linkContainer}>*/}
+      <Link tabIndex={1} href={`${link}`} className={s.link}>
         {children}
-        <Link tabIndex={1} href={`${link}`} className={s.link}>
-          <Typography variant={'regular14'} className={styles.check}>
-            {nameLink}
-          </Typography>
-        </Link>
-      </div>
+        <Typography variant={'regular14'} className={styles.check}>
+          {nameLink}
+        </Typography>
+      </Link>
+      {/*</div>*/}
     </div>
   )
 }
