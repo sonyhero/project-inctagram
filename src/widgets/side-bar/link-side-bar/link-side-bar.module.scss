@@ -1,0 +1,44 @@
+.container {
+  display: flex;
+  align-items: center;
+
+  .linkContainer {
+    cursor: pointer;
+
+    display: flex;
+    align-items: center;
+
+    border: none;
+    border-radius: 0.125rem;
+
+    .link {
+      padding-left: 0.75rem;
+      text-decoration: none;
+
+      .active {
+        color: var(--color-accent-500);
+      }
+    }
+
+    &:hover {
+      svg {
+        path {
+          fill: var(--color-accent-100);
+        }
+      }
+
+      .active {
+        color: var(--color-accent-100);
+      }
+
+      .unActive {
+        color: var(--color-accent-100);
+      }
+    }
+
+    &:focus-visible,
+    &:focus {
+      outline: 2px solid var(--color-accent-700);
+    }
+  }
+}
