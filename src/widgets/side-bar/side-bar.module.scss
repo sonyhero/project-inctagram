@@ -6,4 +6,14 @@
   padding: 4.5rem 0 2.25rem 3.75rem;
 
   border-right: 1px solid var(--color-dark-300);
+
+  .mainBlock {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 1.25rem;
+  }
+
+  .secondaryBlock {
+    margin-bottom: 11.25rem;
+  }
 }
