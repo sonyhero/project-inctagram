@@ -8,7 +8,10 @@ import '@fontsource/inter/500.css'
 import '@fontsource/inter/600.css'
 import '@fontsource/inter/700.css'
 import '@/shared/styles/index.scss'
+import '../shared/ui/toast/toast.css'
+
 import { StoreProvider } from '@/providers/store-provider/store-provider'
+import { ToastNotify } from '@/shared/ui/toast/toast'
 
 export type NextPageWithLayout<P = {}, IP = P> = NextPage<P, IP> & {
   getLayout?: (page: ReactElement) => ReactNode
@@ -23,6 +26,7 @@ export default function App({ Component, pageProps }: AppPropsWithLayout) {
 
   return getLayout(
     <StoreProvider>
+      <ToastNotify />
       <Component {...pageProps} />
     </StoreProvider>
   )
