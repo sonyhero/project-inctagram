@@ -1,11 +1,4 @@
 .container {
   display: flex;
   height: 100vh;
-
-  .navbar {
-    display: flex;
-    flex-direction: column;
-    width: 200px;
-    border-right: 1px solid #fffefe;
-  }
 }
