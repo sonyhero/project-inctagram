@@ -1,8 +1,9 @@
-import { getBaseLayout } from '@/providers/layout/layout'
+import { SignUp } from '@/pages-flat/sign-up'
+import { getAuthLayout } from '@/providers/auth-layout/auth-layout'
 
-const SignUp = () => {
-  return <div>Sign Up</div>
+const SignUpPage = () => {
+  return <SignUp />
 }
 
-export default SignUp
-SignUp.getLayout = getBaseLayout
+export default SignUpPage
+SignUpPage.getLayout = getAuthLayout
