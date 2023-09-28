@@ -5,7 +5,7 @@ import s from './typography.module.scss'
 export type TypographyProps<T extends ElementType = 'p'> = {
   as?: T
   className?: string
-  color?: 'primary' | 'secondary' | 'error' | 'disabled'
+  color?: 'primary' | 'secondary' | 'error' | 'disabled' | 'link'
   variant?:
     | 'large'
     | 'h1'
