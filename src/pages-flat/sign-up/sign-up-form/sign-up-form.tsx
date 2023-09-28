@@ -1,55 +1,17 @@
-import { FC } from 'react'
-
 import { DevTool } from '@hookform/devtools'
-import { zodResolver } from '@hookform/resolvers/zod'
 import Link from 'next/link'
-import { useForm } from 'react-hook-form'
-import { z } from 'zod'
 
 import s from './sign-up-form.module.scss'
 
+import { useSignUp } from '@/pages-flat/sign-up/sign-up-form/hooks/use-sign-up'
 import { Button } from '@/shared/ui/button'
 import { Card } from '@/shared/ui/card'
 import { ControlledCheckbox, ControlledTextField } from '@/shared/ui/controlled'
 import { GitIcon, GoogleIcon } from '@/shared/ui/icons'
 import { Typography } from '@/shared/ui/typography'
 
-const sigInSchema = z
-  .object({
-    username: z.string().min(6).max(30),
-    email: z.string().email(),
-    password: z.string().min(6).max(20),
-    passwordConfirm: z.string().min(3),
-    terms: z.boolean().default(false),
-  })
-  .refine(data => data.password === data.passwordConfirm, {
-    path: ['passwordConfirm'],
-    message: 'The passwords must match',
-  })
-  .refine(data => data.terms, {
-    path: ['terms'],
-    message: 'Confirm terms',
-  })
-
-export type SignInFormShem = z.infer<typeof sigInSchema>
-
-type PropsType = {
-  onSubmit: (data: SignInFormShem) => void
-}
-
-export const SignUpForm: FC<PropsType> = ({ onSubmit }) => {
-  const { control, handleSubmit } = useForm<SignInFormShem>({
-    defaultValues: {
-      username: '',
-      email: '',
-      password: '',
-      passwordConfirm: '',
-      terms: true,
-    },
-    resolver: zodResolver(sigInSchema),
-  })
-
-  const handleSubmitForm = handleSubmit(onSubmit)
+export const SignUpForm = () => {
+  const { control, handleSubmitForm } = useSignUp()
 
   return (
     <Card className={s.signBlock}>
