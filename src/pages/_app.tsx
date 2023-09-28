@@ -9,8 +9,9 @@ import '@fontsource/inter/600.css'
 import '@fontsource/inter/700.css'
 import '@/shared/styles/index.scss'
 import '../shared/ui/toast/toast.css'
-
+import 'nprogress/nprogress.css'
 import { StoreProvider } from '@/providers/store-provider/store-provider'
+import { useLoader } from '@/shared/hooks/useLoader'
 import { ToastNotify } from '@/shared/ui/toast/toast'
 
 export type NextPageWithLayout<P = {}, IP = P> = NextPage<P, IP> & {
@@ -22,6 +23,7 @@ type AppPropsWithLayout = AppProps & {
 }
 
 export default function App({ Component, pageProps }: AppPropsWithLayout) {
+  useLoader()
   const getLayout = Component.getLayout ?? (page => page)
 
   return getLayout(
