@@ -1,6 +1,9 @@
+import { useState } from 'react'
+
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useRouter } from 'next/router'
 import { useForm } from 'react-hook-form'
+import { toast } from 'react-toastify'
 import { z } from 'zod'
 
 import { useSignUpMutation } from '@/features/auth/auth-api'
@@ -32,7 +35,18 @@ const sigInSchema = z
 export type SignInFormShem = z.infer<typeof sigInSchema>
 
 export const useSignUp = () => {
-  const { control, handleSubmit, setError } = useForm<SignInFormShem>({
+  const [signUp] = useSignUpMutation()
+  const router = useRouter()
+  const [emailModal, setEmailModal] = useState('')
+  const [isOpenModal, setIsOpenModal] = useState(false)
+
+  const {
+    control,
+    handleSubmit,
+    setError,
+    watch,
+    formState: { isValid },
+  } = useForm<SignInFormShem>({
     defaultValues: {
       username: '',
       email: '',
@@ -43,22 +57,25 @@ export const useSignUp = () => {
     resolver: zodResolver(sigInSchema),
   })
 
-  const [signUp] = useSignUpMutation()
-  const router = useRouter()
+  const watchCheckbox = watch('terms')
+  const disableButton = !isValid || !watchCheckbox
 
   const onSubmit = (data: SignInFormShem) => {
     signUp({ userName: data.username, email: data.email, password: data.password })
       .unwrap()
       .then(() => {
-        router.push('/')
+        // router.push('/')
+        setEmailModal(data.email)
+        setIsOpenModal(true)
+        toast.error('Success')
       })
       .catch(err => {
         setError('username', { message: err.data.messages[0].message })
-        // toast.error(err.data.messages[0].message)
+        toast.error(err.data.messages[0].message)
       })
   }
 
   const handleSubmitForm = handleSubmit(onSubmit)
 
-  return { control, handleSubmitForm }
+  return { control, handleSubmitForm, disableButton, emailModal, isOpenModal, setIsOpenModal }
 }
