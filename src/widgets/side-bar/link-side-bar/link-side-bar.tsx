@@ -15,6 +15,7 @@ type PropsType = {
   variantIcon?: Nullable<VariantIconType>
   handleClick: (variant: Nullable<VariantIconType>) => void
   className?: string
+  callBack?: () => void
 }
 
 export const LinkSideBar: FC<PropsType> = ({
@@ -24,8 +25,10 @@ export const LinkSideBar: FC<PropsType> = ({
   handleClick,
   variantIcon,
   className,
+  callBack,
 }) => {
   const handleItemClick = () => {
+    callBack?.()
     handleClick(variantIcon!)
   }
   const styles = {
