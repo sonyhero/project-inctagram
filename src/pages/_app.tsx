@@ -2,6 +2,7 @@ import type { ReactElement, ReactNode } from 'react'
 
 import { NextPage } from 'next'
 import type { AppProps } from 'next/app'
+import { SessionProvider } from 'next-auth/react'
 
 import '@fontsource/inter/400.css'
 import '@fontsource/inter/500.css'
@@ -22,14 +23,19 @@ type AppPropsWithLayout = AppProps & {
   Component: NextPageWithLayout
 }
 
-export default function App({ Component, pageProps }: AppPropsWithLayout) {
+export default function App({
+  Component,
+  pageProps: { session, ...pageProps },
+}: AppPropsWithLayout) {
   useLoader()
   const getLayout = Component.getLayout ?? (page => page)
 
   return getLayout(
-    <StoreProvider>
-      <ToastNotify />
-      <Component {...pageProps} />
-    </StoreProvider>
+    <SessionProvider session={session}>
+      <StoreProvider>
+        <ToastNotify />
+        <Component {...pageProps} />
+      </StoreProvider>
+    </SessionProvider>
   )
 }

@@ -1,6 +1,7 @@
 import { zodResolver } from '@hookform/resolvers/zod'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
+import { signIn as signInGoogle } from 'next-auth/react'
 import { useForm } from 'react-hook-form'
 import { toast } from 'react-toastify'
 import { z } from 'zod'
@@ -57,7 +58,7 @@ export const SignIn = () => {
         Sign-in
       </Typography>
       <div className={s.gitAndGoogle}>
-        <Button variant={'text'} className={s.clickToGitAndGoogle}>
+        <Button variant={'text'} className={s.clickToGitAndGoogle} onClick={() => signInGoogle()}>
           <GoogleIcon />
         </Button>
         <Button variant={'text'} className={s.clickToGitAndGoogle}>
