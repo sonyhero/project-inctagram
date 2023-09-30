@@ -7,7 +7,7 @@ import { z } from 'zod'
 
 import s from './sign-in.module.scss'
 
-import { useLoginMutation } from '@/features/auth/auth-api'
+import { useLoginMutation, useMeQuery } from '@/features/auth/auth-api'
 import { Button } from '@/shared/ui/button'
 import { Card } from '@/shared/ui/card'
 import { ControlledTextField } from '@/shared/ui/controlled'
@@ -26,7 +26,7 @@ type SignInFormShem = z.infer<typeof sigInSchema>
 // }
 export const SignIn = () => {
   const [signIn] = useLoginMutation()
-  // const { data, isLoading } = useMeQuery()
+  const { data, isLoading } = useMeQuery()
   const router = useRouter()
   const { control, handleSubmit } = useForm<SignInFormShem>({
     defaultValues: {
@@ -41,18 +41,18 @@ export const SignIn = () => {
       .unwrap()
       .then(() => {
         router.push('/')
-        toast.error('Success')
+        toast.success('Success')
       })
       .catch(err => {
-        toast.success(err.data.messages[0].message)
+        toast.error(err.data.messages[0].message)
       })
   }
 
   const handleSubmitForm = handleSubmit(onSubmit)
 
-  // if (isLoading) return <div>...Loading</div>
-  //
-  // if (data) router.push('/')
+  if (isLoading) return <div>...Loading</div>
+
+  if (data) router.push('/')
 
   return (
     <Card className={s.signBlock}>
