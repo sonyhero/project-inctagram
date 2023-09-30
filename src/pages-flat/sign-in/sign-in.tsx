@@ -7,7 +7,7 @@ import { z } from 'zod'
 
 import s from './sign-in.module.scss'
 
-import { useLoginMutation, useMeQuery } from '@/features/auth/auth-api'
+import { useLoginMutation } from '@/features/auth/auth-api'
 import { Button } from '@/shared/ui/button'
 import { Card } from '@/shared/ui/card'
 import { ControlledTextField } from '@/shared/ui/controlled'
@@ -21,18 +21,15 @@ const sigInSchema = z.object({
 
 type SignInFormShem = z.infer<typeof sigInSchema>
 
-// type PropsType = {
-//   onSubmit: (data: SignInFormShem) => void
-// }
 export const SignIn = () => {
   const [signIn] = useLoginMutation()
-  const { data, isLoading } = useMeQuery()
   const router = useRouter()
-  const { control, handleSubmit } = useForm<SignInFormShem>({
+  const { control, handleSubmit, setError } = useForm<SignInFormShem>({
     defaultValues: {
       email: '',
       password: '',
     },
+    mode: 'onTouched',
     resolver: zodResolver(sigInSchema),
   })
 
@@ -45,15 +42,14 @@ export const SignIn = () => {
         toast.success('Success')
       })
       .catch(err => {
-        toast.error(err.data.messages[0].message)
+        setError('password', {
+          type: 'server',
+          message: err.data.messages,
+        })
       })
   }
 
   const handleSubmitForm = handleSubmit(onSubmit)
-
-  if (isLoading) return <div>...Loading</div>
-
-  if (data) router.push('/')
 
   return (
     <Card className={s.signBlock}>
@@ -88,9 +84,9 @@ export const SignIn = () => {
         />
         <div className={s.forgotWrapper}>
           <Button as={'a'} variant={'text'} className={s.forgotPassword}>
-            <Typography variant={'regular14'} className={s.forgotText}>
-              Forgot Password
-            </Typography>
+            <Link className={s.forgotText} href={'/auth/forgot-password'}>
+              Forgot password
+            </Link>
           </Button>
         </div>
         <Button fullWidth={true} className={s.submit} type="submit">

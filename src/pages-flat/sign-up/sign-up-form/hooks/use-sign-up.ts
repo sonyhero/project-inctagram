@@ -9,7 +9,7 @@ import { useSignUpMutation } from '@/features/auth/auth-api'
 
 const sigInSchema = z
   .object({
-    userName: z.string().min(6).max(30),
+    name: z.string().min(6).max(30),
     email: z.string().email(),
     password: z
       .string()
@@ -46,12 +46,13 @@ export const useSignUp = () => {
     formState: { isValid },
   } = useForm<SignUpFormShem>({
     defaultValues: {
-      userName: '',
+      name: '',
       email: '',
       password: '',
       passwordConfirm: '',
       terms: false,
     },
+    mode: 'onTouched',
     resolver: zodResolver(sigInSchema),
   })
 
@@ -59,7 +60,7 @@ export const useSignUp = () => {
   const disableButton = !isValid || !watchCheckbox
 
   const onSubmit = (data: SignUpFormShem) => {
-    signUp({ userName: data.userName, email: data.email, password: data.password })
+    signUp({ userName: data.name, email: data.email, password: data.password })
       .unwrap()
       .then(() => {
         // router.push('/')
@@ -68,10 +69,12 @@ export const useSignUp = () => {
         toast.success('Success')
       })
       .catch(err => {
-        setError(`${err.data.messages[0].field}` as 'root', {
-          message: err.data.messages[0].message,
+        err.data.messages.map((el: any) => {
+          setError(`${err.data.messages[0].field}` as 'root', {
+            type: 'server',
+            message: el.message,
+          })
         })
-        toast.error(err.data.messages[0].message)
       })
   }
 

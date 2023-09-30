@@ -1,8 +1,9 @@
-import { getBaseLayout } from '@/providers/layout/layout'
+import { ForgotPassword } from '@/pages-flat/forgot-password'
+import { getAuthLayout } from '@/providers/auth-layout/auth-layout'
 
-const ForgotPassword = () => {
-  return <div>Forgot Password</div>
+const ForgotPasswordPage = () => {
+  return <ForgotPassword />
 }
 
-export default ForgotPassword
-ForgotPassword.getLayout = getBaseLayout
+export default ForgotPasswordPage
+ForgotPasswordPage.getLayout = getAuthLayout
