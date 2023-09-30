@@ -1,7 +1,6 @@
 import { useState } from 'react'
 
 import { zodResolver } from '@hookform/resolvers/zod'
-import { useRouter } from 'next/router'
 import { useForm } from 'react-hook-form'
 import { toast } from 'react-toastify'
 import { z } from 'zod'
@@ -10,7 +9,7 @@ import { useSignUpMutation } from '@/features/auth/auth-api'
 
 const sigInSchema = z
   .object({
-    username: z.string().min(6).max(30),
+    userName: z.string().min(6).max(30),
     email: z.string().email(),
     password: z
       .string()
@@ -47,7 +46,7 @@ export const useSignUp = () => {
     formState: { isValid },
   } = useForm<SignUpFormShem>({
     defaultValues: {
-      username: '',
+      userName: '',
       email: '',
       password: '',
       passwordConfirm: '',
@@ -60,7 +59,7 @@ export const useSignUp = () => {
   const disableButton = !isValid || !watchCheckbox
 
   const onSubmit = (data: SignUpFormShem) => {
-    signUp({ userName: data.username, email: data.email, password: data.password })
+    signUp({ userName: data.userName, email: data.email, password: data.password })
       .unwrap()
       .then(() => {
         // router.push('/')
@@ -69,7 +68,9 @@ export const useSignUp = () => {
         toast.error('Success')
       })
       .catch(err => {
-        setError('username', { message: err.data.messages[0].message })
+        setError(`${err.data.messages[0].field}` as 'root', {
+          message: err.data.messages[0].message,
+        })
         toast.success(err.data.messages[0].message)
       })
   }
