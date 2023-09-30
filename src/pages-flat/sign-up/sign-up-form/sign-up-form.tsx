@@ -32,11 +32,11 @@ export const SignUpForm = () => {
         <form onSubmit={handleSubmitForm}>
           <DevTool control={control} />
           <ControlledTextField
-            className={s.username}
+            className={s.userName}
             control={control}
             type={'default'}
-            name={'username'}
-            label={'Username'}
+            name={'userName'}
+            label={'userName'}
             placeholder={'enter your username'}
           ></ControlledTextField>
           <ControlledTextField
