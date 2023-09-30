@@ -1,3 +1,5 @@
+import { FC, useState } from 'react'
+
 import { zodResolver } from '@hookform/resolvers/zod'
 import Link from 'next/link'
 import { useForm } from 'react-hook-form'
@@ -8,6 +10,7 @@ import s from './forgot-password.module.scss'
 import { Button } from '@/shared/ui/button'
 import { Card } from '@/shared/ui/card'
 import { ControlledTextField } from '@/shared/ui/controlled'
+import { Recaptcha } from '@/shared/ui/recaptcha/recaptcha'
 import { Typography } from '@/shared/ui/typography'
 
 const sigInSchema = z.object({
@@ -16,7 +19,11 @@ const sigInSchema = z.object({
 
 type SignInFormShem = z.infer<typeof sigInSchema>
 
-export const ForgotPassword = () => {
+type PropsType = {
+  onSubmit: (data: SignInFormShem) => void
+}
+export const ForgotPassword: FC<PropsType> = ({ onSubmit }) => {
+  const [recaptchaKey, setRecaptchaKey] = useState<string | null>(null)
   const { control, handleSubmit } = useForm<SignInFormShem>({
     defaultValues: {
       email: '',
@@ -24,19 +31,24 @@ export const ForgotPassword = () => {
     mode: 'onTouched',
     resolver: zodResolver(sigInSchema),
   })
+  const handleSubmitForm = handleSubmit(formData => {
+    const dataWithRecaptcha = {
+      ...formData,
+      recaptcha: recaptchaKey,
+    }
 
-  const onSubmit = (data: SignInFormShem) => {
-    console.log(data)
+    onSubmit(dataWithRecaptcha)
+  })
+  const onRecaptchaChangeHandler = (key: string | null) => {
+    setRecaptchaKey(key)
   }
 
-  const handleSubmitForm = handleSubmit(onSubmit)
-
   return (
-    <Card className={s.signBlock}>
+    <Card className={s.forgotPasswordBlock}>
       <Typography className={s.title} variant={'large'}>
-        Forgot password
+        Forgot Password
       </Typography>
-      <form onSubmit={handleSubmitForm}>
+      <form onSubmit={handleSubmitForm} className={s.formBlock}>
         <ControlledTextField
           name={'email'}
           label={'Email'}
@@ -45,13 +57,17 @@ export const ForgotPassword = () => {
           control={control}
           className={s.email}
         />
+        <Typography variant={'regular14'} className={s.text}>
+          Enter your email address and we will send you further instructions{' '}
+        </Typography>
         <Button fullWidth={true} className={s.submit} type="submit">
           Send Link
         </Button>
+        <Button variant={'text'} className={s.signUp}>
+          <Link href={'/auth/sign-in'}>Back to Sign In</Link>
+        </Button>
+        <Recaptcha onRecaptchaChangeHandler={onRecaptchaChangeHandler} />
       </form>
-      <Button variant={'text'} className={s.signUp}>
-        <Link href={'/auth/sign-in'}>Back to Sign In</Link>
-      </Button>
     </Card>
   )
 }
