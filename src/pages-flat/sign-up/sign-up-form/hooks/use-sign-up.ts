@@ -32,7 +32,7 @@ const sigInSchema = z
     message: 'Confirm terms',
   })
 
-export type SignInFormShem = z.infer<typeof sigInSchema>
+export type SignUpFormShem = z.infer<typeof sigInSchema>
 
 export const useSignUp = () => {
   const [signUp] = useSignUpMutation()
@@ -46,7 +46,7 @@ export const useSignUp = () => {
     setError,
     watch,
     formState: { isValid },
-  } = useForm<SignInFormShem>({
+  } = useForm<SignUpFormShem>({
     defaultValues: {
       username: '',
       email: '',
@@ -60,7 +60,7 @@ export const useSignUp = () => {
   const watchCheckbox = watch('terms')
   const disableButton = !isValid || !watchCheckbox
 
-  const onSubmit = (data: SignInFormShem) => {
+  const onSubmit = (data: SignUpFormShem) => {
     signUp({ userName: data.username, email: data.email, password: data.password })
       .unwrap()
       .then(() => {
@@ -71,7 +71,7 @@ export const useSignUp = () => {
       })
       .catch(err => {
         setError('username', { message: err.data.messages[0].message })
-        toast.error(err.data.messages[0].message)
+        toast.success(err.data.messages[0].message)
       })
   }
 

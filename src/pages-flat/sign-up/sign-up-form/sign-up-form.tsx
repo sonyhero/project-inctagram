@@ -71,13 +71,13 @@ export const SignUpForm = () => {
               label={
                 <Typography variant={'small'}>
                   I agree to the{' '}
-                  <Link href={'/accounts/terms-of-service'}>
+                  <Link href={'/auth/terms-of-service'}>
                     <Typography className={s.link} as={'span'} variant={'s_link'}>
                       Terms of Service
                     </Typography>
                   </Link>{' '}
                   and{' '}
-                  <Link href={'/accounts/privacy-policy'}>
+                  <Link href={'/auth/privacy-policy'}>
                     <Typography className={s.link} as={'span'} variant={'s_link'}>
                       Privacy Policy
                     </Typography>

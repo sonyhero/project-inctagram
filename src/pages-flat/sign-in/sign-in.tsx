@@ -1,11 +1,13 @@
-import { FC } from 'react'
-
 import { zodResolver } from '@hookform/resolvers/zod'
+import Link from 'next/link'
+import { useRouter } from 'next/router'
 import { useForm } from 'react-hook-form'
+import { toast } from 'react-toastify'
 import { z } from 'zod'
 
 import s from './sign-in.module.scss'
 
+import { useLoginMutation } from '@/features/auth/auth-api'
 import { Button } from '@/shared/ui/button'
 import { Card } from '@/shared/ui/card'
 import { ControlledTextField } from '@/shared/ui/controlled'
@@ -19,10 +21,13 @@ const sigInSchema = z.object({
 
 type SignInFormShem = z.infer<typeof sigInSchema>
 
-type PropsType = {
-  onSubmit: (data: SignInFormShem) => void
-}
-export const SignIn: FC<PropsType> = ({ onSubmit }) => {
+// type PropsType = {
+//   onSubmit: (data: SignInFormShem) => void
+// }
+export const SignIn = () => {
+  const [signIn] = useLoginMutation()
+  // const { data, isLoading } = useMeQuery()
+  const router = useRouter()
   const { control, handleSubmit } = useForm<SignInFormShem>({
     defaultValues: {
       email: '',
@@ -30,7 +35,24 @@ export const SignIn: FC<PropsType> = ({ onSubmit }) => {
     },
     resolver: zodResolver(sigInSchema),
   })
+
+  const onSubmit = (data: SignInFormShem) => {
+    signIn(data)
+      .unwrap()
+      .then(() => {
+        router.push('/')
+        toast.error('Success')
+      })
+      .catch(err => {
+        toast.success(err.data.messages[0].message)
+      })
+  }
+
   const handleSubmitForm = handleSubmit(onSubmit)
+
+  // if (isLoading) return <div>...Loading</div>
+  //
+  // if (data) router.push('/')
 
   return (
     <Card className={s.signBlock}>
@@ -77,8 +99,8 @@ export const SignIn: FC<PropsType> = ({ onSubmit }) => {
       <Typography variant={'regular16'} className={s.question}>
         Don&apos;t have have an account?
       </Typography>
-      <Button as={'a'} variant={'text'} className={s.signUp}>
-        Sign Up
+      <Button variant={'text'} className={s.signUp}>
+        <Link href={'/auth/sign-up'}>Sign Up</Link>
       </Button>
     </Card>
   )
