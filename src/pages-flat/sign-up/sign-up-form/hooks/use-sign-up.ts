@@ -50,7 +50,7 @@ export const useSignUp = () => {
       email: '',
       password: '',
       passwordConfirm: '',
-      terms: true,
+      terms: false,
     },
     resolver: zodResolver(sigInSchema),
   })

@@ -39,7 +39,8 @@ export const SignIn = () => {
   const onSubmit = (data: SignInFormShem) => {
     signIn(data)
       .unwrap()
-      .then(() => {
+      .then(res => {
+        localStorage.setItem('access', res.accessToken)
         router.push('/')
         toast.success('Success')
       })
