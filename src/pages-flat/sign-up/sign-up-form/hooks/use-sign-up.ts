@@ -65,13 +65,13 @@ export const useSignUp = () => {
         // router.push('/')
         setEmailModal(data.email)
         setIsOpenModal(true)
-        toast.error('Success')
+        toast.success('Success')
       })
       .catch(err => {
         setError(`${err.data.messages[0].field}` as 'root', {
           message: err.data.messages[0].message,
         })
-        toast.success(err.data.messages[0].message)
+        toast.error(err.data.messages[0].message)
       })
   }
 

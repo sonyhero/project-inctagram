@@ -36,7 +36,7 @@ export const SignUpForm = () => {
             control={control}
             type={'default'}
             name={'userName'}
-            label={'userName'}
+            label={'User name'}
             placeholder={'enter your username'}
           ></ControlledTextField>
           <ControlledTextField
