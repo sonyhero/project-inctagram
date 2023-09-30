@@ -1,4 +1,4 @@
-import { useLayoutEffect } from 'react'
+import { useEffect } from 'react'
 
 import Link from 'next/link'
 import { useRouter } from 'next/router'
@@ -15,9 +15,11 @@ export const Congratulations = () => {
   const router = useRouter()
   const query = router.query as { code: string; email: string }
 
-  useLayoutEffect(() => {
-    verification({ confirmationCode: query.code })
-  })
+  useEffect(() => {
+    if (query.code) {
+      verification({ confirmationCode: query.code })
+    }
+  }, [query.code])
 
   return (
     <div className={s.container}>

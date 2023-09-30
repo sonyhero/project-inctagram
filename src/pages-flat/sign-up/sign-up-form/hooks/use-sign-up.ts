@@ -36,7 +36,6 @@ export type SignUpFormShem = z.infer<typeof sigInSchema>
 
 export const useSignUp = () => {
   const [signUp] = useSignUpMutation()
-  const router = useRouter()
   const [emailModal, setEmailModal] = useState('')
   const [isOpenModal, setIsOpenModal] = useState(false)
 
@@ -52,7 +51,7 @@ export const useSignUp = () => {
       email: '',
       password: '',
       passwordConfirm: '',
-      terms: true,
+      terms: false,
     },
     resolver: zodResolver(sigInSchema),
   })
