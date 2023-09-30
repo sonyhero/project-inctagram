@@ -1,7 +1,6 @@
 import { useState } from 'react'
 
 import { zodResolver } from '@hookform/resolvers/zod'
-import { useRouter } from 'next/router'
 import { useForm } from 'react-hook-form'
 import { toast } from 'react-toastify'
 import { z } from 'zod'
@@ -10,7 +9,7 @@ import { useSignUpMutation } from '@/features/auth/auth-api'
 
 const sigInSchema = z
   .object({
-    username: z.string().min(6).max(30),
+    userName: z.string().min(6).max(30),
     email: z.string().email(),
     password: z
       .string()
@@ -21,7 +20,7 @@ const sigInSchema = z
         'Password must contain a-z, A-Z,  ! " # $ % & \' ( ) * + , - . / : ; < = > ? @ [ \\ ] ^ _` { | } ~'
       ),
     passwordConfirm: z.string(),
-    terms: z.boolean().default(false),
+    terms: z.boolean().default(true),
   })
   .refine(data => data.password === data.passwordConfirm, {
     path: ['passwordConfirm'],
@@ -47,7 +46,7 @@ export const useSignUp = () => {
     formState: { isValid },
   } = useForm<SignUpFormShem>({
     defaultValues: {
-      username: '',
+      userName: '',
       email: '',
       password: '',
       passwordConfirm: '',
@@ -60,17 +59,19 @@ export const useSignUp = () => {
   const disableButton = !isValid || !watchCheckbox
 
   const onSubmit = (data: SignUpFormShem) => {
-    signUp({ userName: data.username, email: data.email, password: data.password })
+    signUp({ userName: data.userName, email: data.email, password: data.password })
       .unwrap()
       .then(() => {
         // router.push('/')
         setEmailModal(data.email)
         setIsOpenModal(true)
-        toast.error('Success')
+        toast.success('Success')
       })
       .catch(err => {
-        setError('username', { message: err.data.messages[0].message })
-        toast.success(err.data.messages[0].message)
+        setError(`${err.data.messages[0].field}` as 'root', {
+          message: err.data.messages[0].message,
+        })
+        toast.error(err.data.messages[0].message)
       })
   }
 

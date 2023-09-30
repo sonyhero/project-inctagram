@@ -21,13 +21,18 @@ export const MyProfile = () => {
 
   if (!data) router.push('/auth/sign-in')
 
+  const logoutHandler = () => {
+    logout()
+    localStorage.removeItem('access')
+  }
+
   return (
     <>
       <Button onClick={handleDone}>Done</Button>
       <Button variant={'secondary'} onClick={handleError}>
         Error
       </Button>
-      <Button onClick={() => logout()}>Logout</Button>
+      <Button onClick={logoutHandler}>Logout</Button>
     </>
   )
 }
