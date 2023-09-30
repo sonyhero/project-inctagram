@@ -21,7 +21,7 @@ const sigInSchema = z
         'Password must contain a-z, A-Z,  ! " # $ % & \' ( ) * + , - . / : ; < = > ? @ [ \\ ] ^ _` { | } ~'
       ),
     passwordConfirm: z.string(),
-    terms: z.boolean().default(false),
+    terms: z.boolean().default(true),
   })
   .refine(data => data.password === data.passwordConfirm, {
     path: ['passwordConfirm'],
@@ -36,7 +36,6 @@ export type SignUpFormShem = z.infer<typeof sigInSchema>
 
 export const useSignUp = () => {
   const [signUp] = useSignUpMutation()
-  const router = useRouter()
   const [emailModal, setEmailModal] = useState('')
   const [isOpenModal, setIsOpenModal] = useState(false)
 

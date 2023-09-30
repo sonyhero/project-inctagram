@@ -93,7 +93,9 @@ export const SignUpForm = () => {
         <Typography className={s.subtitle} variant={'regular16'}>
           Do you have an account?
         </Typography>
-        <Button variant={'text'}>Sign In</Button>
+        <Button variant={'text'} className={s.signUp}>
+          <Link href={'/auth/sign-in'}>Sign In</Link>
+        </Button>
       </Card>
       <Modal
         title={'Email sent'}
