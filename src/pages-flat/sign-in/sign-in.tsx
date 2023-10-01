@@ -55,13 +55,13 @@ export const SignIn = () => {
   const [googleLogin] = useGoogleLoginMutation()
 
   const onGoogleAuth = useGoogleLogin({
-    onSuccess: tokenResponse => {
-      console.log(tokenResponse)
-      googleLogin({ code: tokenResponse.code })
+    onSuccess: codeResponse => {
+      googleLogin({ code: codeResponse.code })
         .unwrap()
         .then(res => {
-          console.log(res)
+          localStorage.setItem('access', res.accessToken)
           router.push('/')
+          toast.success('Success')
         })
     },
     flow: 'auth-code',
