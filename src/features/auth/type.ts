@@ -50,3 +50,8 @@ export type MeResponseType = {
   userName: string
   email: string
 }
+
+export type GoogleLoginType = {
+  accessToken: string
+  email: string
+}

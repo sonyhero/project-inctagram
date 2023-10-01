@@ -1,8 +1,8 @@
 import type { ReactElement, ReactNode } from 'react'
 
+import { GoogleOAuthProvider } from '@react-oauth/google'
 import { NextPage } from 'next'
 import type { AppProps } from 'next/app'
-import { SessionProvider } from 'next-auth/react'
 
 import '@fontsource/inter/400.css'
 import '@fontsource/inter/500.css'
@@ -31,11 +31,11 @@ export default function App({
   const getLayout = Component.getLayout ?? (page => page)
 
   return getLayout(
-    <SessionProvider session={session}>
+    <GoogleOAuthProvider clientId={process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID ?? ''}>
       <StoreProvider>
         <ToastNotify />
         <Component {...pageProps} />
       </StoreProvider>
-    </SessionProvider>
+    </GoogleOAuthProvider>
   )
 }

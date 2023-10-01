@@ -1,14 +1,14 @@
 import { zodResolver } from '@hookform/resolvers/zod'
+import { useGoogleLogin } from '@react-oauth/google'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
-import { signIn as signInGoogle } from 'next-auth/react'
 import { useForm } from 'react-hook-form'
 import { toast } from 'react-toastify'
 import { z } from 'zod'
 
 import s from './sign-in.module.scss'
 
-import { useLoginMutation } from '@/features/auth/auth-api'
+import { useGoogleLoginMutation, useLoginMutation } from '@/features/auth/auth-api'
 import { Button } from '@/shared/ui/button'
 import { Card } from '@/shared/ui/card'
 import { ControlledTextField } from '@/shared/ui/controlled'
@@ -52,16 +52,35 @@ export const SignIn = () => {
 
   const handleSubmitForm = handleSubmit(onSubmit)
 
+  const [googleLogin] = useGoogleLoginMutation()
+
+  const onGoogleAuth = useGoogleLogin({
+    onSuccess: tokenResponse => {
+      console.log(tokenResponse)
+      googleLogin({ code: tokenResponse.code })
+        .unwrap()
+        .then(res => {
+          console.log(res)
+          router.push('/')
+        })
+    },
+    flow: 'auth-code',
+  })
+
+  const gitHubHandler = () => {
+    window.location.assign('https://inctagram.work/api/v1/auth/github/login')
+  }
+
   return (
     <Card className={s.signBlock}>
       <Typography className={s.title} variant={'large'}>
         Sign-in
       </Typography>
       <div className={s.gitAndGoogle}>
-        <Button variant={'text'} className={s.clickToGitAndGoogle} onClick={() => signInGoogle()}>
+        <Button variant={'text'} className={s.clickToGitAndGoogle} onClick={onGoogleAuth}>
           <GoogleIcon />
         </Button>
-        <Button variant={'text'} className={s.clickToGitAndGoogle}>
+        <Button variant={'text'} className={s.clickToGitAndGoogle} onClick={gitHubHandler}>
           <GitIcon />
         </Button>
       </div>
@@ -84,7 +103,7 @@ export const SignIn = () => {
           autoComplete={'on'}
         />
         <div className={s.forgotWrapper}>
-          <Button as={'a'} variant={'text'} className={s.forgotPassword}>
+          <Button variant={'text'} className={s.forgotPassword}>
             <Link className={s.forgotText} href={'/auth/forgot-password'}>
               Forgot password
             </Link>

@@ -2,6 +2,7 @@ import {
   AuthLoginResponseType,
   CheckRecoveryCodeResponseType,
   CheckRecoveryCodeType,
+  GoogleLoginType,
   LoginType,
   MeResponseType,
   NewPasswordType,
@@ -107,6 +108,14 @@ const authApi = baseApi.injectEndpoints({
         extraOptions: { maxRetries: 0 },
         providesTags: ['Me'],
       }),
+      googleLogin: builder.mutation<GoogleLoginType, { code: string }>({
+        query: body => ({
+          url: 'v1/auth/google/login',
+          method: 'POST',
+          body,
+        }),
+        invalidatesTags: ['Me'],
+      }),
     }
   },
 })
@@ -121,4 +130,5 @@ export const {
   useCheckRecoveryCodeMutation,
   useNewPasswordMutation,
   useRecoveryPasswordMutation,
+  useGoogleLoginMutation,
 } = authApi
