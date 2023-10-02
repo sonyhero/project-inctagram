@@ -73,8 +73,8 @@ export const SignIn = () => {
 
   return (
     <Card className={s.signBlock}>
-      <Typography className={s.title} variant={'large'}>
-        Sign-in
+      <Typography className={s.title} variant={'h1'}>
+        Sign In
       </Typography>
       <div className={s.gitAndGoogle}>
         <Button variant={'text'} className={s.clickToGitAndGoogle} onClick={onGoogleAuth}>
@@ -110,14 +110,16 @@ export const SignIn = () => {
           </Button>
         </div>
         <Button fullWidth={true} className={s.submit} type="submit">
-          Sign in
+          <Typography variant={'h3'}>Sign In</Typography>
         </Button>
       </form>
       <Typography variant={'regular16'} className={s.question}>
         Don&apos;t have have an account?
       </Typography>
-      <Button variant={'text'} className={s.signUp}>
-        <Link href={'/auth/sign-up'}>Sign Up</Link>
+      <Button variant={'text'}>
+        <Link href={'/auth/sign-up'} className={s.signUp}>
+          <Typography>Sign Up</Typography>
+        </Link>
       </Button>
     </Card>
   )
