@@ -22,7 +22,7 @@ export const SignUpForm = () => {
   return (
     <>
       <Card className={s.signBlock}>
-        <Typography className={s.title} variant="h1">
+        <Typography className={s.title} variant={'h1'}>
           Sign Up
         </Typography>
         <div className={s.iconsWrapper}>
@@ -87,14 +87,16 @@ export const SignUpForm = () => {
             />
           </div>
           <Button disabled={disableButton} className={s.signUpBtn} type={'submit'} fullWidth>
-            Sign Up
+            <Typography variant={'h3'}>Sign Up</Typography>
           </Button>
         </form>
         <Typography className={s.subtitle} variant={'regular16'}>
           Do you have an account?
         </Typography>
-        <Button variant={'text'} className={s.signUp}>
-          <Link href={'/auth/sign-in'}>Sign In</Link>
+        <Button variant={'text'}>
+          <Link href={'/auth/sign-in'} className={s.signIn}>
+            <Typography>Sign In</Typography>
+          </Link>
         </Button>
       </Card>
       <Modal
