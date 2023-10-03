@@ -2,8 +2,10 @@ import { useState } from 'react'
 
 import s from './side-bar.module.scss'
 
+import { useLogoutMutation } from '@/features/auth/auth-api'
 import {
   Bookmark,
+  Button,
   Home,
   LogOut,
   MessageCircle,
@@ -12,6 +14,7 @@ import {
   PlusSquare,
   Search,
   TrendingUp,
+  Typography,
 } from '@/shared'
 import { LinkSideBar } from '@/widgets/side-bar/link-side-bar/link-side-bar'
 
@@ -29,6 +32,13 @@ export const SideBar = () => {
   const [variantIcon, setVariantIcon] = useState<Nullable<VariantIconType>>()
   const handleItemClick = (variant: Nullable<VariantIconType>) => {
     setVariantIcon(variant)
+  }
+
+  const [logout] = useLogoutMutation()
+
+  const logoutHandler = () => {
+    logout()
+    localStorage.removeItem('access')
   }
 
   return (
@@ -87,7 +97,6 @@ export const SideBar = () => {
           <Search color={variantIcon === 'search' ? '#397df6' : 'white'} />
         </LinkSideBar>
       </div>
-
       <div className={s.secondaryBlock}>
         <LinkSideBar
           variantIcon={variantIcon}
@@ -109,14 +118,14 @@ export const SideBar = () => {
           />
         </LinkSideBar>
       </div>
-      <LinkSideBar
-        variantIcon={variantIcon}
-        handleClick={() => handleItemClick('logout')}
-        nameLink={'Log Out'}
-        link={'logout'}
-      >
-        <LogOut color={variantIcon === 'logout' ? '#397df6' : 'white'} />
-      </LinkSideBar>
+      <div className={s.container}>
+        <Button className={s.logout} variant={'text'} onClick={logoutHandler}>
+          <LogOut color={variantIcon === 'logout' ? '#397df6' : 'white'} />
+          <Typography color={'primary'} variant={'medium14'}>
+            Log Out
+          </Typography>
+        </Button>
+      </div>
     </div>
   )
 }

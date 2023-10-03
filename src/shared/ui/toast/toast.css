@@ -276,7 +276,7 @@
 .Toastify__close-button {
   cursor: pointer;
 
-  align-self: flex-start;
+  /* align-self: flex-start; */
 
   padding: 12px 24px;
 

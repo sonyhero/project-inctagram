@@ -4,6 +4,7 @@ import { NextPage } from 'next'
 
 import s from './layout.module.scss'
 
+import { StoreProvider } from '@/providers/store-provider/store-provider'
 import { HeadMeta } from '@/shared/ui/head-meta'
 import { Header } from '@/widgets/header'
 import { SideBar } from 'src/widgets/side-bar'
@@ -22,5 +23,9 @@ export const Layout: NextPage<PropsWithChildren> = ({ children }) => {
 }
 
 export const getBaseLayout = (page: ReactElement) => {
-  return <Layout>{page}</Layout>
+  return (
+    <StoreProvider>
+      <Layout>{page}</Layout>
+    </StoreProvider>
+  )
 }

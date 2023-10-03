@@ -50,7 +50,7 @@ export const useSignUp = () => {
       email: '',
       password: '',
       passwordConfirm: '',
-      terms: false,
+      terms: true,
     },
     mode: 'onTouched',
     resolver: zodResolver(sigInSchema),
@@ -63,7 +63,6 @@ export const useSignUp = () => {
     signUp({ userName: data.name, email: data.email, password: data.password })
       .unwrap()
       .then(() => {
-        // router.push('/')
         setEmailModal(data.email)
         setIsOpenModal(true)
         toast.success('Success')

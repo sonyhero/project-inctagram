@@ -16,4 +16,41 @@
   .secondaryBlock {
     margin-bottom: 11.25rem;
   }
+
+  .container {
+    display: flex;
+    align-items: center;
+    margin-bottom: 1.5rem;
+
+    .logout {
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      padding: 0 0.2rem 0 0;
+
+      &:hover {
+        svg {
+          path {
+            fill: var(--color-accent-100);
+          }
+        }
+
+        p {
+          color: var(--color-accent-100);
+        }
+      }
+
+      &:active {
+        svg {
+          path {
+            fill: var(--color-accent-500);
+          }
+        }
+
+        p {
+          color: var(--color-accent-500);
+        }
+      }
+    }
+  }
 }
