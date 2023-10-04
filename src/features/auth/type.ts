@@ -32,7 +32,7 @@ export type AuthLoginResponseType = {
 }
 export type RecoveryPasswordType = {
   email: string
-  recaptcha: string
+  recaptcha: string | null
 }
 export type CheckRecoveryCodeType = {
   recoveryCode: string

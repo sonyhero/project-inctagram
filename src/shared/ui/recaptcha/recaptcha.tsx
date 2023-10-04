@@ -15,9 +15,9 @@ export const Recaptcha = ({ onRecaptchaChangeHandler }: PropsType) => {
   return (
     <div className={s.block}>
       <ReCAPTCHA
-        sitekey={'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'}
+        sitekey={`${process.env.NEXT_PUBLIC_RECAPTCHA_ENTERPRISE_API_KEY as string}`}
         onChange={onRecaptchaChange}
-        theme="dark"
+        theme={'dark'}
         hl={'en-GB'}
         size={'normal'}
       />
