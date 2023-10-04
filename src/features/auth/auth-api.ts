@@ -116,12 +116,19 @@ const authApi = baseApi.injectEndpoints({
         }),
         invalidatesTags: ['Me'],
       }),
+      githubLogin: builder.query<void, void>({
+        query: () => ({
+          url: 'v1/auth/github/login',
+          method: 'GET',
+        }),
+      }),
     }
   },
 })
 
 export const {
   useMeQuery,
+  useLazyMeQuery,
   useLoginMutation,
   useLogoutMutation,
   useSignUpMutation,
@@ -131,4 +138,6 @@ export const {
   useNewPasswordMutation,
   useRecoveryPasswordMutation,
   useGoogleLoginMutation,
+  useLazyGithubLoginQuery,
+  useGithubLoginQuery,
 } = authApi
