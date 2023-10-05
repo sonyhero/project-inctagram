@@ -1,11 +1,14 @@
-import { FC } from 'react'
-
 import { zodResolver } from '@hookform/resolvers/zod'
+import { useGoogleLogin } from '@react-oauth/google'
+import Link from 'next/link'
+import { useRouter } from 'next/router'
 import { useForm } from 'react-hook-form'
+import { toast } from 'react-toastify'
 import { z } from 'zod'
 
 import s from './sign-in.module.scss'
 
+import { useGoogleLoginMutation, useLoginMutation } from '@/features/auth/auth-api'
 import { Button } from '@/shared/ui/button'
 import { Card } from '@/shared/ui/card'
 import { ControlledTextField } from '@/shared/ui/controlled'
@@ -19,29 +22,65 @@ const sigInSchema = z.object({
 
 type SignInFormShem = z.infer<typeof sigInSchema>
 
-type PropsType = {
-  onSubmit: (data: SignInFormShem) => void
-}
-export const SignIn: FC<PropsType> = ({ onSubmit }) => {
-  const { control, handleSubmit } = useForm<SignInFormShem>({
+export const SignIn = () => {
+  const [signIn] = useLoginMutation()
+  const router = useRouter()
+  const { control, handleSubmit, setError } = useForm<SignInFormShem>({
     defaultValues: {
       email: '',
       password: '',
     },
+    mode: 'onTouched',
     resolver: zodResolver(sigInSchema),
   })
+
+  const onSubmit = (data: SignInFormShem) => {
+    signIn(data)
+      .unwrap()
+      .then(res => {
+        localStorage.setItem('access', res.accessToken)
+        router.push('/')
+        toast.success('Success')
+      })
+      .catch(err => {
+        setError('password', {
+          type: 'server',
+          message: err.data.messages,
+        })
+      })
+  }
+
   const handleSubmitForm = handleSubmit(onSubmit)
+
+  const [googleLogin] = useGoogleLoginMutation()
+
+  const onGoogleAuth = useGoogleLogin({
+    onSuccess: codeResponse => {
+      googleLogin({ code: codeResponse.code })
+        .unwrap()
+        .then(res => {
+          localStorage.setItem('access', res.accessToken)
+          router.push('/')
+          toast.success('Success')
+        })
+    },
+    flow: 'auth-code',
+  })
+
+  const gitHubHandler = () => {
+    window.location.assign('https://inctagram.work/api/v1/auth/github/login')
+  }
 
   return (
     <Card className={s.signBlock}>
-      <Typography className={s.title} variant={'large'}>
-        Sign-in
+      <Typography className={s.title} variant={'h1'}>
+        Sign In
       </Typography>
       <div className={s.gitAndGoogle}>
-        <Button variant={'text'} className={s.clickToGitAndGoogle}>
+        <Button variant={'text'} className={s.clickToGitAndGoogle} onClick={onGoogleAuth}>
           <GoogleIcon />
         </Button>
-        <Button variant={'text'} className={s.clickToGitAndGoogle}>
+        <Button variant={'text'} className={s.clickToGitAndGoogle} onClick={gitHubHandler}>
           <GitIcon />
         </Button>
       </div>
@@ -64,21 +103,23 @@ export const SignIn: FC<PropsType> = ({ onSubmit }) => {
           autoComplete={'on'}
         />
         <div className={s.forgotWrapper}>
-          <Button as={'a'} variant={'text'} className={s.forgotPassword}>
-            <Typography variant={'regular14'} className={s.forgotText}>
-              Forgot Password
-            </Typography>
+          <Button variant={'text'} className={s.forgotPassword}>
+            <Link className={s.forgotText} href={'/auth/forgot-password'}>
+              Forgot password
+            </Link>
           </Button>
         </div>
         <Button fullWidth={true} className={s.submit} type="submit">
-          Sign in
+          <Typography variant={'h3'}>Sign In</Typography>
         </Button>
       </form>
       <Typography variant={'regular16'} className={s.question}>
         Don&apos;t have have an account?
       </Typography>
-      <Button as={'a'} variant={'text'} className={s.signUp}>
-        Sign Up
+      <Button variant={'text'}>
+        <Link href={'/auth/sign-up'} className={s.signUp}>
+          <Typography>Sign Up</Typography>
+        </Link>
       </Button>
     </Card>
   )

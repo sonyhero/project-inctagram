@@ -1,8 +1,8 @@
 import { getBaseLayout } from '@/providers/layout/layout'
 
-const SignIn = () => {
+const HomePage = () => {
   return <div>Home</div>
 }
 
-export default SignIn
-SignIn.getLayout = getBaseLayout
+export default HomePage
+HomePage.getLayout = getBaseLayout

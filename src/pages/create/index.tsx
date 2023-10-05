@@ -1,8 +1,8 @@
 import { getBaseLayout } from '@/providers/layout/layout'
 
-const CreatePAge = () => {
+const CreatePage = () => {
   return <div>Create</div>
 }
 
-export default CreatePAge
-CreatePAge.getLayout = getBaseLayout
+export default CreatePage
+CreatePage.getLayout = getBaseLayout

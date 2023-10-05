@@ -15,6 +15,7 @@ type PropsType = {
   variantIcon?: Nullable<VariantIconType>
   handleClick: (variant: Nullable<VariantIconType>) => void
   className?: string
+  callBack?: () => void
 }
 
 export const LinkSideBar: FC<PropsType> = ({
@@ -24,26 +25,25 @@ export const LinkSideBar: FC<PropsType> = ({
   handleClick,
   variantIcon,
   className,
+  callBack,
 }) => {
   const handleItemClick = () => {
+    callBack?.()
     handleClick(variantIcon!)
   }
   const styles = {
-    // check: clsx(router.pathname == link ? s.active : ''),
     container: clsx(s.container, className),
     check: clsx(s.nameLink, link === variantIcon && s.active),
   }
 
   return (
     <div className={styles.container} onClick={handleItemClick}>
-      {/*<div tabIndex={0} className={s.linkContainer}>*/}
       <Link tabIndex={1} href={`${link}`} className={s.link}>
         {children}
-        <Typography variant={'regular14'} className={styles.check}>
+        <Typography color={'primary'} variant={'regular14'} className={styles.check}>
           {nameLink}
         </Typography>
       </Link>
-      {/*</div>*/}
     </div>
   )
 }

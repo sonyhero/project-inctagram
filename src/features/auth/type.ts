@@ -32,7 +32,7 @@ export type AuthLoginResponseType = {
 }
 export type RecoveryPasswordType = {
   email: string
-  recaptcha: string
+  recaptcha: string | null
 }
 export type CheckRecoveryCodeType = {
   recoveryCode: string
@@ -48,5 +48,10 @@ export type NewPasswordType = {
 export type MeResponseType = {
   userId: number
   userName: string
+  email: string
+}
+
+export type GoogleLoginType = {
+  accessToken: string
   email: string
 }

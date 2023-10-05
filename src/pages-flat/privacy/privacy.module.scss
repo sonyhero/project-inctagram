@@ -16,6 +16,30 @@
     .linkText {
       padding-left: 0.75rem;
     }
+
+    &:hover {
+      svg {
+        path {
+          fill: var(--color-accent-100);
+        }
+      }
+
+      .linkText {
+        color: var(--color-accent-100);
+      }
+    }
+
+    &:active {
+      svg {
+        path {
+          fill: var(--color-accent-500);
+        }
+      }
+
+      .linkText {
+        color: var(--color-accent-500);
+      }
+    }
   }
 
   .description {

@@ -37,6 +37,7 @@
 
     .forgotText {
       color: var(--light-900, #8d9094);
+      text-decoration: none;
     }
   }
 
@@ -64,7 +65,6 @@
   }
 
   .signUp {
-    font-size: 1rem;
-    text-decoration: underline;
+    text-decoration: none;
   }
 }

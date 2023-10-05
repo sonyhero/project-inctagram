@@ -1,10 +1,8 @@
 @mixin typography($fontSize, $lineHeight, $fontWeight) {
   margin: 0;
-
   font-size: $fontSize;
   font-weight: $fontWeight;
   line-height: $lineHeight;
-  color: var(--color-light-100);
 }
 
 .large {
@@ -65,7 +63,6 @@
   @include typography(var(--font-size-xs), var(--line-height-s), var(--font-weight-s));
 
   cursor: pointer;
-  color: var(--color-accent-500);
   text-decoration: underline;
 }
 
@@ -83,4 +80,8 @@
 
 .disabled {
   color: var(--color-dark-100);
+}
+
+.linkColor {
+  color: var(--color-accent-500);
 }

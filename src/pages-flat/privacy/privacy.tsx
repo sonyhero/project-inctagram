@@ -14,10 +14,10 @@ type PropsType = {
 export const Privacy: FC<PropsType> = ({ text }) => {
   return (
     <div className={s.container}>
-      <Link href={'/accounts/sign-in'} className={s.link}>
+      <Link href={'/auth/sign-up'} className={s.link}>
         <ArrowBack />
         <Typography variant={'regular14'} className={s.linkText}>
-          Back to sign in
+          Back to sign up
         </Typography>
       </Link>
 
