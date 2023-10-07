@@ -2,7 +2,7 @@ import { useState } from 'react'
 
 import s from './side-bar.module.scss'
 
-import { useLogoutMutation } from '@/features/auth/auth-api'
+import { LogoutModal } from '@/features/modal/logout-modal'
 import {
   Bookmark,
   Button,
@@ -29,16 +29,18 @@ export type VariantIconType =
   | 'logout'
 
 export const SideBar = () => {
+  const [open, setOpen] = useState(false)
   const [variantIcon, setVariantIcon] = useState<Nullable<VariantIconType>>()
   const handleItemClick = (variant: Nullable<VariantIconType>) => {
     setVariantIcon(variant)
   }
 
-  const [logout] = useLogoutMutation()
-
+  // const logoutHandler = () => {
+  //   logout()
+  //   localStorage.removeItem('access')
+  // }
   const logoutHandler = () => {
-    logout()
-    localStorage.removeItem('access')
+    setOpen(true)
   }
 
   return (
@@ -125,6 +127,7 @@ export const SideBar = () => {
             Log Out
           </Typography>
         </Button>
+        <LogoutModal open={open} setOpen={setOpen} />
       </div>
     </div>
   )

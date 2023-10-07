@@ -1,26 +1,29 @@
-import React, { useState } from 'react'
+import React, { FC, useState } from 'react'
 
 import s from './logout-modal.module.scss'
 
-import { Button, Modal, Typography } from '@/shared'
+import { useLogoutMutation } from '@/features/auth/auth-api'
+import { Modal, Typography } from '@/shared'
 
-export const LogoutModal = () => {
-  const [open, setOpen] = useState(false)
-  const [email, setEmail] = useState('Epam@epam.com')
-  // const [logout] = useLogoutMutation()
-
-  const handleOpen = () => {
-    setOpen(true)
-  }
+type PropsType = {
+  open: boolean
+  setOpen: (value: boolean) => void
+}
+export const LogoutModal: FC<PropsType> = ({ open, setOpen }) => {
+  const email = 'Epam@epam.com'
+  const [logout] = useLogoutMutation()
   const handleClose = () => {
+    setOpen(false)
+  }
+
+  const logoutHandler = () => {
+    logout()
+    localStorage.removeItem('access')
     setOpen(false)
   }
 
   return (
     <>
-      <Button variant={'primary'} onClick={handleOpen}>
-        Logout
-      </Button>
       <Modal
         showCloseButton={true}
         open={open}
@@ -28,8 +31,8 @@ export const LogoutModal = () => {
         title={'Log Out'}
         titleFirstButton={'Yes'}
         titleSecondButton={'No'}
+        callBack={logoutHandler}
         buttonBlockClassName={s.buttonBlock}
-        // callBack={() => logout()}
       >
         <Typography>
           Are you really want to log out of your account &ldquo;<b>{email}</b>&rdquo;?

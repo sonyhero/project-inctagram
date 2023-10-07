@@ -30,7 +30,7 @@ export const Congratulations = () => {
         Your email has been confirmed
       </Typography>
       <Button variant={'primary'} className={s.signBtn}>
-        <Link href={'/auth/sign-in'}>
+        <Link className={s.link} href={'/auth/sign-in'}>
           <Typography variant={'h3'}>Sign In</Typography>
         </Link>
       </Button>

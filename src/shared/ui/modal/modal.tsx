@@ -71,14 +71,17 @@ export const Modal: FC<PropsType> = ({
               <div className={s.contentBox}>{children}</div>
               <div className={buttonBlockClassName}>
                 {titleFirstButton && (
-                  <Button onClick={() => onClose?.()} variant={'outline'}>
+                  <Button onClick={callBack} variant={'outline'}>
                     <Typography className={s.firstButtonText} variant={'h3'}>
                       {titleFirstButton}
                     </Typography>
                   </Button>
                 )}
                 {titleSecondButton && (
-                  <Button variant={'primary'} onClick={callBack}>
+                  <Button
+                    variant={'primary'}
+                    onClick={titleFirstButton ? () => onClose?.() : callBack}
+                  >
                     <Typography variant={'h3'}>{titleSecondButton}</Typography>
                   </Button>
                 )}
