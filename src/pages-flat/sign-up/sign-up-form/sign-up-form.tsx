@@ -1,8 +1,12 @@
 import { DevTool } from '@hookform/devtools'
+import { useGoogleLogin } from '@react-oauth/google'
 import Link from 'next/link'
+import { useRouter } from 'next/router'
+import { toast } from 'react-toastify'
 
 import s from './sign-up-form.module.scss'
 
+import { useGoogleLoginMutation } from '@/features/auth/auth-api'
 import { useSignUp } from '@/pages-flat/sign-up/sign-up-form/hooks/use-sign-up'
 import { Modal } from '@/shared'
 import { Button } from '@/shared/ui/button'
@@ -12,11 +16,30 @@ import { GitIcon, GoogleIcon } from '@/shared/ui/icons'
 import { Typography } from '@/shared/ui/typography'
 
 export const SignUpForm = () => {
+  const [googleLogin] = useGoogleLoginMutation()
+  const router = useRouter()
   const { control, handleSubmitForm, disableButton, emailModal, isOpenModal, setIsOpenModal } =
     useSignUp()
 
   const closeModal = () => {
     setIsOpenModal(false)
+  }
+
+  const onGoogleAuth = useGoogleLogin({
+    onSuccess: codeResponse => {
+      googleLogin({ code: codeResponse.code })
+        .unwrap()
+        .then(res => {
+          localStorage.setItem('access', res.accessToken)
+          router.push('/')
+          toast.success('Success')
+        })
+    },
+    flow: 'auth-code',
+  })
+
+  const gitHubHandler = () => {
+    window.location.assign('https://inctagram.work/api/v1/auth/github/login')
   }
 
   return (
@@ -26,8 +49,12 @@ export const SignUpForm = () => {
           Sign Up
         </Typography>
         <div className={s.iconsWrapper}>
-          <GoogleIcon />
-          <GitIcon />
+          <Button variant={'text'} className={s.clickToGitAndGoogle} onClick={onGoogleAuth}>
+            <GoogleIcon />
+          </Button>
+          <Button variant={'text'} className={s.clickToGitAndGoogle} onClick={gitHubHandler}>
+            <GitIcon />
+          </Button>
         </div>
         <form onSubmit={handleSubmitForm}>
           <DevTool control={control} />
@@ -93,11 +120,12 @@ export const SignUpForm = () => {
         <Typography className={s.subtitle} variant={'regular16'}>
           Do you have an account?
         </Typography>
-        <Button variant={'text'}>
-          <Link href={'/auth/sign-in'} className={s.signIn}>
-            <Typography>Sign In</Typography>
-          </Link>
-        </Button>
+
+        <Link href={'/auth/sign-in'} className={s.signIn}>
+          <Button variant={'text'} className={s.signInBtn} fullWidth={true}>
+            <Typography variant={'h3'}>Sign In</Typography>
+          </Button>
+        </Link>
       </Card>
       <Modal
         title={'Email sent'}

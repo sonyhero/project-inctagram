@@ -33,7 +33,7 @@ export const ForgotPassword = () => {
     defaultValues: {
       email: '',
     },
-    mode: 'onTouched',
+    mode: 'onBlur',
     resolver: zodResolver(forgotPasswordSchema),
   })
 

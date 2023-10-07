@@ -19,13 +19,13 @@ const createNewPasswordSchema = z
       .min(6)
       .max(20)
       .regex(
-        /^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!\"#$%&'()*+,-.\/:;<=>?@[\\\]^_`{|}~]).*$/,
+        /^(?=.*[0-9])(?=.*[A-Z])(?=.*[a-z])(?=.*[!"#$%&'()*+,-./:;<=>?@[\]^_{|}~])[A-Za-z0-9!"#$%&'()*+,-./:;<=>?@[\]^_{|}~]+$/,
         'Password must contain a-z, A-Z,  ! " # $ % & \' ( ) * + , - . / : ; < = > ? @ [ \\ ] ^ _` { | } ~'
       ),
     passwordConfirm: z.string(),
   })
   .refine(data => data.newPassword === data.passwordConfirm, {
-    path: ['confirmPassword'],
+    path: ['passwordConfirm'],
     message: "Password don't match",
   })
 
@@ -38,6 +38,7 @@ export const CreateNewPasswordForm: FC<PropsType> = ({ recoveryCode }) => {
   const [newPassword] = useNewPasswordMutation()
   const { control, handleSubmit, setError } = useForm<CreateNewPasswordFormShem>({
     resolver: zodResolver(createNewPasswordSchema),
+    mode: 'onBlur',
   })
 
   const onSubmit = (data: CreateNewPasswordFormShem) => {

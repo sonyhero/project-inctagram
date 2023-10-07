@@ -35,7 +35,7 @@ export const SignIn = () => {
       email: '',
       password: '',
     },
-    mode: 'onTouched',
+    mode: 'onBlur',
     resolver: zodResolver(sigInSchema),
   })
 
