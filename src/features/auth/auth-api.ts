@@ -2,7 +2,6 @@ import {
   AuthLoginResponseType,
   CheckRecoveryCodeResponseType,
   CheckRecoveryCodeType,
-  GoogleLoginType,
   LoginType,
   MeResponseType,
   NewPasswordType,
@@ -108,27 +107,12 @@ const authApi = baseApi.injectEndpoints({
         extraOptions: { maxRetries: 0 },
         providesTags: ['Me'],
       }),
-      googleLogin: builder.mutation<GoogleLoginType, { code: string }>({
-        query: body => ({
-          url: 'v1/auth/google/login',
-          method: 'POST',
-          body,
-        }),
-        invalidatesTags: ['Me'],
-      }),
-      githubLogin: builder.query<void, void>({
-        query: () => ({
-          url: 'v1/auth/github/login',
-          method: 'GET',
-        }),
-      }),
     }
   },
 })
 
 export const {
   useMeQuery,
-  useLazyMeQuery,
   useLoginMutation,
   useLogoutMutation,
   useSignUpMutation,
@@ -137,7 +121,4 @@ export const {
   useCheckRecoveryCodeMutation,
   useNewPasswordMutation,
   useRecoveryPasswordMutation,
-  useGoogleLoginMutation,
-  useLazyGithubLoginQuery,
-  useGithubLoginQuery,
 } = authApi

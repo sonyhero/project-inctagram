@@ -9,15 +9,6 @@ const mutex = new Mutex()
 const baseQuery = fetchBaseQuery({
   baseUrl,
   credentials: 'include',
-  prepareHeaders: headers => {
-    const access = localStorage.getItem('access')
-
-    if (access) {
-      headers.set('Authorization', `Bearer ${access}`)
-    }
-
-    return headers
-  },
 })
 
 export const customFetchBase: BaseQueryFn<
