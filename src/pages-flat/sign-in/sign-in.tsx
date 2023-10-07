@@ -25,7 +25,12 @@ type SignInFormShem = z.infer<typeof sigInSchema>
 export const SignIn = () => {
   const [signIn] = useLoginMutation()
   const router = useRouter()
-  const { control, handleSubmit, setError } = useForm<SignInFormShem>({
+  const {
+    control,
+    handleSubmit,
+    setError,
+    formState: { isValid },
+  } = useForm<SignInFormShem>({
     defaultValues: {
       email: '',
       password: '',
@@ -109,7 +114,7 @@ export const SignIn = () => {
             </Link>
           </Button>
         </div>
-        <Button fullWidth={true} className={s.submit} type="submit">
+        <Button fullWidth className={s.submit} type="submit" disabled={!isValid}>
           <Typography variant={'h3'}>Sign In</Typography>
         </Button>
       </form>
