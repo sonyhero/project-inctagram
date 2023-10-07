@@ -9,18 +9,22 @@ import { useSignUpMutation } from '@/features/auth/auth-api'
 
 const sigInSchema = z
   .object({
-    name: z.string().min(6).max(30),
+    name: z
+      .string()
+      .min(6)
+      .max(30)
+      .regex(/^[a-zA-Z0-9_-]*$/),
     email: z.string().email(),
     password: z
       .string()
       .min(6)
       .max(20)
       .regex(
-        /^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!\"#$%&'()*+,-.\/:;<=>?@[\\\]^_`{|}~]).*$/,
+        /^(?=.*[0-9])(?=.*[A-Z])(?=.*[a-z])(?=.*[!"#$%&'()*+,-./:;<=>?@[\]^_{|}~])[A-Za-z0-9!"#$%&'()*+,-./:;<=>?@[\]^_{|}~]+$/,
         'Password must contain a-z, A-Z,  ! " # $ % & \' ( ) * + , - . / : ; < = > ? @ [ \\ ] ^ _` { | } ~'
       ),
     passwordConfirm: z.string(),
-    terms: z.boolean().default(true),
+    terms: z.boolean().default(false),
   })
   .refine(data => data.password === data.passwordConfirm, {
     path: ['passwordConfirm'],
@@ -43,6 +47,7 @@ export const useSignUp = () => {
     handleSubmit,
     setError,
     watch,
+    reset,
     formState: { isValid },
   } = useForm<SignUpFormShem>({
     defaultValues: {
@@ -50,9 +55,9 @@ export const useSignUp = () => {
       email: '',
       password: '',
       passwordConfirm: '',
-      terms: true,
+      terms: false,
     },
-    mode: 'onTouched',
+    mode: 'onBlur',
     resolver: zodResolver(sigInSchema),
   })
 
@@ -66,8 +71,10 @@ export const useSignUp = () => {
         setEmailModal(data.email)
         setIsOpenModal(true)
         toast.success('Success')
+        reset()
       })
       .catch(err => {
+        debugger
         err.data.messages.map((el: any) => {
           setError(`${err.data.messages[0].field}` as 'root', {
             type: 'server',
