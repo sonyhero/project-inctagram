@@ -1,0 +1,12 @@
+@import 'src/shared/styles/mixins';
+
+.header {
+  height: 3.75rem;
+  border-bottom: 1px solid var(--color-dark-100);
+
+  .container {
+    @include flex-container($flex-direction: row, $justify-content: space-between);
+
+    padding: 0.75rem 4rem 0.75rem 3.75rem;
+  }
+}
