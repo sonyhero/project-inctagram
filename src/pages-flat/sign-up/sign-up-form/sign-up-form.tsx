@@ -1,14 +1,11 @@
 import { DevTool } from '@hookform/devtools'
-import { useGoogleLogin } from '@react-oauth/google'
 import Link from 'next/link'
-import { useRouter } from 'next/router'
-import { toast } from 'react-toastify'
 
 import s from './sign-up-form.module.scss'
 
-import { useGoogleLoginMutation } from '@/features/auth/auth-api'
-import { useSignUp } from '@/pages-flat/sign-up/sign-up-form/hooks/use-sign-up'
+import { useSignUp } from '@/pages-flat/sign-up/sign-up-form/hooks/useSignUp'
 import { Modal } from '@/shared'
+import { useThirdPartyAuth } from '@/shared/hooks/useThirdPartyAuth'
 import { Button } from '@/shared/ui/button'
 import { Card } from '@/shared/ui/card'
 import { ControlledCheckbox, ControlledTextField } from '@/shared/ui/controlled'
@@ -16,30 +13,12 @@ import { GitIcon, GoogleIcon } from '@/shared/ui/icons'
 import { Typography } from '@/shared/ui/typography'
 
 export const SignUpForm = () => {
-  const [googleLogin] = useGoogleLoginMutation()
-  const router = useRouter()
+  const { onGitHubAuth, onGoogleAuth } = useThirdPartyAuth()
   const { control, handleSubmitForm, disableButton, emailModal, isOpenModal, setIsOpenModal } =
     useSignUp()
 
   const closeModal = () => {
     setIsOpenModal(false)
-  }
-
-  const onGoogleAuth = useGoogleLogin({
-    onSuccess: codeResponse => {
-      googleLogin({ code: codeResponse.code })
-        .unwrap()
-        .then(res => {
-          localStorage.setItem('access', res.accessToken)
-          router.push('/')
-          toast.success('Success')
-        })
-    },
-    flow: 'auth-code',
-  })
-
-  const gitHubHandler = () => {
-    window.location.assign('https://inctagram.work/api/v1/auth/github/login')
   }
 
   return (
@@ -52,7 +31,7 @@ export const SignUpForm = () => {
           <Button variant={'text'} className={s.clickToGitAndGoogle} onClick={onGoogleAuth}>
             <GoogleIcon />
           </Button>
-          <Button variant={'text'} className={s.clickToGitAndGoogle} onClick={gitHubHandler}>
+          <Button variant={'text'} className={s.clickToGitAndGoogle} onClick={onGitHubAuth}>
             <GitIcon />
           </Button>
         </div>
