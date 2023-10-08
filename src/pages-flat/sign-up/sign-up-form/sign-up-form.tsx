@@ -99,7 +99,6 @@ export const SignUpForm = () => {
         <Typography className={s.subtitle} variant={'regular16'}>
           Do you have an account?
         </Typography>
-
         <Link href={'/auth/sign-in'} className={s.signIn}>
           <Button variant={'text'} className={s.signInBtn} fullWidth={true}>
             <Typography variant={'h3'}>Sign In</Typography>
