@@ -1,7 +1,6 @@
 import { useState } from 'react'
 
 import { zodResolver } from '@hookform/resolvers/zod'
-import { router } from 'next/client'
 import Link from 'next/link'
 import { useForm } from 'react-hook-form'
 import { toast } from 'react-toastify'
@@ -87,7 +86,8 @@ export const ForgotPassword = () => {
         onClose={() => setOpenModal(false)}
         titleSecondButton={'OK'}
         buttonBlockClassName={s.buttonBlock}
-        callBack={() => router.push('sign-in')}
+        //TODO: пофиксить callback - не собирается приложение
+        // callBack={() => router.push('/auth/sign-up')}
       >
         We have sent a link to confirm your email to {email}
       </Modal>
