@@ -11,4 +11,9 @@ const meta = {
 export default meta
 type Story = StoryObj<typeof meta>
 
-export const Logout: Story = {}
+export const Logout: Story = {
+  args: {
+    open: false,
+    setOpen: () => {},
+  },
+}
