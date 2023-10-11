@@ -19,7 +19,7 @@ import {
 import { LinkSideBar } from '@/widgets/side-bar/link-side-bar/link-side-bar'
 
 export type VariantIconType =
-  | 'home'
+  | '/'
   | 'create'
   | 'my-profile'
   | 'messenger'
@@ -48,14 +48,11 @@ export const SideBar = () => {
       <div className={s.mainBlock}>
         <LinkSideBar
           variantIcon={variantIcon}
-          handleClick={() => handleItemClick('home')}
+          handleClick={() => handleItemClick('/')}
           nameLink={'Home'}
-          link={'home'}
+          link={'/'}
         >
-          <Home
-            outline={variantIcon !== 'home'}
-            color={variantIcon === 'home' ? '#397df6' : 'white'}
-          />
+          <Home outline={variantIcon !== '/'} color={variantIcon === '/' ? '#397df6' : 'white'} />
         </LinkSideBar>
         <LinkSideBar
           variantIcon={variantIcon}

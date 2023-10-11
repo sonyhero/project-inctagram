@@ -1,38 +1,32 @@
 import React from 'react'
 
-import { useRouter } from 'next/router'
-import { toast } from 'react-toastify'
-
-import { useLogoutMutation, useMeQuery } from '@/features/auth/auth-api'
-import { Button } from '@/shared'
+import { useMeQuery } from '@/features/auth/auth-api'
+import { UpdateProfileForm } from '@/features/update-profile-form/UpdateProfileForm'
+import { Button, Typography } from '@/shared'
+import { TabSwitcher } from '@/shared/ui/tabs'
 
 export const MyProfile = () => {
   const { data, isLoading } = useMeQuery()
-  const router = useRouter()
-  const [logout] = useLogoutMutation()
-  const handleDone = () => {
-    toast.success('ok')
-  }
-  const handleError = () => {
-    toast.error('error')
-  }
-
-  if (isLoading) return <div>...Loading</div>
-
-  if (!data) router.push('/auth/sign-in')
-
-  const logoutHandler = () => {
-    logout()
-    localStorage.removeItem('access')
-  }
+  const options = [
+    { value: 'General information', disabled: false },
+    { value: 'Devices', disabled: true },
+    { value: 'Account Management', disabled: true },
+    { value: 'My payments', disabled: true },
+  ]
 
   return (
-    <>
-      <Button onClick={handleDone}>Done</Button>
-      <Button variant={'secondary'} onClick={handleError}>
-        Error
-      </Button>
-      <Button onClick={logoutHandler}>Logout</Button>
-    </>
+    <div>
+      <div>
+        <TabSwitcher options={options} />
+      </div>
+      <div>
+        <UpdateProfileForm />
+      </div>
+      <div>
+        <Button>
+          <Typography variant={'h3'}>Save Changes</Typography>
+        </Button>
+      </div>
+    </div>
   )
 }

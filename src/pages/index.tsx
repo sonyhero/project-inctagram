@@ -1,8 +1,7 @@
-import { MyProfile } from '@/pages-flat/my-profile'
 import { getBaseLayout } from '@/providers/layout/layout'
 
 export default function Home() {
-  return <MyProfile />
+  return <div>Home</div>
 }
 
 Home.getLayout = getBaseLayout

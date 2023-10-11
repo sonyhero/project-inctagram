@@ -10,9 +10,9 @@ const meta = {
 } satisfies Meta<typeof TabSwitcher>
 
 const tabsName = [
-  { name: 'Switcher', value: 'Button1', isDisabled: false },
-  { name: 'Switcher', value: 'Button2', isDisabled: false, disabled: true },
-  { name: 'Switcher', value: 'Button3', isDisabled: false, disabled: true },
+  { name: 'Switcher', value: 'Button1', disabled: false },
+  { name: 'Switcher', value: 'Button2', disabled: true },
+  { name: 'Switcher', value: 'Button3', disabled: true },
 ]
 
 export default meta
