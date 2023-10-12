@@ -1,9 +1,6 @@
 import { FC, useLayoutEffect, useState } from 'react'
 
-// eslint-disable-next-line import/order
 import Link from 'next/link'
-
-import './DatePicker.scss'
 import DatePickerInstance from 'react-datepicker'
 import { Control, Controller, FieldError } from 'react-hook-form'
 

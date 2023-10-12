@@ -6,6 +6,7 @@ import { z } from 'zod'
 
 import { ControlledTextField } from '@/shared'
 import { ControlledTextArea } from '@/shared/ui/controlled/controlled-textarea'
+import { DatePicker } from '@/shared/ui/date-picker'
 
 const updateProfileSchema = z.object({
   userName: z
@@ -74,7 +75,7 @@ export const UpdateProfileForm = () => {
         label={'Last Name'}
         placeholder={'enter your last name'}
       />
-      {/*datepicker*/}
+      <DatePicker control={control} name={'dateOfBirth'} title={'Date of birth'} />
       {/*<SelectBox options={} />*/}
       <ControlledTextArea
         name={'aboutMe'}
