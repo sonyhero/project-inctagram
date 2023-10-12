@@ -1,5 +1,4 @@
 import { zodResolver } from '@hookform/resolvers/zod'
-import { useGoogleLogin } from '@react-oauth/google'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { useForm } from 'react-hook-form'
@@ -8,7 +7,8 @@ import { z } from 'zod'
 
 import s from './sign-in.module.scss'
 
-import { useGoogleLoginMutation, useLoginMutation } from '@/features/auth/auth-api'
+import { useLoginMutation } from '@/features/auth/auth-api'
+import { useThirdPartyAuth } from '@/shared/hooks/useThirdPartyAuth'
 import { Button } from '@/shared/ui/button'
 import { Card } from '@/shared/ui/card'
 import { ControlledTextField } from '@/shared/ui/controlled'
@@ -23,6 +23,7 @@ const sigInSchema = z.object({
 type SignInFormShem = z.infer<typeof sigInSchema>
 
 export const SignIn = () => {
+  const { onGitHubAuth, onGoogleAuth } = useThirdPartyAuth()
   const [signIn] = useLoginMutation()
   const router = useRouter()
   const {
@@ -57,25 +58,6 @@ export const SignIn = () => {
 
   const handleSubmitForm = handleSubmit(onSubmit)
 
-  const [googleLogin] = useGoogleLoginMutation()
-
-  const onGoogleAuth = useGoogleLogin({
-    onSuccess: codeResponse => {
-      googleLogin({ code: codeResponse.code })
-        .unwrap()
-        .then(res => {
-          localStorage.setItem('access', res.accessToken)
-          router.push('/')
-          toast.success('Success')
-        })
-    },
-    flow: 'auth-code',
-  })
-
-  const gitHubHandler = () => {
-    window.location.assign('https://inctagram.work/api/v1/auth/github/login')
-  }
-
   return (
     <Card className={s.signBlock}>
       <Typography className={s.title} variant={'h1'}>
@@ -85,7 +67,7 @@ export const SignIn = () => {
         <Button variant={'text'} className={s.clickToGitAndGoogle} onClick={onGoogleAuth}>
           <GoogleIcon />
         </Button>
-        <Button variant={'text'} className={s.clickToGitAndGoogle} onClick={gitHubHandler}>
+        <Button variant={'text'} className={s.clickToGitAndGoogle} onClick={onGitHubAuth}>
           <GitIcon />
         </Button>
       </div>
