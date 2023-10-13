@@ -15,7 +15,7 @@ const profileApi = baseApi.injectEndpoints({
         }),
         providesTags: ['Profile'],
       }),
-      updateProfile: builder.query<void, UpdateProfileArg>({
+      updateProfile: builder.mutation<void, UpdateProfileArg>({
         query: body => ({
           url: `v1/users/profile`,
           method: 'PUT',
@@ -51,7 +51,7 @@ const profileApi = baseApi.injectEndpoints({
 
 export const {
   useGetProfileQuery,
-  useUpdateProfileQuery,
+  useUpdateProfileMutation,
   useDeleteProfileMutation,
   useUploadAvatarMutation,
   useDeleteAvatarMutation,
