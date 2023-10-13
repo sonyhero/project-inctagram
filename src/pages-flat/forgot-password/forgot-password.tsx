@@ -2,6 +2,7 @@ import { useState } from 'react'
 
 import { zodResolver } from '@hookform/resolvers/zod'
 import Link from 'next/link'
+import { useRouter } from 'next/router'
 import { useForm } from 'react-hook-form'
 import { toast } from 'react-toastify'
 import { z } from 'zod'
@@ -27,7 +28,7 @@ export const ForgotPassword = () => {
   const [recaptchaKey, setRecaptchaKey] = useState<string | null>(null)
   const [openModal, setOpenModal] = useState(false)
   const [email, setEmail] = useState<string>('')
-
+  const router = useRouter()
   const { control, handleSubmit } = useForm<ForgotPasswordFormShem>({
     defaultValues: {
       email: '',
@@ -51,6 +52,9 @@ export const ForgotPassword = () => {
   const handleSubmitForm = handleSubmit(onSubmit)
   const onRecaptchaChangeHandler = (key: string | null) => {
     setRecaptchaKey(key)
+  }
+  const routerHandler = () => {
+    router.push('/auth/sign-in')
   }
 
   return (
@@ -87,7 +91,7 @@ export const ForgotPassword = () => {
         titleSecondButton={'OK'}
         buttonBlockClassName={s.buttonBlock}
         //TODO: пофиксить callback - не собирается приложение
-        // callBack={() => router.push('/auth/sign-up')}
+        callBack={routerHandler}
       >
         We have sent a link to confirm your email to {email}
       </Modal>
