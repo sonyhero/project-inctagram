@@ -13,34 +13,37 @@ const profileApi = baseApi.injectEndpoints({
           url: `v1/users/profile/${body}`,
           method: 'GET',
         }),
+        providesTags: ['Profile'],
       }),
-      updateProfile: builder.query<any, UpdateProfileArg>({
+      updateProfile: builder.mutation<void, UpdateProfileArg>({
         query: body => ({
           url: `v1/users/profile`,
           method: 'PUT',
           body,
         }),
+        invalidatesTags: ['Profile'],
       }),
       deleteProfile: builder.mutation<void, void>({
-        query: body => ({
-          url: `users/profile`,
+        query: () => ({
+          url: `v1/users/profile`,
           method: 'DELETE',
-          body,
         }),
+        invalidatesTags: ['Profile'],
       }),
-      uploadAvatar: builder.mutation<UploadAvatarResponse, any>({
+      uploadAvatar: builder.mutation<UploadAvatarResponse, File>({
         query: body => ({
-          url: `users/profile/avatar`,
+          url: `v1/users/profile/avatar`,
           method: 'POST',
           body,
         }),
+        invalidatesTags: ['Profile'],
       }),
       deleteAvatar: builder.mutation<void, void>({
-        query: body => ({
-          url: `users/profile/avatar`,
+        query: () => ({
+          url: `v1/users/profile/avatar`,
           method: 'DELETE',
-          body,
         }),
+        invalidatesTags: ['Profile'],
       }),
     }
   },
@@ -48,7 +51,7 @@ const profileApi = baseApi.injectEndpoints({
 
 export const {
   useGetProfileQuery,
-  useUpdateProfileQuery,
+  useUpdateProfileMutation,
   useDeleteProfileMutation,
   useUploadAvatarMutation,
   useDeleteAvatarMutation,

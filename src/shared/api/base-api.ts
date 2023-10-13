@@ -4,7 +4,7 @@ import { customFetchBase } from '@/features/auth/base-query-with-reauth'
 
 export const baseApi = createApi({
   reducerPath: 'baseApi',
-  tagTypes: ['Me'],
+  tagTypes: ['Me', 'Profile'],
   baseQuery: customFetchBase,
   endpoints: () => ({}),
 })
