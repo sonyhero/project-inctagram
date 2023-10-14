@@ -2,7 +2,6 @@ import React from 'react'
 
 import { useMeQuery } from '@/features/auth/auth-api'
 import { UpdateProfileForm } from '@/features/update-profile-form/UpdateProfileForm'
-import { Button, Typography } from '@/shared'
 import { TabSwitcher } from '@/shared/ui/tabs'
 
 export const MyProfile = () => {
@@ -15,18 +14,9 @@ export const MyProfile = () => {
   ]
 
   return (
-    <div>
-      <div>
-        <TabSwitcher options={options} />
-      </div>
-      <div>
-        <UpdateProfileForm />
-      </div>
-      <div>
-        <Button>
-          <Typography variant={'h3'}>Save Changes</Typography>
-        </Button>
-      </div>
-    </div>
+    <>
+      <TabSwitcher options={options} />
+      <UpdateProfileForm />
+    </>
   )
 }
