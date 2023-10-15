@@ -16,7 +16,7 @@ export const Layout: NextPage<PropsWithChildren> = ({ children }) => {
       <Header />
       <div className={s.container}>
         <SideBar />
-        <main>{children}</main>
+        <main className={s.main}>{children}</main>
       </div>
     </>
   )

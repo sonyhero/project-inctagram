@@ -6,8 +6,8 @@ import s from './pagination.module.scss'
 
 import { ArrowIosBack, ArrowIosForward } from '@/shared/ui/icons'
 import { usePagination } from '@/shared/ui/pagination/usePagination'
-import { SelectBox } from '@/shared/ui/select-box'
 import { Typography } from '@/shared/ui/typography'
+import { SelectBox } from 'src/shared/ui/select'
 
 type PaginationConditionals =
   | {
