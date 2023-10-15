@@ -2,12 +2,12 @@ import { FC, ReactNode } from 'react'
 
 import * as Select from '@radix-ui/react-select'
 
-import s from './select-box.module.scss'
+import s from './select.module.scss'
 
 import { Typography } from '@/shared'
 import { ArrowIosDown } from '@/shared/ui/icons'
 
-export type SelectPropsType = {
+export type SelectLangPropsType = {
   label?: string
   placeholder?: ReactNode
   value?: any
@@ -19,7 +19,7 @@ export type SelectPropsType = {
   classname?: string
 }
 
-export const SelectBox: FC<SelectPropsType> = ({
+export const SelectLang: FC<SelectLangPropsType> = ({
   label,
   placeholder,
   value,

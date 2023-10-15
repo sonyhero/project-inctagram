@@ -5,10 +5,12 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 
+import s from './UpdateProfileForm.module.scss'
+
 import { useUpdateProfileMutation } from '@/entities/profile/api/profile-api'
-import { Button, ControlledTextField, Typography } from '@/shared'
-import { ControlledTextArea } from '@/shared/ui/controlled/controlled-textarea'
+import { Button, ControlledTextArea, ControlledTextField, Typography } from '@/shared'
 import { DatePicker } from '@/shared/ui/date-picker'
+import { SelectBox } from 'src/shared/ui/select'
 
 const updateProfileSchema = z.object({
   userName: z
@@ -50,26 +52,31 @@ export const UpdateProfileForm = () => {
       userName: '',
       firstName: '',
       lastName: '',
-      dateOfBirth: new Date(Date.now() - 13 * 365 * 24 * 60 * 60 * 1000),
-      city: 'Minsk',
+      dateOfBirth: new Date(),
+      city: '',
       aboutMe: '',
     },
     mode: 'onBlur',
     resolver: zodResolver(updateProfileSchema),
   })
 
+  const cities = [
+    { id: '1', value: 'Minsk' },
+    { id: '2', value: 'Grodno' },
+    { id: '3', value: 'Brest' },
+  ]
+
   const onSubmit = (data: UpdateProfileFormShem) => {
-    debugger
     updateProfile(data)
   }
 
   const handleSubmitForm = handleSubmit(onSubmit)
 
   return (
-    <form onSubmit={handleSubmitForm}>
+    <form onSubmit={handleSubmitForm} className={s.updateProfileBlock}>
       <DevTool control={control} />
       <ControlledTextField
-        // className={s.userName}
+        className={s.userName}
         control={control}
         type={'default'}
         name={'userName'}
@@ -98,13 +105,13 @@ export const UpdateProfileForm = () => {
         title={'Date of birth'}
         error={errors.dateOfBirth}
       />
-      <ControlledTextField
-        // className={s.userName}
-        control={control}
-        type={'default'}
+      <SelectBox
         name={'city'}
-        label={'City'}
-        placeholder={'enter your city'}
+        options={cities}
+        control={control}
+        label={'Select your city'}
+        errorMessage={errors.city}
+        placeholder={'City'}
       />
       <ControlledTextArea
         name={'aboutMe'}
@@ -112,7 +119,7 @@ export const UpdateProfileForm = () => {
         label={'About Me'}
         placeholder={'tell us about yourself'}
       />
-      <Button disabled={!isValid} type={'submit'}>
+      <Button disabled={!isValid} type={'submit'} className={s.saveChanges}>
         <Typography variant={'h3'}>Save Changes</Typography>
       </Button>
     </form>

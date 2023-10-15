@@ -7,14 +7,15 @@
 .react-datepicker__input-container {
   input {
     width: inherit;
-    padding: 6px 12px 4px;
+    height: 36px;
+    padding: 6px 0 6px 12px;
 
     font-family: Inter, sans-serif !important;
     font-size: 16px !important;
     font-weight: 400 !important;
     color: var(--color-light-100) !important;
 
-    background-color: var(--color-dark-500) !important;
+    background-color: inherit !important;
     border: 1px solid var(--color-dark-300);
     border-radius: 2px;
     outline: none;

@@ -2,9 +2,9 @@ import { useState } from 'react'
 
 import Image from 'next/image'
 
-import { SelectBox } from '@/shared'
 import ru from '@/shared/ui/icons/ru-flag/ru.png'
 import en from '@/shared/ui/icons/uk-flag/en.png'
+import { SelectLang } from '@/shared/ui/select/select-lang'
 
 export const LangSwitcher = () => {
   const [lang, setLang] = useState<'en' | 'ru'>('en')
@@ -21,7 +21,6 @@ export const LangSwitcher = () => {
       value: 'Russian',
     },
   ]
-
   const languageChange = () => {
     if (lang === 'en') {
       return { options: options[1], value: options[0] }
@@ -29,7 +28,7 @@ export const LangSwitcher = () => {
   }
 
   return (
-    <SelectBox
+    <SelectLang
       options={[languageChange().options]}
       onValueChange={setLang}
       value={languageChange().value}

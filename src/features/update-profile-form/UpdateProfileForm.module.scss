@@ -1,0 +1,15 @@
+.updateProfileBlock {
+  position: relative;
+
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+
+  width: 100%;
+
+  .saveChanges {
+    position: absolute;
+    right: 0;
+    bottom: -84px;
+  }
+}

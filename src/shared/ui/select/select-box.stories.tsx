@@ -1,9 +1,9 @@
 import type { Meta, StoryObj } from '@storybook/react'
 
-import { SelectBox } from '@/shared'
+import { SelectBox } from '@/shared/ui/select/select-box'
 
 const meta = {
-  title: 'Components/Select',
+  title: 'Components/SelectBox',
   component: SelectBox,
   tags: ['autodocs'],
   argTypes: { onValueChange: { action: 'select changes' } },
