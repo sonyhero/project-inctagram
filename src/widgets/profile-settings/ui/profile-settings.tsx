@@ -3,7 +3,7 @@ import React, { useMemo } from 'react'
 import s from './profile-settings.module.scss'
 
 import { UpdateProfileForm } from '@/features/update-profile-form/UpdateProfileForm'
-import { Button } from '@/shared'
+import { Button, Image } from '@/shared'
 import { TabSwitcher } from '@/shared/ui/tabs'
 import { useAppDispatch, useAppSelector } from '@/store/store'
 import { profileSettingsSlice } from '@/widgets/profile-settings/model/profile-settings-slice'
@@ -21,7 +21,9 @@ export const ProfileSettings = () => {
       return (
         <div className={s.profileSettings}>
           <div className={s.photoBlock}>
-            <div className={s.photo}></div>
+            <div className={s.photo}>
+              <Image height={48} width={48} />
+            </div>
             <Button variant={'outline'}>Add a Profile Photo</Button>
           </div>
           <UpdateProfileForm />

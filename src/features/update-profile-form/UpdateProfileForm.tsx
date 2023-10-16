@@ -76,7 +76,7 @@ export const UpdateProfileForm = () => {
     <form onSubmit={handleSubmitForm} className={s.updateProfileBlock}>
       <DevTool control={control} />
       <ControlledTextField
-        className={s.userName}
+        className={errors.userName ? '' : s.errorField}
         control={control}
         type={'default'}
         name={'userName'}
@@ -84,7 +84,7 @@ export const UpdateProfileForm = () => {
         placeholder={'enter your username'}
       />
       <ControlledTextField
-        // className={s.userName}
+        className={errors.firstName ? '' : s.errorField}
         control={control}
         type={'default'}
         name={'firstName'}
@@ -92,7 +92,7 @@ export const UpdateProfileForm = () => {
         placeholder={'enter your first name'}
       />
       <ControlledTextField
-        // className={s.userName}
+        className={errors.lastName ? '' : s.errorField}
         control={control}
         type={'default'}
         name={'lastName'}
@@ -100,12 +100,14 @@ export const UpdateProfileForm = () => {
         placeholder={'enter your last name'}
       />
       <DatePicker
+        className={errors.dateOfBirth ? '' : s.errorField}
         control={control}
         name={'dateOfBirth'}
         title={'Date of birth'}
         error={errors.dateOfBirth}
       />
       <SelectBox
+        classname={s.field}
         name={'city'}
         options={cities}
         control={control}

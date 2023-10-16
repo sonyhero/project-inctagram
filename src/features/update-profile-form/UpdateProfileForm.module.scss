@@ -1,11 +1,16 @@
 .updateProfileBlock {
   position: relative;
-
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
-
   width: 100%;
+
+  .field {
+    margin-bottom: 1.5rem;
+  }
+
+  .errorField {
+    margin-bottom: 1.5rem;
+  }
 
   .saveChanges {
     position: absolute;

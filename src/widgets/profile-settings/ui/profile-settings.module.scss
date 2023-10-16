@@ -20,7 +20,10 @@
     }
 
     .photo {
+      display: flex;
       flex-shrink: 0;
+      align-items: center;
+      justify-content: center;
 
       width: 192px;
       height: 192px;
@@ -41,6 +44,6 @@
     width: 100%;
     height: 1px;
 
-    background: var(--color-dark-700);
+    background: var(--color-dark-300);
   }
 }
