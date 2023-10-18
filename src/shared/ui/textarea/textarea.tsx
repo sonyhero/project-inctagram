@@ -4,7 +4,7 @@ import clsx from 'clsx'
 
 import s from './textarea.module.scss'
 
-import { Typography } from '@/shared'
+import { Typography } from '@/shared/ui'
 
 export type TextAreaProps = {
   label?: string

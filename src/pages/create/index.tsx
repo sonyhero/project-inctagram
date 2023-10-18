@@ -1,7 +1,8 @@
-import { getBaseLayout } from '@/providers/layout/layout'
+import { Create } from '@/pages-flat/create'
+import { getBaseLayout } from '@/shared/providers'
 
 const CreatePage = () => {
-  return <div>Create</div>
+  return <Create />
 }
 
 export default CreatePage

@@ -2,11 +2,10 @@ import React, { useMemo } from 'react'
 
 import s from './profile-settings.module.scss'
 
-import { UpdateProfileForm } from '@/features/update-profile-form/UpdateProfileForm'
-import { Button, Image } from '@/shared'
-import { TabSwitcher } from '@/shared/ui/tabs'
-import { useAppDispatch, useAppSelector } from '@/store/store'
-import { profileSettingsSlice } from '@/widgets/profile-settings/model/profile-settings-slice'
+import { UpdateProfileForm } from '@/features/update-profile-form'
+import { useAppDispatch, useAppSelector } from '@/shared/store'
+import { Button, TabSwitcher, Image } from '@/shared/ui'
+import { profileSettingsSlice } from '@/widgets/profile-settings'
 
 export const ProfileSettings = () => {
   const tabSwitcherOptions = useAppSelector(state => state.profileSettingsSlice.tabSwitcherOptions)

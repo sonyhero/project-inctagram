@@ -7,10 +7,15 @@ import { z } from 'zod'
 
 import s from './UpdateProfileForm.module.scss'
 
-import { useUpdateProfileMutation } from '@/entities/profile/api/profile-api'
-import { Button, ControlledTextArea, ControlledTextField, Typography } from '@/shared'
-import { DatePicker } from '@/shared/ui/date-picker'
-import { SelectBox } from 'src/shared/ui/select'
+import { useUpdateProfileMutation } from '@/entities/profile'
+import {
+  Button,
+  ControlledTextArea,
+  ControlledTextField,
+  DatePicker,
+  SelectBox,
+  Typography,
+} from '@/shared/ui'
 
 const updateProfileSchema = z.object({
   userName: z

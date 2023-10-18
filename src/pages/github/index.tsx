@@ -1,5 +1,5 @@
-import { GitHubAccess } from '@/pages-flat/github'
-import { getAuthLayout } from '@/providers/auth-layout/auth-layout'
+import { GitHubAccess } from '@/pages-flat/auth/ui/github'
+import { getAuthLayout } from '@/shared/providers'
 
 const GitHubPage = () => {
   return <GitHubAccess />

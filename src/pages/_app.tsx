@@ -12,9 +12,9 @@ import '@/shared/styles/index.scss'
 import '../shared/ui/toast/toast.css'
 import 'nprogress/nprogress.css'
 import '../shared/ui/date-picker/DatePicker.scss'
-import { StoreProvider } from '@/providers/store-provider/store-provider'
-import { useLoader } from '@/shared/hooks/useLoader'
-import { ToastNotify } from '@/shared/ui/toast/toast'
+import { useLoader } from '@/shared/hooks'
+import { StoreProvider } from '@/shared/providers'
+import { ToastNotify } from '@/shared/ui'
 
 export type NextPageWithLayout<P = {}, IP = P> = NextPage<P, IP> & {
   getLayout?: (page: ReactElement) => ReactNode
