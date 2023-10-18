@@ -5,7 +5,8 @@ import Link from 'next/link'
 
 import s from './link-side-bar.module.scss'
 
-import { Nullable, Typography } from '@/shared'
+import { Nullable } from '@/shared/types'
+import { Typography } from '@/shared/ui'
 import { VariantIconType } from '@/widgets/side-bar'
 
 type PropsType = {

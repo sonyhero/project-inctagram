@@ -4,7 +4,7 @@ import * as Tabs from '@radix-ui/react-tabs'
 
 import s from './tabSwitcher.module.scss'
 
-import { Typography } from '@/shared'
+import { Typography } from '@/shared/ui'
 
 type PropsType = {
   classname?: string

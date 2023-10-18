@@ -1,5 +1,5 @@
 import { MyProfile } from '@/pages-flat/my-profile'
-import { getBaseLayout } from '@/providers/layout/layout'
+import { getBaseLayout } from '@/shared/providers'
 
 const MyProfilePage = () => {
   return <MyProfile />

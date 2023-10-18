@@ -5,8 +5,7 @@ import { Control, Controller, FieldError } from 'react-hook-form'
 
 import s from './select.module.scss'
 
-import { Typography } from '@/shared'
-import { ArrowIosDown } from '@/shared/ui/icons'
+import { ArrowIosDown, Typography } from '@/shared/ui'
 
 export type SelectPropsType = {
   label?: string

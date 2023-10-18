@@ -1,12 +1,8 @@
-import { SignIn } from '@/pages-flat/sign-in'
-import { getAuthLayout } from '@/providers/auth-layout/auth-layout'
+import { SignIn } from '@/pages-flat/auth/ui/sign-in'
+import { getAuthLayout } from '@/shared/providers'
 
 const SignInPage = () => {
-  return (
-    <div>
-      <SignIn />
-    </div>
-  )
+  return <SignIn />
 }
 
 export default SignInPage

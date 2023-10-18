@@ -1,5 +1,5 @@
-import { ForgotPassword } from '@/pages-flat/forgot-password'
-import { getAuthLayout } from '@/providers/auth-layout/auth-layout'
+import { ForgotPassword } from '@/pages-flat/auth/ui/forgot-password'
+import { getAuthLayout } from '@/shared/providers'
 
 const ForgotPasswordPage = () => {
   return <ForgotPassword />

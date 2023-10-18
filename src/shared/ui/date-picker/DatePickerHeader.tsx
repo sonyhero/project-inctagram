@@ -4,7 +4,7 @@ import { ReactDatePickerCustomHeaderProps } from 'react-datepicker'
 
 import s from './DatePickerHeader.module.scss'
 
-import { ArrowIosBack, ArrowIosForward } from '@/shared'
+import { ArrowIosBack, ArrowIosForward } from '@/shared/ui'
 
 export const DatePickerHeader = ({
   date,

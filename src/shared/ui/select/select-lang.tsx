@@ -4,7 +4,7 @@ import * as Select from '@radix-ui/react-select'
 
 import s from './select.module.scss'
 
-import { Typography } from '@/shared'
+import { Typography } from '@/shared/ui'
 import { ArrowIosDown } from '@/shared/ui/icons'
 
 export type SelectLangPropsType = {
