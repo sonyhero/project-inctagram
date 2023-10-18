@@ -2,24 +2,24 @@ import { useState } from 'react'
 
 import s from './side-bar.module.scss'
 
-import { LogoutModal } from '@/features/modal/logout-modal'
+import { Nullable } from '@/shared/types'
 import {
   Bookmark,
   Button,
   Home,
   LogOut,
   MessageCircle,
-  Nullable,
   Person,
   PlusSquare,
   Search,
   TrendingUp,
   Typography,
-} from '@/shared'
+} from '@/shared/ui'
 import { LinkSideBar } from '@/widgets/side-bar/link-side-bar/link-side-bar'
+import { LogoutModal } from 'src/features/modal/ui/logout-modal'
 
 export type VariantIconType =
-  | 'home'
+  | '/'
   | 'create'
   | 'my-profile'
   | 'messenger'
@@ -34,11 +34,6 @@ export const SideBar = () => {
   const handleItemClick = (variant: Nullable<VariantIconType>) => {
     setVariantIcon(variant)
   }
-
-  // const logoutHandler = () => {
-  //   logout()
-  //   localStorage.removeItem('access')
-  // }
   const logoutHandler = () => {
     setOpen(true)
   }
@@ -48,14 +43,11 @@ export const SideBar = () => {
       <div className={s.mainBlock}>
         <LinkSideBar
           variantIcon={variantIcon}
-          handleClick={() => handleItemClick('home')}
+          handleClick={() => handleItemClick('/')}
           nameLink={'Home'}
-          link={'home'}
+          link={'/'}
         >
-          <Home
-            outline={variantIcon !== 'home'}
-            color={variantIcon === 'home' ? '#397df6' : 'white'}
-          />
+          <Home outline={variantIcon !== '/'} color={variantIcon === '/' ? '#397df6' : 'white'} />
         </LinkSideBar>
         <LinkSideBar
           variantIcon={variantIcon}

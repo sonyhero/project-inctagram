@@ -2,8 +2,7 @@ import React from 'react'
 
 import s from './header.module.scss'
 
-import { Bell } from '@/shared/ui/icons'
-import { Typography } from '@/shared/ui/typography'
+import { Bell, Typography } from '@/shared/ui'
 
 export const Header = () => {
   return (

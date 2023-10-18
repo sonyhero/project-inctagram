@@ -1,34 +1,22 @@
-import { ComponentProps, ElementType } from 'react'
+import { ComponentPropsWithoutRef, forwardRef } from 'react'
 
 import clsx from 'clsx'
 
 import s from './textarea.module.scss'
 
-import { Typography } from '@/shared'
+import { Typography } from '@/shared/ui'
 
-export type TTextAreaProps<T extends ElementType = 'textarea'> = {
-  as?: T
+export type TextAreaProps = {
   label?: string
   fullWidth?: boolean
   className?: string
   errorMessage?: string
   placeholder?: string
   disabled?: boolean
-} & ComponentProps<T>
+} & ComponentPropsWithoutRef<'textarea'>
 
-export const TextAreaField = <T extends ElementType = 'textarea'>(
-  props: TTextAreaProps<T> & Omit<ComponentProps<T>, keyof TTextAreaProps<T>>
-) => {
-  const {
-    as: Component = 'textarea',
-    label,
-    fullWidth,
-    className,
-    errorMessage,
-    placeholder,
-    disabled,
-    ...rest
-  } = props
+export const TextAreaField = forwardRef<HTMLTextAreaElement, TextAreaProps>((props, ref) => {
+  const { label, fullWidth, className, errorMessage, placeholder, disabled, ...rest } = props
 
   const classNames = {
     textAreaContainer: clsx(className, s.container),
@@ -46,10 +34,11 @@ export const TextAreaField = <T extends ElementType = 'textarea'>(
         className={classNames.textArea}
         disabled={disabled}
         {...rest}
+        ref={ref}
       />
       <Typography variant="regular14" color="error" className={s.errorMessage}>
         {errorMessage}
       </Typography>
     </div>
   )
-}
+})

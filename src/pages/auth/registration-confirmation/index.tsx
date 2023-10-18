@@ -1,5 +1,5 @@
-import { Congratulations } from '@/pages-flat/sign-up/congratulations'
-import { getAuthLayout } from '@/providers/auth-layout/auth-layout'
+import { Congratulations } from '@/pages-flat/auth/ui/congratulations'
+import { getAuthLayout } from '@/shared/providers'
 
 const CongratulationsPage = () => {
   return <Congratulations />

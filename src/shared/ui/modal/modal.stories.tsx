@@ -2,7 +2,7 @@ import { useState } from 'react'
 
 import { Meta } from '@storybook/react'
 
-import { Button, Typography, Modal } from '@/shared'
+import { Button, Modal, Typography } from '@/shared/ui'
 
 const meta = {
   title: 'Components/Modal',

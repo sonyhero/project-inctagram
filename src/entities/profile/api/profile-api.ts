@@ -3,7 +3,7 @@ import {
   UpdateProfileArg,
   UploadAvatarResponse,
 } from '@/entities/profile/api/types'
-import { baseApi } from '@/shared'
+import { baseApi } from '@/shared/api'
 
 const profileApi = baseApi.injectEndpoints({
   endpoints: builder => {

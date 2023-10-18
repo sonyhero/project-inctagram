@@ -11,9 +11,10 @@ import '@fontsource/inter/700.css'
 import '@/shared/styles/index.scss'
 import '../shared/ui/toast/toast.css'
 import 'nprogress/nprogress.css'
-import { StoreProvider } from '@/providers/store-provider/store-provider'
-import { useLoader } from '@/shared/hooks/use-loader'
-import { ToastNotify } from '@/shared/ui/toast/toast'
+import '../shared/ui/date-picker/DatePicker.scss'
+import { useLoader } from '@/shared/hooks'
+import { StoreProvider } from '@/shared/providers'
+import { ToastNotify } from '@/shared/ui'
 
 export type NextPageWithLayout<P = {}, IP = P> = NextPage<P, IP> & {
   getLayout?: (page: ReactElement) => ReactNode

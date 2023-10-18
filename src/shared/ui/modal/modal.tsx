@@ -12,7 +12,7 @@ import { motion } from 'framer-motion'
 
 import s from './modal.module.scss'
 
-import { Button, Close, Typography } from '@/shared'
+import { Button, Close, Typography } from '@/shared/ui'
 
 type PropsType = {
   open?: boolean

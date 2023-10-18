@@ -1,9 +1,6 @@
 import { FC, useLayoutEffect, useState } from 'react'
 
-// eslint-disable-next-line import/order
 import Link from 'next/link'
-
-import './DatePicker.scss'
 import DatePickerInstance from 'react-datepicker'
 import { Control, Controller, FieldError } from 'react-hook-form'
 
@@ -17,6 +14,7 @@ import { customizeDatePickerInput } from '@/shared/utils/customizeDatePickerInpu
 
 type DatePickerProps = {
   control: Control<any>
+  className?: string
   name: string
   error?: FieldError
   title?: string
@@ -29,6 +27,7 @@ type Value = Date | null
 type RangeValue = [Value, Value]
 
 export const DatePicker: FC<DatePickerProps> = ({
+  className,
   max,
   width,
   range,
@@ -81,7 +80,7 @@ export const DatePicker: FC<DatePickerProps> = ({
         )
 
         return (
-          <div className={s.datePickerField}>
+          <div className={`${s.datePickerField} ${className}`}>
             <label htmlFor={name} className={s.label}>
               {title}
             </label>

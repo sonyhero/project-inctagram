@@ -1,5 +1,5 @@
-import { Privacy } from '@/pages-flat/privacy'
-import { getAuthLayout } from '@/providers/auth-layout/auth-layout'
+import { Privacy } from '@/pages-flat/auth/ui/privacy'
+import { getAuthLayout } from '@/shared/providers'
 
 const PrivacyPolicyPage = () => {
   return <Privacy text={'Privacy Policy'} />

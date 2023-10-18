@@ -1,5 +1,5 @@
-import { BadRecoveryLink } from '@/pages-flat/create-new-password/bad-recovery-link'
-import { getAuthLayout } from '@/providers/auth-layout/auth-layout'
+import { BadRecoveryLink } from '@/pages-flat/auth/ui/bad-recovery-link'
+import { getAuthLayout } from '@/shared/providers'
 
 const BadRecoveryLinkPage = () => {
   return <BadRecoveryLink />
