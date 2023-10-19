@@ -124,6 +124,10 @@ export const en = {
     privacy: {
       backToSignUp: 'Back to Sign Up',
     },
+    error404: {
+      pageNotFound: 'Sorry! Page not found!',
+      backToMain: 'Back to main',
+    },
   },
 }
 export type LocaleType = typeof en

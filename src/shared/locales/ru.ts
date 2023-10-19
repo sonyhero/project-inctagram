@@ -126,5 +126,9 @@ export const ru: LocaleType = {
     privacy: {
       backToSignUp: 'Вернуться к регистрации',
     },
+    error404: {
+      pageNotFound: 'Извините! Страница не найдена!',
+      backToMain: 'Вернуться на главную',
+    },
   },
 }
