@@ -59,7 +59,7 @@ export const SignInForm = () => {
       </Typography>
       <Button variant={'text'}>
         <Link href={'/auth/sign-up'} className={s.signUp}>
-          <Typography>{t.auth.signIn.signUp}</Typography>
+          <Typography variant={'h3'}>{t.auth.signIn.signUp}</Typography>
         </Link>
       </Button>
     </Card>
