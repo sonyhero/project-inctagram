@@ -4,6 +4,7 @@ import { ReactDatePickerCustomHeaderProps } from 'react-datepicker'
 
 import s from './DatePickerHeader.module.scss'
 
+import { useTranslation } from '@/shared/hooks/useTranstaion'
 import { ArrowIosBack, ArrowIosForward } from '@/shared/ui'
 
 export const DatePickerHeader = ({
@@ -15,21 +16,22 @@ export const DatePickerHeader = ({
 }: Partial<ReactDatePickerCustomHeaderProps>): ReactNode => {
   const currentMonth = date?.getMonth() as number
   const currentYear = date?.getFullYear()
+  const { t } = useTranslation()
 
   const mapMonthIndexToName: Record<number, string> = useMemo(() => {
     return {
-      0: 'January',
-      1: 'February',
-      2: 'March',
-      3: 'April',
-      4: 'May',
-      5: 'June',
-      6: 'July',
-      7: 'August',
-      8: 'September',
-      9: 'October',
-      10: 'November',
-      11: 'December',
+      0: t.myProfile.generalInformation.month.jan,
+      1: t.myProfile.generalInformation.month.feb,
+      2: t.myProfile.generalInformation.month.mar,
+      3: t.myProfile.generalInformation.month.apr,
+      4: t.myProfile.generalInformation.month.may,
+      5: t.myProfile.generalInformation.month.jun,
+      6: t.myProfile.generalInformation.month.jul,
+      7: t.myProfile.generalInformation.month.aug,
+      8: t.myProfile.generalInformation.month.sep,
+      9: t.myProfile.generalInformation.month.oct,
+      10: t.myProfile.generalInformation.month.nov,
+      11: t.myProfile.generalInformation.month.dec,
     }
   }, [])
 

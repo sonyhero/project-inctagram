@@ -30,8 +30,8 @@ export const SelectLang: FC<SelectLangPropsType> = ({
   required,
   classname,
 }) => {
-  const onChange = (lang: string) => {
-    onValueChange?.(lang)
+  const onChangeHandler = (newValue: string) => {
+    onValueChange?.(newValue)
   }
 
   return (
@@ -40,7 +40,8 @@ export const SelectLang: FC<SelectLangPropsType> = ({
 
       <Select.Root
         defaultValue={defaultValue}
-        onValueChange={onChange}
+        value={value}
+        onValueChange={onChangeHandler}
         disabled={disabled}
         required={required}
       >

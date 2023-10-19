@@ -10,6 +10,7 @@ import { z } from 'zod'
 import s from './create-new-password.module.scss'
 
 import { useNewPasswordMutation } from '@/features/auth'
+import { useTranslation } from '@/shared/hooks/useTranstaion'
 import { Button, Card, ControlledTextField, Typography } from '@/shared/ui'
 
 const createNewPasswordSchema = z
@@ -40,6 +41,7 @@ export const CreateNewPasswordForm: FC<PropsType> = ({ recoveryCode }) => {
     resolver: zodResolver(createNewPasswordSchema),
     mode: 'onBlur',
   })
+  const { t } = useTranslation()
 
   const onSubmit = (data: CreateNewPasswordFormShem) => {
     newPassword({ newPassword: data.newPassword, recoveryCode })
@@ -62,31 +64,31 @@ export const CreateNewPasswordForm: FC<PropsType> = ({ recoveryCode }) => {
   return (
     <Card className={s.createNewPasswordBlock}>
       <Typography className={s.title} variant={'h1'}>
-        Create New Password
+        {t.auth.createNewPassword.createNewPassword}
       </Typography>
       <form onSubmit={handleSubmitForm}>
         <DevTool control={control} />
         <ControlledTextField
           name={'newPassword'}
-          label={'New password'}
+          label={t.auth.createNewPassword.newPassword}
           type={'password'}
-          placeholder={'enter your password'}
+          placeholder={t.auth.createNewPassword.newPasswordPlaceholder}
           control={control}
           className={s.password}
         />
         <ControlledTextField
           name={'passwordConfirm'}
-          label={'Password confirmation'}
+          label={t.auth.createNewPassword.passwordConfirmation}
           type={'password'}
-          placeholder={'enter your password'}
+          placeholder={t.auth.createNewPassword.passwordConfirmationPlaceholder}
           control={control}
           className={s.confirmPassword}
         />
         <Typography variant={'regular14'} className={s.formText}>
-          Your password must be between 6 and 20 characters
+          {t.auth.createNewPassword.description}
         </Typography>
         <Button fullWidth={true} className={s.submit} type="submit">
-          Create new password
+          {t.auth.createNewPassword.createNewPassword}
         </Button>
       </form>
     </Card>

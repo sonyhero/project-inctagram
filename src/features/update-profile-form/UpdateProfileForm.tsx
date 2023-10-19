@@ -8,6 +8,7 @@ import { z } from 'zod'
 import s from './UpdateProfileForm.module.scss'
 
 import { useUpdateProfileMutation } from '@/entities/profile'
+import { useTranslation } from '@/shared/hooks/useTranstaion'
 import {
   Button,
   ControlledTextArea,
@@ -65,10 +66,12 @@ export const UpdateProfileForm = () => {
     resolver: zodResolver(updateProfileSchema),
   })
 
+  const { t } = useTranslation()
+
   const cities = [
-    { id: '1', value: 'Minsk' },
-    { id: '2', value: 'Grodno' },
-    { id: '3', value: 'Brest' },
+    { id: '1', value: t.myProfile.generalInformation.cities.minsk },
+    { id: '2', value: t.myProfile.generalInformation.cities.grodno },
+    { id: '3', value: t.myProfile.generalInformation.cities.brest },
   ]
 
   const onSubmit = (data: UpdateProfileFormShem) => {
@@ -85,30 +88,30 @@ export const UpdateProfileForm = () => {
         control={control}
         type={'default'}
         name={'userName'}
-        label={'Username'}
-        placeholder={'enter your username'}
+        label={t.myProfile.generalInformation.userName}
+        placeholder={t.myProfile.generalInformation.placeholderUserName}
       />
       <ControlledTextField
         className={errors.firstName ? '' : s.errorField}
         control={control}
         type={'default'}
         name={'firstName'}
-        label={'First Name'}
-        placeholder={'enter your first name'}
+        label={t.myProfile.generalInformation.firstName}
+        placeholder={t.myProfile.generalInformation.placeholderFirstName}
       />
       <ControlledTextField
         className={errors.lastName ? '' : s.errorField}
         control={control}
         type={'default'}
         name={'lastName'}
-        label={'Last Name'}
-        placeholder={'enter your last name'}
+        label={t.myProfile.generalInformation.lastName}
+        placeholder={t.myProfile.generalInformation.placeholderLastName}
       />
       <DatePicker
         className={errors.dateOfBirth ? '' : s.errorField}
         control={control}
         name={'dateOfBirth'}
-        title={'Date of birth'}
+        title={t.myProfile.generalInformation.dateOfBirth}
         error={errors.dateOfBirth}
       />
       <SelectBox
@@ -116,18 +119,18 @@ export const UpdateProfileForm = () => {
         name={'city'}
         options={cities}
         control={control}
-        label={'Select your city'}
+        label={t.myProfile.generalInformation.selectYourCity}
         errorMessage={errors.city}
-        placeholder={'City'}
+        placeholder={t.myProfile.generalInformation.placeholderCity}
       />
       <ControlledTextArea
         name={'aboutMe'}
         control={control}
-        label={'About Me'}
-        placeholder={'tell us about yourself'}
+        label={t.myProfile.generalInformation.aboutMe}
+        placeholder={t.myProfile.generalInformation.placeholderAboutMe}
       />
       <Button disabled={!isValid} type={'submit'} className={s.saveChanges}>
-        <Typography variant={'h3'}>Save Changes</Typography>
+        <Typography variant={'h3'}>{t.myProfile.generalInformation.saveChanges}</Typography>
       </Button>
     </form>
   )

@@ -4,20 +4,23 @@ import Link from 'next/link'
 
 import s from './bad-recovery-link.module.scss'
 
+import { useTranslation } from '@/shared/hooks/useTranstaion'
 import { Button, Typography, VereficationIcon } from '@/shared/ui'
 
 export const BadRecoveryLink = () => {
+  const { t } = useTranslation()
+
   return (
     <div className={s.container}>
       <Typography variant={'h1'} className={s.headText}>
-        Email verification link expired
+        {t.auth.badRecoveryLink.linkExpired}
       </Typography>
       <Typography variant={'regular16'} className={s.description}>
-        Looks like the verification link has expired. Not to worry, we can send the link again
+        {t.auth.badRecoveryLink.description}
       </Typography>
       <Button variant={'primary'} className={s.signBtn}>
         <Link href={'/auth/forgot-password'}>
-          <Typography variant={'h3'}>Resend link</Typography>
+          <Typography variant={'h3'}>{t.auth.badRecoveryLink.resendLink}</Typography>
         </Link>
       </Button>
       <VereficationIcon className={s.pic} />

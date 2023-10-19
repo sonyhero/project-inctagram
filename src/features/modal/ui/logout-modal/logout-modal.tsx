@@ -3,6 +3,7 @@ import React, { FC } from 'react'
 import s from './logout-modal.module.scss'
 
 import { useLogoutMutation } from '@/features/auth'
+import { useTranslation } from '@/shared/hooks/useTranstaion'
 import { Modal, Typography } from '@/shared/ui'
 
 type PropsType = {
@@ -12,6 +13,7 @@ type PropsType = {
 export const LogoutModal: FC<PropsType> = ({ open, setOpen }) => {
   const email = 'Epam@epam.com'
   const [logout] = useLogoutMutation()
+  const { t } = useTranslation()
   const handleClose = () => {
     setOpen(false)
   }
@@ -28,14 +30,14 @@ export const LogoutModal: FC<PropsType> = ({ open, setOpen }) => {
         showCloseButton={true}
         open={open}
         onClose={handleClose}
-        title={'Log Out'}
-        titleFirstButton={'Yes'}
-        titleSecondButton={'No'}
+        title={t.sidebar.logout}
+        titleFirstButton={t.sidebar.yes}
+        titleSecondButton={t.sidebar.no}
         callBack={logoutHandler}
         buttonBlockClassName={s.buttonBlock}
       >
         <Typography>
-          Are you really want to log out of your account &ldquo;<b>{email}</b>&rdquo;?
+          {t.sidebar.logoutModalDescription} &ldquo;<b>{email}</b>&rdquo;?
         </Typography>
       </Modal>
     </>
