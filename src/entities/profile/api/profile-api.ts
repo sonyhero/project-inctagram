@@ -30,7 +30,7 @@ const profileApi = baseApi.injectEndpoints({
         }),
         invalidatesTags: ['Profile'],
       }),
-      uploadAvatar: builder.mutation<UploadAvatarResponse, File>({
+      uploadAvatar: builder.mutation<UploadAvatarResponse, FormData>({
         query: body => ({
           url: `v1/users/profile/avatar`,
           method: 'POST',
