@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useMemo, useState } from 'react'
 
 import Image from 'next/image'
 import { useRouter } from 'next/router'
@@ -9,10 +9,10 @@ import en from '@/shared/ui/icons/uk-flag/en.png'
 import { SelectLang } from '@/shared/ui/select/select-lang'
 
 export const LangSwitcher = () => {
-  const { push, pathname, query, asPath, defaultLocale } = useRouter()
+  const { push, pathname, query, asPath, locale } = useRouter()
   const { t } = useTranslation()
 
-  const [lang, setLang] = useState<'en' | 'ru'>(defaultLocale as 'en' | 'ru')
+  const [lang, setLang] = useState<'en' | 'ru'>(locale as 'en' | 'ru')
 
   const options = [
     {
@@ -27,14 +27,6 @@ export const LangSwitcher = () => {
     },
   ]
 
-  useEffect(() => {
-    if (lang === 'en') {
-      push({ pathname, query }, asPath, { locale: 'en' })
-    } else {
-      push({ pathname, query }, asPath, { locale: 'ru' })
-    }
-  }, [lang])
-
   const languageChange = useMemo(() => {
     if (lang === 'en') {
       return { options: options[1], value: options[0] }
@@ -43,10 +35,20 @@ export const LangSwitcher = () => {
     }
   }, [lang, t])
 
+  const changeLang = (value: string) => {
+    if (value === 'en') {
+      setLang('en')
+      push({ pathname, query }, asPath, { locale: 'en' })
+    } else {
+      setLang('ru')
+      push({ pathname, query }, asPath, { locale: 'ru' })
+    }
+  }
+
   return (
     <SelectLang
       options={[languageChange.options]}
-      onValueChange={setLang}
+      onValueChange={changeLang}
       value={languageChange.value}
     />
   )
