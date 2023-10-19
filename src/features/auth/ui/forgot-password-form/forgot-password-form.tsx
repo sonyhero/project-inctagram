@@ -10,6 +10,7 @@ import { z } from 'zod'
 import s from './forgot-password-form.module.scss'
 
 import { useRecoveryPasswordMutation } from '@/features/auth'
+import { useTranslation } from '@/shared/hooks/useTranstaion'
 import { Button, Card, ControlledTextField, Modal, Recaptcha, Typography } from '@/shared/ui'
 
 const forgotPasswordSchema = z.object({
@@ -31,6 +32,7 @@ export const ForgotPasswordForm = () => {
     mode: 'onBlur',
     resolver: zodResolver(forgotPasswordSchema),
   })
+  const { t } = useTranslation()
 
   const onSubmit = (data: ForgotPasswordFormShem) => {
     forgotPassword({ email: data.email, recaptcha: recaptchaKey })
@@ -55,39 +57,39 @@ export const ForgotPasswordForm = () => {
   return (
     <Card className={s.forgotPasswordBlock}>
       <Typography className={s.title} variant={'h1'}>
-        Forgot Password
+        {t.auth.forgotPassword.forgotPassword}
       </Typography>
       <form onSubmit={handleSubmitForm} className={s.formBlock}>
         <ControlledTextField
           name={'email'}
-          label={'Email'}
+          label={t.auth.forgotPassword.email}
           type={'default'}
           placeholder={'Epam@epam.com'}
           control={control}
           className={s.email}
         />
         <Typography variant={'regular14'} className={s.text}>
-          Enter your email address and we will send you further instructions{' '}
+          {t.auth.forgotPassword.description}{' '}
         </Typography>
         <Button fullWidth={true} className={s.submit} type="submit">
-          Send Link
+          {t.auth.forgotPassword.sendLink}
         </Button>
         <Button variant={'text'} className={s.signUp}>
           <Link href={'/auth/sign-in'} className={s.backBtn}>
-            Back to Sign In
+            {t.auth.forgotPassword.backToSignIn}
           </Link>
         </Button>
         <Recaptcha onRecaptchaChangeHandler={onRecaptchaChangeHandler} />
       </form>
       <Modal
-        title={'Email sent'}
+        title={t.auth.forgotPassword.modal}
         open={openModal}
         onClose={() => setOpenModal(false)}
         titleSecondButton={'OK'}
         buttonBlockClassName={s.buttonBlock}
         callBack={routerHandler}
       >
-        We have sent a link to confirm your email to {email}
+        {t.auth.forgotPassword.modalDescription} {email}
       </Modal>
     </Card>
   )

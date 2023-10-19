@@ -1,6 +1,9 @@
 import { FC, useLayoutEffect, useState } from 'react'
 
+// eslint-disable-next-line import/no-unresolved
+import { ru } from 'date-fns/locale'
 import Link from 'next/link'
+import { useRouter } from 'next/router'
 import DatePickerInstance from 'react-datepicker'
 import { Control, Controller, FieldError } from 'react-hook-form'
 
@@ -10,6 +13,7 @@ import calendarError from '../icons/calendar/calendar-error.svg'
 import s from './DatePicker.module.scss'
 import { DatePickerHeader } from './DatePickerHeader'
 
+import { useTranslation } from '@/shared/hooks/useTranstaion'
 import { customizeDatePickerInput } from '@/shared/utils/customizeDatePickerInput'
 
 type DatePickerProps = {
@@ -38,6 +42,8 @@ export const DatePicker: FC<DatePickerProps> = ({
 }) => {
   const [startDate, setStartDate] = useState<Value>(null)
   const [endDate, setEndDate] = useState<Value>(null)
+  const { t } = useTranslation()
+  const { locale } = useRouter()
 
   useLayoutEffect(() => {
     customizeDatePickerInput({
@@ -50,7 +56,9 @@ export const DatePicker: FC<DatePickerProps> = ({
     })
   }, [max, width, error, name])
 
-  const placeholderText = range ? 'mm.dd.yyyy - mm.dd.yyyy' : 'mm.dd.yyyy'
+  const placeholderText = range
+    ? `${t.myProfile.generalInformation.placeholderDateOfBirth} - ${t.myProfile.generalInformation.placeholderDateOfBirth}`
+    : t.myProfile.generalInformation.placeholderDateOfBirth
 
   return (
     <Controller
@@ -90,6 +98,7 @@ export const DatePicker: FC<DatePickerProps> = ({
               onChange={handleChange}
               onBlur={onBlur}
               selectsRange={range}
+              locale={locale === 'ru' ? ru : ''}
               startDate={range ? startDate : undefined}
               endDate={range ? endDate : undefined}
               placeholderText={placeholderText}

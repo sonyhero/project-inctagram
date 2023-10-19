@@ -5,6 +5,7 @@ import s from './sign-up-form.module.scss'
 
 import { useSignUp } from '@/features/auth/ui/sign-up-form/hooks'
 import { useThirdPartyAuth } from '@/shared/hooks'
+import { useTranslation } from '@/shared/hooks/useTranstaion'
 import {
   Button,
   Card,
@@ -20,6 +21,7 @@ export const SignUpForm = () => {
   const { onGitHubAuth, onGoogleAuth } = useThirdPartyAuth()
   const { control, handleSubmitForm, disableButton, emailModal, isOpenModal, setIsOpenModal } =
     useSignUp()
+  const { t } = useTranslation()
 
   const closeModal = () => {
     setIsOpenModal(false)
@@ -29,7 +31,7 @@ export const SignUpForm = () => {
     <>
       <Card className={s.signBlock}>
         <Typography className={s.title} variant={'h1'}>
-          Sign Up
+          {t.auth.signUp.signUp}
         </Typography>
         <div className={s.iconsWrapper}>
           <Button variant={'text'} className={s.clickToGitAndGoogle} onClick={onGoogleAuth}>
@@ -46,32 +48,32 @@ export const SignUpForm = () => {
             control={control}
             type={'default'}
             name={'name'}
-            label={'User name'}
-            placeholder={'enter your username'}
+            label={t.auth.signUp.userName}
+            placeholder={t.auth.signUp.userNamePlaceholder}
           ></ControlledTextField>
           <ControlledTextField
             className={s.email}
             control={control}
             type={'default'}
             name={'email'}
-            label={'Email'}
-            placeholder={'enter your email'}
+            label={t.auth.signUp.email}
+            placeholder={t.auth.signUp.emailPlaceholder}
           ></ControlledTextField>
           <ControlledTextField
             className={s.password}
             control={control}
             type={'password'}
             name={'password'}
-            label={'Password'}
-            placeholder={'enter your password'}
+            label={t.auth.signUp.password}
+            placeholder={t.auth.signUp.passwordPlaceholder}
           ></ControlledTextField>
           <ControlledTextField
             className={s.passwordConfirm}
             control={control}
             type={'password'}
             name={'passwordConfirm'}
-            label={'Password confirmation'}
-            placeholder={'enter your password again'}
+            label={t.auth.signUp.passwordConfirmation}
+            placeholder={t.auth.signUp.passwordConfirmationPlaceholder}
           ></ControlledTextField>
           <div className={s.terms}>
             <ControlledCheckbox
@@ -80,16 +82,16 @@ export const SignUpForm = () => {
               defaultValue={true}
               label={
                 <Typography variant={'small'}>
-                  I agree to the{' '}
+                  {t.auth.signUp.checkboxOneChart}{' '}
                   <Link href={'/auth/terms-of-service'}>
                     <Typography className={s.link} as={'span'} variant={'s_link'}>
-                      Terms of Service
+                      {t.auth.signUp.termsOfService}
                     </Typography>
                   </Link>{' '}
-                  and{' '}
+                  {t.auth.signUp.checkboxTwoChart}{' '}
                   <Link href={'/auth/privacy-policy'}>
                     <Typography className={s.link} as={'span'} variant={'s_link'}>
-                      Privacy Policy
+                      {t.auth.signUp.privacyPolicy}
                     </Typography>
                   </Link>
                 </Typography>
@@ -97,28 +99,30 @@ export const SignUpForm = () => {
             />
           </div>
           <Button disabled={disableButton} className={s.signUpBtn} type={'submit'} fullWidth>
-            <Typography variant={'h3'}>Sign Up</Typography>
+            <Typography variant={'h3'}>{t.auth.signUp.signUp}</Typography>
           </Button>
         </form>
         <Typography className={s.subtitle} variant={'regular16'}>
-          Do you have an account?
+          {t.auth.signUp.question}
         </Typography>
 
         <Link href={'/auth/sign-in'} className={s.signIn}>
           <Button variant={'text'} className={s.signInBtn} fullWidth={true}>
-            <Typography variant={'h3'}>Sign In</Typography>
+            <Typography variant={'h3'}>{t.auth.signUp.signIn}</Typography>
           </Button>
         </Link>
       </Card>
       <Modal
-        title={'Email sent'}
+        title={t.auth.signUp.modal}
         open={isOpenModal}
         onClose={closeModal}
         callBack={closeModal}
         titleSecondButton={'OK'}
         buttonBlockClassName={s.btnBlock}
       >
-        <Typography>We have sent a link to confirm your email to {emailModal}</Typography>
+        <Typography>
+          {t.auth.signUp.modalDescription} {emailModal}
+        </Typography>
       </Modal>
     </>
   )

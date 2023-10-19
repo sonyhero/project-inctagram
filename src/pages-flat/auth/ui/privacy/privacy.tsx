@@ -4,6 +4,7 @@ import Link from 'next/link'
 
 import s from './privacy.module.scss'
 
+import { useTranslation } from '@/shared/hooks/useTranstaion'
 import { ArrowBack, Typography } from '@/shared/ui'
 
 type PropsType = {
@@ -11,12 +12,14 @@ type PropsType = {
 }
 
 export const Privacy: FC<PropsType> = ({ text }) => {
+  const { t } = useTranslation()
+
   return (
     <div className={s.container}>
       <Link href={'/auth/sign-up'} className={s.link}>
         <ArrowBack />
         <Typography variant={'regular14'} className={s.linkText}>
-          Back to sign up
+          {t.auth.privacy.backToSignUp}
         </Typography>
       </Link>
 

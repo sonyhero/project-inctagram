@@ -2,6 +2,7 @@ import { useState } from 'react'
 
 import s from './side-bar.module.scss'
 
+import { useTranslation } from '@/shared/hooks/useTranstaion'
 import { Nullable } from '@/shared/types'
 import {
   Bookmark,
@@ -31,6 +32,7 @@ export type VariantIconType =
 export const SideBar = () => {
   const [open, setOpen] = useState(false)
   const [variantIcon, setVariantIcon] = useState<Nullable<VariantIconType>>()
+  const { t } = useTranslation()
   const handleItemClick = (variant: Nullable<VariantIconType>) => {
     setVariantIcon(variant)
   }
@@ -44,7 +46,7 @@ export const SideBar = () => {
         <LinkSideBar
           variantIcon={variantIcon}
           handleClick={() => handleItemClick('/')}
-          nameLink={'Home'}
+          nameLink={t.sidebar.home}
           link={'/'}
         >
           <Home outline={variantIcon !== '/'} color={variantIcon === '/' ? '#397df6' : 'white'} />
@@ -52,7 +54,7 @@ export const SideBar = () => {
         <LinkSideBar
           variantIcon={variantIcon}
           handleClick={() => handleItemClick('create')}
-          nameLink={'Create'}
+          nameLink={t.sidebar.create}
           link={'create'}
         >
           <PlusSquare
@@ -63,7 +65,7 @@ export const SideBar = () => {
         <LinkSideBar
           variantIcon={variantIcon}
           handleClick={() => handleItemClick('my-profile')}
-          nameLink={'My Profile'}
+          nameLink={t.sidebar.myProfile}
           link={'my-profile'}
         >
           <Person
@@ -74,7 +76,7 @@ export const SideBar = () => {
         <LinkSideBar
           variantIcon={variantIcon}
           handleClick={() => handleItemClick('messenger')}
-          nameLink={'Messenger'}
+          nameLink={t.sidebar.messenger}
           link={'messenger'}
         >
           <MessageCircle
@@ -85,7 +87,7 @@ export const SideBar = () => {
         <LinkSideBar
           variantIcon={variantIcon}
           handleClick={() => handleItemClick('search')}
-          nameLink={'Search'}
+          nameLink={t.sidebar.search}
           link={'search'}
         >
           <Search color={variantIcon === 'search' ? '#397df6' : 'white'} />
@@ -95,7 +97,7 @@ export const SideBar = () => {
         <LinkSideBar
           variantIcon={variantIcon}
           handleClick={() => handleItemClick('statistics')}
-          nameLink={'Statistics'}
+          nameLink={t.sidebar.statistics}
           link={'statistics'}
         >
           <TrendingUp color={variantIcon === 'statistics' ? '#397df6' : 'white'} />
@@ -103,7 +105,7 @@ export const SideBar = () => {
         <LinkSideBar
           variantIcon={variantIcon}
           handleClick={() => handleItemClick('favorites')}
-          nameLink={'Favorites'}
+          nameLink={t.sidebar.favorites}
           link={'favorites'}
         >
           <Bookmark
@@ -116,7 +118,7 @@ export const SideBar = () => {
         <Button className={s.logout} variant={'text'} onClick={logoutHandler}>
           <LogOut color={variantIcon === 'logout' ? '#397df6' : 'white'} />
           <Typography color={'primary'} variant={'medium14'}>
-            Log Out
+            {t.sidebar.logout}
           </Typography>
         </Button>
         <LogoutModal open={open} setOpen={setOpen} />

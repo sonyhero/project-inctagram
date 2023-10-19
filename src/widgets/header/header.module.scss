@@ -8,5 +8,11 @@
     @include flex-container($flex-direction: row, $justify-content: space-between);
 
     padding: 0.75rem 4rem 0.75rem 3.75rem;
+
+    .rightBlock {
+      display: flex;
+      gap: 3rem;
+      align-items: center;
+    }
   }
 }
