@@ -1,7 +1,7 @@
 import Image from 'next/image'
 import Link from 'next/link'
 
-import error from '../../../public/error.png'
+import error from '../../../public/error.svg'
 
 import s from './error-page.module.scss'
 
@@ -13,7 +13,7 @@ export const ErrorPage = () => {
 
   return (
     <div className={s.errorPage}>
-      <Image src={error} alt={'error404'} />
+      <Image src={error} alt={'error404'} className={s.errorImage} />
       <Typography variant={'regular16'} className={s.errorMessage}>
         {t.auth.error404.pageNotFound}
       </Typography>
