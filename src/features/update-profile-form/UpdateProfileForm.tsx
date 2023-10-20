@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { FC } from 'react'
 
 import { DevTool } from '@hookform/devtools'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -7,7 +7,7 @@ import { z } from 'zod'
 
 import s from './UpdateProfileForm.module.scss'
 
-import { useUpdateProfileMutation } from '@/entities/profile'
+import { GetProfileResponse, useUpdateProfileMutation } from '@/entities/profile'
 import { useTranslation } from '@/shared/hooks/useTranstaion'
 import {
   Button,
@@ -17,6 +17,7 @@ import {
   SelectBox,
   Typography,
 } from '@/shared/ui'
+import { formatDate } from '@/shared/utils'
 
 const updateProfileSchema = z.object({
   userName: z
@@ -47,20 +48,23 @@ const updateProfileSchema = z.object({
 
 export type UpdateProfileFormShem = z.infer<typeof updateProfileSchema>
 
-export const UpdateProfileForm = () => {
+type PropsType = {
+  defaultValue?: GetProfileResponse
+}
+export const UpdateProfileForm: FC<PropsType> = ({ defaultValue }) => {
   const [updateProfile] = useUpdateProfileMutation()
   const {
     control,
     handleSubmit,
-    formState: { isValid, errors },
+    formState: { isValid, isDirty, errors },
   } = useForm<UpdateProfileFormShem>({
     defaultValues: {
-      userName: '',
-      firstName: '',
-      lastName: '',
-      dateOfBirth: new Date(),
-      city: '',
-      aboutMe: '',
+      userName: defaultValue?.userName ?? '',
+      firstName: defaultValue?.firstName ?? '',
+      lastName: defaultValue?.lastName ?? '',
+      dateOfBirth: new Date(defaultValue?.dateOfBirth ?? ''),
+      city: defaultValue?.city ?? '',
+      aboutMe: defaultValue?.aboutMe ?? '',
     },
     mode: 'onBlur',
     resolver: zodResolver(updateProfileSchema),
@@ -113,6 +117,9 @@ export const UpdateProfileForm = () => {
         name={'dateOfBirth'}
         title={t.myProfile.generalInformation.dateOfBirth}
         error={errors.dateOfBirth}
+        placeholder={
+          defaultValue?.dateOfBirth ? formatDate(new Date(defaultValue.dateOfBirth)) : ''
+        }
       />
       <SelectBox
         classname={s.field}
@@ -121,7 +128,9 @@ export const UpdateProfileForm = () => {
         control={control}
         label={t.myProfile.generalInformation.selectYourCity}
         errorMessage={errors.city}
-        placeholder={t.myProfile.generalInformation.placeholderCity}
+        placeholder={
+          defaultValue?.city ? defaultValue.city : t.myProfile.generalInformation.placeholderCity
+        }
       />
       <ControlledTextArea
         name={'aboutMe'}
@@ -129,7 +138,7 @@ export const UpdateProfileForm = () => {
         label={t.myProfile.generalInformation.aboutMe}
         placeholder={t.myProfile.generalInformation.placeholderAboutMe}
       />
-      <Button disabled={!isValid} type={'submit'} className={s.saveChanges}>
+      <Button disabled={!isValid || !isDirty} type={'submit'} className={s.saveChanges}>
         <Typography variant={'h3'}>{t.myProfile.generalInformation.saveChanges}</Typography>
       </Button>
     </form>

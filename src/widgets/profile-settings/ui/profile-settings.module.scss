@@ -19,7 +19,48 @@
       align-items: center;
     }
 
-    .photo {
+    .photoAndDeleteBlock {
+      position: relative;
+
+      width: 192px;
+      height: 192px;
+      margin-bottom: 24px;
+
+      border-radius: 50%;
+
+      .photo {
+        width: 100%;
+        height: 100%;
+        border-radius: 50%;
+      }
+
+      .deletePhoto {
+        cursor: pointer;
+
+        position: absolute;
+        top: 0.9rem;
+        right: 1.5rem;
+
+        display: flex;
+        flex-shrink: 0;
+        align-items: center;
+        justify-content: center;
+
+        width: 1rem;
+        height: 1rem;
+
+        background-color: var(--color-danger-500);
+        border: 3px solid #000;
+        border-radius: 50%;
+
+        &:hover {
+          transform: scale(1.2);
+          transition: 0.2s ease-in-out;
+        }
+      }
+    }
+
+    .defaultPhoto {
       display: flex;
       flex-shrink: 0;
       align-items: center;
@@ -45,5 +86,98 @@
     height: 1px;
 
     background: var(--color-dark-300);
+  }
+}
+
+.buttonModal {
+  display: flex;
+  justify-content: center;
+  padding-bottom: 6rem;
+}
+
+.imgBlock {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 13.875rem;
+  height: 14.25rem;
+  margin-bottom: 3.75rem;
+
+  background-color: var(--color-dark-500);
+}
+
+.errorImg {
+  width: 27.8125rem;
+  background-color: red;
+}
+
+.modalBlock {
+  width: 30.75rem;
+}
+
+.modalContent {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  margin-bottom: 2.25rem;
+
+  .modalError {
+    margin-bottom: 1.5rem;
+    padding: 0.38rem 3rem;
+
+    text-align: center;
+
+    background: var(--color-danger-900);
+    border: 1px solid var(--color-danger-500);
+    border-radius: 0.125rem;
+  }
+
+  .modalImg {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 13.875rem;
+    height: 14.25rem;
+    margin-bottom: 3.75rem;
+
+    background-color: var(--color-dark-500);
+  }
+
+  .avatar {
+    width: 20.75rem;
+    height: 21.25rem;
+    margin-top: 1.75rem;
+    margin-bottom: 2.25rem;
+  }
+
+  .mainPhotoInput {
+    display: none;
+  }
+
+  .savePhoto {
+    display: flex;
+    justify-content: right;
+    width: 100%;
+  }
+}
+
+.modalBtn {
+  display: flex;
+  justify-content: center;
+  padding-bottom: 4.87rem;
+}
+
+.buttonBlock {
+  display: flex;
+  gap: 1.5rem;
+  justify-content: flex-end;
+  padding: 0 1.5rem 2.25rem 0;
+
+  .description {
+    text-align: start;
   }
 }

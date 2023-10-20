@@ -23,6 +23,7 @@ type PropsType = {
   titleSecondButton?: string
   callBack?: () => void
   buttonBlockClassName?: string
+  className?: string
 } & ComponentProps<'div'>
 
 const modalAnimation = {
@@ -40,6 +41,7 @@ export const Modal: FC<PropsType> = ({
   showCloseButton = true,
   callBack,
   buttonBlockClassName,
+  className,
 }) => {
   function handleModalClosed() {
     onClose?.()
@@ -49,14 +51,9 @@ export const Modal: FC<PropsType> = ({
     <Dialog open={open} onOpenChange={handleModalClosed}>
       {open && (
         <DialogPortal>
-          <motion.div
-            className={s.content}
-            variants={modalAnimation}
-            initial="hidden"
-            animate="visible"
-          >
+          <motion.div variants={modalAnimation} initial="hidden" animate="visible">
             <DialogOverlay className={s.overlay} />
-            <DialogContent className={s.content}>
+            <DialogContent className={`${s.content} ${className}`}>
               <header className={s.header}>
                 <DialogTitle asChild>
                   <Typography variant={'h1'}>{title}</Typography>
