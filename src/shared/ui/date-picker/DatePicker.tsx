@@ -25,6 +25,7 @@ type DatePickerProps = {
   range?: boolean
   max?: boolean
   width?: number
+  placeholder?: string
 }
 
 type Value = Date | null
@@ -39,8 +40,9 @@ export const DatePicker: FC<DatePickerProps> = ({
   control,
   name,
   title,
+  placeholder,
 }) => {
-  const [startDate, setStartDate] = useState<Value>(null)
+  const [startDate, setStartDate] = useState<Value>(placeholder ? new Date(placeholder) : null)
   const [endDate, setEndDate] = useState<Value>(null)
   const { t } = useTranslation()
   const { locale } = useRouter()
@@ -101,7 +103,7 @@ export const DatePicker: FC<DatePickerProps> = ({
               locale={locale === 'ru' ? ru : ''}
               startDate={range ? startDate : undefined}
               endDate={range ? endDate : undefined}
-              placeholderText={placeholderText}
+              placeholderText={placeholder !== '' ? placeholder : placeholderText}
             />
             {error && (
               <span className={s.datePickerError}>

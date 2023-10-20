@@ -1,29 +1,54 @@
-import React, { ChangeEvent, useEffect, useMemo, useState } from 'react'
+import React, { ChangeEvent, FC, useEffect, useMemo, useState } from 'react'
 
 import { useRouter } from 'next/router'
 
 import s from './profile-settings.module.scss'
 
-import { useGetProfileQuery, useUploadAvatarMutation } from '@/entities/profile'
-import { useMeQuery } from '@/features/auth'
+import {
+  useDeleteAvatarMutation,
+  useGetProfileQuery,
+  useUploadAvatarMutation,
+} from '@/entities/profile'
 import { UpdateProfileForm } from '@/features/update-profile-form'
 import { useTranslation } from '@/shared/hooks/useTranstaion'
 import { useAppDispatch, useAppSelector } from '@/shared/store'
-import { Button, TabSwitcher, Image, Modal, Typography } from '@/shared/ui'
+import { Nullable } from '@/shared/types'
+import { Button, Close, Image, Modal, TabSwitcher, Typography } from '@/shared/ui'
 import { profileSettingsSlice } from '@/widgets/profile-settings'
 
-export const ProfileSettings = () => {
+type PropsType = {
+  userId: number
+}
+export const ProfileSettings: FC<PropsType> = ({ userId }) => {
   const tabSwitcherOptions = useAppSelector(state => state.profileSettingsSlice.tabSwitcherOptions)
   const currentOption = useAppSelector(state => state.profileSettingsSlice.currentOption)
-  const { data: meData } = useMeQuery()
-  const { data } = useGetProfileQuery(meData!.userId)
-  const [openModal, setOpenModal] = useState<boolean>(true)
+  const { data: profileData } = useGetProfileQuery(userId)
+  const [deletePhoto] = useDeleteAvatarMutation()
+  const [openModal, setOpenModal] = useState<boolean>(false)
+  const [openDeleteModal, setOpenDeleteModal] = useState(false)
+  const [photo, setPhoto] = useState<Nullable<FormData>>(null)
   const dispatch = useAppDispatch()
   const { t } = useTranslation()
   const { locale } = useRouter()
   const [updatePhoto] = useUploadAvatarMutation()
+  const [errorPhoto, setErrorPhoto] = useState('')
   const handleTabSort = (value: string) => {
     dispatch(profileSettingsSlice.actions.setCurrentOption({ value }))
+  }
+  const openPhotoModal = () => {
+    setOpenModal(true)
+  }
+
+  const openDeleteModalHandler = () => {
+    setOpenDeleteModal(true)
+  }
+  const closeDeleteModal = () => {
+    setOpenDeleteModal(false)
+  }
+
+  const deletePhotoHandler = () => {
+    deletePhoto()
+    setOpenDeleteModal(false)
   }
 
   const showActivePage = useMemo(() => {
@@ -31,12 +56,23 @@ export const ProfileSettings = () => {
       return (
         <div className={s.profileSettings}>
           <div className={s.photoBlock}>
-            <div className={s.photo}>
-              <Image height={48} width={48} />
-            </div>
-            <Button variant={'outline'}>{t.myProfile.generalInformation.addAProfilePhoto}</Button>
+            {profileData?.avatars.length ? (
+              <div className={s.photoAndDeleteBlock} onClick={openDeleteModalHandler}>
+                <img src={profileData.avatars[0].url} className={s.photo} alt="profilePhoto" />
+                <div className={s.deletePhoto}>
+                  <Close />
+                </div>
+              </div>
+            ) : (
+              <div className={s.defaultPhoto}>
+                <Image height={48} width={48} />
+              </div>
+            )}
+            <Button variant={'outline'} onClick={openPhotoModal}>
+              {t.myProfile.generalInformation.addAProfilePhoto}
+            </Button>
           </div>
-          <UpdateProfileForm />
+          {profileData ? <UpdateProfileForm defaultValue={profileData} /> : <div>Loading</div>}
         </div>
       )
     } else if (currentOption === t.myProfile.tabs.devices) {
@@ -46,7 +82,7 @@ export const ProfileSettings = () => {
     } else if (currentOption === t.myProfile.tabs.myPayments) {
       return <div>{t.myProfile.tabs.myPayments}</div>
     }
-  }, [currentOption])
+  }, [currentOption, profileData])
 
   const changeOptionTabSwitcher = useMemo(() => {
     return tabSwitcherOptions.map(el => {
@@ -74,13 +110,36 @@ export const ProfileSettings = () => {
       })
     )
   }, [locale])
+
+  //TODO отпимизировать функцию
   const mainPhotoSelected = (event: ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && event.target.files.length) {
       const formData = new FormData()
 
-      formData.append('avatar', event.target.files[0])
-      updatePhoto(formData)
+      if (!['image/jpeg', 'image/jpg', 'image/png'].includes(event.target.files[0].type)) {
+        setErrorPhoto('Error! The format of the uploaded photo must be\n' + 'PNG and JPEG')
+      } else if (event.target.files[0].size > 10 * 1024 * 1024) {
+        setErrorPhoto('Error! Photo size must be less than 10 MB!')
+      } else {
+        setErrorPhoto('')
+        formData.append('file', event.target.files[0])
+        setPhoto(formData)
+      }
     }
+  }
+
+  const onSaveHandler = () => {
+    if (photo !== null) {
+      updatePhoto(photo)
+      setOpenModal(false)
+      setPhoto(null)
+    }
+  }
+
+  const onCloseModalHandler = () => {
+    setErrorPhoto('')
+    setOpenModal(false)
+    setPhoto(null)
   }
 
   return (
@@ -97,37 +156,67 @@ export const ProfileSettings = () => {
         className={s.modalBlock}
         title={'Add a Profile Photo'}
         open={openModal}
-        onClose={() => setOpenModal(false)}
+        onClose={onCloseModalHandler}
       >
         {
           <div className={s.modalContent}>
-            <div className={s.modalError}>
-              <Typography variant={'regular14'}>
-                Error! The format of the uploaded photo must be PNG and JPEG
-              </Typography>
-            </div>
-            <div className={s.modalImg}>
-              {data?.avatars.length ? (
-                <img src={data?.avatars[0].url} alt="аватар" />
-              ) : (
-                <Image height={48} width={48} />
-              )}
-            </div>
-            <label htmlFor={'mainPhotoInput'}>
-              <Button as={'a'} variant={'primary'}>
-                Select from Computer
-              </Button>
-              <div>
-                <input
-                  type={'file'}
-                  id="mainPhotoInput"
-                  onChange={mainPhotoSelected}
-                  className={s.mainPhotoInput}
-                />
+            {errorPhoto && (
+              <div className={s.modalError}>
+                <Typography variant={'regular14'}>
+                  Error! The format of the uploaded photo must be PNG and JPEG
+                </Typography>
               </div>
-            </label>
+            )}
+            {photo ? (
+              <img
+                src={URL.createObjectURL(photo.get('file') as Blob)}
+                className={s.avatar}
+                alt="аватар"
+              />
+            ) : (
+              <>
+                <div className={s.modalImg}>
+                  <Image height={48} width={48} />
+                </div>
+              </>
+            )}
+            {photo ? (
+              <div className={s.savePhoto}>
+                <Button variant={'primary'} onClick={onSaveHandler}>
+                  Save
+                </Button>
+              </div>
+            ) : (
+              <label htmlFor={'mainPhotoInput'}>
+                <Button as={'a'} variant={'primary'}>
+                  Select from Computer
+                </Button>
+                <div>
+                  <input
+                    type={'file'}
+                    id="mainPhotoInput"
+                    onChange={mainPhotoSelected}
+                    className={s.mainPhotoInput}
+                  />
+                </div>
+              </label>
+            )}
           </div>
         }
+      </Modal>
+      <Modal
+        className={s.modalBlock}
+        title={'Delete Photo'}
+        open={openDeleteModal}
+        titleFirstButton={'YES'}
+        titleSecondButton={'NO'}
+        onClose={closeDeleteModal}
+        buttonBlockClassName={s.buttonBlock}
+        callBack={deletePhotoHandler}
+      >
+        <Typography variant={'regular16'} className={s.description}>
+          Are you sure you want to delete the photo?
+        </Typography>
       </Modal>
     </div>
   )

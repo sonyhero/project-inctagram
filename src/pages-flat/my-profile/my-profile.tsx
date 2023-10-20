@@ -14,11 +14,9 @@ export const MyProfile = () => {
   }
   if (!data) {
     router.push('auth/sign-in')
+
+    return
   }
 
-  return (
-    <>
-      <ProfileSettings />
-    </>
-  )
+  return <ProfileSettings userId={data.userId} />
 }
