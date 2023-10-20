@@ -1,6 +1,7 @@
 import React, { ChangeEvent, FC, useEffect, useMemo, useState } from 'react'
 
 import { useRouter } from 'next/router'
+import AvatarEditor from 'react-avatar-editor'
 
 import s from './profile-settings.module.scss'
 
@@ -168,11 +169,22 @@ export const ProfileSettings: FC<PropsType> = ({ userId }) => {
               </div>
             )}
             {photo ? (
-              <img
-                src={URL.createObjectURL(photo.get('file') as Blob)}
-                className={s.avatar}
-                alt="аватар"
-              />
+              <>
+                {/*<img*/}
+                {/*  src={URL.createObjectURL(photo.get('file') as Blob)}*/}
+                {/*  className={s.avatar}*/}
+                {/*  alt="аватар"*/}
+                {/*/>*/}
+                <AvatarEditor
+                  image={URL.createObjectURL(photo.get('file') as Blob)}
+                  width={316}
+                  height={316}
+                  border={50}
+                  color={[255, 255, 255, 0.6]} // RGBA
+                  rotate={0}
+                  borderRadius={316 / 2}
+                />
+              </>
             ) : (
               <>
                 <div className={s.modalImg}>
