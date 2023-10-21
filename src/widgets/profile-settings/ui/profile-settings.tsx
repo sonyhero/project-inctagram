@@ -1,6 +1,7 @@
-import React, { ChangeEvent, FC, useEffect, useMemo, useState } from 'react'
+import React, { ChangeEvent, FC, useEffect, useMemo, useRef, useState } from 'react'
 
 import { useRouter } from 'next/router'
+import AvatarEditor from 'react-avatar-editor'
 
 import s from './profile-settings.module.scss'
 
@@ -32,6 +33,8 @@ export const ProfileSettings: FC<PropsType> = ({ userId }) => {
   const { locale } = useRouter()
   const [updatePhoto] = useUploadAvatarMutation()
   const [errorPhoto, setErrorPhoto] = useState('')
+  const editorRef = useRef<AvatarEditor | null>(null)
+  const [zoom, setZoom] = useState(1)
   const handleTabSort = (value: string) => {
     dispatch(profileSettingsSlice.actions.setCurrentOption({ value }))
   }
@@ -57,9 +60,9 @@ export const ProfileSettings: FC<PropsType> = ({ userId }) => {
         <div className={s.profileSettings}>
           <div className={s.photoBlock}>
             {profileData?.avatars.length ? (
-              <div className={s.photoAndDeleteBlock} onClick={openDeleteModalHandler}>
+              <div className={s.photoAndDeleteBlock}>
                 <img src={profileData.avatars[0].url} className={s.photo} alt="profilePhoto" />
-                <div className={s.deletePhoto}>
+                <div className={s.deletePhoto} onClick={openDeleteModalHandler}>
                   <Close />
                 </div>
               </div>
@@ -117,9 +120,9 @@ export const ProfileSettings: FC<PropsType> = ({ userId }) => {
       const formData = new FormData()
 
       if (!['image/jpeg', 'image/jpg', 'image/png'].includes(event.target.files[0].type)) {
-        setErrorPhoto('Error! The format of the uploaded photo must be\n' + 'PNG and JPEG')
+        setErrorPhoto(t.myProfile.generalInformation.photoModal.errorType)
       } else if (event.target.files[0].size > 10 * 1024 * 1024) {
-        setErrorPhoto('Error! Photo size must be less than 10 MB!')
+        setErrorPhoto(t.myProfile.generalInformation.photoModal.errorSize)
       } else {
         setErrorPhoto('')
         formData.append('file', event.target.files[0])
@@ -129,14 +132,43 @@ export const ProfileSettings: FC<PropsType> = ({ userId }) => {
   }
 
   const onSaveHandler = () => {
-    if (photo !== null) {
-      updatePhoto(photo)
-      setOpenModal(false)
-      setPhoto(null)
+    if (editorRef.current) {
+      const canvas = editorRef.current.getImage()
+
+      canvas.toBlob(blob => {
+        if (blob) {
+          const formData = new FormData()
+
+          formData.append('file', blob)
+          updatePhoto(formData)
+          setOpenModal(false)
+          setPhoto(null)
+          setZoom(1)
+        }
+      }, 'image/jpeg')
+    }
+  }
+
+  const handleZoomIn = () => {
+    setZoom(zoom + 0.1)
+  }
+
+  const handleZoomOut = () => {
+    if (zoom > 1) {
+      setZoom(zoom - 0.1)
+    }
+  }
+
+  const handleWheel = (e: any) => {
+    if (e.deltaY > 0) {
+      handleZoomOut()
+    } else if (e.deltaY < 0) {
+      handleZoomIn()
     }
   }
 
   const onCloseModalHandler = () => {
+    setZoom(1)
     setErrorPhoto('')
     setOpenModal(false)
     setPhoto(null)
@@ -154,7 +186,7 @@ export const ProfileSettings: FC<PropsType> = ({ userId }) => {
       {showActivePage}
       <Modal
         className={s.modalBlock}
-        title={'Add a Profile Photo'}
+        title={t.myProfile.generalInformation.photoModal.addAProfilePhoto}
         open={openModal}
         onClose={onCloseModalHandler}
       >
@@ -162,17 +194,25 @@ export const ProfileSettings: FC<PropsType> = ({ userId }) => {
           <div className={s.modalContent}>
             {errorPhoto && (
               <div className={s.modalError}>
-                <Typography variant={'regular14'}>
-                  Error! The format of the uploaded photo must be PNG and JPEG
-                </Typography>
+                <Typography variant={'regular14'}>{errorPhoto}</Typography>
               </div>
             )}
             {photo ? (
-              <img
-                src={URL.createObjectURL(photo.get('file') as Blob)}
-                className={s.avatar}
-                alt="аватар"
-              />
+              <div className={s.avatar} onWheel={handleWheel}>
+                <AvatarEditor
+                  ref={editorRef}
+                  image={URL.createObjectURL(photo.get('file') as Blob)}
+                  width={332}
+                  height={340}
+                  border={0}
+                  color={[24, 27, 27, 0.6]}
+                  rotate={0}
+                  borderRadius={332 / 2}
+                  disableBoundaryChecks={false}
+                  disableHiDPIScaling={true}
+                  scale={zoom}
+                />
+              </div>
             ) : (
               <>
                 <div className={s.modalImg}>
@@ -183,13 +223,13 @@ export const ProfileSettings: FC<PropsType> = ({ userId }) => {
             {photo ? (
               <div className={s.savePhoto}>
                 <Button variant={'primary'} onClick={onSaveHandler}>
-                  Save
+                  {t.myProfile.generalInformation.photoModal.save}
                 </Button>
               </div>
             ) : (
               <label htmlFor={'mainPhotoInput'}>
                 <Button as={'a'} variant={'primary'}>
-                  Select from Computer
+                  {t.myProfile.generalInformation.photoModal.selectFromComputer}
                 </Button>
                 <div>
                   <input
@@ -206,16 +246,16 @@ export const ProfileSettings: FC<PropsType> = ({ userId }) => {
       </Modal>
       <Modal
         className={s.modalBlock}
-        title={'Delete Photo'}
+        title={t.myProfile.generalInformation.deletePhotoModal.deletePhoto}
         open={openDeleteModal}
-        titleFirstButton={'YES'}
-        titleSecondButton={'NO'}
+        titleFirstButton={t.myProfile.generalInformation.deletePhotoModal.yes}
+        titleSecondButton={t.myProfile.generalInformation.deletePhotoModal.no}
         onClose={closeDeleteModal}
         buttonBlockClassName={s.buttonBlock}
         callBack={deletePhotoHandler}
       >
         <Typography variant={'regular16'} className={s.description}>
-          Are you sure you want to delete the photo?
+          {t.myProfile.generalInformation.deletePhotoModal.areYouSure}
         </Typography>
       </Modal>
     </div>

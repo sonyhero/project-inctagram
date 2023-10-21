@@ -46,7 +46,7 @@ export const en = {
         nov: 'November',
         dec: 'December',
       },
-      placeholderDateOfBirth: 'mm.dd.yyyy',
+      placeholderDateOfBirth: 'dd.mm.yyyy',
       selectYourCity: 'Select your city',
       cities: {
         minsk: 'Minsk',
@@ -58,6 +58,19 @@ export const en = {
       placeholderAboutMe: 'tell us about yourself',
       saveChanges: 'Save Changes',
       addAProfilePhoto: 'Add a Profile Photo',
+      photoModal: {
+        addAProfilePhoto: 'Add a Profile Photo',
+        errorType: 'Error! The format of the uploaded photo must PNG and JPEG',
+        errorSize: 'Error! Photo size must be less than 10 MB!',
+        selectFromComputer: 'Select from Computer',
+        save: 'Save',
+      },
+      deletePhotoModal: {
+        deletePhoto: 'Delete Photo',
+        areYouSure: 'Are you sure you want to delete the photo?',
+        yes: 'Yes',
+        no: 'No',
+      },
     },
   },
   auth: {

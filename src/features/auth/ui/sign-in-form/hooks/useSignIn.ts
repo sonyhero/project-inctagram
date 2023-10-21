@@ -41,7 +41,8 @@ export const useSignIn = () => {
       .catch(err => {
         setError('password', {
           type: 'server',
-          message: err.data.messages,
+          /*message: err.data.messages,*/
+          message: 'The email or password are incorrect. Try again please',
         })
       })
   }
