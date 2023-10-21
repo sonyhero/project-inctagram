@@ -11,6 +11,7 @@ import s from './forgot-password-form.module.scss'
 
 import { useRecoveryPasswordMutation } from '@/features/auth'
 import { useTranslation } from '@/shared/hooks/useTranstaion'
+import { Nullable } from '@/shared/types'
 import { Button, Card, ControlledTextField, Modal, Recaptcha, Typography } from '@/shared/ui'
 
 const forgotPasswordSchema = z.object({
@@ -21,7 +22,7 @@ type ForgotPasswordFormShem = z.infer<typeof forgotPasswordSchema>
 
 export const ForgotPasswordForm = () => {
   const [forgotPassword] = useRecoveryPasswordMutation()
-  const [recaptchaKey, setRecaptchaKey] = useState<string | null>(null)
+  const [recaptchaKey, setRecaptchaKey] = useState<Nullable<string>>(null)
   const [openModal, setOpenModal] = useState(false)
   const [email, setEmail] = useState<string>('')
   const router = useRouter()
@@ -47,7 +48,7 @@ export const ForgotPasswordForm = () => {
       })
   }
   const handleSubmitForm = handleSubmit(onSubmit)
-  const onRecaptchaChangeHandler = (key: string | null) => {
+  const onRecaptchaChangeHandler = (key: Nullable<string>) => {
     setRecaptchaKey(key)
   }
   const routerHandler = () => {

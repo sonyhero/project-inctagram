@@ -14,6 +14,7 @@ import s from './DatePicker.module.scss'
 import { DatePickerHeader } from './DatePickerHeader'
 
 import { useTranslation } from '@/shared/hooks/useTranstaion'
+import { Nullable } from '@/shared/types'
 import { customizeDatePickerInput } from '@/shared/utils/customizeDatePickerInput'
 
 type DatePickerProps = {
@@ -28,7 +29,7 @@ type DatePickerProps = {
   placeholder?: string
 }
 
-type Value = Date | null
+type Value = Nullable<Date>
 type RangeValue = [Value, Value]
 
 export const DatePicker: FC<DatePickerProps> = ({

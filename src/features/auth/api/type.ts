@@ -1,3 +1,5 @@
+import { Nullable } from '@/shared/types'
+
 export type SignUpType = {
   userName: string
   email: string
@@ -32,7 +34,7 @@ export type AuthLoginResponseType = {
 }
 export type RecoveryPasswordType = {
   email: string
-  recaptcha: string | null
+  recaptcha: Nullable<string>
 }
 export type CheckRecoveryCodeType = {
   recoveryCode: string

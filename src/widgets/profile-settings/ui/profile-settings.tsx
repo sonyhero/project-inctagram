@@ -33,7 +33,7 @@ export const ProfileSettings: FC<PropsType> = ({ userId }) => {
   const { locale } = useRouter()
   const [updatePhoto] = useUploadAvatarMutation()
   const [errorPhoto, setErrorPhoto] = useState('')
-  const editorRef = useRef<AvatarEditor | null>(null)
+  const editorRef = useRef<Nullable<AvatarEditor>>(null)
   const [zoom, setZoom] = useState(1)
   const handleTabSort = (value: string) => {
     dispatch(profileSettingsSlice.actions.setCurrentOption({ value }))
