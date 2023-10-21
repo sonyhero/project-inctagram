@@ -114,18 +114,19 @@ export const ProfileSettings: FC<PropsType> = ({ userId }) => {
     )
   }, [locale])
 
-  //TODO отпимизировать функцию
   const mainPhotoSelected = (event: ChangeEvent<HTMLInputElement>) => {
-    if (event.target.files && event.target.files.length) {
-      const formData = new FormData()
+    const file = event.target.files && event.target.files[0]
 
-      if (!['image/jpeg', 'image/jpg', 'image/png'].includes(event.target.files[0].type)) {
+    if (file) {
+      if (!['image/jpeg', 'image/jpg', 'image/png'].includes(file.type)) {
         setErrorPhoto(t.myProfile.generalInformation.photoModal.errorType)
-      } else if (event.target.files[0].size > 10 * 1024 * 1024) {
+      } else if (file.size > 10 * 1024 * 1024) {
         setErrorPhoto(t.myProfile.generalInformation.photoModal.errorSize)
       } else {
         setErrorPhoto('')
-        formData.append('file', event.target.files[0])
+        const formData = new FormData()
+
+        formData.append('file', file)
         setPhoto(formData)
       }
     }
