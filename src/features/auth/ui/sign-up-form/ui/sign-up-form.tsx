@@ -47,7 +47,7 @@ export const SignUpForm = () => {
             className={s.userName}
             control={control}
             type={'default'}
-            name={'name'}
+            name={'userName'}
             label={t.auth.signUp.userName}
             placeholder={t.auth.signUp.userNamePlaceholder}
           ></ControlledTextField>
