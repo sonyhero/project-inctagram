@@ -104,6 +104,7 @@ export const DatePicker: FC<DatePickerProps> = ({
               startDate={range ? startDate : undefined}
               endDate={range ? endDate : undefined}
               placeholderText={placeholder !== '' ? placeholder : placeholderText}
+              dateFormat="dd.MM.yyyy"
             />
             {error && (
               <span className={s.datePickerError}>

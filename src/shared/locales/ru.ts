@@ -48,7 +48,7 @@ export const ru: LocaleType = {
         nov: 'Ноябрь',
         dec: 'Декабрь',
       },
-      placeholderDateOfBirth: 'мм.дд.гггг',
+      placeholderDateOfBirth: 'дд.мм.гггг',
       selectYourCity: 'Выберите свой город',
       cities: {
         minsk: 'Минск',
@@ -60,6 +60,19 @@ export const ru: LocaleType = {
       placeholderAboutMe: 'Расскажите нам о себе',
       saveChanges: 'Сохранить изменения',
       addAProfilePhoto: 'Добавить фотографию профиля',
+      photoModal: {
+        addAProfilePhoto: 'Добавить фотографию профиля',
+        errorType: 'Ошибка! Формат загружаемой фотографии должен быть PNG и JPEG.',
+        errorSize: 'Ошибка! Размер фотографии должен быть меньше 10 МБ!',
+        selectFromComputer: 'Выбрать с компьютера',
+        save: 'Сохранить',
+      },
+      deletePhotoModal: {
+        deletePhoto: 'Удалить фото',
+        areYouSure: 'Вы уверены, что хотите удалить фотографию?',
+        yes: 'Да',
+        no: 'Нет',
+      },
     },
   },
   auth: {

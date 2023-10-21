@@ -11,14 +11,14 @@ const sigInSchema = z
   .object({
     name: z
       .string()
-      .min(6)
-      .max(30)
+      .min(6, 'Minimum number of characters 6')
+      .max(30, 'Maximum number of characters 30')
       .regex(/^[a-zA-Z0-9_-]*$/),
-    email: z.string().email(),
+    email: z.string().email('The email must match the format example@example.com'),
     password: z
       .string()
-      .min(6)
-      .max(20)
+      .min(6, 'Minimum number of characters 6')
+      .max(20, 'Maximum number of characters 20')
       .regex(
         /^(?=.*[0-9])(?=.*[A-Z])(?=.*[a-z])(?=.*[!"#$%&'()*+,-./:;<=>?@[\]^_{|}~])[A-Za-z0-9!"#$%&'()*+,-./:;<=>?@[\]^_{|}~]+$/,
         'Password must contain a-z, A-Z,  ! " # $ % & \' ( ) * + , - . / : ; < = > ? @ [ \\ ] ^ _` { | } ~'
