@@ -1,4 +1,4 @@
-import React, { ChangeEvent, FC, useEffect, useMemo, useState } from 'react'
+import React, { ChangeEvent, FC, useEffect, useMemo, useRef, useState } from 'react'
 
 import { useRouter } from 'next/router'
 import AvatarEditor from 'react-avatar-editor'
@@ -33,6 +33,7 @@ export const ProfileSettings: FC<PropsType> = ({ userId }) => {
   const { locale } = useRouter()
   const [updatePhoto] = useUploadAvatarMutation()
   const [errorPhoto, setErrorPhoto] = useState('')
+  const editorRef = useRef<AvatarEditor | null>(null)
   const handleTabSort = (value: string) => {
     dispatch(profileSettingsSlice.actions.setCurrentOption({ value }))
   }
@@ -130,10 +131,19 @@ export const ProfileSettings: FC<PropsType> = ({ userId }) => {
   }
 
   const onSaveHandler = () => {
-    if (photo !== null) {
-      updatePhoto(photo)
-      setOpenModal(false)
-      setPhoto(null)
+    if (editorRef.current) {
+      const canvas = editorRef.current.getImage()
+
+      canvas.toBlob(blob => {
+        if (blob) {
+          const formData = new FormData()
+
+          formData.append('file', blob)
+          updatePhoto(formData)
+          setOpenModal(false)
+          setPhoto(null)
+        }
+      }, 'image/jpeg')
     }
   }
 
@@ -176,13 +186,16 @@ export const ProfileSettings: FC<PropsType> = ({ userId }) => {
                 {/*  alt="аватар"*/}
                 {/*/>*/}
                 <AvatarEditor
+                  ref={editorRef}
                   image={URL.createObjectURL(photo.get('file') as Blob)}
                   width={316}
                   height={316}
                   border={50}
-                  color={[255, 255, 255, 0.6]} // RGBA
+                  color={[255, 255, 255, 0.6]}
                   rotate={0}
                   borderRadius={316 / 2}
+                  disableBoundaryChecks={false}
+                  disableHiDPIScaling={true}
                 />
               </>
             ) : (
