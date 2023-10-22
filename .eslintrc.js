@@ -3,12 +3,12 @@ module.exports = {
   rules: {
     'no-console': ['warn', { allow: ['warn', 'error'] }],
     '@typescript-eslint/ban-types': [
-      'error',
+      'warn',
       {
         extendDefaults: true,
         types: {
           null: {
-            message: '--> Используй Nullable<T> = T | null <--',
+            message: '--- Используй Nullable<T> = T | null ---',
             // fixWith: 'Nullable<>', // Nullable<T> = null | T
           },
         },

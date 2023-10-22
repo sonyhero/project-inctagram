@@ -9,6 +9,12 @@ import { usePagination } from '@/shared/ui/pagination/usePagination'
 import { Typography } from '@/shared/ui/typography'
 import { SelectBox } from 'src/shared/ui/select'
 
+// type PaginationConditionals = {
+//   perPage?: Nullable<number>
+//   perPageOptions?: Nullable<any[]>
+//   onPerPageChange?: Nullable<(itemPerPage: number) => void>
+// }
+// TODO вероятно этот тип можно зарефакторить используя Nullable как написано выше
 type PaginationConditionals =
   | {
       perPage?: null
