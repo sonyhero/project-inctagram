@@ -1,13 +1,11 @@
 import React, { FC } from 'react'
 
 import { DevTool } from '@hookform/devtools'
-import { zodResolver } from '@hookform/resolvers/zod'
-import { useForm } from 'react-hook-form'
-import { z } from 'zod'
 
 import s from './UpdateProfileForm.module.scss'
 
-import { GetProfileResponse, useUpdateProfileMutation } from '@/entities/profile'
+import { GetProfileResponse } from '@/entities/profile'
+import { useUpdateProfile } from '@/features/update-profile-form/hooks/useUpdateProfile'
 import { useTranslation } from '@/shared/hooks/useTranstaion'
 import {
   Button,
@@ -19,70 +17,18 @@ import {
 } from '@/shared/ui'
 import { formatDate } from '@/shared/utils'
 
-const updateProfileSchema = z.object({
-  userName: z
-    .string()
-    .min(6)
-    .max(30)
-    .regex(/^[a-zA-Z0-9_-]*$/),
-  firstName: z
-    .string()
-    .min(1)
-    .max(50)
-    .regex(/^[a-zA-Zа-яА-я]*$/),
-  lastName: z
-    .string()
-    .min(1)
-    .max(50)
-    .regex(/^[a-zA-Zа-яА-я]*$/),
-  city: z.string(),
-  dateOfBirth: z
-    .date()
-    .min(new Date('01-01-1910Z'))
-    .max(
-      new Date(Date.now() - 13 * 365 * 24 * 60 * 60 * 1000),
-      'A user under 13 cannot create a profile'
-    ),
-  aboutMe: z.string().min(0).max(200),
-})
-
-export type UpdateProfileFormShem = z.infer<typeof updateProfileSchema>
-
 type PropsType = {
   defaultValue?: GetProfileResponse
 }
 export const UpdateProfileForm: FC<PropsType> = ({ defaultValue }) => {
-  const [updateProfile] = useUpdateProfileMutation()
-  const {
-    control,
-    handleSubmit,
-    formState: { isValid, isDirty, errors },
-  } = useForm<UpdateProfileFormShem>({
-    defaultValues: {
-      userName: defaultValue?.userName ?? '',
-      firstName: defaultValue?.firstName ?? '',
-      lastName: defaultValue?.lastName ?? '',
-      dateOfBirth: new Date(defaultValue?.dateOfBirth ?? ''),
-      city: defaultValue?.city ?? '',
-      aboutMe: defaultValue?.aboutMe ?? '',
-    },
-    mode: 'onBlur',
-    resolver: zodResolver(updateProfileSchema),
-  })
-
   const { t } = useTranslation()
+  const { control, handleSubmitForm, errors, isValid, isDirty } = useUpdateProfile(defaultValue)
 
   const cities = [
     { id: '1', value: t.myProfile.generalInformation.cities.minsk },
     { id: '2', value: t.myProfile.generalInformation.cities.grodno },
     { id: '3', value: t.myProfile.generalInformation.cities.brest },
   ]
-
-  const onSubmit = (data: UpdateProfileFormShem) => {
-    updateProfile(data)
-  }
-
-  const handleSubmitForm = handleSubmit(onSubmit)
 
   return (
     <form onSubmit={handleSubmitForm} className={s.updateProfileBlock}>
