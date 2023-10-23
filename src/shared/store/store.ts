@@ -1,9 +1,9 @@
 import { configureStore } from '@reduxjs/toolkit'
 import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux'
 
-import { modalSlice } from '@/features/modal/model/modal-slice'
-import { baseApi } from '@/shared/api/base-api'
-import { profileSettingsSlice } from '@/widgets/profile-settings/model/profile-settings-slice'
+import { modalSlice } from '@/features/modal/model/modalSlice'
+import { baseApi } from '@/shared/api/baseApi'
+import { profileSettingsSlice } from '@/widgets/profile-settings/model/profileSettingsSlice'
 
 export const store = configureStore({
   reducer: {

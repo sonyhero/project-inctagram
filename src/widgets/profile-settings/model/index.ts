@@ -1,1 +1,1 @@
-export * from './profile-settings-slice'
+export * from './profileSettingsSlice'

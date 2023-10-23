@@ -1,2 +1,2 @@
-export * from './type'
-export * from './modal-slice'
+export * from './modalSlice.types'
+export * from './modalSlice'

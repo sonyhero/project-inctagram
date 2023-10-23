@@ -1,1 +1,1 @@
-export * from './controlled-textarea'
+export * from './ControlledTextArea'

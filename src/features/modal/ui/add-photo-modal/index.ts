@@ -1,1 +1,1 @@
-export * from './add-photo-modal'
+export * from './AddPhotoModal'

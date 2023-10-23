@@ -1,1 +1,1 @@
-export { BadRecoveryLink } from './bad-recovery-link'
+export { BadRecoveryLink } from './BadRecoveryLink'
