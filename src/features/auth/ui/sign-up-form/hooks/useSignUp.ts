@@ -16,7 +16,7 @@ const getSigUpSchema = (t: LocaleType) => {
         .string()
         .min(6, `${t.auth.signUp.zodSigUpSchema.userNameMin} 6`)
         .max(30, `${t.auth.signUp.zodSigUpSchema.userNameMax} 30`)
-        .regex(/^[a-zA-Z0-9_-]*$/),
+        .regex(/^[a-zA-Z0-9_-]*$/, t.auth.signUp.zodSigUpSchema.userNameRegex),
       email: z.string().email(t.auth.signUp.zodSigUpSchema.email),
       password: z
         .string()
