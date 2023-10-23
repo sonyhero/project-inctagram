@@ -50,7 +50,7 @@ export const SignInForm = () => {
             </Link>
           </Button>
         </div>
-        <Button fullWidth className={s.submit} type="submit" disabled={!isValid}>
+        <Button fullWidth className={s.submit} type={'submit'} disabled={!isValid}>
           <Typography variant={'h3'}>{t.auth.signIn.signIn}</Typography>
         </Button>
       </form>

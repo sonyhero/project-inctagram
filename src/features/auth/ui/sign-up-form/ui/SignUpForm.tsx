@@ -19,13 +19,9 @@ import {
 
 export const SignUpForm = () => {
   const { onGitHubAuth, onGoogleAuth } = useThirdPartyAuth()
-  const { control, handleSubmitForm, disableButton, emailModal, isOpenModal, setIsOpenModal } =
+  const { control, handleSubmitForm, disableButton, emailModal, isOpenModal, onCloseModalHandler } =
     useSignUp()
   const { t } = useTranslation()
-
-  const closeModal = () => {
-    setIsOpenModal(false)
-  }
 
   return (
     <>
@@ -115,8 +111,8 @@ export const SignUpForm = () => {
       <Modal
         title={t.auth.signUp.modal}
         open={isOpenModal}
-        onClose={closeModal}
-        callBack={closeModal}
+        onClose={onCloseModalHandler}
+        callBack={onCloseModalHandler}
         titleSecondButton={'OK'}
         buttonBlockClassName={s.btnBlock}
       >

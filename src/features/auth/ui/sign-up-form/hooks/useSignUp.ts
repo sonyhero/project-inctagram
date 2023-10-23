@@ -103,6 +103,9 @@ export const useSignUp = () => {
   }
 
   const handleSubmitForm = handleSubmit(onSubmit)
+  const onCloseModalHandler = () => {
+    setIsOpenModal(false)
+  }
 
-  return { control, handleSubmitForm, disableButton, emailModal, isOpenModal, setIsOpenModal }
+  return { control, handleSubmitForm, disableButton, emailModal, isOpenModal, onCloseModalHandler }
 }
