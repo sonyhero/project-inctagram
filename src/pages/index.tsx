@@ -1,8 +1,7 @@
-import { Home } from '@/pages-flat/home'
-import { getBaseLayout } from '@/shared/providers/layout/Layout'
+import { getBaseLayout } from '@/components/layout/layout'
 
-export default function HomePage() {
-  return <Home />
+export default function Home() {
+  return <div>main page</div>
 }
 
-HomePage.getLayout = getBaseLayout
+Home.getLayout = getBaseLayout
