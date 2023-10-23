@@ -1,4 +1,4 @@
-import { FC, ReactNode } from 'react'
+import { ReactNode } from 'react'
 
 import { clsx } from 'clsx'
 import Link from 'next/link'
@@ -9,7 +9,7 @@ import { Nullable } from '@/shared/types'
 import { Typography } from '@/shared/ui'
 import { VariantIconType } from '@/widgets/side-bar'
 
-type PropsType = {
+type Props = {
   nameLink: string
   link?: VariantIconType
   children: ReactNode
@@ -19,22 +19,17 @@ type PropsType = {
   callBack?: () => void
 }
 
-export const LinkSideBar: FC<PropsType> = ({
-  nameLink,
-  link,
-  children,
-  handleClick,
-  variantIcon,
-  className,
-  callBack,
-}) => {
-  const handleItemClick = () => {
-    callBack?.()
-    handleClick(variantIcon!)
-  }
+export const LinkSideBar = (props: Props) => {
+  const { nameLink, link, children, handleClick, variantIcon, className, callBack } = props
+
   const styles = {
     container: clsx(s.container, className),
     check: clsx(s.nameLink, link === variantIcon && s.active),
+  }
+
+  const handleItemClick = () => {
+    callBack?.()
+    handleClick(variantIcon!)
   }
 
   return (

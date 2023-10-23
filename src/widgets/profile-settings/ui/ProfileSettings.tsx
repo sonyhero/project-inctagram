@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 
 import { useRouter } from 'next/router'
 
@@ -12,10 +12,11 @@ import { useAppDispatch, useAppSelector } from '@/shared/store'
 import { Button, Close, Image, TabSwitcher } from '@/shared/ui'
 import { profileSettingsSlice } from '@/widgets/profile-settings'
 
-type PropsType = {
+type Props = {
   userId: number
 }
-export const ProfileSettings: FC<PropsType> = ({ userId }) => {
+export const ProfileSettings = ({ userId }: Props) => {
+  const { data: profileData } = useGetProfileQuery(userId)
   const { t } = useTranslation()
   const { locale } = useRouter()
 
@@ -23,10 +24,9 @@ export const ProfileSettings: FC<PropsType> = ({ userId }) => {
   const currentOption = useAppSelector(state => state.profileSettingsSlice.currentOption)
   const dispatch = useAppDispatch()
 
-  const [deletePhotoModal, setDeleteModalPhoto] = useState(false)
-  const [addPhotoModal, setAddPhotoModal] = useState(false)
+  const [deletePhotoModal, setDeleteModalPhoto] = useState<boolean>(false)
+  const [addPhotoModal, setAddPhotoModal] = useState<boolean>(false)
 
-  const { data: profileData } = useGetProfileQuery(userId)
   const handleTabSort = (value: string) => {
     dispatch(profileSettingsSlice.actions.setCurrentOption({ value }))
   }

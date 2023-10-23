@@ -1,15 +1,13 @@
-import React from 'react'
-
 import ReCAPTCHA from 'react-google-recaptcha'
 
 import s from './Recaptcha.module.scss'
 
 import { Nullable } from '@/shared/types'
 
-type PropsType = {
+type Props = {
   onRecaptchaChangeHandler: (token: Nullable<string>) => void
 }
-export const Recaptcha = ({ onRecaptchaChangeHandler }: PropsType) => {
+export const Recaptcha = ({ onRecaptchaChangeHandler }: Props) => {
   const onRecaptchaChange = (token: Nullable<string>) => {
     onRecaptchaChangeHandler(token)
   }

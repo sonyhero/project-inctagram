@@ -1,5 +1,3 @@
-import { FC } from 'react'
-
 import { clsx } from 'clsx'
 
 import s from './Pagination.module.scss'
@@ -27,7 +25,7 @@ type PaginationConditionals =
       onPerPageChange: (itemPerPage: number) => void
     }
 
-export type PaginationProps = {
+export type Props = {
   count: number
   page: number
   onChange: (page: number) => void
@@ -52,15 +50,9 @@ const classNames = {
   },
 }
 
-export const Pagination: FC<PaginationProps> = ({
-  onChange,
-  count,
-  page,
-  perPage = null,
-  perPageOptions,
-  onPerPageChange,
-  siblings,
-}) => {
+export const Pagination = (props: Props) => {
+  const { onChange, count, page, perPage = null, perPageOptions, onPerPageChange, siblings } = props
+
   const {
     paginationRange,
     isLastPage,
@@ -114,10 +106,12 @@ type PageButtonProps = NavigationButtonProps & {
   selected: boolean
 }
 
-const Dots: FC = () => {
+const Dots = () => {
   return <span className={classNames.dots}>&#8230;</span>
 }
-const PageButton: FC<PageButtonProps> = ({ onClick, disabled, selected, page }) => {
+const PageButton = (props: PageButtonProps) => {
+  const { onClick, disabled, selected, page } = props
+
   return (
     <button
       onClick={onClick}
@@ -128,7 +122,7 @@ const PageButton: FC<PageButtonProps> = ({ onClick, disabled, selected, page }) 
     </button>
   )
 }
-const PrevButton: FC<NavigationButtonProps> = ({ onClick, disabled }) => {
+const PrevButton = ({ onClick, disabled }: NavigationButtonProps) => {
   return (
     <button
       aria-label="change-page-left"
@@ -141,7 +135,7 @@ const PrevButton: FC<NavigationButtonProps> = ({ onClick, disabled }) => {
   )
 }
 
-const NextButton: FC<NavigationButtonProps> = ({ onClick, disabled }) => {
+const NextButton = ({ onClick, disabled }: NavigationButtonProps) => {
   return (
     <button
       aria-label="change-page-right"
@@ -160,11 +154,9 @@ type MainPaginationButtonsProps = {
   onClick: (pageNumber: number) => () => void
 }
 
-const MainPaginationButtons: FC<MainPaginationButtonsProps> = ({
-  paginationRange,
-  currentPage,
-  onClick,
-}) => {
+const MainPaginationButtons = (props: MainPaginationButtonsProps) => {
+  const { paginationRange, currentPage, onClick } = props
+
   return (
     <>
       {paginationRange.map((page: number | string, index) => {
@@ -185,7 +177,7 @@ export type PerPageSelectProps = {
   onPerPageChange: (itemPerPage: number) => void
 }
 
-export const PerPageSelect: FC<PerPageSelectProps> = ({ perPageOptions, onPerPageChange }) => {
+export const PerPageSelect = ({ perPageOptions, onPerPageChange }: PerPageSelectProps) => {
   return (
     <div className={classNames.selectBox}>
       <Typography variant={'regular14'} className={classNames.show}>

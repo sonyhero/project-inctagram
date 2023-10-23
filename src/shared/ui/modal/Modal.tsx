@@ -1,4 +1,4 @@
-import { ComponentProps, FC } from 'react'
+import { ComponentProps } from 'react'
 
 import {
   Dialog,
@@ -14,7 +14,7 @@ import s from './Modal.module.scss'
 
 import { Button, Close, Typography } from '@/shared/ui'
 
-type PropsType = {
+type Props = {
   open?: boolean
   onClose?: () => void
   showCloseButton?: boolean
@@ -26,23 +26,25 @@ type PropsType = {
   className?: string
 } & ComponentProps<'div'>
 
-const modalAnimation = {
+const MODAL_ANIMATION = {
   hidden: { opacity: 0 },
   visible: { opacity: 1, transition: { duration: 0.3 } },
 }
 
-export const Modal: FC<PropsType> = ({
-  open = false,
-  title,
-  onClose,
-  children,
-  titleFirstButton,
-  titleSecondButton,
-  showCloseButton = true,
-  callBack,
-  buttonBlockClassName,
-  className,
-}) => {
+export const Modal = (props: Props) => {
+  const {
+    open = false,
+    title,
+    onClose,
+    children,
+    titleFirstButton,
+    titleSecondButton,
+    showCloseButton = true,
+    callBack,
+    buttonBlockClassName,
+    className,
+  } = props
+
   function handleModalClosed() {
     onClose?.()
   }
@@ -51,7 +53,7 @@ export const Modal: FC<PropsType> = ({
     <Dialog open={open} onOpenChange={handleModalClosed}>
       {open && (
         <DialogPortal>
-          <motion.div variants={modalAnimation} initial="hidden" animate="visible">
+          <motion.div variants={MODAL_ANIMATION} initial={'hidden'} animate={'visible'}>
             <DialogOverlay className={s.overlay} />
             <DialogContent className={`${s.content} ${className}`}>
               <header className={s.header}>

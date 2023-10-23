@@ -1,19 +1,19 @@
-import { FC } from 'react'
-
 import * as Tabs from '@radix-ui/react-tabs'
 
 import s from './TabSwitcher.module.scss'
 
 import { Typography } from '@/shared/ui'
 
-type PropsType = {
+type Props = {
   classname?: string
   options?: any[]
   onChangeCallback?: (value: string) => void
   activeTab?: string
   disabled?: boolean
 }
-export const TabSwitcher: FC<PropsType> = ({ options, onChangeCallback, classname, activeTab }) => {
+export const TabSwitcher = (props: Props) => {
+  const { options, onChangeCallback, classname, activeTab } = props
+
   return (
     <div key={activeTab}>
       <Tabs.Root className={s.tabsRoot} onValueChange={onChangeCallback}>

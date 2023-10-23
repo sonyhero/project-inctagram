@@ -1,13 +1,11 @@
 import Head from 'next/head'
 
-type PropsType = {
+type Props = {
   title?: string
   description?: string
 }
 
-export const HeadMeta = (props: PropsType) => {
-  const { title, description } = props
-
+export const HeadMeta = ({ title, description }: Props) => {
   return (
     <Head>
       <title>{title ?? 'NextJS App'}</title>

@@ -1,5 +1,3 @@
-import React from 'react'
-
 import s from './Header.module.scss'
 
 import { LangSwitcher } from '@/features/lang-switcher'

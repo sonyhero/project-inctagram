@@ -1,11 +1,11 @@
-import { FC, ReactNode } from 'react'
+import { ReactNode } from 'react'
 
 import s from './Card.module.scss'
-type CardProps = {
+type Props = {
   children: ReactNode
   className?: string
 }
 
-export const Card: FC<CardProps> = ({ children, className }) => {
+export const Card = ({ children, className }: Props) => {
   return <div className={`${s.cardBlock} ${className}`}>{children}</div>
 }

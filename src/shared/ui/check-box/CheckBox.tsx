@@ -1,4 +1,4 @@
-import { FC, ReactElement } from 'react'
+import { ReactElement } from 'react'
 
 import * as Checkbox from '@radix-ui/react-checkbox'
 
@@ -14,13 +14,9 @@ export type CheckBoxProps = {
   label?: ReactElement | string
 }
 
-export const CheckBox: FC<CheckBoxProps> = ({
-  disabled = false,
-  onChange,
-  checked,
-  label,
-  ...rest
-}) => {
+export const CheckBox = (props: CheckBoxProps) => {
+  const { disabled = false, onChange, checked, label, ...rest } = props
+
   return (
     <Typography
       className={s.label}

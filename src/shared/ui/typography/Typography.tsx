@@ -2,7 +2,7 @@ import { ComponentPropsWithoutRef, ElementType } from 'react'
 
 import s from './Typography.module.scss'
 
-export type TypographyProps<T extends ElementType = 'p'> = {
+type Props<T extends ElementType = 'p'> = {
   as?: T
   className?: string
   color?: 'primary' | 'secondary' | 'error' | 'disabled' | 'linkColor'
@@ -23,7 +23,7 @@ export type TypographyProps<T extends ElementType = 'p'> = {
 } & ComponentPropsWithoutRef<T>
 
 export const Typography = <T extends ElementType = 'p'>(
-  props: TypographyProps<T> & Omit<ComponentPropsWithoutRef<T>, keyof TypographyProps<T>>
+  props: Props<T> & Omit<ComponentPropsWithoutRef<T>, keyof Props<T>>
 ) => {
   const { variant = 'regular16', color, className, as: Component = 'p', ...rest } = props
 

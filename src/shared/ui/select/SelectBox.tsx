@@ -1,4 +1,4 @@
-import { FC, ReactNode } from 'react'
+import { ReactNode } from 'react'
 
 import * as Select from '@radix-ui/react-select'
 import { Control, Controller, FieldError } from 'react-hook-form'
@@ -7,7 +7,7 @@ import s from './SelectBox.module.scss'
 
 import { ArrowIosDown, Typography } from '@/shared/ui'
 
-export type SelectPropsType = {
+type Props = {
   label?: string
   control?: Control<any>
   placeholder?: ReactNode
@@ -22,20 +22,21 @@ export type SelectPropsType = {
   name?: string
 }
 
-export const SelectBox: FC<SelectPropsType> = ({
-  name,
-  label,
-  placeholder,
-  value,
-  onValueChange,
-  control,
-  defaultValue,
-  options,
-  disabled,
-  required,
-  classname,
-  errorMessage,
-}) => {
+export const SelectBox = (props: Props) => {
+  const {
+    name,
+    label,
+    placeholder,
+    value,
+    control,
+    defaultValue,
+    options,
+    disabled,
+    required,
+    classname,
+    errorMessage,
+  } = props
+
   return (
     <Controller
       control={control}
