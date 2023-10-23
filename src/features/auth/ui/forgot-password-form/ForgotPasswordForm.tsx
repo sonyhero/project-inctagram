@@ -1,59 +1,22 @@
-import { useState } from 'react'
-
-import { zodResolver } from '@hookform/resolvers/zod'
 import Link from 'next/link'
-import { useRouter } from 'next/router'
-import { useForm } from 'react-hook-form'
-import { toast } from 'react-toastify'
-import { z } from 'zod'
 
 import s from './ForgotPasswordForm.module.scss'
 
-import { useRecoveryPasswordMutation } from '@/features/auth'
+import { useForgotPassword } from '@/features/auth/ui/forgot-password-form/hooks/useForgotPassword'
 import { useTranslation } from '@/shared/hooks/useTranstaion'
-import { Nullable } from '@/shared/types'
 import { Button, Card, ControlledTextField, Modal, Recaptcha, Typography } from '@/shared/ui'
 
-const forgotPasswordSchema = z.object({
-  email: z.string().email(),
-})
-
-type ForgotPasswordFormShem = z.infer<typeof forgotPasswordSchema>
-
 export const ForgotPasswordForm = () => {
-  const [forgotPassword] = useRecoveryPasswordMutation()
-  const [recaptchaKey, setRecaptchaKey] = useState<Nullable<string>>(null)
-  const [openModal, setOpenModal] = useState(false)
-  const [email, setEmail] = useState<string>('')
-  const router = useRouter()
-  const { control, handleSubmit } = useForm<ForgotPasswordFormShem>({
-    defaultValues: {
-      email: '',
-    },
-    mode: 'onBlur',
-    resolver: zodResolver(forgotPasswordSchema),
-  })
+  const {
+    control,
+    email,
+    routerHandler,
+    openModal,
+    onCloseModalHandler,
+    onRecaptchaChangeHandler,
+    handleSubmitForm,
+  } = useForgotPassword()
   const { t } = useTranslation()
-
-  const onSubmit = (data: ForgotPasswordFormShem) => {
-    forgotPassword({ email: data.email, recaptcha: recaptchaKey })
-      .unwrap()
-      .then(() => {
-        toast.success('Success')
-        setOpenModal(true)
-        setEmail(data.email)
-      })
-      .catch(err => {
-        toast.error(err)
-      })
-  }
-  const handleSubmitForm = handleSubmit(onSubmit)
-  const onRecaptchaChangeHandler = (key: Nullable<string>) => {
-    setRecaptchaKey(key)
-  }
-  const routerHandler = () => {
-    router.push('/auth/sign-in')
-  }
 
   return (
     <Card className={s.forgotPasswordBlock}>
@@ -85,7 +48,7 @@ export const ForgotPasswordForm = () => {
       <Modal
         title={t.auth.forgotPassword.modal}
         open={openModal}
-        onClose={() => setOpenModal(false)}
+        onClose={onCloseModalHandler}
         titleSecondButton={'OK'}
         buttonBlockClassName={s.buttonBlock}
         callBack={routerHandler}
