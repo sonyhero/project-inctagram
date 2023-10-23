@@ -1,1 +1,1 @@
-export { ForgotPassword } from './forgot-password'
+export { ForgotPassword } from './ForgotPassword'

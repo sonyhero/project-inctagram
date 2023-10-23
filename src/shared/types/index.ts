@@ -1,1 +1,1 @@
-export * from './nullable'
+export * from './nullable.type'

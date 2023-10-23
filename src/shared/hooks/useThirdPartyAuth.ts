@@ -2,7 +2,7 @@ import { useGoogleLogin } from '@react-oauth/google'
 import { useRouter } from 'next/router'
 import { toast } from 'react-toastify'
 
-import { useGoogleLoginMutation } from '@/features/auth/api/auth-api'
+import { useGoogleLoginMutation } from '@/features/auth/api/authApi'
 
 export const useThirdPartyAuth = () => {
   const router = useRouter()

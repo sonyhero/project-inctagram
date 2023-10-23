@@ -1,1 +1,1 @@
-export { Privacy } from './privacy'
+export { Privacy } from './Privacy'
