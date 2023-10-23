@@ -1,6 +1,5 @@
-import { FC, useLayoutEffect, useState } from 'react'
+import { useLayoutEffect, useState } from 'react'
 
-// eslint-disable-next-line import/no-unresolved
 import { ru } from 'date-fns/locale'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
@@ -17,7 +16,7 @@ import { useTranslation } from '@/shared/hooks/useTranstaion'
 import { Nullable } from '@/shared/types'
 import { customizeDatePickerInput } from '@/shared/utils/customizeDatePickerInput'
 
-type DatePickerProps = {
+type Props = {
   control: Control<any>
   className?: string
   name: string
@@ -32,17 +31,8 @@ type DatePickerProps = {
 type Value = Nullable<Date>
 type RangeValue = [Value, Value]
 
-export const DatePicker: FC<DatePickerProps> = ({
-  className,
-  max,
-  width,
-  range,
-  error,
-  control,
-  name,
-  title,
-  placeholder,
-}) => {
+export const DatePicker = (props: Props) => {
+  const { className, max, width, range, error, control, name, title, placeholder } = props
   const [startDate, setStartDate] = useState<Value>(placeholder ? new Date(placeholder) : null)
   const [endDate, setEndDate] = useState<Value>(null)
   const { t } = useTranslation()

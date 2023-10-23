@@ -29,6 +29,7 @@
     "@types/react-google-recaptcha": "^2.1.6",
     "async-mutex": "^0.4.0",
     "clsx": "^2.0.0",
+    "date-fns": "^2.30.0",
     "env-cmd": "^10.1.0",
     "eslint": "8.49.0",
     "eslint-config-next": "13.4.19",

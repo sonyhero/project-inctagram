@@ -7,13 +7,9 @@ import s from './DatePickerHeader.module.scss'
 import { useTranslation } from '@/shared/hooks/useTranstaion'
 import { ArrowIosBack, ArrowIosForward } from '@/shared/ui'
 
-export const DatePickerHeader = ({
-  date,
-  decreaseMonth,
-  increaseMonth,
-  prevMonthButtonDisabled,
-  nextMonthButtonDisabled,
-}: Partial<ReactDatePickerCustomHeaderProps>): ReactNode => {
+export const DatePickerHeader = (props: Partial<ReactDatePickerCustomHeaderProps>): ReactNode => {
+  const { date, decreaseMonth, increaseMonth, prevMonthButtonDisabled, nextMonthButtonDisabled } =
+    props
   const currentMonth = date?.getMonth() as number
   const currentYear = date?.getFullYear()
   const { t } = useTranslation()

@@ -53,6 +53,9 @@ dependencies:
   clsx:
     specifier: ^2.0.0
     version: 2.0.0
+  date-fns:
+    specifier: ^2.30.0
+    version: 2.30.0
   env-cmd:
     specifier: ^10.1.0
     version: 10.1.0
