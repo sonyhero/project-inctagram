@@ -1,0 +1,25 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  .headText {
+    margin-top: 2.19rem;
+  }
+
+  .description {
+    margin-top: 1.19rem;
+  }
+
+  .signBtn {
+    margin-top: 3.38rem;
+
+    .link {
+      text-decoration: none;
+    }
+  }
+
+  .pic {
+    margin-top: 4.5rem;
+  }
+}
