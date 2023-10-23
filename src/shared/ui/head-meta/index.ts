@@ -1,1 +1,1 @@
-export * from './head-meta'
+export * from './HeadMeta'

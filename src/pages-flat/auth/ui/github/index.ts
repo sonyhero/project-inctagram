@@ -1,1 +1,1 @@
-export { GitHubAccess } from './github'
+export { GitHubAccess } from './GitHubAccess'

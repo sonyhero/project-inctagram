@@ -1,1 +1,1 @@
-export { EmailVerification } from './email-verification'
+export { EmailVerification } from './EmailVerification'

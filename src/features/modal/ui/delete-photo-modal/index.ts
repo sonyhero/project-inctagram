@@ -1,1 +1,1 @@
-export * from './delete-photo-modal'
+export * from './DeletePhotoModal'

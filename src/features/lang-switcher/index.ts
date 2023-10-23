@@ -1,1 +1,1 @@
-export * from './lang-switcher'
+export * from './LangSwitcher'

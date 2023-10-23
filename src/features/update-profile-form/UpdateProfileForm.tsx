@@ -1,5 +1,3 @@
-import React, { FC } from 'react'
-
 import { DevTool } from '@hookform/devtools'
 
 import s from './UpdateProfileForm.module.scss'
@@ -17,10 +15,11 @@ import {
 } from '@/shared/ui'
 import { formatDate } from '@/shared/utils'
 
-type PropsType = {
+type Props = {
   defaultValue?: GetProfileResponse
 }
-export const UpdateProfileForm: FC<PropsType> = ({ defaultValue }) => {
+
+export const UpdateProfileForm = ({ defaultValue }: Props) => {
   const { t } = useTranslation()
   const { control, handleSubmitForm, errors, isValid, isDirty } = useUpdateProfile(defaultValue)
 

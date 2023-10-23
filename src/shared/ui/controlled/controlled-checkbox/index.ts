@@ -1,1 +1,1 @@
-export * from './controlled-checkbox'
+export * from './ControlledCheckBox'
