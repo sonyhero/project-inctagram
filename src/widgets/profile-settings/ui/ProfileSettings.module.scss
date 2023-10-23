@@ -1,0 +1,102 @@
+.profileBlock {
+  display: flex;
+  flex-direction: column;
+  padding: 2.25rem 4rem 1.625rem 1.5rem;
+
+  .tabSwitcher {
+    margin-bottom: 24px;
+  }
+
+  .profileSettings {
+    position: relative;
+    display: flex;
+    gap: 40px;
+    justify-content: flex-start;
+
+    .photoBlock {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .photoAndDeleteBlock {
+      position: relative;
+
+      width: 192px;
+      height: 192px;
+      margin-bottom: 24px;
+
+      border-radius: 50%;
+
+      .photo {
+        width: 100%;
+        height: 100%;
+        border-radius: 50%;
+      }
+
+      .deletePhoto {
+        cursor: pointer;
+
+        position: absolute;
+        top: 0.8rem;
+        right: 1rem;
+
+        display: flex;
+        flex-shrink: 0;
+        align-items: center;
+        justify-content: center;
+
+        width: 1.5rem;
+        height: 1.5rem;
+
+        background-color: var(--color-danger-500);
+        border: 3px solid #000;
+        border-radius: 50%;
+
+        &:hover {
+          transform: scale(1.2);
+          transition: 0.2s ease-in-out;
+        }
+      }
+    }
+
+    .defaultPhoto {
+      display: flex;
+      flex-shrink: 0;
+      align-items: center;
+      justify-content: center;
+
+      width: 192px;
+      height: 192px;
+      margin-bottom: 24px;
+
+      background-color: var(--color-dark-500);
+      border-radius: 50%;
+    }
+  }
+
+  .profileSettings::after {
+    content: '';
+
+    position: absolute;
+    bottom: -1.5rem;
+    left: 0;
+
+    width: 100%;
+    height: 1px;
+
+    background: var(--color-dark-300);
+  }
+}
+
+.imgBlock {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 13.875rem;
+  height: 14.25rem;
+  margin-bottom: 3.75rem;
+
+  background-color: var(--color-dark-500);
+}
