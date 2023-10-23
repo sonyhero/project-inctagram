@@ -1,3 +1,5 @@
+export type LocaleType = typeof en
+
 export const en = {
   header: {
     inctagram: 'Inctagram',
@@ -89,11 +91,12 @@ export const en = {
       zodSigUpSchema: {
         userNameMin: 'Minimum number of characters ',
         userNameMax: 'Maximum number of characters ',
+        userNameRegex: 'Must contain only A-Z, a-z and underscores',
         email: 'The email must match the format example@example.com',
         passwordMin: 'Minimum number of characters ',
         passwordMax: 'Maximum number of characters ',
         passwordRegex: 'Password must contain ',
-        passwordRefine: 'The passwords must match',
+        passwordRefine: 'Passwords must match',
         termsConfirm: 'Confirm terms',
       },
       signUp: 'Sign Up',
@@ -154,4 +157,3 @@ export const en = {
     },
   },
 }
-export type LocaleType = typeof en

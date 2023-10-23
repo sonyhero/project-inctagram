@@ -91,6 +91,7 @@ export const ru: LocaleType = {
       zodSigUpSchema: {
         userNameMin: 'Минимальное количество символов ',
         userNameMax: 'Максимальное количество символов ',
+        userNameRegex: 'Должно содержать только символы A-Z, a-z и подчеркивания',
         email: 'Email должен соответствовать формату example@example.com',
         passwordMin: 'Минимальное количество символов ',
         passwordMax: 'Максимальное количество символов ',
