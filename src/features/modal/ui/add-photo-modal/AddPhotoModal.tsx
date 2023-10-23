@@ -1,4 +1,4 @@
-import React, { ChangeEvent, FC, useRef, useState } from 'react'
+import { ChangeEvent, useRef, useState, WheelEvent } from 'react'
 
 import AvatarEditor from 'react-avatar-editor'
 
@@ -9,11 +9,13 @@ import { useTranslation } from '@/shared/hooks/useTranstaion'
 import { Nullable } from '@/shared/types'
 import { Button, Image, Modal, Typography } from '@/shared/ui'
 
-type PropsType = {
+type Props = {
   addPhotoModal: boolean
   setAddPhotoModal: (value: boolean) => void
 }
-export const AddPhotoModal: FC<PropsType> = ({ addPhotoModal, setAddPhotoModal }) => {
+
+export const AddPhotoModal = ({ addPhotoModal, setAddPhotoModal }: Props) => {
+  const [updatePhoto] = useUploadAvatarMutation()
   const { t } = useTranslation()
 
   const [photo, setPhoto] = useState<Nullable<FormData>>(null)
@@ -21,7 +23,24 @@ export const AddPhotoModal: FC<PropsType> = ({ addPhotoModal, setAddPhotoModal }
   const editorRef = useRef<Nullable<AvatarEditor>>(null)
   const [zoom, setZoom] = useState(1)
 
-  const [updatePhoto] = useUploadAvatarMutation()
+  const mainPhotoSelected = (event: ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files && event.target.files[0]
+
+    if (file) {
+      if (!['image/jpeg', 'image/jpg', 'image/png'].includes(file.type)) {
+        setErrorPhoto(t.myProfile.generalInformation.photoModal.errorType)
+      } else if (file.size > 10 * 1024 * 1024) {
+        setErrorPhoto(t.myProfile.generalInformation.photoModal.errorSize)
+      } else {
+        setErrorPhoto('')
+        const formData = new FormData()
+
+        formData.append('file', file)
+        setPhoto(formData)
+      }
+    }
+  }
+
   const onSaveHandler = () => {
     if (editorRef.current) {
       const canvas = editorRef.current.getImage()
@@ -39,42 +58,30 @@ export const AddPhotoModal: FC<PropsType> = ({ addPhotoModal, setAddPhotoModal }
       }, 'image/jpeg')
     }
   }
+
   const onCloseModalHandler = () => {
     setZoom(1)
     setErrorPhoto('')
     setAddPhotoModal(false)
     setPhoto(null)
   }
+
+  //TODO реализовать зум с клавиатуры/кнопками на UI
   const handleZoomIn = () => {
     setZoom(zoom + 0.1)
   }
+
   const handleZoomOut = () => {
     if (zoom > 1) {
       setZoom(zoom - 0.1)
     }
   }
-  const handleWheel = (e: any) => {
-    if (e.deltaY > 0) {
+
+  const handleWheel = (event: WheelEvent<HTMLDivElement>) => {
+    if (event.deltaY > 0) {
       handleZoomOut()
-    } else if (e.deltaY < 0) {
+    } else if (event.deltaY < 0) {
       handleZoomIn()
-    }
-  }
-  const mainPhotoSelected = (event: ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files && event.target.files[0]
-
-    if (file) {
-      if (!['image/jpeg', 'image/jpg', 'image/png'].includes(file.type)) {
-        setErrorPhoto(t.myProfile.generalInformation.photoModal.errorType)
-      } else if (file.size > 10 * 1024 * 1024) {
-        setErrorPhoto(t.myProfile.generalInformation.photoModal.errorSize)
-      } else {
-        setErrorPhoto('')
-        const formData = new FormData()
-
-        formData.append('file', file)
-        setPhoto(formData)
-      }
     }
   }
 
@@ -109,11 +116,9 @@ export const AddPhotoModal: FC<PropsType> = ({ addPhotoModal, setAddPhotoModal }
               />
             </div>
           ) : (
-            <>
-              <div className={s.modalImg}>
-                <Image height={48} width={48} />
-              </div>
-            </>
+            <div className={s.modalImg}>
+              <Image height={48} width={48} />
+            </div>
           )}
           {photo ? (
             <div className={s.savePhoto}>
@@ -129,7 +134,7 @@ export const AddPhotoModal: FC<PropsType> = ({ addPhotoModal, setAddPhotoModal }
               <div>
                 <input
                   type={'file'}
-                  id="mainPhotoInput"
+                  id={'mainPhotoInput'}
                   onChange={mainPhotoSelected}
                   className={s.mainPhotoInput}
                 />

@@ -1,4 +1,4 @@
-import React, { FC } from 'react'
+import React from 'react'
 
 import s from './DeletePhotoModal.module.scss'
 
@@ -6,14 +6,15 @@ import { useDeleteAvatarMutation } from '@/entities/profile'
 import { useTranslation } from '@/shared/hooks/useTranstaion'
 import { Modal, Typography } from '@/shared/ui'
 
-type PropsType = {
+type Props = {
   deletePhotoModal: boolean
   setDeleteModalPhoto: (value: boolean) => void
 }
-export const DeletePhotoModal: FC<PropsType> = ({ deletePhotoModal, setDeleteModalPhoto }) => {
+
+export const DeletePhotoModal = ({ deletePhotoModal, setDeleteModalPhoto }: Props) => {
+  const [deletePhoto] = useDeleteAvatarMutation()
   const { t } = useTranslation()
 
-  const [deletePhoto] = useDeleteAvatarMutation()
   const deletePhotoHandler = () => {
     deletePhoto()
     setDeleteModalPhoto(false)

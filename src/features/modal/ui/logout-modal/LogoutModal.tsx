@@ -1,4 +1,4 @@
-import React, { FC } from 'react'
+import React from 'react'
 
 import s from './LogoutModal.module.scss'
 
@@ -6,14 +6,17 @@ import { useLogoutMutation } from '@/features/auth'
 import { useTranslation } from '@/shared/hooks/useTranstaion'
 import { Modal, Typography } from '@/shared/ui'
 
-type PropsType = {
+const EMAIL = 'epam@epam.com'
+
+type Props = {
   open: boolean
   setOpen: (value: boolean) => void
 }
-export const LogoutModal: FC<PropsType> = ({ open, setOpen }) => {
-  const email = 'Epam@epam.com'
+
+export const LogoutModal = ({ open, setOpen }: Props) => {
   const [logout] = useLogoutMutation()
   const { t } = useTranslation()
+
   const handleClose = () => {
     setOpen(false)
   }
@@ -37,7 +40,7 @@ export const LogoutModal: FC<PropsType> = ({ open, setOpen }) => {
         buttonBlockClassName={s.buttonBlock}
       >
         <Typography>
-          {t.sidebar.logoutModalDescription} &ldquo;<b>{email}</b>&rdquo;?
+          {t.sidebar.logoutModalDescription} &ldquo;<b>{EMAIL}</b>&rdquo;?
         </Typography>
       </Modal>
     </>
