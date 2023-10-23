@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import { useEffect } from 'react'
 
 import { useRouter } from 'next/router'
 
@@ -19,6 +19,6 @@ export const GitHubAccess = () => {
 
   if (data) router.push('/')
 
-  // todo сделать адекватный loader
+  // TODO сделать адекватный loader
   return <div>...loading</div>
 }

@@ -1,5 +1,3 @@
-import { FC } from 'react'
-
 import Link from 'next/link'
 
 import s from './Privacy.module.scss'
@@ -7,11 +5,11 @@ import s from './Privacy.module.scss'
 import { useTranslation } from '@/shared/hooks/useTranstaion'
 import { ArrowBack, Typography } from '@/shared/ui'
 
-type PropsType = {
+type Props = {
   text: string
 }
 
-export const Privacy: FC<PropsType> = ({ text }) => {
+export const Privacy = ({ text }: Props) => {
   const { t } = useTranslation()
 
   return (
