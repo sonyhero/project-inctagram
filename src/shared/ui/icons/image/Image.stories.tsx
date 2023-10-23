@@ -1,10 +1,10 @@
 import { Meta, StoryObj } from '@storybook/react'
 
-import { Image } from './Image'
+import { ImageIcon } from './ImageIcon'
 
 const meta = {
   title: 'Components/Icons',
-  component: Image,
+  component: ImageIcon,
   tags: ['autodocs'],
   argTypes: {
     outline: {
@@ -12,9 +12,9 @@ const meta = {
       control: { type: 'radio' },
     },
   },
-} satisfies Meta<typeof Image>
+} satisfies Meta<typeof ImageIcon>
 
 export default meta
 type Story = StoryObj<typeof meta>
 
-export const ImageIcon: Story = {}
+export const Image: Story = {}

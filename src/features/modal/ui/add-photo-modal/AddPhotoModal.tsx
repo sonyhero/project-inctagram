@@ -7,7 +7,7 @@ import s from './AddPhotoModal.module.scss'
 import { useUploadAvatarMutation } from '@/entities/profile'
 import { useTranslation } from '@/shared/hooks/useTranstaion'
 import { Nullable } from '@/shared/types'
-import { Button, Image, Modal, Typography } from '@/shared/ui'
+import { Button, ImageIcon, Modal, Typography } from '@/shared/ui'
 
 type Props = {
   addPhotoModal: boolean
@@ -117,7 +117,7 @@ export const AddPhotoModal = ({ addPhotoModal, setAddPhotoModal }: Props) => {
             </div>
           ) : (
             <div className={s.modalImg}>
-              <Image height={48} width={48} />
+              <ImageIcon height={48} width={48} />
             </div>
           )}
           {photo ? (

@@ -9,7 +9,7 @@ import { AddPhotoModal, DeletePhotoModal } from '@/features/modal'
 import { UpdateProfileForm } from '@/features/update-profile-form'
 import { useTranslation } from '@/shared/hooks/useTranstaion'
 import { useAppDispatch, useAppSelector } from '@/shared/store'
-import { Button, Close, Image, TabSwitcher } from '@/shared/ui'
+import { Button, Close, ImageIcon, TabSwitcher } from '@/shared/ui'
 import { profileSettingsSlice } from '@/widgets/profile-settings'
 
 type Props = {
@@ -51,7 +51,7 @@ export const ProfileSettings = ({ userId }: Props) => {
               </div>
             ) : (
               <div className={s.defaultPhoto}>
-                <Image height={48} width={48} />
+                <ImageIcon height={48} width={48} />
               </div>
             )}
             <Button variant={'outline'} onClick={openPhotoModal}>
