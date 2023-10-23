@@ -75,7 +75,7 @@ export const ForgotPasswordForm = () => {
         <Button fullWidth={true} className={s.submit} type="submit">
           {t.auth.forgotPassword.sendLink}
         </Button>
-        <Button variant={'text'} className={s.signUp}>
+        <Button variant={'text'}>
           <Link href={'/auth/sign-in'} className={s.backBtn}>
             {t.auth.forgotPassword.backToSignIn}
           </Link>
