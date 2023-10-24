@@ -3,6 +3,7 @@ import { useState } from 'react'
 import s from './SideBar.module.scss'
 
 import { useTranslation } from '@/shared/hooks/useTranstaion'
+import { useAppDispatch } from '@/shared/store'
 import { Nullable } from '@/shared/types'
 import {
   Bookmark,
@@ -16,6 +17,7 @@ import {
   TrendingUp,
   Typography,
 } from '@/shared/ui'
+import { profileSettingsSlice } from '@/widgets/profile-settings'
 import { LinkSideBar } from '@/widgets/side-bar/link-side-bar/LinkSideBar'
 import { LogoutModal } from 'src/features/modal/ui/logout-modal'
 
@@ -33,11 +35,17 @@ export const SideBar = () => {
   const [open, setOpen] = useState(false)
   const [variantIcon, setVariantIcon] = useState<Nullable<VariantIconType>>()
   const { t } = useTranslation()
+  const dispatch = useAppDispatch()
   const handleItemClick = (variant: Nullable<VariantIconType>) => {
     setVariantIcon(variant)
   }
   const logoutHandler = () => {
     setOpen(true)
+  }
+
+  const toMyProfileHandler = () => {
+    handleItemClick('my-profile')
+    dispatch(profileSettingsSlice.actions.setShowProfileSettings({ value: false }))
   }
 
   return (
@@ -64,7 +72,7 @@ export const SideBar = () => {
         </LinkSideBar>
         <LinkSideBar
           variantIcon={variantIcon}
-          handleClick={() => handleItemClick('my-profile')}
+          handleClick={toMyProfileHandler}
           nameLink={t.sidebar.myProfile}
           link={'my-profile'}
         >

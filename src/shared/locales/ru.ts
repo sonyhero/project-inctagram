@@ -74,6 +74,12 @@ export const ru: LocaleType = {
         no: 'Нет',
       },
     },
+    profilePage: {
+      following: 'Подписки',
+      followers: 'Подписчики',
+      publications: 'Публикации',
+      profileSettings: 'Настройки профиля',
+    },
   },
   auth: {
     signIn: {
