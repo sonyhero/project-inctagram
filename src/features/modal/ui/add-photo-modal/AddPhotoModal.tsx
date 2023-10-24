@@ -6,8 +6,10 @@ import s from './AddPhotoModal.module.scss'
 
 import { useUploadAvatarMutation } from '@/entities/profile'
 import { useTranslation } from '@/shared/hooks/useTranstaion'
+import { useAppDispatch } from '@/shared/store'
 import { Nullable } from '@/shared/types'
 import { Button, ImageIcon, Modal, Typography } from '@/shared/ui'
+import { profileSettingsSlice } from '@/widgets/profile-settings'
 
 type Props = {
   addPhotoModal: boolean
@@ -22,6 +24,7 @@ export const AddPhotoModal = ({ addPhotoModal, setAddPhotoModal }: Props) => {
   const [errorPhoto, setErrorPhoto] = useState('')
   const editorRef = useRef<Nullable<AvatarEditor>>(null)
   const [zoom, setZoom] = useState(1)
+  const dispatch = useAppDispatch()
 
   const mainPhotoSelected = (event: ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files && event.target.files[0]
@@ -52,6 +55,8 @@ export const AddPhotoModal = ({ addPhotoModal, setAddPhotoModal }: Props) => {
           formData.append('file', blob)
           updatePhoto(formData)
           setAddPhotoModal(false)
+          dispatch(profileSettingsSlice.actions.setShowProfileSettings({ value: false }))
+
           setPhoto(null)
           setZoom(1)
         }
@@ -63,6 +68,7 @@ export const AddPhotoModal = ({ addPhotoModal, setAddPhotoModal }: Props) => {
     setZoom(1)
     setErrorPhoto('')
     setAddPhotoModal(false)
+    dispatch(profileSettingsSlice.actions.setShowProfileSettings({ value: false }))
     setPhoto(null)
   }
 

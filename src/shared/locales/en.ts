@@ -74,6 +74,12 @@ export const en = {
         no: 'No',
       },
     },
+    profilePage: {
+      following: 'Following',
+      followers: 'Followers',
+      publications: 'Publications',
+      profileSettings: 'Profile Settings',
+    },
   },
   auth: {
     signIn: {
