@@ -34,12 +34,21 @@ export const LinkSideBar = (props: Props) => {
 
   return (
     <div className={styles.container} onClick={handleItemClick}>
-      <Link tabIndex={1} href={`${link}`} className={s.link}>
-        {children}
-        <Typography color={'primary'} variant={'regular14'} className={styles.check}>
-          {nameLink}
-        </Typography>
-      </Link>
+      {link === 'create' ? (
+        <div className={s.link}>
+          {children}
+          <Typography color={'primary'} variant={'regular14'} className={styles.check}>
+            {nameLink}
+          </Typography>
+        </div>
+      ) : (
+        <Link tabIndex={1} href={`${link}`} className={s.link}>
+          {children}
+          <Typography color={'primary'} variant={'regular14'} className={styles.check}>
+            {nameLink}
+          </Typography>
+        </Link>
+      )}
     </div>
   )
 }

@@ -1,6 +1,7 @@
 import { configureStore } from '@reduxjs/toolkit'
 import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux'
 
+import { profileSlice } from '@/entities/profile/model'
 import { modalSlice } from '@/features/modal/model/modalSlice'
 import { baseApi } from '@/shared/api/baseApi'
 import { profileSettingsSlice } from '@/widgets/profile-settings/model/profileSettingsSlice'
@@ -10,6 +11,7 @@ export const store = configureStore({
     [baseApi.reducerPath]: baseApi.reducer,
     [modalSlice.name]: modalSlice.reducer,
     [profileSettingsSlice.name]: profileSettingsSlice.reducer,
+    [profileSlice.name]: profileSlice.reducer,
   },
   middleware: getDefaultMiddleware => getDefaultMiddleware().concat(baseApi.middleware),
 })
