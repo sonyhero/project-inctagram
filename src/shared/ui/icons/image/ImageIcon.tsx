@@ -44,4 +44,4 @@ const SvgComponent = (
 )
 const ForwardRef = forwardRef(SvgComponent)
 
-export const Image = memo(ForwardRef)
+export const ImageIcon = memo(ForwardRef)

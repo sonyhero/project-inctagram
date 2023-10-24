@@ -1,0 +1,42 @@
+.contentBox {
+  padding: 0;
+}
+
+.modalBlock {
+  width: 30.75rem;
+
+  .modalContent {
+    position: relative;
+
+    .activities {
+      position: absolute;
+      bottom: 0;
+
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+
+      width: 100%;
+      padding: 0 10px 10px;
+
+      .activityLeft {
+        display: flex;
+        gap: 1.5rem;
+      }
+    }
+
+    .activity {
+      display: flex;
+      flex-shrink: 0;
+      align-items: center;
+      justify-content: center;
+
+      width: 36px;
+      height: 36px;
+
+      opacity: 0.8;
+      background: var(--color-dark-500);
+      border-radius: 2px;
+    }
+  }
+}
