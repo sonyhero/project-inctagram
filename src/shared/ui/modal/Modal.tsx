@@ -12,7 +12,7 @@ import { motion } from 'framer-motion'
 
 import s from './Modal.module.scss'
 
-import { Button, Close, Typography } from '@/shared/ui'
+import { ArrowIosBack, Button, Close, Typography } from '@/shared/ui'
 
 type Props = {
   open?: boolean
@@ -24,6 +24,12 @@ type Props = {
   callBack?: () => void
   buttonBlockClassName?: string
   className?: string
+  contentBoxClassname?: string
+  prevContent?: boolean
+  prevClick?: () => void
+  nextContent?: boolean
+  nextClick?: () => void
+  nextContentTitle?: string
 } & ComponentProps<'div'>
 
 const MODAL_ANIMATION = {
@@ -43,6 +49,11 @@ export const Modal = (props: Props) => {
     callBack,
     buttonBlockClassName,
     className,
+    contentBoxClassname,
+    prevContent = false,
+    prevClick,
+    nextContent = false,
+    nextContentTitle,
   } = props
 
   function handleModalClosed() {
@@ -57,6 +68,7 @@ export const Modal = (props: Props) => {
             <DialogOverlay className={s.overlay} />
             <DialogContent className={`${s.content} ${className}`}>
               <header className={s.header}>
+                {prevContent && <ArrowIosBack onClick={prevClick} className={s.prevContent} />}
                 <DialogTitle asChild>
                   <Typography variant={'h1'}>{title}</Typography>
                 </DialogTitle>
@@ -66,8 +78,14 @@ export const Modal = (props: Props) => {
                     <Close />
                   </DialogClose>
                 )}
+
+                {nextContent && (
+                  <Typography variant={'h3'} className={s.nextContent}>
+                    {nextContentTitle}
+                  </Typography>
+                )}
               </header>
-              <div className={s.contentBox}>{children}</div>
+              <div className={`${s.contentBox} ${contentBoxClassname}`}>{children}</div>
               <div className={buttonBlockClassName}>
                 {titleFirstButton && (
                   <Button onClick={callBack} variant={'outline'}>
