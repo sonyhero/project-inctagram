@@ -1,6 +1,9 @@
 import { useEffect, useMemo, useState } from 'react'
 
+import Image from 'next/image'
 import { useRouter } from 'next/router'
+
+import person from '../../../../public/person.svg'
 
 import s from './ProfileSettings.module.scss'
 
@@ -37,6 +40,17 @@ export const ProfileSettings = ({ userId }: Props) => {
     setDeleteModalPhoto(true)
   }
 
+  const profileAvatarLoader = () => {
+    return profileData
+      ? {
+          src: person,
+          loader: () => profileData.avatars[0].url,
+        }
+      : {
+          src: person,
+        }
+  }
+
   const showActivePage = useMemo(() => {
     if (currentOption === t.myProfile.tabs.generalInformation) {
       return (
@@ -44,7 +58,7 @@ export const ProfileSettings = ({ userId }: Props) => {
           <div className={s.photoBlock}>
             {profileData?.avatars.length ? (
               <div className={s.photoAndDeleteBlock}>
-                <img src={profileData.avatars[0].url} className={s.photo} alt="profilePhoto" />
+                <Image {...profileAvatarLoader()} alt={'profilePhoto'} className={s.photo} />
                 <div className={s.deletePhoto} onClick={openDeleteModalHandler}>
                   <Close />
                 </div>
