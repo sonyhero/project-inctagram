@@ -5,17 +5,20 @@ import { toast } from 'react-toastify'
 import { z } from 'zod'
 
 import { useLoginMutation } from '@/features/auth/api/authApi'
+import { useTranslation } from '@/shared/hooks'
 
 type SignInFormShem = z.infer<typeof sigInSchema>
 
 const sigInSchema = z.object({
   email: z.string().email(),
-  password: z.string().min(3),
+  password: z.string(),
 })
 
 export const useSignIn = () => {
   const [signIn] = useLoginMutation()
   const router = useRouter()
+  const { t } = useTranslation()
+
   const {
     control,
     handleSubmit,
@@ -39,11 +42,16 @@ export const useSignIn = () => {
         toast.success('Success')
       })
       .catch(err => {
-        setError('password', {
-          type: 'server',
-          /*message: err.data.messages,*/
-          message: 'The email or password are incorrect. Try again please',
-        })
+        if (err.data.messages === 'invalid password or email') {
+          setError('email', {
+            type: 'manual',
+            message: ' ',
+          })
+          setError('password', {
+            type: 'manual',
+            message: t.auth.signIn.signInServerError,
+          })
+        }
       })
   }
 

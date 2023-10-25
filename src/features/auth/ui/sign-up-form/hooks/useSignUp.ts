@@ -94,10 +94,6 @@ export const useSignUp = () => {
               message: t.auth.signUp.emailExistError,
             })
           }
-          // setError(`${err.data.messages[0].field}` as 'root', {
-          //   type: 'server',
-          //   message: el.message,
-          // })
         })
       })
   }

@@ -2,7 +2,7 @@ import { LocaleType } from '@/shared/locales/en'
 
 export const ru: LocaleType = {
   header: {
-    inctagram: 'Инцтаграм',
+    inctagram: 'Инстаграм',
     ru: 'Русский',
     en: 'Английский',
   },
@@ -85,10 +85,10 @@ export const ru: LocaleType = {
     signIn: {
       signIn: 'Войти',
       email: 'Адрес электронной почты',
-      emailError: 'Некорректный адрес',
+      signInServerError:
+        'Адрес электронной почты или пароль неверны. Попробуйте еще раз, пожалуйста',
       password: 'Пароль',
       passwordPlaceholder: 'введите ваш пароль',
-      passwordError: 'Пароль должен содержать не менее 3х символов',
       forgotPassword: 'Забыл пароль',
       question: `У вас нет учетной записи?`,
       signUp: 'Зарегистрироваться',

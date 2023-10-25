@@ -85,10 +85,9 @@ export const en = {
     signIn: {
       signIn: 'Sign In',
       email: 'Email',
-      emailError: 'Invalid email',
+      signInServerError: 'The email or password are incorrect. Try again please',
       password: 'Password',
       passwordPlaceholder: 'enter your password',
-      passwordError: 'String must contain at least 3 character(s)',
       forgotPassword: 'Forgot password',
       question: `Don't have an account?`,
       signUp: 'Sign Up',
