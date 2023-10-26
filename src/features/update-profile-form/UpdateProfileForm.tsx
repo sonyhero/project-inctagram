@@ -10,7 +10,7 @@ import {
   ControlledTextArea,
   ControlledTextField,
   DatePicker,
-  SelectBox,
+  ControlledSelect,
   Typography,
 } from '@/shared/ui'
 import { formatDate } from '@/shared/utils'
@@ -66,7 +66,7 @@ export const UpdateProfileForm = ({ defaultValue }: Props) => {
           defaultValue?.dateOfBirth ? formatDate(new Date(defaultValue.dateOfBirth)) : ''
         }
       />
-      <SelectBox
+      <ControlledSelect
         classname={s.field}
         name={'city'}
         options={cities}

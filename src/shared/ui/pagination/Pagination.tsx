@@ -5,7 +5,7 @@ import s from './Pagination.module.scss'
 import { ArrowIosBack, ArrowIosForward } from '@/shared/ui/icons'
 import { usePagination } from '@/shared/ui/pagination/usePagination'
 import { Typography } from '@/shared/ui/typography'
-import { SelectBox } from 'src/shared/ui/select'
+import { ControlledSelect } from 'src/shared/ui/select'
 
 // type PaginationConditionals = {
 //   perPage?: Nullable<number>
@@ -183,7 +183,7 @@ export const PerPageSelect = ({ perPageOptions, onPerPageChange }: PerPageSelect
       <Typography variant={'regular14'} className={classNames.show}>
         Show
       </Typography>
-      <SelectBox
+      <ControlledSelect
         classname={classNames.select}
         defaultValue={perPageOptions[0].value}
         options={perPageOptions}
