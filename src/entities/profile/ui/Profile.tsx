@@ -2,6 +2,8 @@ import React from 'react'
 
 import Image from 'next/image'
 
+import imageIcon from '../../../../public/imageIcon.svg'
+
 import s from './Profile.module.scss'
 
 import { useGetProfileQuery } from '@/entities/profile'
@@ -9,7 +11,6 @@ import { useTranslation } from '@/shared/hooks'
 import { useAppDispatch } from '@/shared/store'
 import { Button, Typography } from '@/shared/ui'
 import { profileSettingsSlice } from '@/widgets/profile-settings'
-import person from 'public/person.svg'
 
 type Props = {
   userId: number
@@ -23,18 +24,17 @@ export const Profile = ({ userId }: Props) => {
     dispatch(profileSettingsSlice.actions.setShowProfileSettings({ value: true }))
   }
 
-  // const profileAvatarLoader = () => {
-  //   return data?.avatars.length ? data.avatars[0].url : ''
-  // }
-
   const profileAvatarLoader = () => {
     return data?.avatars.length
       ? {
-          src: person,
+          src: imageIcon,
           loader: () => data.avatars[0].url,
+          className: s.photo,
         }
       : {
-          src: person,
+          src: imageIcon,
+          height: 48,
+          width: 48,
         }
   }
 
@@ -42,14 +42,7 @@ export const Profile = ({ userId }: Props) => {
     <div className={s.profileBlock}>
       <div className={s.mainInfo}>
         <div className={s.photoBlock}>
-          <Image {...profileAvatarLoader()} alt={'profilePhoto'} className={s.photo} />
-          {/*{data?.avatars.length ? (*/}
-          {/*  <img src={data.avatars[0].url} className={s.photo} alt="profilePhoto" />*/}
-          {/*) : (*/}
-          {/*  <div className={s.defaultPhoto}>*/}
-          {/*    <ImageIcon height={48} width={48} />*/}
-          {/*  </div>*/}
-          {/*)}*/}
+          <Image {...profileAvatarLoader()} alt={'profilePhoto'} />
         </div>
         <div className={s.descriptionBlock}>
           <div className={s.nameAndSettings}>

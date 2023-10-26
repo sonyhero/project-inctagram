@@ -2,7 +2,7 @@ import { useState } from 'react'
 
 import Image from 'next/image'
 
-import person from '../../../../../public/person.svg'
+import imageIcon from '../../../../../public/imageIcon.svg'
 
 import s from './GeneralInformation.module.scss'
 
@@ -33,11 +33,14 @@ export const GeneralInformation = ({ userId }: Props) => {
   const profileAvatarLoader = () => {
     return profileData
       ? {
-          src: person,
+          src: imageIcon,
           loader: () => profileData.avatars[0].url,
+          className: s.photo,
         }
       : {
-          src: person,
+          src: imageIcon,
+          height: 48,
+          width: 48,
         }
   }
 
@@ -47,7 +50,7 @@ export const GeneralInformation = ({ userId }: Props) => {
         <div className={s.photoBlock}>
           {profileData?.avatars.length ? (
             <div className={s.photoAndDeleteBlock}>
-              <Image {...profileAvatarLoader()} alt={'profilePhoto'} className={s.photo} />
+              <Image {...profileAvatarLoader()} alt={'profilePhoto'} />
               <div className={s.deletePhoto} onClick={openDeleteModalHandler}>
                 <Close />
               </div>
