@@ -1,0 +1,84 @@
+.dropDownBlock {
+  button {
+    all: unset;
+    cursor: pointer;
+  }
+}
+
+.iconButton {
+  cursor: pointer;
+  background-color: transparent;
+  border: none;
+  outline: none;
+}
+
+.dropdownMenuContent {
+  padding: 0.75rem;
+  background-color: var(--color-dark-700);
+  border: 1px solid var(--color-dark-300);
+  border-radius: 0.25rem;
+}
+
+.dropdownMenuItem {
+  user-select: none;
+
+  position: relative;
+
+  display: flex;
+  align-items: center;
+
+  margin-bottom: -2px;
+
+  font-size: 13px;
+  line-height: 1;
+  color: black;
+
+  border-radius: 3px;
+  outline: none;
+
+  .dropdownMenuItemInfo {
+    display: flex;
+    gap: 0.38rem;
+    align-items: center;
+  }
+
+  .dropdownMenuItemContent {
+    cursor: pointer;
+    display: flex;
+    gap: 0.38rem;
+    align-items: center;
+  }
+
+  .info {
+    .email {
+      color: var(--color-dark-100);
+    }
+  }
+}
+
+.dropdownMenuSeparator {
+  height: 1px;
+  margin: 0.75rem 0;
+  background-color: var(--color-dark-300);
+}
+
+.arrowBox {
+  fill: var(--color-dark-700);
+  stroke: var(--color-dark-300);
+  stroke-width: 2px;
+}
+
+.arrow {
+  position: absolute;
+  top: -4px;
+  left: calc(50% - 3px);
+  transform: rotate(45deg);
+
+  width: 7px;
+  height: 7px;
+
+  background-color: var(--color-dark-700);
+  border: 1px solid var(--color-dark-300);
+  border-top: none;
+  border-left: none;
+}
