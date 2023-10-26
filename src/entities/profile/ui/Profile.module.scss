@@ -9,23 +9,17 @@
     margin-bottom: 3.3rem;
 
     .photoBlock {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      width: 192px;
+      height: 192px;
+
       .photo {
         width: 192px;
         height: 192px;
         object-fit: cover;
-        border-radius: 50%;
-      }
-
-      .defaultPhoto {
-        display: flex;
-        flex-shrink: 0;
-        align-items: center;
-        justify-content: center;
-
-        width: 192px;
-        height: 192px;
-
-        background-color: var(--color-dark-500);
         border-radius: 50%;
       }
     }

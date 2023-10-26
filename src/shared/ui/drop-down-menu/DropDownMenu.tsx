@@ -1,11 +1,11 @@
-import { FC, ReactNode } from 'react'
+import { ReactNode, useState } from 'react'
 
 import * as DropdownMenu from '@radix-ui/react-dropdown-menu'
 import { motion } from 'framer-motion'
 
 import s from './DropDownMenu.module.scss'
 
-type DropDownMenuPropsType = {
+type Props = {
   trigger?: ReactNode
   items?: {
     id: number
@@ -32,7 +32,9 @@ const motionItem = {
   },
 }
 
-export const DropDownMenu: FC<DropDownMenuPropsType> = ({ items, trigger }) => {
+export const DropDownMenu = ({ items, trigger }: Props) => {
+  const [isOpen, setIsOpen] = useState(false)
+
   const itemsForRender = items?.map((item, index) => {
     return (
       <div key={index}>
@@ -52,15 +54,28 @@ export const DropDownMenu: FC<DropDownMenuPropsType> = ({ items, trigger }) => {
     )
   })
 
+  const onCloseHandler = () => {
+    setIsOpen(false)
+  }
+
+  const onOpenHandler = () => {
+    setIsOpen(true)
+  }
+
   return (
-    <DropdownMenu.Root>
-      <DropdownMenu.Trigger asChild>
+    <DropdownMenu.Root open={isOpen}>
+      <DropdownMenu.Trigger onClick={onOpenHandler} asChild>
         <button className={s.iconButton} aria-label="Customise options">
           {trigger}
         </button>
       </DropdownMenu.Trigger>
       <DropdownMenu.Portal>
-        <DropdownMenu.Content align={'end'} className={s.dropdownMenuContent} sideOffset={5}>
+        <DropdownMenu.Content
+          onInteractOutside={onCloseHandler}
+          align={'end'}
+          className={s.dropdownMenuContent}
+          sideOffset={5}
+        >
           <motion.div variants={container} initial="hidden" animate="visible">
             {itemsForRender}
           </motion.div>

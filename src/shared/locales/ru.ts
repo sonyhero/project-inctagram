@@ -4,7 +4,7 @@ export const ru: LocaleType = {
   header: {
     inctagram: 'Инстаграм',
     ru: 'Русский',
-    en: 'Английский',
+    en: 'English',
   },
   sidebar: {
     home: 'Главная',

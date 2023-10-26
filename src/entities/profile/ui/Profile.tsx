@@ -1,11 +1,15 @@
 import React from 'react'
 
+import Image from 'next/image'
+
+import imageIcon from '../../../../public/imageIcon.svg'
+
 import s from './Profile.module.scss'
 
 import { useGetProfileQuery } from '@/entities/profile'
 import { useTranslation } from '@/shared/hooks'
 import { useAppDispatch } from '@/shared/store'
-import { Button, ImageIcon, Typography } from '@/shared/ui'
+import { Button, Typography } from '@/shared/ui'
 import { profileSettingsSlice } from '@/widgets/profile-settings'
 
 type Props = {
@@ -20,17 +24,25 @@ export const Profile = ({ userId }: Props) => {
     dispatch(profileSettingsSlice.actions.setShowProfileSettings({ value: true }))
   }
 
+  const profileAvatarLoader = () => {
+    return data?.avatars.length
+      ? {
+          src: imageIcon,
+          loader: () => data.avatars[0].url,
+          className: s.photo,
+        }
+      : {
+          src: imageIcon,
+          height: 48,
+          width: 48,
+        }
+  }
+
   return (
     <div className={s.profileBlock}>
       <div className={s.mainInfo}>
         <div className={s.photoBlock}>
-          {data?.avatars.length ? (
-            <img src={data.avatars[0].url} className={s.photo} alt="profilePhoto" />
-          ) : (
-            <div className={s.defaultPhoto}>
-              <ImageIcon height={48} width={48} />
-            </div>
-          )}
+          <Image {...profileAvatarLoader()} alt={'profilePhoto'} />
         </div>
         <div className={s.descriptionBlock}>
           <div className={s.nameAndSettings}>
