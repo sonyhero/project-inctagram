@@ -3,7 +3,7 @@ export type LocaleType = typeof en
 export const en = {
   header: {
     inctagram: 'Inctagram',
-    ru: 'Russian',
+    ru: 'Русский',
     en: 'English',
   },
   sidebar: {
