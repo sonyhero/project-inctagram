@@ -5,6 +5,7 @@ import { toast } from 'react-toastify'
 import { z } from 'zod'
 
 import { useLoginMutation } from '@/features/auth/api/authApi'
+import { PATH } from '@/shared/config/routes'
 import { useTranslation } from '@/shared/hooks'
 
 type SignInFormShem = z.infer<typeof sigInSchema>
@@ -38,7 +39,7 @@ export const useSignIn = () => {
       .unwrap()
       .then(res => {
         localStorage.setItem('access', res.accessToken)
-        router.push('/')
+        router.push(PATH.HOME)
         toast.success('Success')
       })
       .catch(err => {

@@ -7,6 +7,7 @@ import { toast } from 'react-toastify'
 import { z } from 'zod'
 
 import { useRecoveryPasswordMutation } from '@/features/auth'
+import { PATH } from '@/shared/config/routes'
 import { Nullable } from '@/shared/types'
 
 const forgotPasswordSchema = z.object({
@@ -46,7 +47,7 @@ export const useForgotPassword = () => {
     setRecaptchaKey(key)
   }
   const routerHandler = () => {
-    router.push('/auth/sign-in')
+    router.push(PATH.SIGN_IN)
   }
   const onCloseModalHandler = () => {
     setOpenModal(false)

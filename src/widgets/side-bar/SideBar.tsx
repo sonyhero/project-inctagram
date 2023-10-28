@@ -4,6 +4,7 @@ import s from './SideBar.module.scss'
 
 import { modalSlice } from '@/features/modal'
 import { AddPostCroppingModal } from '@/features/modal/ui/add-post-cropping-modal'
+import { PATH } from '@/shared/config/routes'
 import { useTranslation } from '@/shared/hooks/useTranstaion'
 import { useAppDispatch, useAppSelector } from '@/shared/store'
 import { Nullable } from '@/shared/types'
@@ -25,14 +26,14 @@ import { AddPostModal } from 'src/features/modal/ui/add-post-modal'
 import { LogoutModal } from 'src/features/modal/ui/logout-modal'
 
 export type VariantIconType =
-  | '/'
-  | 'create'
-  | 'my-profile'
-  | 'messenger'
-  | 'search'
-  | 'statistics'
-  | 'favorites'
-  | 'logout'
+  | typeof PATH.HOME
+  | typeof PATH.CREATE
+  | typeof PATH.MY_PROFILE
+  | typeof PATH.MESSENGER
+  | typeof PATH.SEARCH
+  | typeof PATH.STATISTIC
+  | typeof PATH.FAVORITES
+  | typeof PATH.SIGN_IN
 
 export const SideBar = () => {
   const [open, setOpen] = useState(false)
@@ -48,7 +49,7 @@ export const SideBar = () => {
   }
 
   const toMyProfileHandler = () => {
-    handleItemClick('my-profile')
+    handleItemClick(PATH.MY_PROFILE)
     dispatch(profileSettingsSlice.actions.setShowProfileSettings({ value: false }))
   }
 
@@ -62,78 +63,81 @@ export const SideBar = () => {
         <div className={s.mainBlock}>
           <LinkSideBar
             variantIcon={variantIcon}
-            handleClick={() => handleItemClick('/')}
+            handleClick={() => handleItemClick(PATH.HOME)}
             nameLink={t.sidebar.home}
-            link={'/'}
+            link={PATH.HOME}
           >
-            <Home outline={variantIcon !== '/'} color={variantIcon === '/' ? '#397df6' : 'white'} />
+            <Home
+              outline={variantIcon !== PATH.HOME}
+              color={variantIcon === PATH.HOME ? '#397df6' : 'white'}
+            />
           </LinkSideBar>
           <LinkSideBar
             variantIcon={variantIcon}
             handleClick={createPostHandler}
             nameLink={t.sidebar.create}
-            link={'create'}
+            link={PATH.CREATE}
           >
             <PlusSquare
-              outline={variantIcon !== 'create'}
-              color={variantIcon === 'create' ? '#397df6' : 'white'}
+              outline={variantIcon !== PATH.CREATE}
+              color={variantIcon === PATH.CREATE ? '#397df6' : 'white'}
             />
           </LinkSideBar>
           <LinkSideBar
             variantIcon={variantIcon}
             handleClick={toMyProfileHandler}
             nameLink={t.sidebar.myProfile}
-            link={'my-profile'}
+            link={PATH.MY_PROFILE}
           >
             <Person
-              outline={variantIcon !== 'my-profile'}
-              color={variantIcon === 'my-profile' ? '#397df6' : 'white'}
+              outline={variantIcon !== PATH.MY_PROFILE}
+              color={variantIcon === PATH.MY_PROFILE ? '#397df6' : 'white'}
             />
           </LinkSideBar>
           <LinkSideBar
             variantIcon={variantIcon}
-            handleClick={() => handleItemClick('messenger')}
+            handleClick={() => handleItemClick(PATH.MESSENGER)}
             nameLink={t.sidebar.messenger}
-            link={'messenger'}
+            link={PATH.MESSENGER}
           >
             <MessageCircle
-              outline={variantIcon !== 'messenger'}
-              color={variantIcon === 'messenger' ? '#397df6' : 'white'}
+              outline={variantIcon !== PATH.MESSENGER}
+              color={variantIcon === PATH.MESSENGER ? '#397df6' : 'white'}
             />
           </LinkSideBar>
           <LinkSideBar
             variantIcon={variantIcon}
-            handleClick={() => handleItemClick('search')}
+            handleClick={() => handleItemClick(PATH.SEARCH)}
             nameLink={t.sidebar.search}
-            link={'search'}
+            link={PATH.SEARCH}
           >
-            <Search color={variantIcon === 'search' ? '#397df6' : 'white'} />
+            <Search color={variantIcon === PATH.SEARCH ? '#397df6' : 'white'} />
           </LinkSideBar>
         </div>
         <div className={s.secondaryBlock}>
           <LinkSideBar
             variantIcon={variantIcon}
-            handleClick={() => handleItemClick('statistics')}
+            handleClick={() => handleItemClick(PATH.STATISTIC)}
             nameLink={t.sidebar.statistics}
-            link={'statistics'}
+            link={PATH.STATISTIC}
           >
-            <TrendingUp color={variantIcon === 'statistics' ? '#397df6' : 'white'} />
+            <TrendingUp color={variantIcon === PATH.STATISTIC ? '#397df6' : 'white'} />
           </LinkSideBar>
           <LinkSideBar
             variantIcon={variantIcon}
-            handleClick={() => handleItemClick('favorites')}
+            handleClick={() => handleItemClick(PATH.FAVORITES)}
             nameLink={t.sidebar.favorites}
-            link={'favorites'}
+            link={PATH.FAVORITES}
           >
             <Bookmark
-              outline={variantIcon !== 'favorites'}
-              color={variantIcon === 'favorites' ? '#397df6' : 'white'}
+              outline={variantIcon !== PATH.FAVORITES}
+              color={variantIcon === PATH.FAVORITES ? '#397df6' : 'white'}
             />
           </LinkSideBar>
         </div>
         <div className={s.container}>
           <Button className={s.logout} variant={'text'} onClick={logoutHandler}>
-            <LogOut color={variantIcon === 'logout' ? '#397df6' : 'white'} />
+            <LogOut color={variantIcon === PATH.SIGN_IN ? '#397df6' : 'white'} />
             <Typography color={'primary'} variant={'medium14'}>
               {t.sidebar.logout}
             </Typography>

@@ -3,6 +3,7 @@ import { useRouter } from 'next/router'
 import { toast } from 'react-toastify'
 
 import { useGoogleLoginMutation } from '@/features/auth/api/authApi'
+import { PATH } from '@/shared/config/routes'
 
 export const useThirdPartyAuth = () => {
   const router = useRouter()
@@ -13,7 +14,7 @@ export const useThirdPartyAuth = () => {
         .unwrap()
         .then(res => {
           localStorage.setItem('access', res.accessToken)
-          router.push('/')
+          router.push(PATH.HOME)
           toast.success('Success')
         })
     },

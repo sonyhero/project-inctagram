@@ -2,6 +2,7 @@ import Link from 'next/link'
 
 import s from './Privacy.module.scss'
 
+import { PATH } from '@/shared/config/routes'
 import { useTranslation } from '@/shared/hooks/useTranstaion'
 import { ArrowBack, Typography } from '@/shared/ui'
 
@@ -14,7 +15,7 @@ export const Privacy = ({ text }: Props) => {
 
   return (
     <div className={s.container}>
-      <Link href={'/auth/sign-up'} className={s.link}>
+      <Link href={PATH.SIGN_UP} className={s.link}>
         <ArrowBack />
         <Typography variant={'regular14'} className={s.linkText}>
           {t.auth.privacy.backToSignUp}

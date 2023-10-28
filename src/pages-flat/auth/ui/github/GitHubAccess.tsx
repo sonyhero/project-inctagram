@@ -3,6 +3,7 @@ import { useEffect } from 'react'
 import { useRouter } from 'next/router'
 
 import { useGithubLoginQuery, useLazyMeQuery } from '@/features/auth'
+import { PATH } from '@/shared/config/routes'
 
 export const GitHubAccess = () => {
   const [authMe, { data }] = useLazyMeQuery()
@@ -17,7 +18,7 @@ export const GitHubAccess = () => {
     }
   }, [query.accessToken])
 
-  if (data) router.push('/')
+  if (data) router.push(PATH.HOME)
 
   // TODO сделать адекватный loader
   return <div>...loading</div>

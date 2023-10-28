@@ -2,6 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react'
 
 import { LinkSideBar } from './LinkSideBar'
 
+import { PATH } from '@/shared/config/routes'
 import { Home } from '@/shared/ui'
 
 const meta = {
@@ -15,7 +16,7 @@ type Story = StoryObj<typeof meta>
 
 export const LinkSideBarComponent: Story = {
   args: {
-    link: '/',
+    link: PATH.HOME,
     nameLink: 'Home',
     children: <Home />,
   },

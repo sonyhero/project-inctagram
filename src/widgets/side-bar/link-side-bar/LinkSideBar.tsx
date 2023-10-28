@@ -5,13 +5,14 @@ import Link from 'next/link'
 
 import s from './LinkSideBar.module.scss'
 
+import { PATH } from '@/shared/config/routes'
 import { Nullable } from '@/shared/types'
 import { Typography } from '@/shared/ui'
 import { VariantIconType } from '@/widgets/side-bar'
 
 type Props = {
   nameLink: string
-  link?: VariantIconType
+  link?: string
   children: ReactNode
   variantIcon?: Nullable<VariantIconType>
   handleClick: (variant: Nullable<VariantIconType>) => void
@@ -34,7 +35,7 @@ export const LinkSideBar = (props: Props) => {
 
   return (
     <div className={styles.container} onClick={handleItemClick}>
-      {link === 'create' ? (
+      {link === PATH.CREATE ? (
         <div className={s.link}>
           {children}
           <Typography color={'primary'} variant={'regular14'} className={styles.check}>

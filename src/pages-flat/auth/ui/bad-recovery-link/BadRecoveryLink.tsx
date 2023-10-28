@@ -2,6 +2,7 @@ import Link from 'next/link'
 
 import s from './BadRecoveryLink.module.scss'
 
+import { PATH } from '@/shared/config/routes'
 import { useTranslation } from '@/shared/hooks/useTranstaion'
 import { Button, Typography, VereficationIcon } from '@/shared/ui'
 
@@ -17,7 +18,7 @@ export const BadRecoveryLink = () => {
         {t.auth.badRecoveryLink.description}
       </Typography>
       <Button variant={'primary'} className={s.signBtn}>
-        <Link href={'/auth/forgot-password'}>
+        <Link href={PATH.FORGOT_PASSWORD}>
           <Typography variant={'h3'}>{t.auth.badRecoveryLink.resendLink}</Typography>
         </Link>
       </Button>

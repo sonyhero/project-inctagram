@@ -3,6 +3,7 @@ import Link from 'next/link'
 import s from './SignInForm.module.scss'
 
 import { useSignIn } from '@/features/auth/ui/sign-in-form/hooks'
+import { PATH } from '@/shared/config/routes'
 import { useThirdPartyAuth } from '@/shared/hooks'
 import { useTranslation } from '@/shared/hooks/useTranstaion'
 import { Button, Card, ControlledTextField, GitIcon, GoogleIcon, Typography } from '@/shared/ui'
@@ -45,7 +46,7 @@ export const SignInForm = () => {
         />
         <div className={s.forgotWrapper}>
           <Button variant={'text'} className={s.forgotPassword}>
-            <Link className={s.forgotText} href={'/auth/forgot-password'}>
+            <Link className={s.forgotText} href={PATH.FORGOT_PASSWORD}>
               {t.auth.signIn.forgotPassword}
             </Link>
           </Button>
@@ -58,7 +59,7 @@ export const SignInForm = () => {
         {t.auth.signIn.question}
       </Typography>
       <Button variant={'text'}>
-        <Link href={'/auth/sign-up'} className={s.signUp}>
+        <Link href={PATH.SIGN_UP} className={s.signUp}>
           <Typography variant={'h3'}>{t.auth.signIn.signUp}</Typography>
         </Link>
       </Button>
