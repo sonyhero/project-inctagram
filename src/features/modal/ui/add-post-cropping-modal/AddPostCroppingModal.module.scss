@@ -8,6 +8,13 @@
   .modalContent {
     position: relative;
 
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    height: 564px;
+
     .activities {
       position: absolute;
       bottom: 0;
