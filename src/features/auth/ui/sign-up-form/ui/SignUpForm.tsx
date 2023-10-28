@@ -4,6 +4,7 @@ import Link from 'next/link'
 import s from './SignUpForm.module.scss'
 
 import { useSignUp } from '@/features/auth/ui/sign-up-form/hooks'
+import { PATH } from '@/shared/config/routes'
 import { useThirdPartyAuth } from '@/shared/hooks'
 import { useTranslation } from '@/shared/hooks/useTranstaion'
 import {
@@ -79,13 +80,13 @@ export const SignUpForm = () => {
               label={
                 <Typography variant={'small'}>
                   {t.auth.signUp.checkboxOneChart}{' '}
-                  <Link href={'/auth/terms-of-service'}>
+                  <Link href={PATH.TERMS_OF_SERVICE}>
                     <Typography className={s.link} as={'span'} variant={'s_link'}>
                       {t.auth.signUp.termsOfService}
                     </Typography>
                   </Link>{' '}
                   {t.auth.signUp.checkboxTwoChart}{' '}
-                  <Link href={'/auth/privacy-policy'}>
+                  <Link href={PATH.POLICY}>
                     <Typography className={s.link} as={'span'} variant={'s_link'}>
                       {t.auth.signUp.privacyPolicy}
                     </Typography>
@@ -102,7 +103,7 @@ export const SignUpForm = () => {
           {t.auth.signUp.question}
         </Typography>
 
-        <Link href={'/auth/sign-in'} className={s.signIn}>
+        <Link href={PATH.SIGN_IN} className={s.signIn}>
           <Button variant={'text'} className={s.signInBtn} fullWidth={true}>
             <Typography variant={'h3'}>{t.auth.signUp.signIn}</Typography>
           </Button>

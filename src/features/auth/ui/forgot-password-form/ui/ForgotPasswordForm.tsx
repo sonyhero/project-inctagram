@@ -3,6 +3,7 @@ import Link from 'next/link'
 import s from './ForgotPasswordForm.module.scss'
 
 import { useForgotPassword } from '@/features/auth/ui/forgot-password-form/hooks/useForgotPassword'
+import { PATH } from '@/shared/config/routes'
 import { useTranslation } from '@/shared/hooks/useTranstaion'
 import { Button, Card, ControlledTextField, Modal, Recaptcha, Typography } from '@/shared/ui'
 
@@ -39,7 +40,7 @@ export const ForgotPasswordForm = () => {
           {t.auth.forgotPassword.sendLink}
         </Button>
         <Button variant={'text'}>
-          <Link href={'/auth/sign-in'} className={s.backBtn}>
+          <Link href={PATH.SIGN_IN} className={s.backBtn}>
             {t.auth.forgotPassword.backToSignIn}
           </Link>
         </Button>
