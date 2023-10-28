@@ -9,10 +9,12 @@ type Props = {
   setValue: (value: number[]) => void
   maxValue?: number
   showValue?: boolean
+  step?: number
+  minValue?: number
 }
 
 export const SuperSlider = (props: Props) => {
-  const { value, setValue, maxValue = 10, showValue } = props
+  const { value, setValue, maxValue = 10, showValue, step = 1, minValue } = props
 
   return (
     <div className={s.sliderBlock}>
@@ -26,7 +28,8 @@ export const SuperSlider = (props: Props) => {
         onValueChange={setValue}
         value={value}
         max={maxValue}
-        step={1}
+        min={minValue}
+        step={step}
       >
         <Slider.Track className={s.sliderTrack}>
           <Slider.Range className={s.sliderRange} />

@@ -11,6 +11,7 @@ type Props = {
     id: number
     component: JSX.Element
   }[]
+  align?: 'center' | 'end' | 'start'
 }
 
 const container = {
@@ -32,7 +33,7 @@ const motionItem = {
   },
 }
 
-export const DropDownMenu = ({ items, trigger }: Props) => {
+export const DropDownMenu = ({ items, trigger, align = 'start' }: Props) => {
   const [isOpen, setIsOpen] = useState(false)
 
   const itemsForRender = items?.map((item, index) => {
@@ -54,25 +55,31 @@ export const DropDownMenu = ({ items, trigger }: Props) => {
     )
   })
 
-  const onCloseHandler = () => {
-    setIsOpen(false)
-  }
-
-  const onOpenHandler = () => {
-    setIsOpen(true)
-  }
+  // const onCloseHandler = () => {
+  //   debugger
+  //   setIsOpen(false)
+  // }
+  //
+  // const onOpenHandler = () => {
+  //   setIsOpen(true)
+  // }
 
   return (
     <DropdownMenu.Root open={isOpen}>
-      <DropdownMenu.Trigger onClick={onOpenHandler} asChild>
-        <button className={s.iconButton} aria-label="Customise options">
+      <DropdownMenu.Trigger asChild>
+        <button
+          className={s.iconButton}
+          aria-label="Customise options"
+          onClick={() => setIsOpen(!isOpen)}
+        >
           {trigger}
         </button>
       </DropdownMenu.Trigger>
       <DropdownMenu.Portal>
         <DropdownMenu.Content
-          onInteractOutside={onCloseHandler}
-          align={'end'}
+          // onInteractOutside={onCloseHandler}
+          align={align}
+          side={'top'}
           className={s.dropdownMenuContent}
           sideOffset={5}
         >

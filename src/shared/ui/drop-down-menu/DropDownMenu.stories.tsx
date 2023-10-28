@@ -20,7 +20,7 @@ export const DropdownMenuFirstVariant = () => {
     {
       id: 1,
       component: (
-        <div style={{ width: '124ps' }}>
+        <div style={{ width: '124px' }}>
           <SuperSlider value={value} setValue={setValue} />
         </div>
       ),
