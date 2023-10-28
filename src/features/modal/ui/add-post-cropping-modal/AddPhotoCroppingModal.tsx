@@ -7,7 +7,16 @@ import s from './AddPostCroppingModal.module.scss'
 import { modalActions } from '@/features/modal'
 import { useAppDispatch, useAppSelector } from '@/shared/store'
 import { Nullable } from '@/shared/types'
-import { Expand, ImageIcon, Maximize, Modal, SuperSlider, Typography } from '@/shared/ui'
+import {
+  Close,
+  Expand,
+  ImageIcon,
+  Maximize,
+  Modal,
+  PlusCircle,
+  SuperSlider,
+  Typography,
+} from '@/shared/ui'
 import { DropDownMenu } from '@/shared/ui/drop-down-menu'
 
 type Props = {
@@ -15,9 +24,7 @@ type Props = {
 }
 
 export const AddPostCroppingModal = ({ addPostCroppingModal }: Props) => {
-  const photo = useAppSelector(
-    state => state.profileSlice.photos[state.profileSlice.photos.length - 1]
-  )
+  const photos = useAppSelector(state => state.profileSlice.photos)
   const dispatch = useAppDispatch()
 
   const [zoom, setZoom] = useState([1])
@@ -38,10 +45,10 @@ export const AddPostCroppingModal = ({ addPostCroppingModal }: Props) => {
   }
 
   useEffect(() => {
-    if (typeof window !== 'undefined' && photo) {
+    if (typeof window !== 'undefined' && photos && photos.length > 0) {
       const originalImage = new Image()
 
-      originalImage.src = URL.createObjectURL(photo.get('file') as Blob)
+      originalImage.src = URL.createObjectURL(photos[photos.length - 1].get('file') as Blob)
 
       originalImage.onload = () => {
         let width, height
@@ -69,7 +76,7 @@ export const AddPostCroppingModal = ({ addPostCroppingModal }: Props) => {
         setDimensions({ width, height })
       }
     }
-  }, [photo, size])
+  }, [photos, size])
 
   const dropDownMenuZoom = [
     {
@@ -116,6 +123,33 @@ export const AddPostCroppingModal = ({ addPostCroppingModal }: Props) => {
     },
   ]
 
+  const dropDownMenuPhotos = [
+    {
+      id: 1,
+      component: (
+        <div className={s.photoBlock}>
+          {photos.map((el, index) => {
+            return (
+              <div key={index} className={s.photoItem}>
+                <img
+                  src={URL.createObjectURL(el.get('file') as Blob)}
+                  className={s.photoDropDown}
+                  alt={`photo ${index}`}
+                />
+                <div className={s.deletePhoto}>
+                  <Close />
+                </div>
+              </div>
+            )
+          })}
+          <div className={s.addNewPhoto}>
+            <PlusCircle />
+          </div>
+        </div>
+      ),
+    },
+  ]
+
   return (
     <Modal
       className={s.modalBlock}
@@ -131,10 +165,10 @@ export const AddPostCroppingModal = ({ addPostCroppingModal }: Props) => {
     >
       {
         <div className={s.modalContent}>
-          {photo && (
+          {photos && photos.length > 0 && (
             <AvatarEditor
               ref={editorRef}
-              image={URL.createObjectURL(photo.get('file') as Blob)}
+              image={URL.createObjectURL(photos[photos.length - 1].get('file') as Blob)}
               width={dimensions.width}
               height={dimensions.height}
               border={0}
@@ -156,6 +190,7 @@ export const AddPostCroppingModal = ({ addPostCroppingModal }: Props) => {
             </div>
             <div className={s.activity}>
               <ImageIcon />
+              <DropDownMenu trigger={<ImageIcon />} items={dropDownMenuPhotos} align={'end'} />
             </div>
           </div>
         </div>

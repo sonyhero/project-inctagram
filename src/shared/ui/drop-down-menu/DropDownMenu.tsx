@@ -11,6 +11,7 @@ type Props = {
     id: number
     component: JSX.Element
   }[]
+  align?: 'center' | 'end' | 'start'
 }
 
 const container = {
@@ -32,7 +33,7 @@ const motionItem = {
   },
 }
 
-export const DropDownMenu = ({ items, trigger }: Props) => {
+export const DropDownMenu = ({ items, trigger, align = 'start' }: Props) => {
   const [isOpen, setIsOpen] = useState(false)
 
   const itemsForRender = items?.map((item, index) => {
@@ -77,7 +78,7 @@ export const DropDownMenu = ({ items, trigger }: Props) => {
       <DropdownMenu.Portal>
         <DropdownMenu.Content
           // onInteractOutside={onCloseHandler}
-          align={'start'}
+          align={align}
           side={'top'}
           className={s.dropdownMenuContent}
           sideOffset={5}

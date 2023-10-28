@@ -47,3 +47,48 @@
     }
   }
 }
+
+.photoBlock {
+  display: flex;
+  gap: 12px;
+
+  .photoItem {
+    position: relative;
+    width: 5.125rem;
+    height: 5.125rem;
+
+    .photoDropDown {
+      width: 100%;
+      height: 100%;
+    }
+
+    .deletePhoto {
+      cursor: pointer;
+
+      position: absolute;
+      top: 2px;
+      right: 2px;
+
+      display: flex;
+      flex-shrink: 0;
+      align-items: center;
+      justify-content: center;
+
+      width: 0.75rem;
+      height: 0.75rem;
+
+      opacity: 0.8;
+      background-color: var(--color-dark-700);
+      border-radius: 2px;
+
+      & svg {
+        width: 100%;
+        height: 100%;
+      }
+    }
+  }
+
+  .addNewPhoto {
+    cursor: pointer;
+  }
+}
