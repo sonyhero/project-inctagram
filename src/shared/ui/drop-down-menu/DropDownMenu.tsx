@@ -68,7 +68,7 @@ export const DropDownMenu = ({ items, trigger, align = 'start' }: Props) => {
     <DropdownMenu.Root open={isOpen}>
       <DropdownMenu.Trigger asChild>
         <button
-          className={s.iconButton}
+          className={`${s.iconButton} ${isOpen ? s.activeTrigger : ''}`}
           aria-label="Customise options"
           onClick={() => setIsOpen(!isOpen)}
         >

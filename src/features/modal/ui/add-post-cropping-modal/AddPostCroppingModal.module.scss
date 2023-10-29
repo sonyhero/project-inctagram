@@ -15,6 +15,44 @@
 
     height: 564px;
 
+    .back {
+      cursor: pointer;
+
+      position: absolute;
+      top: 50%;
+      left: 12px;
+
+      display: flex;
+      flex-shrink: 0;
+      align-items: center;
+      justify-content: center;
+
+      width: 3rem;
+      height: 3rem;
+
+      opacity: 0.8;
+      background: var(--color-dark-500);
+    }
+
+    .forvard {
+      cursor: pointer;
+
+      position: absolute;
+      top: 50%;
+      right: 12px;
+
+      display: flex;
+      flex-shrink: 0;
+      align-items: center;
+      justify-content: center;
+
+      width: 3rem;
+      height: 3rem;
+
+      opacity: 0.8;
+      background: var(--color-dark-500);
+    }
+
     .activities {
       position: absolute;
       bottom: 0;
@@ -52,43 +90,100 @@
   display: flex;
   gap: 12px;
 
-  .photoItem {
-    position: relative;
-    width: 5.125rem;
-    height: 5.125rem;
+  .photos {
+    overflow-x: auto;
+    overflow-y: hidden;
+    display: flex;
+    gap: 12px;
 
-    .photoDropDown {
-      width: 100%;
-      height: 100%;
-    }
+    max-width: 12rem;
 
-    .deletePhoto {
-      cursor: pointer;
+    .photoItem {
+      position: relative;
+      width: 5.125rem;
+      height: 5.125rem;
 
-      position: absolute;
-      top: 2px;
-      right: 2px;
+      .photoDropDown {
+        width: 5.125rem;
+        height: 5.125rem;
+      }
 
-      display: flex;
-      flex-shrink: 0;
-      align-items: center;
-      justify-content: center;
+      .deletePhoto {
+        cursor: pointer;
 
-      width: 0.75rem;
-      height: 0.75rem;
+        position: absolute;
+        top: 2px;
+        right: 2px;
 
-      opacity: 0.8;
-      background-color: var(--color-dark-700);
-      border-radius: 2px;
+        display: flex;
+        flex-shrink: 0;
+        align-items: center;
+        justify-content: center;
 
-      & svg {
-        width: 100%;
-        height: 100%;
+        width: 0.75rem;
+        height: 0.75rem;
+
+        opacity: 0.8;
+        background-color: var(--color-dark-700);
+        border-radius: 2px;
+
+        & svg {
+          width: 100%;
+          height: 100%;
+        }
       }
     }
   }
 
   .addNewPhoto {
-    cursor: pointer;
+    .addPhotoInput {
+      display: none;
+    }
+
+    .error {
+      stroke: var(--color-danger-500);
+    }
+
+    & svg {
+      cursor: pointer;
+    }
   }
+}
+
+.itemSize {
+  cursor: pointer;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  width: 9.75rem;
+
+  color: var(--color-light-900);
+
+  stroke: var(--color-light-900);
+}
+
+.activeItem {
+  color: var(--color-light-100);
+  stroke: var(--color-light-100);
+}
+
+.itemSizeOriginal {
+  cursor: pointer;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  width: 9.75rem;
+
+  color: var(--color-light-900);
+
+  fill: var(--color-light-900);
+}
+
+.activeItemOriginal {
+  color: var(--color-light-100);
+  fill: var(--color-light-100);
 }

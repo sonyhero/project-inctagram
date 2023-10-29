@@ -1,5 +1,7 @@
 import React, { ChangeEvent, useState } from 'react'
 
+import { v1 } from 'uuid'
+
 import s from './AddPostModal.module.scss'
 
 import { profileActions } from '@/entities/profile/model'
@@ -26,9 +28,10 @@ export const AddPostModal = ({ openAddPhotoModal }: Props) => {
       } else {
         setErrorPhoto('')
         const formData = new FormData()
+        const photoId = v1()
 
         formData.append('file', file)
-        dispatch(profileActions.setPhoto(formData))
+        dispatch(profileActions.setPhoto({ id: photoId, photo: formData }))
         dispatch(modalActions.setOpenModal('addPostCroppingModal'))
       }
     }
