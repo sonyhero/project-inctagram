@@ -62,8 +62,8 @@ export const en = {
       addAProfilePhoto: 'Add a Profile Photo',
       photoModal: {
         addAProfilePhoto: 'Add a Profile Photo',
-        errorType: 'Error! The format of the uploaded photo must PNG and JPEG',
-        errorSize: 'Error! Photo size must be less than 10 MB!',
+        errorType: 'The format of photo must be PNG or JPEG',
+        errorSize: 'Photo size must be less than 10 MB',
         selectFromComputer: 'Select from Computer',
         save: 'Save',
       },
