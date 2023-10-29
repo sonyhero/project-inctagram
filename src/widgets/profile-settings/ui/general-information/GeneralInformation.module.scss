@@ -8,6 +8,10 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+
+    .addPhoto {
+      min-width: 148px;
+    }
   }
 
   .photoAndDeleteBlock {

@@ -10,7 +10,7 @@ import { useGetProfileQuery } from '@/entities/profile'
 import { AddPhotoModal, DeletePhotoModal } from '@/features/modal'
 import { UpdateProfileForm } from '@/features/update-profile-form'
 import { useTranslation } from '@/shared/hooks'
-import { Button, Close, ImageIcon } from '@/shared/ui'
+import { Button, Close, ImageIcon, Typography } from '@/shared/ui'
 
 type Props = {
   userId: number
@@ -61,7 +61,9 @@ export const GeneralInformation = ({ userId }: Props) => {
             </div>
           )}
           <Button variant={'outline'} onClick={openPhotoModal}>
-            {t.myProfile.generalInformation.addAProfilePhoto}
+            <Typography className={s.addPhoto} variant={'h3'}>
+              {t.myProfile.generalInformation.addAProfilePhoto}
+            </Typography>
           </Button>
         </div>
         {profileData ? <UpdateProfileForm defaultValue={profileData} /> : <div>Loading</div>}
