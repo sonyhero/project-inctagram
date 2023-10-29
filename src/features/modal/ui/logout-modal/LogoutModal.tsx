@@ -2,11 +2,9 @@ import React from 'react'
 
 import s from './LogoutModal.module.scss'
 
-import { useLogoutMutation } from '@/features/auth'
+import { useLogoutMutation, useMeQuery } from '@/features/auth'
 import { useTranslation } from '@/shared/hooks/useTranstaion'
 import { Modal, Typography } from '@/shared/ui'
-
-const EMAIL = 'epam@epam.com'
 
 type Props = {
   open: boolean
@@ -14,8 +12,11 @@ type Props = {
 }
 
 export const LogoutModal = ({ open, setOpen }: Props) => {
+  const { data } = useMeQuery()
   const [logout] = useLogoutMutation()
   const { t } = useTranslation()
+
+  const userEmail = data?.email ?? 'example@example.com'
 
   const handleClose = () => {
     setOpen(false)
@@ -40,7 +41,7 @@ export const LogoutModal = ({ open, setOpen }: Props) => {
         buttonBlockClassName={s.buttonBlock}
       >
         <Typography>
-          {t.sidebar.logoutModalDescription} &ldquo;<b>{EMAIL}</b>&rdquo;?
+          {t.sidebar.logoutModalDescription} &ldquo;<b>{userEmail}</b>&rdquo;?
         </Typography>
       </Modal>
     </>
