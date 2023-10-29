@@ -86,3 +86,7 @@
   border-top: none;
   border-left: none;
 }
+
+.activeTrigger svg {
+  stroke: var(--color-accent-500);
+}
