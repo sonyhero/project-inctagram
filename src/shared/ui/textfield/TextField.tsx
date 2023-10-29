@@ -62,7 +62,11 @@ export const TextField = forwardRef<HTMLInputElement, TextFieldProps>((props, re
 
   return (
     <div className={className}>
-      <Typography as={'label'} color={disableValue ? 'disabled' : 'secondary'}>
+      <Typography
+        variant={'regular14'}
+        as={'label'}
+        color={disableValue ? 'disabled' : 'secondary'}
+      >
         {label}
         <div className={`${s.fieldContainer}`}>
           {type === 'searchType' && (
