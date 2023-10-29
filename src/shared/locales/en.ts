@@ -1,6 +1,16 @@
 export type LocaleType = typeof en
 
 export const en = {
+  zodSchema: {
+    minNumberOfCharacters: 'Minimum number of characters: ',
+    maxNumberOfCharacters: 'Maximum number of characters: ',
+    userNameRegex: 'Must contain only A-Z, a-z, 0-9, dash and underscores',
+    firstLastNameRegex: 'Must contain only A-Z, a-z, А-Я, а-я',
+    email: 'The email must match the format example@example.com',
+    passwordRegex: 'Password must contain ',
+    passwordRefine: 'Passwords must match',
+    termsConfirm: 'Confirm terms',
+  },
   header: {
     inctagram: 'Inctagram',
     ru: 'Русский',
@@ -64,7 +74,7 @@ export const en = {
         addAProfilePhoto: 'Add a Profile Photo',
         errorType: 'The format of photo must be PNG or JPEG',
         errorSize: 'Photo size must be less than 10 MB',
-        selectFromComputer: 'Select from Computer',
+        selectFromComputer: 'Select from computer',
         save: 'Save',
       },
       deletePhotoModal: {
@@ -93,17 +103,6 @@ export const en = {
       signUp: 'Sign Up',
     },
     signUp: {
-      zodSigUpSchema: {
-        userNameMin: 'Minimum number of characters ',
-        userNameMax: 'Maximum number of characters ',
-        userNameRegex: 'Must contain only A-Z, a-z and underscores',
-        email: 'The email must match the format example@example.com',
-        passwordMin: 'Minimum number of characters ',
-        passwordMax: 'Maximum number of characters ',
-        passwordRegex: 'Password must contain ',
-        passwordRefine: 'Passwords must match',
-        termsConfirm: 'Confirm terms',
-      },
       signUp: 'Sign Up',
       userName: 'User name',
       userNamePlaceholder: 'enter your username',
