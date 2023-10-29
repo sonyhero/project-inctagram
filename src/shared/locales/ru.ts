@@ -1,8 +1,18 @@
 import { LocaleType } from '@/shared/locales/en'
 
 export const ru: LocaleType = {
+  zodSchema: {
+    minNumberOfCharacters: 'Минимальное количество символов: ',
+    maxNumberOfCharacters: 'Максимальное количество символов: ',
+    userNameRegex: 'Должно содержать только символы A-Z, a-z, 0-9, тире и подчеркивания',
+    firstLastNameRegex: 'Должно содержать только символы A-Z, a-z, А-Я, а-я',
+    email: 'Email должен соответствовать формату example@example.com',
+    passwordRegex: 'Пароль должен содержать ',
+    passwordRefine: 'Пароли должны совпадать',
+    termsConfirm: 'Подтвердите условия',
+  },
   header: {
-    inctagram: 'Инстаграм',
+    inctagram: 'Инктаграм',
     ru: 'Русский',
     en: 'English',
   },
@@ -62,8 +72,8 @@ export const ru: LocaleType = {
       addAProfilePhoto: 'Добавить фотографию профиля',
       photoModal: {
         addAProfilePhoto: 'Добавить фотографию профиля',
-        errorType: 'Ошибка! Формат загружаемой фотографии должен быть PNG и JPEG.',
-        errorSize: 'Ошибка! Размер фотографии должен быть меньше 10 МБ!',
+        errorType: 'Формат загружаемой фотографии должен быть PNG и JPEG.',
+        errorSize: 'Размер фотографии должен быть меньше 10 МБ',
         selectFromComputer: 'Выбрать с компьютера',
         save: 'Сохранить',
       },
@@ -94,17 +104,6 @@ export const ru: LocaleType = {
       signUp: 'Зарегистрироваться',
     },
     signUp: {
-      zodSigUpSchema: {
-        userNameMin: 'Минимальное количество символов ',
-        userNameMax: 'Максимальное количество символов ',
-        userNameRegex: 'Должно содержать только символы A-Z, a-z и подчеркивания',
-        email: 'Email должен соответствовать формату example@example.com',
-        passwordMin: 'Минимальное количество символов ',
-        passwordMax: 'Максимальное количество символов ',
-        passwordRegex: 'Пароль должен содержать ',
-        passwordRefine: 'Пароли должны совпадать',
-        termsConfirm: 'Подтвердите условия',
-      },
       signUp: 'Регистрация',
       userName: 'Имя пользователя',
       userNamePlaceholder: 'введите ваше имя пользователя',

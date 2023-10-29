@@ -6,36 +6,43 @@ import { toast } from 'react-toastify'
 import { z } from 'zod'
 
 import { useSignUpMutation } from '@/features/auth/api/authApi'
+import { PASSWORD_REGEX, USER_NAME_REGEX } from '@/shared/config/regex'
+import { getZodSchema } from '@/shared/config/zodSchemas'
 import { useTranslation } from '@/shared/hooks/useTranstaion'
 import { LocaleType } from '@/shared/locales'
 
 const getSigUpSchema = (t: LocaleType) => {
+  const userNameZod = getZodSchema({
+    t,
+    lengthMin: 6,
+    lengthMax: 30,
+    regex: USER_NAME_REGEX,
+    regexMessage: t.zodSchema.userNameRegex,
+  })
+
+  const passwordZod = getZodSchema({
+    t,
+    lengthMin: 6,
+    lengthMax: 20,
+    regex: PASSWORD_REGEX,
+    regexMessage: `${t.zodSchema.passwordRegex} a-z, A-Z,  ! " # $ % & ' ( ) * + , - . / : ; < = > ? @ [ \\ ] ^ _\` { | } ~`,
+  })
+
   return z
     .object({
-      userName: z
-        .string()
-        .min(6, `${t.auth.signUp.zodSigUpSchema.userNameMin} 6`)
-        .max(30, `${t.auth.signUp.zodSigUpSchema.userNameMax} 30`)
-        .regex(/^[a-zA-Z0-9_-]*$/, t.auth.signUp.zodSigUpSchema.userNameRegex),
-      email: z.string().email(t.auth.signUp.zodSigUpSchema.email),
-      password: z
-        .string()
-        .min(6, `${t.auth.signUp.zodSigUpSchema.passwordMin} 6`)
-        .max(20, `${t.auth.signUp.zodSigUpSchema.passwordMax} 20`)
-        .regex(
-          /^(?=.*[0-9])(?=.*[A-Z])(?=.*[a-z])(?=.*[!"#$%&'()*+,-./:;<=>?@[\]^_{|}~])[A-Za-z0-9!"#$%&'()*+,-./:;<=>?@[\]^_{|}~]+$/,
-          `${t.auth.signUp.zodSigUpSchema.passwordRegex} a-z, A-Z,  ! " # $ % & ' ( ) * + , - . / : ; < = > ? @ [ \\ ] ^ _\` { | } ~`
-        ),
+      userName: userNameZod,
+      email: z.string().email(t.zodSchema.email),
+      password: passwordZod,
       passwordConfirm: z.string(),
       terms: z.boolean().default(false),
     })
     .refine(data => data.password === data.passwordConfirm, {
       path: ['passwordConfirm'],
-      message: t.auth.signUp.zodSigUpSchema.passwordRefine,
+      message: t.zodSchema.passwordRefine,
     })
     .refine(data => data.terms, {
       path: ['terms'],
-      message: t.auth.signUp.zodSigUpSchema.termsConfirm,
+      message: t.zodSchema.termsConfirm,
     })
 }
 

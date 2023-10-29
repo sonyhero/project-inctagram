@@ -37,6 +37,7 @@ export const UpdateProfileForm = ({ defaultValue }: Props) => {
         control={control}
         type={'default'}
         name={'userName'}
+        requiredField
         label={t.myProfile.generalInformation.userName}
         placeholder={t.myProfile.generalInformation.placeholderUserName}
       />
@@ -45,6 +46,7 @@ export const UpdateProfileForm = ({ defaultValue }: Props) => {
         control={control}
         type={'default'}
         name={'firstName'}
+        requiredField
         label={t.myProfile.generalInformation.firstName}
         placeholder={t.myProfile.generalInformation.placeholderFirstName}
       />
@@ -53,6 +55,7 @@ export const UpdateProfileForm = ({ defaultValue }: Props) => {
         control={control}
         type={'default'}
         name={'lastName'}
+        requiredField
         label={t.myProfile.generalInformation.lastName}
         placeholder={t.myProfile.generalInformation.placeholderLastName}
       />

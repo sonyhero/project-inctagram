@@ -3,34 +3,39 @@ import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 
 import { GetProfileResponse, useUpdateProfileMutation } from '@/entities/profile'
+import { FIRST_LAST_NAME_REGEX, USER_NAME_REGEX } from '@/shared/config/regex'
+import { getZodSchema } from '@/shared/config/zodSchemas'
 import { useTranslation } from '@/shared/hooks/useTranstaion'
 import { LocaleType } from '@/shared/locales'
 
 const getUpdateProfileSchema = (t: LocaleType) => {
-  // TODO вставить t в z.object для локализации ошибок при заполнении полей
+  const userNameZod = getZodSchema({
+    t,
+    lengthMin: 6,
+    lengthMax: 30,
+    regex: USER_NAME_REGEX,
+    regexMessage: t.zodSchema.userNameRegex,
+  })
+
+  const firstLastNameZod = getZodSchema({
+    t,
+    lengthMin: 1,
+    lengthMax: 50,
+    regex: FIRST_LAST_NAME_REGEX,
+    regexMessage: t.zodSchema.firstLastNameRegex,
+  })
+
   return z.object({
-    userName: z
-      .string()
-      .min(6)
-      .max(30)
-      .regex(/^[a-zA-Z0-9_-]*$/),
-    firstName: z
-      .string()
-      .min(1)
-      .max(50)
-      .regex(/^[a-zA-Zа-яА-я]*$/),
-    lastName: z
-      .string()
-      .min(1)
-      .max(50)
-      .regex(/^[a-zA-Zа-яА-я]*$/),
+    userName: userNameZod,
+    firstName: firstLastNameZod,
+    lastName: firstLastNameZod,
     city: z.string(),
     dateOfBirth: z
       .date()
       .min(new Date('01-01-1910Z'))
       .max(
         new Date(Date.now() - 13 * 365 * 24 * 60 * 60 * 1000),
-        'A user under 13 cannot create a profile'
+        'A user under 13 can not create a profile'
       ),
     aboutMe: z.string().min(0).max(200),
   })

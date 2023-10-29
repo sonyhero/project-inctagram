@@ -1,4 +1,4 @@
-import { ChangeEvent, KeyboardEvent, ComponentPropsWithoutRef, forwardRef, useState } from 'react'
+import { ChangeEvent, ComponentPropsWithoutRef, forwardRef, KeyboardEvent, useState } from 'react'
 
 import { Typography } from '../typography'
 
@@ -9,6 +9,7 @@ import { Close, Eye, EyeOff, Search } from '@/shared/ui/icons'
 export type TextFieldProps = {
   type: 'default' | 'password' | 'searchType'
   label?: string
+  requiredField?: boolean
   errorMessage?: string
   placeholder?: string
   disableValue?: boolean
@@ -21,6 +22,7 @@ export type TextFieldProps = {
 
 export const TextField = forwardRef<HTMLInputElement, TextFieldProps>((props, ref) => {
   const {
+    requiredField = false,
     errorMessage,
     label,
     placeholder = 'Some text',
@@ -62,8 +64,17 @@ export const TextField = forwardRef<HTMLInputElement, TextFieldProps>((props, re
 
   return (
     <div className={className}>
-      <Typography as={'label'} color={disableValue ? 'disabled' : 'secondary'}>
+      <Typography
+        variant={'regular14'}
+        as={'label'}
+        color={disableValue ? 'disabled' : 'secondary'}
+      >
         {label}
+        {requiredField && (
+          <Typography as={'span'} color={'error'}>
+            *
+          </Typography>
+        )}
         <div className={`${s.fieldContainer}`}>
           {type === 'searchType' && (
             <Search className={disableValue ? s.searchDisabled : s.search}></Search>
