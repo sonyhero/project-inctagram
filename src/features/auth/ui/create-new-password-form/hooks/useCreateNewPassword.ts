@@ -6,6 +6,7 @@ import { z } from 'zod'
 
 import { useNewPasswordMutation } from '@/features/auth'
 import { PASSWORD_REGEX } from '@/shared/config/regex'
+import { PATH } from '@/shared/config/routes'
 import { getZodSchema } from '@/shared/config/zodSchemas'
 import { useTranslation } from '@/shared/hooks'
 import { LocaleType } from '@/shared/locales'
@@ -49,7 +50,7 @@ export const useCreateNewPassword = (recoveryCode: string) => {
       .unwrap()
       .then(() => {
         toast.success('Success')
-        router.push('sign-in')
+        router.push(PATH.SIGN_IN)
       })
       .catch(err => {
         err.data.messages.map((el: any) => {
