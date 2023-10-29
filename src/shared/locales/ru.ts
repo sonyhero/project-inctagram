@@ -2,7 +2,7 @@ import { LocaleType } from '@/shared/locales/en'
 
 export const ru: LocaleType = {
   header: {
-    inctagram: 'Инстаграм',
+    inctagram: 'Инктаграм',
     ru: 'Русский',
     en: 'English',
   },
