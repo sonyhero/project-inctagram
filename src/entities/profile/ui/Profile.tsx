@@ -2,7 +2,7 @@ import React from 'react'
 
 import Image from 'next/image'
 
-import imageIcon from '../../../../public/imageIcon.svg'
+import loaderIcon from '../../../../public/loader.svg'
 
 import s from './Profile.module.scss'
 
@@ -24,25 +24,17 @@ export const Profile = ({ userId }: Props) => {
     dispatch(profileSettingsSlice.actions.setShowProfileSettings({ value: true }))
   }
 
-  const profileAvatarLoader = () => {
-    return data?.avatars.length
-      ? {
-          src: imageIcon,
-          loader: () => data.avatars[0].url,
-          className: s.photo,
-        }
-      : {
-          src: imageIcon,
-          height: 48,
-          width: 48,
-        }
-  }
+  const profileAvatarLoader = () =>
+    data?.avatars.length && {
+      loader: () => data.avatars[0].url,
+      className: s.photo,
+    }
 
   return (
     <div className={s.profileBlock}>
       <div className={s.mainInfo}>
         <div className={s.photoBlock}>
-          <Image {...profileAvatarLoader()} alt={'profilePhoto'} />
+          <Image src={loaderIcon} priority={true} {...profileAvatarLoader()} alt={'profilePhoto'} />
         </div>
         <div className={s.descriptionBlock}>
           <div className={s.nameAndSettings}>
