@@ -74,6 +74,8 @@ export const ru: LocaleType = {
         addAProfilePhoto: 'Добавить фотографию профиля',
         errorType: 'Формат загружаемой фотографии должен быть PNG и JPEG.',
         errorSize: 'Размер фотографии должен быть меньше 10 МБ',
+        errorZeroSize: 'Размер фотографии должен быть больше 0 МБ',
+        errorBrokenFile: 'С вашим файлом что-то не так , попробуйте другой',
         selectFromComputer: 'Выбрать с компьютера',
         save: 'Сохранить',
       },

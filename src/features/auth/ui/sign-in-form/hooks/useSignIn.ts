@@ -43,7 +43,7 @@ export const useSignIn = () => {
         toast.success('Success')
       })
       .catch(err => {
-        if (err.data.messages === 'invalid password or email') {
+        if (err.data?.messages === 'invalid password or email') {
           setError('email', {
             type: 'manual',
             message: ' ',
@@ -52,6 +52,9 @@ export const useSignIn = () => {
             type: 'manual',
             message: t.auth.signIn.signInServerError,
           })
+        }
+        if (err.status === 'FETCH_ERROR') {
+          toast.error('Ошибка соединения с сервером')
         }
       })
   }
