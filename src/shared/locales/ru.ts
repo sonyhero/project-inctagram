@@ -149,8 +149,8 @@ export const ru: LocaleType = {
       resendLink: 'Отправить ссылку повторно',
     },
     congratulations: {
-      congratulations: 'Поздравления!',
-      description: 'Ваше сообщение было подтверждено',
+      congratulations: 'Поздравляем!',
+      description: 'Ваша почта была подтверждена',
       signIn: 'Войти',
     },
     privacy: {
