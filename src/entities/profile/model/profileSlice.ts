@@ -3,10 +3,13 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 export type SizeType = 'Оригинал' | '1:1' | '16:9' | '4:5'
 
 export type PostType = {
+  name: string
+  type: string
+  size: number
+  imageUrl: string
   id: string
-  photo: FormData
   zoom: number[]
-  size: SizeType
+  sizeScale: SizeType
   width: number
   height: number
 }
@@ -30,9 +33,9 @@ export const profileSlice = createSlice({
         el.id === action.payload.id ? { ...el, zoom: action.payload.zoom } : el
       )
     },
-    updateSize: (state, action: PayloadAction<{ id: string; size: SizeType }>) => {
+    updateSize: (state, action: PayloadAction<{ id: string; sizeScale: SizeType }>) => {
       state.photos = state.photos.map(el =>
-        el.id === action.payload.id ? { ...el, size: action.payload.size } : el
+        el.id === action.payload.id ? { ...el, sizeScale: action.payload.sizeScale } : el
       )
     },
     updateWidthAndHeight: (
@@ -44,6 +47,9 @@ export const profileSlice = createSlice({
           ? { ...el, width: action.payload.width, height: action.payload.height }
           : el
       )
+    },
+    deletePhotos: (state, _) => {
+      state.photos = []
     },
   },
 })

@@ -1,0 +1,88 @@
+.contentBox {
+  padding: 0;
+}
+
+.modalBlock {
+  width: 60.75rem;
+
+  .modalContent {
+    display: flex;
+    width: 100%;
+    height: 31.5rem;
+
+    .filterPhoto {
+      position: relative;
+
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      width: 50%;
+      height: 99.7%;
+
+      .back {
+        cursor: pointer;
+
+        position: absolute;
+        top: 50%;
+        left: 12px;
+
+        display: flex;
+        flex-shrink: 0;
+        align-items: center;
+        justify-content: center;
+
+        width: 3rem;
+        height: 3rem;
+
+        opacity: 0.8;
+        background: var(--color-dark-500);
+      }
+
+      .forvard {
+        cursor: pointer;
+
+        position: absolute;
+        top: 50%;
+        right: 12px;
+
+        display: flex;
+        flex-shrink: 0;
+        align-items: center;
+        justify-content: center;
+
+        width: 3rem;
+        height: 3rem;
+
+        opacity: 0.8;
+        background: var(--color-dark-500);
+      }
+    }
+
+    .filters {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1.5rem;
+
+      width: 50%;
+      height: 100%;
+      padding: 1.5rem 3.375rem;
+
+      .filterBlock {
+        display: flex;
+        flex-direction: column;
+        row-gap: 6px;
+        align-items: center;
+
+        width: 6.75rem;
+        height: 6.75rem;
+
+        .filterImg {
+          width: 100%;
+          height: 100%;
+        }
+      }
+    }
+  }
+}
