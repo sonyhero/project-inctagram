@@ -11,6 +11,10 @@ export const en = {
     passwordRefine: 'Passwords must match',
     termsConfirm: 'Confirm terms',
   },
+  toast: {
+    success: 'Success!',
+    fetchError: 'Network error',
+  },
   header: {
     inctagram: 'Inctagram',
     ru: 'Русский',
@@ -41,7 +45,7 @@ export const en = {
       placeholderUserName: 'enter your username',
       firstName: 'First Name',
       placeholderFirstName: 'enter your first name',
-      lastName: 'LastName',
+      lastName: 'Last Name',
       placeholderLastName: 'enter your last name',
       dateOfBirth: 'Date of birth',
       month: {
@@ -74,6 +78,8 @@ export const en = {
         addAProfilePhoto: 'Add a Profile Photo',
         errorType: 'The format of photo must be PNG or JPEG',
         errorSize: 'Photo size must be less than 10 MB',
+        errorZeroSize: 'Photo size must be more than 0 MB',
+        errorBrokenFile: 'Something wrong with your file, please try another one',
         selectFromComputer: 'Select from computer',
         save: 'Save',
       },

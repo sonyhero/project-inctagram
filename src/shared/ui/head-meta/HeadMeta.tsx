@@ -10,7 +10,7 @@ export const HeadMeta = ({ title, description }: Props) => {
     <Head>
       <title>{title ?? 'NextJS App'}</title>
       <meta name="description" content={description ?? 'NextJS Description'} />
-      <link rel="icon" href="/favicon.svg" />
+      <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     </Head>
   )
 }

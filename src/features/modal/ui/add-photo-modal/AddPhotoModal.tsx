@@ -1,6 +1,8 @@
 import { ChangeEvent, useRef, useState, WheelEvent } from 'react'
 
+import NProgress from 'nprogress'
 import AvatarEditor from 'react-avatar-editor'
+import { toast } from 'react-toastify'
 
 import s from './AddPhotoModal.module.scss'
 
@@ -9,6 +11,7 @@ import { useTranslation } from '@/shared/hooks/useTranstaion'
 import { useAppDispatch } from '@/shared/store'
 import { Nullable } from '@/shared/types'
 import { Button, ImageIcon, Modal, Typography } from '@/shared/ui'
+import { isImageFile } from '@/shared/utils/isImageFile'
 import { profileSettingsSlice } from '@/widgets/profile-settings'
 
 type Props = {
@@ -17,7 +20,7 @@ type Props = {
 }
 
 export const AddPhotoModal = ({ addPhotoModal, setAddPhotoModal }: Props) => {
-  const [updatePhoto] = useUploadAvatarMutation()
+  const [updatePhoto, { isError, isLoading }] = useUploadAvatarMutation()
   const { t } = useTranslation()
 
   const [photo, setPhoto] = useState<Nullable<FormData>>(null)
@@ -26,14 +29,20 @@ export const AddPhotoModal = ({ addPhotoModal, setAddPhotoModal }: Props) => {
   const [zoom, setZoom] = useState(1)
   const dispatch = useAppDispatch()
 
-  const mainPhotoSelected = (event: ChangeEvent<HTMLInputElement>) => {
+  const mainPhotoSelected = async (event: ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files && event.target.files[0]
 
     if (file) {
+      const isImage = await isImageFile(file)
+
       if (!['image/jpeg', 'image/jpg', 'image/png'].includes(file.type)) {
         setErrorPhoto(t.myProfile.generalInformation.photoModal.errorType)
+      } else if (!isImage) {
+        setErrorPhoto(t.myProfile.generalInformation.photoModal.errorBrokenFile)
       } else if (file.size > 10 * 1024 * 1024) {
         setErrorPhoto(t.myProfile.generalInformation.photoModal.errorSize)
+      } else if (file.size === 0) {
+        setErrorPhoto(t.myProfile.generalInformation.photoModal.errorZeroSize)
       } else {
         setErrorPhoto('')
         const formData = new FormData()
@@ -54,11 +63,15 @@ export const AddPhotoModal = ({ addPhotoModal, setAddPhotoModal }: Props) => {
 
           formData.append('file', blob)
           updatePhoto(formData)
-          setAddPhotoModal(false)
-          dispatch(profileSettingsSlice.actions.setShowProfileSettings({ value: false }))
+            .unwrap()
+            .then(() => {
+              toast.success(t.toast.success)
+              setAddPhotoModal(false)
+              dispatch(profileSettingsSlice.actions.setShowProfileSettings({ value: false }))
 
-          setPhoto(null)
-          setZoom(1)
+              setPhoto(null)
+              setZoom(1)
+            })
         }
       }, 'image/jpeg')
     }
@@ -90,6 +103,9 @@ export const AddPhotoModal = ({ addPhotoModal, setAddPhotoModal }: Props) => {
       handleZoomIn()
     }
   }
+
+  isLoading ? NProgress.start() : NProgress.done()
+  isError && toast.error(t.toast.fetchError)
 
   return (
     <Modal

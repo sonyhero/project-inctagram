@@ -10,7 +10,7 @@ import { Header } from '@/widgets/header'
 export const AuthLayout: NextPage<PropsWithChildren> = ({ children }) => {
   return (
     <>
-      <HeadMeta title={'NextJS Inctagram'} />
+      <HeadMeta title={'Inctagram'} />
       <Header />
       <main className={s.container}>{children}</main>
     </>

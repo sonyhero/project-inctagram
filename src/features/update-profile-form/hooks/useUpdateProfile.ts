@@ -1,5 +1,7 @@
 import { zodResolver } from '@hookform/resolvers/zod'
+import NProgress from 'nprogress'
 import { useForm } from 'react-hook-form'
+import { toast } from 'react-toastify'
 import { z } from 'zod'
 
 import { GetProfileResponse, useUpdateProfileMutation } from '@/entities/profile'
@@ -44,7 +46,8 @@ const getUpdateProfileSchema = (t: LocaleType) => {
 export type UpdateProfileFormShem = z.infer<ReturnType<typeof getUpdateProfileSchema>>
 
 export const useUpdateProfile = (defaultValue: GetProfileResponse | undefined) => {
-  const [updateProfile] = useUpdateProfileMutation()
+  const [updateProfile, { isError, isLoading }] = useUpdateProfileMutation()
+
   const { t } = useTranslation()
   const updateProfileSchema = getUpdateProfileSchema(t)
 
@@ -67,9 +70,16 @@ export const useUpdateProfile = (defaultValue: GetProfileResponse | undefined) =
 
   const onSubmit = (data: UpdateProfileFormShem) => {
     updateProfile(data)
+      .unwrap()
+      .then(() => {
+        toast.success(t.toast.success)
+      })
   }
 
   const handleSubmitForm = handleSubmit(onSubmit)
+
+  isLoading ? NProgress.start() : NProgress.done()
+  isError && toast.error(t.toast.fetchError)
 
   return { handleSubmitForm, control, errors, isValid, isDirty }
 }
