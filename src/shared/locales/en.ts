@@ -41,7 +41,7 @@ export const en = {
       placeholderUserName: 'enter your username',
       firstName: 'First Name',
       placeholderFirstName: 'enter your first name',
-      lastName: 'LastName',
+      lastName: 'Last Name',
       placeholderLastName: 'enter your last name',
       dateOfBirth: 'Date of birth',
       month: {
