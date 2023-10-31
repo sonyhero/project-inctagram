@@ -7,10 +7,10 @@ import { useUpdateProfile } from '@/features/update-profile-form/hooks/useUpdate
 import { useTranslation } from '@/shared/hooks/useTranstaion'
 import {
   Button,
+  ControlledSelect,
   ControlledTextArea,
   ControlledTextField,
   DatePicker,
-  ControlledSelect,
   Typography,
 } from '@/shared/ui'
 import { formatDate } from '@/shared/utils'
@@ -22,6 +22,8 @@ type Props = {
 export const UpdateProfileForm = ({ defaultValue }: Props) => {
   const { t } = useTranslation()
   const { control, handleSubmitForm, errors, isValid, isDirty } = useUpdateProfile(defaultValue)
+
+  const saveButtonDisabled = !isDirty || !isValid
 
   const cities = [
     { id: '1', value: t.myProfile.generalInformation.cities.minsk },
@@ -86,7 +88,7 @@ export const UpdateProfileForm = ({ defaultValue }: Props) => {
         label={t.myProfile.generalInformation.aboutMe}
         placeholder={t.myProfile.generalInformation.placeholderAboutMe}
       />
-      <Button disabled={!isValid || !isDirty} type={'submit'} className={s.saveChanges}>
+      <Button disabled={saveButtonDisabled} type={'submit'} className={s.saveChanges}>
         <Typography variant={'h3'}>{t.myProfile.generalInformation.saveChanges}</Typography>
       </Button>
     </form>

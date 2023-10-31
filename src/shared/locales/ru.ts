@@ -11,6 +11,10 @@ export const ru: LocaleType = {
     passwordRefine: 'Пароли должны совпадать',
     termsConfirm: 'Подтвердите условия',
   },
+  toast: {
+    success: 'Успешно!',
+    fetchError: 'Ошибка соединения с сервером',
+  },
   header: {
     inctagram: 'Инктаграм',
     ru: 'Русский',

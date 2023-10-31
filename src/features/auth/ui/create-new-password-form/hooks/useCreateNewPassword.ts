@@ -1,5 +1,6 @@
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useRouter } from 'next/router'
+import NProgress from 'nprogress'
 import { useForm } from 'react-hook-form'
 import { toast } from 'react-toastify'
 import { z } from 'zod'
@@ -34,7 +35,7 @@ const getCreateNewPasswordSchema = (t: LocaleType) => {
 type CreateNewPasswordFormShem = z.infer<ReturnType<typeof getCreateNewPasswordSchema>>
 
 export const useCreateNewPassword = (recoveryCode: string) => {
-  const [newPassword] = useNewPasswordMutation()
+  const [newPassword, { isError, isLoading }] = useNewPasswordMutation()
   const router = useRouter()
   const { t } = useTranslation()
 
@@ -49,7 +50,7 @@ export const useCreateNewPassword = (recoveryCode: string) => {
     newPassword({ newPassword: data.newPassword, recoveryCode })
       .unwrap()
       .then(() => {
-        toast.success('Success')
+        toast.success(t.toast.success)
         router.push(PATH.SIGN_IN)
       })
       .catch(err => {
@@ -61,6 +62,10 @@ export const useCreateNewPassword = (recoveryCode: string) => {
         })
       })
   }
+
+  isLoading ? NProgress.start() : NProgress.done()
+  isError && toast.error(t.toast.fetchError)
+
   const handleSubmitForm = handleSubmit(onSubmit)
 
   return { handleSubmitForm, control }

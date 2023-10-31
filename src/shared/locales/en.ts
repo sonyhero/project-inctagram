@@ -11,6 +11,10 @@ export const en = {
     passwordRefine: 'Passwords must match',
     termsConfirm: 'Confirm terms',
   },
+  toast: {
+    success: 'Success!',
+    fetchError: 'Network error',
+  },
   header: {
     inctagram: 'Inctagram',
     ru: 'Русский',
@@ -41,7 +45,7 @@ export const en = {
       placeholderUserName: 'enter your username',
       firstName: 'First Name',
       placeholderFirstName: 'enter your first name',
-      lastName: 'LastName',
+      lastName: 'Last Name',
       placeholderLastName: 'enter your last name',
       dateOfBirth: 'Date of birth',
       month: {
