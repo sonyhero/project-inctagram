@@ -12,7 +12,7 @@ import { SideBar } from '@/widgets/side-bar'
 export const Layout: NextPage<PropsWithChildren> = ({ children }) => {
   return (
     <>
-      <HeadMeta title={'NextJS Inctagram'} />
+      <HeadMeta title={'Inctagram'} />
       <Header />
       <div className={s.container}>
         <SideBar />
