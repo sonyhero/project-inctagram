@@ -1,8 +1,14 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
-type PostType = {
+export type SizeType = 'Оригинал' | '1:1' | '16:9' | '4:5'
+
+export type PostType = {
   id: string
   photo: FormData
+  zoom: number[]
+  size: SizeType
+  width: number
+  height: number
 }
 
 const initialState = {
@@ -18,6 +24,26 @@ export const profileSlice = createSlice({
     },
     deletePhoto: (state, action: PayloadAction<{ id: string }>) => {
       state.photos = state.photos.filter(el => el.id !== action.payload.id)
+    },
+    updateZoom: (state, action: PayloadAction<{ id: string; zoom: number[] }>) => {
+      state.photos = state.photos.map(el =>
+        el.id === action.payload.id ? { ...el, zoom: action.payload.zoom } : el
+      )
+    },
+    updateSize: (state, action: PayloadAction<{ id: string; size: SizeType }>) => {
+      state.photos = state.photos.map(el =>
+        el.id === action.payload.id ? { ...el, size: action.payload.size } : el
+      )
+    },
+    updateWidthAndHeight: (
+      state,
+      action: PayloadAction<{ id: string; width: number; height: number }>
+    ) => {
+      state.photos = state.photos.map(el =>
+        el.id === action.payload.id
+          ? { ...el, width: action.payload.width, height: action.payload.height }
+          : el
+      )
     },
   },
 })

@@ -6,6 +6,7 @@ import { modalSlice } from '@/features/modal'
 import { AddPostCroppingModal } from '@/features/modal/ui/add-post-cropping-modal'
 import { PATH } from '@/shared/config/routes'
 import { useTranslation } from '@/shared/hooks/useTranstaion'
+import { PhotoProvider } from '@/shared/providers/photo-provider'
 import { useAppDispatch, useAppSelector } from '@/shared/store'
 import { Nullable } from '@/shared/types'
 import {
@@ -58,7 +59,7 @@ export const SideBar = () => {
   }
 
   return (
-    <>
+    <PhotoProvider>
       <div className={s.navbar}>
         <div className={s.mainBlock}>
           <LinkSideBar
@@ -147,6 +148,6 @@ export const SideBar = () => {
       </div>
       <AddPostModal openAddPhotoModal={modal === 'addPostModal'} />
       <AddPostCroppingModal addPostCroppingModal={modal === 'addPostCroppingModal'} />
-    </>
+    </PhotoProvider>
   )
 }

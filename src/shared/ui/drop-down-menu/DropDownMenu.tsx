@@ -1,4 +1,4 @@
-import { ReactNode, useState } from 'react'
+import { ReactNode, useEffect, useState } from 'react'
 
 import * as DropdownMenu from '@radix-ui/react-dropdown-menu'
 import { motion } from 'framer-motion'
@@ -63,6 +63,12 @@ export const DropDownMenu = ({ items, trigger, align = 'start' }: Props) => {
   // const onOpenHandler = () => {
   //   setIsOpen(true)
   // }
+
+  useEffect(() => {
+    return () => {
+      setIsOpen(false)
+    }
+  }, [])
 
   return (
     <DropdownMenu.Root open={isOpen}>
