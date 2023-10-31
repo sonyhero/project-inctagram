@@ -50,7 +50,7 @@ const getSigUpSchema = (t: LocaleType) => {
 export type SignUpFormShem = z.infer<ReturnType<typeof getSigUpSchema>>
 
 export const useSignUp = () => {
-  const [signUp, { isLoading }] = useSignUpMutation()
+  const [signUp, { isLoading, isError }] = useSignUpMutation()
 
   const [emailModal, setEmailModal] = useState('')
   const [isOpenModal, setIsOpenModal] = useState(false)
@@ -84,9 +84,9 @@ export const useSignUp = () => {
     signUp({ userName: data.userName, email: data.email, password: data.password })
       .unwrap()
       .then(() => {
+        toast.success(t.toast.success)
         setEmailModal(data.email)
         setIsOpenModal(true)
-        toast.success('Success')
         reset()
       })
       .catch(err => {
@@ -113,6 +113,7 @@ export const useSignUp = () => {
   }
 
   isLoading ? NProgress.start() : NProgress.done()
+  isError && toast.error(t.toast.fetchError)
 
   return { control, handleSubmitForm, disableButton, emailModal, isOpenModal, onCloseModalHandler }
 }

@@ -11,6 +11,10 @@ export const en = {
     passwordRefine: 'Passwords must match',
     termsConfirm: 'Confirm terms',
   },
+  toast: {
+    success: 'Success!',
+    fetchError: 'Network error',
+  },
   header: {
     inctagram: 'Inctagram',
     ru: 'Русский',
