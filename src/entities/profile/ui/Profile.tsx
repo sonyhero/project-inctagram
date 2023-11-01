@@ -8,6 +8,8 @@ import loader from '../../../../public/loader.svg'
 import s from './Profile.module.scss'
 
 import { useGetProfileQuery } from '@/entities/profile'
+import { useGetPostsByUserIdQuery } from '@/entities/profile/api/postsApi'
+import { GetAllPostsItemsImages } from '@/entities/profile/api/postsApi.types'
 import { useTranslation } from '@/shared/hooks'
 import { useAppDispatch } from '@/shared/store'
 import { Button, Typography } from '@/shared/ui'
@@ -19,6 +21,13 @@ type Props = {
 export const Profile = ({ userId }: Props) => {
   const { t } = useTranslation()
   const { data, isLoading, isFetching } = useGetProfileQuery(userId)
+  const { data: postsData } = useGetPostsByUserIdQuery({
+    idLastUploadedPost: userId,
+    pageSize: 10,
+    sortBy: '',
+    sortDirection: 'desc',
+  })
+
   const dispatch = useAppDispatch()
 
   const showProfileSettingsHandler = () => {
@@ -75,7 +84,9 @@ export const Profile = ({ userId }: Props) => {
         </div>
       </div>
       <div>
-        <Typography variant={'h3'}>Тут будут посты</Typography>
+        {postsData?.items.map(el => {
+          return <img src={el.images[0].url} />
+        })}
       </div>
     </div>
   )

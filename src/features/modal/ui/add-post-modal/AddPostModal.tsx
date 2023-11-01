@@ -44,6 +44,7 @@ export const AddPostModal = ({ openAddPhotoModal }: Props) => {
             width: 492,
             height: image.height,
             imageUrl: URL.createObjectURL(file),
+            filter: 'none',
           }
 
           dispatch(profileActions.setPhoto(newPhoto))
