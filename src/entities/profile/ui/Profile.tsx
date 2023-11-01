@@ -3,6 +3,7 @@ import React from 'react'
 import Image from 'next/image'
 
 import imageIcon from '../../../../public/imageIcon.svg'
+import loader from '../../../../public/loader.svg'
 
 import s from './Profile.module.scss'
 
@@ -17,7 +18,7 @@ type Props = {
 }
 export const Profile = ({ userId }: Props) => {
   const { t } = useTranslation()
-  const { data } = useGetProfileQuery(userId)
+  const { data, isLoading, isFetching } = useGetProfileQuery(userId)
   const dispatch = useAppDispatch()
 
   const showProfileSettingsHandler = () => {
@@ -30,11 +31,22 @@ export const Profile = ({ userId }: Props) => {
       className: s.photo,
     }
 
+  const isLoadingAvatar = isLoading && isFetching
+
   return (
     <div className={s.profileBlock}>
       <div className={s.mainInfo}>
         <div className={s.photoBlock}>
-          <Image src={imageIcon} priority={true} {...profileAvatarLoader()} alt={'profilePhoto'} />
+          {isLoadingAvatar ? (
+            <Image src={loader} priority={true} alt={'profilePhoto'} />
+          ) : (
+            <Image
+              src={imageIcon}
+              priority={true}
+              {...profileAvatarLoader()}
+              alt={'profilePhoto'}
+            />
+          )}
         </div>
         <div className={s.descriptionBlock}>
           <div className={s.nameAndSettings}>
