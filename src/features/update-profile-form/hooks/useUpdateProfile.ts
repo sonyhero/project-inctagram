@@ -1,3 +1,5 @@
+import { useState } from 'react'
+
 import { zodResolver } from '@hookform/resolvers/zod'
 import NProgress from 'nprogress'
 import { useForm } from 'react-hook-form'
@@ -68,18 +70,24 @@ export const useUpdateProfile = (defaultValue: GetProfileResponse | undefined) =
     resolver: zodResolver(updateProfileSchema),
   })
 
+  const [dirty, setDirty] = useState(isDirty)
+
   const onSubmit = (data: UpdateProfileFormShem) => {
     updateProfile(data)
       .unwrap()
       .then(() => {
         toast.success(t.toast.success)
+        setDirty(false)
       })
   }
 
   const handleSubmitForm = handleSubmit(onSubmit)
+  const handleChangeForm = () => {
+    setDirty(true)
+  }
 
   isLoading ? NProgress.start() : NProgress.done()
   isError && toast.error(t.toast.fetchError)
 
-  return { handleSubmitForm, control, errors, isValid, isDirty }
+  return { handleSubmitForm, control, errors, isValid, dirty, handleChangeForm }
 }
