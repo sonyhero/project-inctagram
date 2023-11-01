@@ -63,6 +63,7 @@ export const ru: LocaleType = {
         dec: 'Декабрь',
       },
       placeholderDateOfBirth: 'дд.мм.гггг',
+      ageDateError: 'Пользователь младше 13 лет не может создать профиль',
       selectYourCity: 'Выберите свой город',
       cities: {
         minsk: 'Минск',
