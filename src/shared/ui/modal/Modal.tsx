@@ -53,6 +53,7 @@ export const Modal = (props: Props) => {
     prevContent = false,
     prevClick,
     nextContent = false,
+    nextClick,
     nextContentTitle,
   } = props
 
@@ -80,7 +81,7 @@ export const Modal = (props: Props) => {
                 )}
 
                 {nextContent && (
-                  <Typography variant={'h3'} className={s.nextContent}>
+                  <Typography variant={'h3'} className={s.nextContent} onClick={nextClick}>
                     {nextContentTitle}
                   </Typography>
                 )}

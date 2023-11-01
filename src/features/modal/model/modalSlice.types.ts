@@ -6,6 +6,6 @@ export type NameModal =
   | 'logOut'
   | 'addPostModal'
   | 'addPostCroppingModal'
-  | 'addPostFiltersModal'
+  | 'addPostFilterModal'
   | 'addPostPublicationsModal'
   | 'closeAddPostModal'

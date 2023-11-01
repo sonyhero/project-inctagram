@@ -4,7 +4,7 @@ import { v1 } from 'uuid'
 
 import s from './AddPostModal.module.scss'
 
-import { profileActions } from '@/entities/profile/model'
+import { PostType, profileActions } from '@/entities/profile/model'
 import { modalActions, modalSlice } from '@/features/modal'
 import { useAppDispatch } from '@/shared/store'
 import { Button, ImageIcon, Modal, Typography } from '@/shared/ui'
@@ -27,12 +27,28 @@ export const AddPostModal = ({ openAddPhotoModal }: Props) => {
         setErrorPhoto('Error! Photo size must be less than 20 MB!')
       } else {
         setErrorPhoto('')
-        const formData = new FormData()
+        // const formData = new FormData()
         const photoId = v1()
 
-        formData.append('file', file)
-        dispatch(profileActions.setPhoto({ id: photoId, photo: formData }))
-        dispatch(modalActions.setOpenModal('addPostCroppingModal'))
+        const image = new Image()
+
+        image.src = URL.createObjectURL(file)
+        image.onload = () => {
+          const newPhoto: PostType = {
+            id: photoId,
+            name: file.name,
+            type: file.type,
+            size: file.size,
+            zoom: [1],
+            sizeScale: 'Оригинал',
+            width: 492,
+            height: image.height,
+            imageUrl: URL.createObjectURL(file),
+          }
+
+          dispatch(profileActions.setPhoto(newPhoto))
+          dispatch(modalActions.setOpenModal('addPostCroppingModal'))
+        }
       }
     }
   }

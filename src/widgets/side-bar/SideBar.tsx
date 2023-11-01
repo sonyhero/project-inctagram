@@ -2,8 +2,13 @@ import { useState } from 'react'
 
 import s from './SideBar.module.scss'
 
-import { modalSlice } from '@/features/modal'
-import { AddPostCroppingModal } from '@/features/modal/ui/add-post-cropping-modal'
+import {
+  AddPostCroppingModal,
+  AddPostFilterModal,
+  AddPostModal,
+  LogoutModal,
+  modalSlice,
+} from '@/features/modal'
 import { PATH } from '@/shared/config/routes'
 import { useTranslation } from '@/shared/hooks/useTranstaion'
 import { useAppDispatch, useAppSelector } from '@/shared/store'
@@ -22,8 +27,6 @@ import {
 } from '@/shared/ui'
 import { profileSettingsSlice } from '@/widgets/profile-settings'
 import { LinkSideBar } from '@/widgets/side-bar/link-side-bar/LinkSideBar'
-import { AddPostModal } from 'src/features/modal/ui/add-post-modal'
-import { LogoutModal } from 'src/features/modal/ui/logout-modal'
 
 export type VariantIconType =
   | typeof PATH.HOME
@@ -150,6 +153,7 @@ export const SideBar = () => {
       <LogoutModal open={open} setOpen={setOpen} />
       <AddPostModal openAddPhotoModal={modal === 'addPostModal'} />
       <AddPostCroppingModal addPostCroppingModal={modal === 'addPostCroppingModal'} />
+      <AddPostFilterModal addPostFilterModal={modal === 'addPostFilterModal'} />
     </>
   )
 }

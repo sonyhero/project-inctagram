@@ -5,7 +5,7 @@ import { v1 } from 'uuid'
 
 import s from './AddPostCroppingModal.module.scss'
 
-import { profileActions } from '@/entities/profile/model'
+import { PostType, profileActions, SizeType } from '@/entities/profile/model'
 import { modalActions } from '@/features/modal'
 import { useAppDispatch, useAppSelector } from '@/shared/store'
 import { Nullable } from '@/shared/types'
@@ -33,25 +33,22 @@ type Props = {
 
 export const AddPostCroppingModal = ({ addPostCroppingModal }: Props) => {
   const photos = useAppSelector(state => state.profileSlice.photos)
-  const dispatch = useAppDispatch()
-
-  const [zoom, setZoom] = useState([1])
-  const [size, setSize] = useState('Оригинал')
-  const [error, setError] = useState(false)
-  const [dimensions, setDimensions] = useState<{ width: number; height: number }>({
-    width: 0,
-    height: 0,
-  })
   const [activeIndex, setActiveIndex] = useState(0)
+  const [error, setError] = useState(false)
+  const activePhoto = photos[activeIndex]
+  const dispatch = useAppDispatch()
 
   const editorRef = useRef<Nullable<AvatarEditor>>(null)
 
   const closeModal = () => {
+    dispatch(profileActions.deletePhotos({}))
     dispatch(modalActions.setCloseModal({}))
   }
   const opPrevClickHandler = () => {
+    dispatch(profileActions.deletePhotos({}))
     dispatch(modalActions.setOpenModal('addPostModal'))
   }
+
   const mainPhotoSelected = (event: ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files && event.target.files[0]
 
@@ -62,55 +59,82 @@ export const AddPostCroppingModal = ({ addPostCroppingModal }: Props) => {
         setError(true)
       } else {
         setError(false)
-        const formData = new FormData()
+        // const formData = new FormData()
         const photoId = v1()
 
-        formData.append('file', file)
-        dispatch(profileActions.setPhoto({ id: photoId, photo: formData }))
+        const image = new Image()
+
+        image.src = URL.createObjectURL(file)
+        image.onload = () => {
+          const newPhoto: PostType = {
+            id: photoId,
+            name: file.name,
+            type: file.type,
+            size: file.size,
+            zoom: [1],
+            sizeScale: 'Оригинал',
+            width: 492,
+            height: image.height,
+            imageUrl: URL.createObjectURL(file),
+          }
+
+          dispatch(profileActions.setPhoto(newPhoto))
+          setActiveIndex(activeIndex + 1)
+        }
       }
     }
   }
-
-  useEffect(() => {
-    if (typeof window !== 'undefined' && photos && photos.length > 0) {
-      const originalImage = new Image()
-
-      originalImage.src = URL.createObjectURL(photos[photos.length - 1].photo.get('file') as Blob)
-
-      originalImage.onload = () => {
-        let width, height
-        const originalWidth = 492
-        const originalHeight = originalImage.height
-
-        switch (size) {
-          case '1:1':
-            width = Math.min(originalWidth, originalHeight)
-            height = 492
-            break
-          case '16:9':
-            width = Math.min(originalWidth, originalHeight)
-            height = 492 / (16 / 9)
-            break
-          case '4:5':
-            width = Math.min(originalWidth, originalHeight)
-            height = 492 / (4 / 5)
-            break
-          default:
-            width = originalWidth
-            height = originalHeight
-        }
-
-        setDimensions({ width, height })
-      }
+  const changeZoom = (zoom: number[]) => {
+    if (activePhoto) {
+      // updateZoom(activePhoto.id, zoom)
+      dispatch(profileActions.updateZoom({ id: activePhoto.id, zoom }))
     }
-  }, [photos, size])
+  }
+  const changeSize = (size: SizeType) => {
+    dispatch(profileActions.updateSize({ id: activePhoto.id, sizeScale: size }))
+
+    const originalImage = new Image()
+
+    originalImage.src = activePhoto.imageUrl
+
+    originalImage.onload = () => {
+      let width, height
+      const maxWidth = 492
+      const originalHeight = originalImage.height
+
+      switch (size) {
+        case '1:1':
+          width = Math.min(maxWidth, originalHeight)
+          height = 492
+          break
+        case '16:9':
+          width = Math.min(maxWidth, originalHeight)
+          height = maxWidth / (16 / 9)
+          break
+        case '4:5':
+          width = Math.min(maxWidth, originalHeight)
+          height = maxWidth / (4 / 5)
+          break
+        default:
+          width = maxWidth
+          height = originalHeight
+      }
+      dispatch(profileActions.updateWidthAndHeight({ id: activePhoto.id, width, height }))
+    }
+  }
 
   const dropDownMenuZoom = [
     {
       id: 1,
       component: (
         <div style={{ width: '124px' }}>
-          <SuperSlider value={zoom} setValue={setZoom} maxValue={10} minValue={1} step={0.05} />
+          <SuperSlider
+            value={activePhoto?.zoom}
+            setValue={changeZoom}
+            maxValue={10}
+            minValue={1}
+            step={0.05}
+          />
         </div>
       ),
     },
@@ -120,8 +144,10 @@ export const AddPostCroppingModal = ({ addPostCroppingModal }: Props) => {
       id: 1,
       component: (
         <div
-          onClick={() => setSize('Оригинал')}
-          className={`${s.itemSizeOriginal} ${size === 'Оригинал' ? s.activeItemOriginal : ''}`}
+          onClick={() => changeSize('Оригинал')}
+          className={`${s.itemSizeOriginal} ${
+            activePhoto?.sizeScale === 'Оригинал' ? s.activeItemOriginal : ''
+          }`}
         >
           <Typography>Оригинал</Typography>
           <SizeOriginal />
@@ -132,8 +158,8 @@ export const AddPostCroppingModal = ({ addPostCroppingModal }: Props) => {
       id: 2,
       component: (
         <div
-          onClick={() => setSize('1:1')}
-          className={`${s.itemSize} ${size === '1:1' ? s.activeItem : ''}`}
+          onClick={() => changeSize('1:1')}
+          className={`${s.itemSize} ${activePhoto?.sizeScale === '1:1' ? s.activeItem : ''}`}
         >
           <Typography>1:1</Typography>
           <Size1to1 />
@@ -144,8 +170,8 @@ export const AddPostCroppingModal = ({ addPostCroppingModal }: Props) => {
       id: 3,
       component: (
         <div
-          onClick={() => setSize('4:5')}
-          className={`${s.itemSize} ${size === '4:5' ? s.activeItem : ''}`}
+          onClick={() => changeSize('4:5')}
+          className={`${s.itemSize} ${activePhoto?.sizeScale === '4:5' ? s.activeItem : ''}`}
         >
           <Typography>4:5</Typography>
           <Size4to5 />
@@ -156,8 +182,8 @@ export const AddPostCroppingModal = ({ addPostCroppingModal }: Props) => {
       id: 4,
       component: (
         <div
-          onClick={() => setSize('16:9')}
-          className={`${s.itemSize} ${size === '16:9' ? s.activeItem : ''}`}
+          onClick={() => changeSize('16:9')}
+          className={`${s.itemSize} ${activePhoto?.sizeScale === '16:9' ? s.activeItem : ''}`}
         >
           <Typography>16:9</Typography>
           <Size16to9 />
@@ -173,19 +199,19 @@ export const AddPostCroppingModal = ({ addPostCroppingModal }: Props) => {
           <div className={s.photos}>
             {photos.map((el, index) => {
               const deletePhotoHandler = (id: string) => {
+                dispatch(profileActions.deletePhoto({ id }))
+
                 if (photos.length === 1) {
                   dispatch(modalActions.setOpenModal('addPostModal'))
                 }
-                dispatch(profileActions.deletePhoto({ id }))
+                if (activeIndex === photos.length - 1) {
+                  setActiveIndex(photos.length > 1 ? photos.length - 2 : 0)
+                }
               }
 
               return (
                 <div key={index} className={s.photoItem}>
-                  <img
-                    src={URL.createObjectURL(el.photo.get('file') as Blob)}
-                    className={s.photoDropDown}
-                    alt={`photo ${index}`}
-                  />
+                  <img src={el.imageUrl} className={s.photoDropDown} alt={`photo ${index}`} />
                   <div className={s.deletePhoto} onClick={() => deletePhotoHandler(el.id)}>
                     <Close />
                   </div>
@@ -218,6 +244,9 @@ export const AddPostCroppingModal = ({ addPostCroppingModal }: Props) => {
       }
     }
   }
+  const nextContentHandler = () => {
+    dispatch(modalActions.setOpenModal('addPostFilterModal'))
+  }
 
   return (
     <Modal
@@ -230,31 +259,32 @@ export const AddPostCroppingModal = ({ addPostCroppingModal }: Props) => {
       prevClick={opPrevClickHandler}
       nextContent={true}
       nextContentTitle={'Next'}
+      nextClick={nextContentHandler}
       contentBoxClassname={s.contentBox}
     >
-      {
+      {photos && photos.length > 0 && activePhoto && (
         <div className={s.modalContent}>
-          {photos && photos.length > 0 && (
-            <>
-              <div className={s.back} onClick={() => changePhoto('prev')}>
-                <ArrowIosBack />
-              </div>
-              <AvatarEditor
-                ref={editorRef}
-                image={URL.createObjectURL(photos[activeIndex].photo.get('file') as Blob)}
-                width={dimensions.width}
-                height={dimensions.height}
-                border={0}
-                color={[24, 27, 27, 0.6]}
-                rotate={0}
-                disableBoundaryChecks={false}
-                disableHiDPIScaling={true}
-                scale={zoom[0]}
-              />
-              <div className={s.forvard} onClick={() => changePhoto('next')}>
-                <ArrowIosForward />
-              </div>
-            </>
+          {activeIndex > 0 && (
+            <div className={s.back} onClick={() => changePhoto('prev')}>
+              <ArrowIosBack />
+            </div>
+          )}
+          <AvatarEditor
+            ref={editorRef}
+            image={activePhoto.imageUrl}
+            width={activePhoto.width}
+            height={activePhoto.height}
+            border={0}
+            color={[24, 27, 27, 0.6]}
+            rotate={0}
+            disableBoundaryChecks={false}
+            disableHiDPIScaling={true}
+            scale={activePhoto?.zoom?.[0]}
+          />
+          {activeIndex < photos.length - 1 && (
+            <div className={s.forvard} onClick={() => changePhoto('next')}>
+              <ArrowIosForward />
+            </div>
           )}
           <div className={s.activities}>
             <div className={s.activityLeft}>
@@ -271,7 +301,7 @@ export const AddPostCroppingModal = ({ addPostCroppingModal }: Props) => {
             </div>
           </div>
         </div>
-      }
+      )}
     </Modal>
   )
 }
