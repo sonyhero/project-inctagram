@@ -1,0 +1,279 @@
+import React, { useEffect, useRef, useState } from 'react'
+
+import ImageNext from 'next/image'
+import AvatarEditor from 'react-avatar-editor'
+
+import loaderIcon from '../../../../../public/loader.svg'
+
+import s from './AddPostPublicationModal.module.scss'
+
+import { useGetProfileQuery } from '@/entities/profile'
+import { useUploadPostImageMutation } from '@/entities/profile/api/postsApi'
+import { modalActions } from '@/features/modal'
+import { useAppDispatch, useAppSelector } from '@/shared/store'
+import { Nullable } from '@/shared/types'
+import {
+  ArrowIosBack,
+  ArrowIosForward,
+  Modal,
+  TextAreaField,
+  TextField,
+  Typography,
+} from '@/shared/ui'
+
+type Props = {
+  addPostPublicationModal: boolean
+  userId: number
+}
+
+export const AddPostPublicationModal = ({ addPostPublicationModal, userId }: Props) => {
+  const photos = useAppSelector(state => state.profileSlice.photos)
+  const { data } = useGetProfileQuery(userId)
+  const [activeIndex, setActiveIndex] = useState(0)
+  const activePhoto = photos[activeIndex]
+  const [photosFormData, serPhotoFormData] = useState<FormData[]>([])
+  const [uploadImage] = useUploadPostImageMutation()
+
+  console.log(photosFormData)
+
+  const dispatch = useAppDispatch()
+
+  const editorRef = useRef<Nullable<AvatarEditor>>(null)
+  const closeModal = () => {
+    dispatch(modalActions.setCloseModal({}))
+  }
+  const opPrevClickHandler = () => {
+    dispatch(modalActions.setOpenModal('addPostFilterModal'))
+  }
+  const changePhoto = (direction: 'next' | 'prev') => {
+    if (photos.length > 0) {
+      if (direction === 'next' && activeIndex < photos.length - 1) {
+        setActiveIndex(activeIndex + 1)
+      } else if (direction === 'prev' && activeIndex > 0) {
+        setActiveIndex(activeIndex - 1)
+      }
+    }
+  }
+  const profileAvatarLoader = () =>
+    data?.avatars.length && {
+      loader: () => data.avatars[0].url,
+      className: s.photo,
+    }
+
+  useEffect(() => {
+    const newPhotosFormData = [] as FormData[]
+
+    for (let i = 0; i < photos.length; i++) {
+      const canvas = document.createElement('canvas')
+      const ctx = canvas.getContext('2d')
+
+      if (canvas && ctx) {
+        canvas.width = photos[i].width
+        canvas.height = photos[i].height
+
+        const image = new Image()
+
+        image.onload = () => {
+          // Применяем фильтры
+          if (photos[i].filter) {
+            ctx.filter = photos[i].filter
+          }
+
+          // Применяем зум
+          if (photos[i].zoom) {
+            const scale = photos[i].zoom[0]
+
+            // Зум
+            const zoomedWidth = photos[i].width * scale
+            const zoomedHeight = photos[i].height * scale
+
+            // Отрисовываем изображение на canvas с примененными фильтрами и зумом
+            ctx.drawImage(image, 0, 0, zoomedWidth, zoomedHeight)
+          } else {
+            // Отрисовываем изображение на canvas без зума
+            ctx.drawImage(image, 0, 0, photos[i].width, photos[i].height)
+          }
+
+          // Преобразуем canvas в Data URL
+          const editedImageDataURL = canvas.toDataURL('image/jpeg')
+
+          // Преобразуем Data URL в Blob
+          fetch(editedImageDataURL)
+            .then(res => res.blob())
+            .then(blob => {
+              const formData = new FormData()
+
+              formData.append('files', blob)
+              newPhotosFormData.push(formData)
+
+              if (newPhotosFormData.length === photos.length) {
+                serPhotoFormData(newPhotosFormData)
+              }
+            })
+        }
+
+        image.src = photos[i].imageUrl
+      }
+    }
+  }, [photos])
+  const onPublishHandler = () => {
+    const formData = new FormData()
+
+    for (let i = 0; i < photosFormData.length; i++) {
+      const file = photosFormData[i].get('files')
+
+      if (file) {
+        formData.append('files', file)
+      }
+    }
+    uploadImage(formData)
+  }
+
+  return (
+    <Modal
+      className={s.modalBlock}
+      title={'Publication'}
+      open={addPostPublicationModal}
+      prevContent={true}
+      onClose={closeModal}
+      showCloseButton={false}
+      prevClick={opPrevClickHandler}
+      nextContent={true}
+      nextContentTitle={'Publish'}
+      nextClick={onPublishHandler}
+      contentBoxClassname={s.contentBox}
+    >
+      {photos && photos.length > 0 && activePhoto && (
+        <div className={s.modalContent}>
+          <div className={s.lastPhoto}>
+            {activeIndex > 0 && (
+              <div className={s.back} onClick={() => changePhoto('prev')}>
+                <ArrowIosBack />
+              </div>
+            )}
+            <AvatarEditor
+              ref={editorRef}
+              image={activePhoto.imageUrl}
+              width={activePhoto.width}
+              height={activePhoto.height}
+              border={0}
+              color={[24, 27, 27, 0.6]}
+              rotate={0}
+              style={{
+                filter: activePhoto.filter,
+              }}
+              disableBoundaryChecks={false}
+              disableHiDPIScaling={true}
+              scale={activePhoto?.zoom?.[0]}
+            />
+            {activeIndex < photos.length - 1 && (
+              <div className={s.forvard} onClick={() => changePhoto('next')}>
+                <ArrowIosForward />
+              </div>
+            )}
+          </div>
+          <div className={s.postDescriptionBlock}>
+            <div className={s.topContent}>
+              <div className={s.photoBlock}>
+                <ImageNext
+                  src={loaderIcon}
+                  priority={true}
+                  {...profileAvatarLoader()}
+                  alt={'profilePhoto'}
+                />
+                <Typography>{data?.userName}</Typography>
+              </div>
+              <div>
+                <TextAreaField
+                  label={'Add publication descriptions'}
+                  placeholder={'Add your description'}
+                />
+                <Typography variant={'small'} color={'secondary'} className={s.balance}>
+                  0/500
+                </Typography>
+              </div>
+            </div>
+            <div className={s.bottomContent}>
+              <TextField type={'default'} value={'New York'} label={'Add location'} />
+              <div className={s.items}>
+                <div className={s.item}>
+                  <Typography>New York</Typography>
+                  <Typography variant={'small'} color={'secondary'}>
+                    Washington Square Park
+                  </Typography>
+                </div>
+                <div className={s.item}>
+                  <Typography>New York</Typography>
+                  <Typography variant={'small'} color={'secondary'}>
+                    Washington Square Park
+                  </Typography>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+    </Modal>
+  )
+}
+
+// const onPublishHandler = () => {
+//   const newPhotosFormData = [] as FormData[]
+//
+//   for (const photo of photos) {
+//     const canvas = document.createElement('canvas')
+//     const ctx = canvas.getContext('2d')
+//
+//     if (canvas && ctx) {
+//       canvas.width = photo.width
+//       canvas.height = photo.height
+//
+//       const image = new Image()
+//
+//       image.src = photo.imageUrl
+//
+//       image.onload = () => {
+//         // Создаем новый div-элемент для AvatarEditor
+//         const editorContainer = document.createElement('div')
+//
+//         document.body.appendChild(editorContainer)
+//
+//         // Создаем новый AvatarEditor
+//         const editor = new AvatarEditor(
+//           {
+//             image: image,
+//             width: photo.width,
+//             height: photo.height,
+//             scale: photo.zoom[0],
+//             style: { filter: photo.filter },
+//           },
+//           editorContainer
+//         )
+//
+//         // Отрисовываем изображение с примененными filter и zoom
+//         const editedImage = editor.getImage()
+//
+//         // Отрисовываем editedImage на canvas
+//         ctx.drawImage(editedImage, 0, 0, photo.width, photo.height)
+//
+//         // Преобразуем canvas в Blob и добавляем его к FormData
+//         canvas.toBlob(blob => {
+//           if (blob) {
+//             const formData = new FormData()
+//
+//             formData.append('files', blob)
+//
+//             newPhotosFormData.push(formData)
+//
+//             if (newPhotosFormData.length === photos.length) {
+//               serPhotoFormData(newPhotosFormData)
+//
+//               // Удаляем временный div-элемент
+//               document.body.removeChild(editorContainer)
+//             }
+//           }
+//         }, 'image/jpeg')
+//       }
+//     }
+//   }
+// }

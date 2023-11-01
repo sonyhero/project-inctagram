@@ -6,6 +6,7 @@ import {
   AddPostCroppingModal,
   AddPostFilterModal,
   AddPostModal,
+  AddPostPublicationModal,
   LogoutModal,
   modalSlice,
 } from '@/features/modal'
@@ -46,6 +47,7 @@ export const SideBar = () => {
   const [variantIcon, setVariantIcon] = useState<Nullable<VariantIconType>>()
   const { t } = useTranslation()
   const modal = useAppSelector(state => state.modalSlice.open)
+  const userId = useAppSelector(state => state.profileSlice.profileData.userId)
   const dispatch = useAppDispatch()
   const handleItemClick = (variant: Nullable<VariantIconType>) => {
     setVariantIcon(variant)
@@ -151,9 +153,17 @@ export const SideBar = () => {
         </Button>
       </div>
       <LogoutModal open={open} setOpen={setOpen} />
-      <AddPostModal openAddPhotoModal={modal === 'addPostModal'} />
-      <AddPostCroppingModal addPostCroppingModal={modal === 'addPostCroppingModal'} />
+      {modal === 'addPostModal' && <AddPostModal openAddPhotoModal={modal === 'addPostModal'} />}
+      {modal === 'addPostCroppingModal' && (
+        <AddPostCroppingModal addPostCroppingModal={modal === 'addPostCroppingModal'} />
+      )}
       <AddPostFilterModal addPostFilterModal={modal === 'addPostFilterModal'} />
+      {userId && modal === 'addPostPublicationsModal' && (
+        <AddPostPublicationModal
+          addPostPublicationModal={modal === 'addPostPublicationsModal'}
+          userId={userId}
+        />
+      )}
     </>
   )
 }
