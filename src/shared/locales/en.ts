@@ -63,6 +63,7 @@ export const en = {
         dec: 'December',
       },
       placeholderDateOfBirth: 'dd.mm.yyyy',
+      ageDateError: 'A user under 13 years of age cannot create a profile',
       selectYourCity: 'Select your city',
       cities: {
         minsk: 'Minsk',

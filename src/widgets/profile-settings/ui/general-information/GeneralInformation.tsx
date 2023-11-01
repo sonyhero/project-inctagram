@@ -2,7 +2,7 @@ import { useState } from 'react'
 
 import Image from 'next/image'
 
-import loaderIcon from '../../../../../public/loader.svg'
+import imageIcon from '../../../../../public/imageIcon.svg'
 
 import s from './GeneralInformation.module.scss'
 
@@ -10,7 +10,7 @@ import { useGetProfileQuery } from '@/entities/profile'
 import { AddPhotoModal, DeletePhotoModal } from '@/features/modal'
 import { UpdateProfileForm } from '@/features/update-profile-form'
 import { useTranslation } from '@/shared/hooks'
-import { Button, Close, ImageIcon, Typography } from '@/shared/ui'
+import { Button, Close, Typography } from '@/shared/ui'
 
 type Props = {
   userId: number
@@ -42,19 +42,14 @@ export const GeneralInformation = ({ userId }: Props) => {
         <div className={s.photoBlock}>
           {profileData?.avatars.length ? (
             <div className={s.photoAndDeleteBlock}>
-              <Image
-                src={loaderIcon}
-                priority={true}
-                {...profileAvatarLoader()}
-                alt={'profilePhoto'}
-              />
+              <Image src={imageIcon} {...profileAvatarLoader()} alt={'profilePhoto'} />
               <div className={s.deletePhoto} onClick={openDeleteModalHandler}>
                 <Close />
               </div>
             </div>
           ) : (
             <div className={s.defaultPhoto}>
-              <ImageIcon height={48} width={48} />
+              <Image src={imageIcon} alt={'profilePhoto'} />
             </div>
           )}
           <Button variant={'outline'} onClick={openPhotoModal}>

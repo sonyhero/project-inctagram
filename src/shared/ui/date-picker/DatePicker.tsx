@@ -12,6 +12,7 @@ import calendarError from '../icons/calendar/calendar-error.svg'
 import s from './DatePicker.module.scss'
 import { DatePickerHeader } from './DatePickerHeader'
 
+import { PATH } from '@/shared/config/routes'
 import { useTranslation } from '@/shared/hooks/useTranstaion'
 import { Nullable } from '@/shared/types'
 import { customizeDatePickerInput } from '@/shared/utils/customizeDatePickerInput'
@@ -74,8 +75,8 @@ export const DatePicker = (props: Props) => {
         const birthdayError = (
           <>
             {error?.message}.{' '}
-            <Link className={s.birthdayErrorLink} href="#" target="_blank">
-              privacy-policy
+            <Link className={s.birthdayErrorLink} href={PATH.POLICY} target="_blank">
+              {t.auth.signUp.privacyPolicy}
             </Link>
           </>
         )
