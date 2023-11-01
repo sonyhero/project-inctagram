@@ -18,6 +18,7 @@ type Props = {
 export const Profile = ({ userId }: Props) => {
   const { t } = useTranslation()
   const { data } = useGetProfileQuery(userId)
+  // const { postsData } = useGetPostsByUserIdQuery({})
   const dispatch = useAppDispatch()
 
   const showProfileSettingsHandler = () => {
@@ -63,7 +64,9 @@ export const Profile = ({ userId }: Props) => {
         </div>
       </div>
       <div>
-        <Typography variant={'h3'}>Тут будут посты</Typography>
+        {/*{postsData?.items?.images?.map((el: GetAllPostsItemsImages) => {*/}
+        {/*  return <img src={el.url} alt="el" key={el.uploadId} />*/}
+        {/*})}*/}
       </div>
     </div>
   )

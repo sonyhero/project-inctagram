@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { ChangeEvent, useEffect, useRef, useState } from 'react'
 
 import ImageNext from 'next/image'
 import AvatarEditor from 'react-avatar-editor'
@@ -8,7 +8,7 @@ import loaderIcon from '../../../../../public/loader.svg'
 import s from './AddPostPublicationModal.module.scss'
 
 import { useGetProfileQuery } from '@/entities/profile'
-import { useUploadPostImageMutation } from '@/entities/profile/api/postsApi'
+import { useCreatePostMutation, useUploadPostImageMutation } from '@/entities/profile/api/postsApi'
 import { modalActions } from '@/features/modal'
 import { useAppDispatch, useAppSelector } from '@/shared/store'
 import { Nullable } from '@/shared/types'
@@ -32,11 +32,13 @@ export const AddPostPublicationModal = ({ addPostPublicationModal, userId }: Pro
   const [activeIndex, setActiveIndex] = useState(0)
   const activePhoto = photos[activeIndex]
   const [photosFormData, serPhotoFormData] = useState<FormData[]>([])
+  const [createPost] = useCreatePostMutation()
   const [uploadImage] = useUploadPostImageMutation()
-
-  console.log(photosFormData)
+  const [value, setValue] = useState('')
 
   const dispatch = useAppDispatch()
+
+  console.log(photosFormData)
 
   const editorRef = useRef<Nullable<AvatarEditor>>(null)
   const closeModal = () => {
@@ -75,24 +77,14 @@ export const AddPostPublicationModal = ({ addPostPublicationModal, userId }: Pro
 
         image.onload = () => {
           // Применяем фильтры
-          if (photos[i].filter) {
-            ctx.filter = photos[i].filter
-          }
 
-          // Применяем зум
-          if (photos[i].zoom) {
-            const scale = photos[i].zoom[0]
+          ctx.filter = photos[i].filter
+          const scale = photos[i].zoom[0]
+          const zoomedWidth = photos[i].width * scale
+          const zoomedHeight = photos[i].height * scale
 
-            // Зум
-            const zoomedWidth = photos[i].width * scale
-            const zoomedHeight = photos[i].height * scale
-
-            // Отрисовываем изображение на canvas с примененными фильтрами и зумом
-            ctx.drawImage(image, 0, 0, zoomedWidth, zoomedHeight)
-          } else {
-            // Отрисовываем изображение на canvas без зума
-            ctx.drawImage(image, 0, 0, photos[i].width, photos[i].height)
-          }
+          // Отрисовываем изображение на canvas с примененными фильтрами и зумом
+          ctx.drawImage(image, 0, 0, zoomedWidth, zoomedHeight)
 
           // Преобразуем canvas в Data URL
           const editedImageDataURL = canvas.toDataURL('image/jpeg')
@@ -103,7 +95,7 @@ export const AddPostPublicationModal = ({ addPostPublicationModal, userId }: Pro
             .then(blob => {
               const formData = new FormData()
 
-              formData.append('files', blob)
+              formData.append('file', blob)
               newPhotosFormData.push(formData)
 
               if (newPhotosFormData.length === photos.length) {
@@ -120,13 +112,30 @@ export const AddPostPublicationModal = ({ addPostPublicationModal, userId }: Pro
     const formData = new FormData()
 
     for (let i = 0; i < photosFormData.length; i++) {
-      const file = photosFormData[i].get('files')
+      const file = photosFormData[i].get('file')
 
       if (file) {
-        formData.append('files', file)
+        formData.append('file', file)
       }
     }
     uploadImage(formData)
+      .unwrap()
+      .then(data => {
+        const uploadId = []
+
+        for (let i = 0; i < data.images.length; i += 2) {
+          if (data.images[i]) {
+            uploadId.push({ uploadId: data.images[i].uploadId })
+          }
+        }
+
+        createPost({ description: value, childrenMetadata: uploadId })
+        dispatch(modalActions.setCloseModal({}))
+      })
+  }
+
+  const onChangeTextHandler = (event: ChangeEvent<HTMLTextAreaElement>) => {
+    setValue(event.currentTarget.value)
   }
 
   return (
@@ -187,9 +196,12 @@ export const AddPostPublicationModal = ({ addPostPublicationModal, userId }: Pro
                 <TextAreaField
                   label={'Add publication descriptions'}
                   placeholder={'Add your description'}
+                  value={value}
+                  onChange={onChangeTextHandler}
+                  disabled={value.length > 500}
                 />
                 <Typography variant={'small'} color={'secondary'} className={s.balance}>
-                  0/500
+                  {value.length}/500
                 </Typography>
               </div>
             </div>
