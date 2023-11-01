@@ -25,6 +25,7 @@
         cursor: pointer;
 
         position: absolute;
+        z-index: 1;
         top: 50%;
         left: 12px;
 
@@ -44,6 +45,7 @@
         cursor: pointer;
 
         position: absolute;
+        z-index: 1;
         top: 50%;
         right: 12px;
 
@@ -64,12 +66,15 @@
       display: flex;
       flex-wrap: wrap;
       gap: 1.5rem;
+      justify-content: center;
 
       width: 50%;
       height: 100%;
       padding: 1.5rem 3.375rem;
 
       .filterBlock {
+        cursor: pointer;
+
         display: flex;
         flex-direction: column;
         row-gap: 6px;
