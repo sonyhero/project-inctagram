@@ -1,5 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
+import { Nullable } from '@/shared/types'
+
 export type SizeType = 'Оригинал' | '1:1' | '16:9' | '4:5'
 
 export type PostType = {
@@ -12,10 +14,21 @@ export type PostType = {
   sizeScale: SizeType
   width: number
   height: number
+  filter: string
+}
+export type ProfileDataType = {
+  email: Nullable<string>
+  userId: Nullable<number>
+  userName: Nullable<string>
 }
 
 const initialState = {
   photos: [] as PostType[],
+  profileData: {
+    email: null,
+    userId: null,
+    userName: null,
+  } as ProfileDataType,
 }
 
 export const profileSlice = createSlice({
@@ -48,8 +61,16 @@ export const profileSlice = createSlice({
           : el
       )
     },
+    updateFilter: (state, action: PayloadAction<{ id: string; filter: string }>) => {
+      state.photos = state.photos.map(el =>
+        el.id === action.payload.id ? { ...el, filter: action.payload.filter } : el
+      )
+    },
     deletePhotos: (state, _) => {
       state.photos = []
+    },
+    updateUserData: (state, action: PayloadAction<ProfileDataType>) => {
+      state.profileData = action.payload
     },
   },
 })
