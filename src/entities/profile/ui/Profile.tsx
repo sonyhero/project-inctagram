@@ -2,7 +2,7 @@ import React from 'react'
 
 import Image from 'next/image'
 
-import loaderIcon from '../../../../public/loader.svg'
+import imageIcon from '../../../../public/imageIcon.svg'
 
 import s from './Profile.module.scss'
 
@@ -34,7 +34,7 @@ export const Profile = ({ userId }: Props) => {
     <div className={s.profileBlock}>
       <div className={s.mainInfo}>
         <div className={s.photoBlock}>
-          <Image src={loaderIcon} priority={true} {...profileAvatarLoader()} alt={'profilePhoto'} />
+          <Image src={imageIcon} priority={true} {...profileAvatarLoader()} alt={'profilePhoto'} />
         </div>
         <div className={s.descriptionBlock}>
           <div className={s.nameAndSettings}>
