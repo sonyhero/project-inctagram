@@ -37,7 +37,7 @@ const getUpdateProfileSchema = (t: LocaleType) => {
       .min(new Date('01-01-1910Z'))
       .max(
         new Date(Date.now() - 13 * 365 * 24 * 60 * 60 * 1000),
-        'A user under 13 can not create a profile'
+        t.myProfile.generalInformation.ageDateError
       ),
     aboutMe: z.string().min(0).max(200),
   })
