@@ -41,7 +41,7 @@ const getUpdateProfileSchema = (t: LocaleType) => {
         new Date(Date.now() - 13 * 365 * 24 * 60 * 60 * 1000),
         t.myProfile.generalInformation.ageDateError
       ),
-    aboutMe: z.string().min(0).max(200),
+    aboutMe: z.string().min(0).max(200, `${t.zodSchema.maxNumberOfCharacters} 200`),
   })
 }
 
