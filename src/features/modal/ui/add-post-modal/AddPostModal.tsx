@@ -6,7 +6,7 @@ import s from './AddPostModal.module.scss'
 
 import { PostType, profileActions } from '@/entities/profile/model'
 import { modalActions, modalSlice } from '@/features/modal'
-import { useAppDispatch } from '@/shared/store'
+import { useAppDispatch, useAppSelector } from '@/shared/store'
 import { Button, ImageIcon, Modal, Typography } from '@/shared/ui'
 
 type Props = {
@@ -14,6 +14,7 @@ type Props = {
 }
 export const AddPostModal = ({ openAddPhotoModal }: Props) => {
   const [errorPhoto, setErrorPhoto] = useState('')
+  const photosPost = useAppSelector(state => state.profileSlice.photosPosts)
 
   const dispatch = useAppDispatch()
 
@@ -47,7 +48,7 @@ export const AddPostModal = ({ openAddPhotoModal }: Props) => {
             filter: 'none',
           }
 
-          dispatch(profileActions.setPhoto(newPhoto))
+          dispatch(profileActions.setPhotoOfPost(newPhoto))
           dispatch(modalActions.setOpenModal('addPostCroppingModal'))
         }
       }
@@ -56,6 +57,9 @@ export const AddPostModal = ({ openAddPhotoModal }: Props) => {
 
   const closeAddPhotoModal = () => {
     dispatch(modalSlice.actions.setCloseModal({}))
+  }
+  const openDraft = () => {
+    dispatch(modalActions.setOpenModal('addPostCroppingModal'))
   }
 
   return (
@@ -88,7 +92,12 @@ export const AddPostModal = ({ openAddPhotoModal }: Props) => {
               />
             </div>
           </label>
-          <Button variant={'outline'} className={s.openDraft}>
+          <Button
+            variant={'outline'}
+            disabled={photosPost.length < 1}
+            className={s.openDraft}
+            onClick={openDraft}
+          >
             Open Draft
           </Button>
         </div>

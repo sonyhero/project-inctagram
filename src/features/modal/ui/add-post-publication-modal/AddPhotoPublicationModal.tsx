@@ -9,6 +9,7 @@ import s from './AddPostPublicationModal.module.scss'
 
 import { useGetProfileQuery } from '@/entities/profile'
 import { useCreatePostMutation, useUploadPostImageMutation } from '@/entities/profile/api/postsApi'
+import { profileActions } from '@/entities/profile/model'
 import { modalActions } from '@/features/modal'
 import { useAppDispatch, useAppSelector } from '@/shared/store'
 import { Nullable } from '@/shared/types'
@@ -27,10 +28,10 @@ type Props = {
 }
 
 export const AddPostPublicationModal = ({ addPostPublicationModal, userId }: Props) => {
-  const photos = useAppSelector(state => state.profileSlice.photos)
+  const photosPost = useAppSelector(state => state.profileSlice.photosPosts)
   const { data } = useGetProfileQuery(userId)
   const [activeIndex, setActiveIndex] = useState(0)
-  const activePhoto = photos[activeIndex]
+  const activePhoto = photosPost[activeIndex]
   const [photosFormData, serPhotoFormData] = useState<FormData[]>([])
   const [createPost] = useCreatePostMutation()
   const [uploadImage] = useUploadPostImageMutation()
@@ -38,18 +39,16 @@ export const AddPostPublicationModal = ({ addPostPublicationModal, userId }: Pro
 
   const dispatch = useAppDispatch()
 
-  console.log(photosFormData)
-
   const editorRef = useRef<Nullable<AvatarEditor>>(null)
   const closeModal = () => {
-    dispatch(modalActions.setCloseModal({}))
+    dispatch(modalActions.setOpenExtraModal('closeAddPostModal'))
   }
   const opPrevClickHandler = () => {
     dispatch(modalActions.setOpenModal('addPostFilterModal'))
   }
   const changePhoto = (direction: 'next' | 'prev') => {
-    if (photos.length > 0) {
-      if (direction === 'next' && activeIndex < photos.length - 1) {
+    if (photosPost.length > 0) {
+      if (direction === 'next' && activeIndex < photosPost.length - 1) {
         setActiveIndex(activeIndex + 1)
       } else if (direction === 'prev' && activeIndex > 0) {
         setActiveIndex(activeIndex - 1)
@@ -65,23 +64,23 @@ export const AddPostPublicationModal = ({ addPostPublicationModal, userId }: Pro
   useEffect(() => {
     const newPhotosFormData = [] as FormData[]
 
-    for (let i = 0; i < photos.length; i++) {
+    for (let i = 0; i < photosPost.length; i++) {
       const canvas = document.createElement('canvas')
       const ctx = canvas.getContext('2d')
 
       if (canvas && ctx) {
-        canvas.width = photos[i].width
-        canvas.height = photos[i].height
+        canvas.width = photosPost[i].width
+        canvas.height = photosPost[i].height
 
         const image = new Image()
 
         image.onload = () => {
           // Применяем фильтры
 
-          ctx.filter = photos[i].filter
-          const scale = photos[i].zoom[0]
-          const zoomedWidth = photos[i].width * scale
-          const zoomedHeight = photos[i].height * scale
+          ctx.filter = photosPost[i].filter
+          const scale = photosPost[i].zoom[0]
+          const zoomedWidth = photosPost[i].width * scale
+          const zoomedHeight = photosPost[i].height * scale
 
           // Отрисовываем изображение на canvas с примененными фильтрами и зумом
           ctx.drawImage(image, 0, 0, zoomedWidth, zoomedHeight)
@@ -98,16 +97,16 @@ export const AddPostPublicationModal = ({ addPostPublicationModal, userId }: Pro
               formData.append('file', blob)
               newPhotosFormData.push(formData)
 
-              if (newPhotosFormData.length === photos.length) {
+              if (newPhotosFormData.length === photosPost.length) {
                 serPhotoFormData(newPhotosFormData)
               }
             })
         }
 
-        image.src = photos[i].imageUrl
+        image.src = photosPost[i].imageUrl
       }
     }
-  }, [photos])
+  }, [photosPost])
   const onPublishHandler = () => {
     const formData = new FormData()
 
@@ -131,6 +130,7 @@ export const AddPostPublicationModal = ({ addPostPublicationModal, userId }: Pro
 
         createPost({ description: value, childrenMetadata: uploadId })
         dispatch(modalActions.setCloseModal({}))
+        dispatch(profileActions.deletePhotosPost({}))
       })
   }
 
@@ -152,7 +152,7 @@ export const AddPostPublicationModal = ({ addPostPublicationModal, userId }: Pro
       nextClick={onPublishHandler}
       contentBoxClassname={s.contentBox}
     >
-      {photos && photos.length > 0 && activePhoto && (
+      {photosPost && photosPost.length > 0 && activePhoto && (
         <div className={s.modalContent}>
           <div className={s.lastPhoto}>
             {activeIndex > 0 && (
@@ -175,7 +175,7 @@ export const AddPostPublicationModal = ({ addPostPublicationModal, userId }: Pro
               disableHiDPIScaling={true}
               scale={activePhoto?.zoom?.[0]}
             />
-            {activeIndex < photos.length - 1 && (
+            {activeIndex < photosPost.length - 1 && (
               <div className={s.forvard} onClick={() => changePhoto('next')}>
                 <ArrowIosForward />
               </div>
