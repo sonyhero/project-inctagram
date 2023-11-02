@@ -2,7 +2,6 @@ import { useState } from 'react'
 
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useRouter } from 'next/router'
-import NProgress from 'nprogress'
 import { useForm } from 'react-hook-form'
 import { toast } from 'react-toastify'
 import { z } from 'zod'
@@ -22,7 +21,7 @@ const getForgotPasswordSchema = (t: LocaleType) => {
 type ForgotPasswordFormShem = z.infer<ReturnType<typeof getForgotPasswordSchema>>
 
 export const useForgotPassword = () => {
-  const [forgotPassword, { isLoading, isError }] = useRecoveryPasswordMutation()
+  const [forgotPassword] = useRecoveryPasswordMutation()
   const [recaptchaKey, setRecaptchaKey] = useState<Nullable<string>>(null)
   const [openModal, setOpenModal] = useState<boolean>(false)
   const [email, setEmail] = useState<string>('')
@@ -47,13 +46,7 @@ export const useForgotPassword = () => {
         setOpenModal(true)
         setEmail(data.email)
       })
-    // .catch(err => {
-    //   toast.error(err)
-    // })
   }
-
-  isLoading ? NProgress.start() : NProgress.done()
-  isError && toast.error(t.toast.fetchError)
 
   const handleSubmitForm = handleSubmit(onSubmit)
   const onRecaptchaChangeHandler = (key: Nullable<string>) => {

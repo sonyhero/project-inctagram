@@ -8,14 +8,14 @@ type Props = SelectBoxProps & {
 }
 
 export const ControlledSelect = (props: Props) => {
-  const { name, control } = props
+  const { name, control, ...restProps } = props
 
   return (
     <Controller
       control={control}
       name={name ?? ''}
       render={({ field: { onChange } }) => {
-        return <SelectBox {...props} onValueChange={onChange} />
+        return <SelectBox {...restProps} onValueChange={onChange} />
       }}
     />
   )
