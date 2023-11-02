@@ -49,7 +49,9 @@ export const customFetchBase: BaseQueryFn<
             extraOptions
           )
 
-          if (refreshResult?.meta?.response?.status === 204) {
+          if (refreshResult?.meta?.response?.status === 200) {
+            // @ts-ignore
+            localStorage.setItem('access', refreshResult?.data?.accessToken)
             // Retry the initial query
             result = await baseQuery(args, api, extraOptions)
           }

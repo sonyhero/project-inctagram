@@ -4,7 +4,9 @@ import AvatarEditor from 'react-avatar-editor'
 
 import s from './AddPostFilterModal.module.scss'
 
+import { profileActions } from '@/entities/profile/model'
 import { modalActions } from '@/features/modal'
+import { filters } from '@/shared/contstants'
 import { useAppDispatch, useAppSelector } from '@/shared/store'
 import { Nullable } from '@/shared/types'
 import { ArrowIosBack, ArrowIosForward, Modal, Typography } from '@/shared/ui'
@@ -20,7 +22,6 @@ export const AddPostFilterModal = ({ addPostFilterModal }: Props) => {
   const dispatch = useAppDispatch()
 
   const editorRef = useRef<Nullable<AvatarEditor>>(null)
-
   const closeModal = () => {
     dispatch(modalActions.setCloseModal({}))
   }
@@ -38,6 +39,14 @@ export const AddPostFilterModal = ({ addPostFilterModal }: Props) => {
     }
   }
 
+  const changeFilter = (id: string, filter: string) => {
+    dispatch(profileActions.updateFilter({ id, filter }))
+  }
+
+  const nextContentHandler = () => {
+    dispatch(modalActions.setOpenModal('addPostPublicationsModal'))
+  }
+
   return (
     <Modal
       className={s.modalBlock}
@@ -49,6 +58,7 @@ export const AddPostFilterModal = ({ addPostFilterModal }: Props) => {
       prevClick={opPrevClickHandler}
       nextContent={true}
       nextContentTitle={'Next'}
+      nextClick={nextContentHandler}
       contentBoxClassname={s.contentBox}
     >
       {photos && photos.length > 0 && activePhoto && (
@@ -67,6 +77,9 @@ export const AddPostFilterModal = ({ addPostFilterModal }: Props) => {
               border={0}
               color={[24, 27, 27, 0.6]}
               rotate={0}
+              style={{
+                filter: activePhoto.filter,
+              }}
               disableBoundaryChecks={false}
               disableHiDPIScaling={true}
               scale={activePhoto?.zoom?.[0]}
@@ -78,11 +91,20 @@ export const AddPostFilterModal = ({ addPostFilterModal }: Props) => {
             )}
           </div>
           <div className={s.filters}>
-            {[1, 2, 3, 4, 5, 6, 7, 8, 9].map(el => {
+            {filters.map(el => {
               return (
-                <div className={s.filterBlock} key={el}>
-                  <img src={activePhoto.imageUrl} className={s.filterImg} />
-                  <Typography>Normal</Typography>
+                <div
+                  className={s.filterBlock}
+                  key={el.name}
+                  onClick={() => changeFilter(activePhoto.id, el.filter)}
+                >
+                  <img
+                    alt={el.name}
+                    style={{ filter: el.filter }}
+                    src={activePhoto.imageUrl}
+                    className={s.filterImg}
+                  />
+                  <Typography>{el.name}</Typography>
                 </div>
               )
             })}
