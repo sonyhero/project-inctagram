@@ -1,14 +1,19 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 import s from './SideBar.module.scss'
 
+import { profileActions } from '@/entities/profile/model'
+import { useMeQuery } from '@/features/auth'
 import {
   AddPostCroppingModal,
   AddPostFilterModal,
   AddPostModal,
   AddPostPublicationModal,
+  ClosePostModal,
+  DeletePostModal,
   LogoutModal,
   modalSlice,
+  ViewPostModal,
 } from '@/features/modal'
 import { PATH } from '@/shared/config/routes'
 import { useTranslation } from '@/shared/hooks/useTranstaion'
@@ -47,8 +52,22 @@ export const SideBar = () => {
   const [variantIcon, setVariantIcon] = useState<Nullable<VariantIconType>>()
   const { t } = useTranslation()
   const modal = useAppSelector(state => state.modalSlice.open)
+  const modalExtra = useAppSelector(state => state.modalSlice.openExtraModal)
   const userId = useAppSelector(state => state.profileSlice.profileData.userId)
+  const { data } = useMeQuery()
   const dispatch = useAppDispatch()
+
+  useEffect(() => {
+    if (data) {
+      dispatch(
+        profileActions.updateUserData({
+          email: data.email,
+          userName: data.userName,
+          userId: data.userId,
+        })
+      )
+    }
+  }, [data])
   const handleItemClick = (variant: Nullable<VariantIconType>) => {
     setVariantIcon(variant)
   }
@@ -163,6 +182,15 @@ export const SideBar = () => {
           addPostPublicationModal={modal === 'addPostPublicationsModal'}
           userId={userId}
         />
+      )}
+      {modalExtra === 'closeAddPostModal' && (
+        <ClosePostModal closeAddPostModal={modalExtra === 'closeAddPostModal'} />
+      )}
+      {userId && modal === 'viewPostModal' && (
+        <ViewPostModal userId={userId} open={modal === 'viewPostModal'} />
+      )}
+      {modalExtra === 'deletePostModal' && (
+        <DeletePostModal open={modalExtra === 'deletePostModal'} />
       )}
     </>
   )

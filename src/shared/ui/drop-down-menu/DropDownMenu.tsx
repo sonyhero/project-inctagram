@@ -12,6 +12,7 @@ type Props = {
     component: JSX.Element
   }[]
   align?: 'center' | 'end' | 'start'
+  side?: 'top' | 'bottom'
 }
 
 const container = {
@@ -33,7 +34,7 @@ const motionItem = {
   },
 }
 
-export const DropDownMenu = ({ items, trigger, align = 'start' }: Props) => {
+export const DropDownMenu = ({ items, trigger, align = 'start', side = 'top' }: Props) => {
   const [isOpen, setIsOpen] = useState(false)
 
   const itemsForRender = items?.map((item, index) => {
@@ -85,7 +86,7 @@ export const DropDownMenu = ({ items, trigger, align = 'start' }: Props) => {
         <DropdownMenu.Content
           // onInteractOutside={onCloseHandler}
           align={align}
-          side={'top'}
+          side={side}
           className={s.dropdownMenuContent}
           sideOffset={5}
         >

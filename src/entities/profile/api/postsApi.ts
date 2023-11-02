@@ -41,11 +41,10 @@ const postsApi = baseApi.injectEndpoints({
         }),
         invalidatesTags: ['Posts'],
       }),
-      getPostById: builder.query<PostsResponseType, { postId: string }>({
+      getPostById: builder.query<PostsResponseType, { postId: number }>({
         query: args => ({
-          url: `v1/posts/p`,
+          url: `v1/posts/p/${args.postId}`,
           method: 'GET',
-          params: args,
         }),
         providesTags: ['Posts'],
       }),
@@ -57,7 +56,7 @@ const postsApi = baseApi.injectEndpoints({
         }),
         providesTags: ['Posts'],
       }),
-      updatePostById: builder.mutation<void, { postId: string; description: string }>({
+      updatePostById: builder.mutation<void, { postId: number; description: string }>({
         query: body => ({
           url: `v1/posts/${body.postId}`,
           method: 'PUT',
@@ -65,7 +64,7 @@ const postsApi = baseApi.injectEndpoints({
         }),
         invalidatesTags: ['Posts'],
       }),
-      deletePostById: builder.mutation<void, { postId: string }>({
+      deletePostById: builder.mutation<void, { postId: number }>({
         query: body => ({
           url: `v1/posts/${body.postId}`,
           method: 'DELETE',
@@ -82,6 +81,7 @@ export const {
   useUploadPostImageMutation,
   useDeletePostImageMutation,
   useGetPostByIdQuery,
+  useLazyGetPostByIdQuery,
   useGetPostsByUserIdQuery,
   useUpdatePostByIdMutation,
   useDeletePostByIdMutation,

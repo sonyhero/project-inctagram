@@ -48,4 +48,17 @@
       }
     }
   }
+
+  .postsBlock {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+
+    .post {
+      cursor: pointer;
+      width: 14.25rem;
+      height: 14.25rem;
+      object-fit: cover;
+    }
+  }
 }
