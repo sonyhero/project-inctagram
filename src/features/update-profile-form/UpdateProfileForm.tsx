@@ -79,9 +79,7 @@ export const UpdateProfileForm = ({ defaultValue }: Props) => {
         control={control}
         label={t.myProfile.generalInformation.selectYourCity}
         errorMessage={errors.city}
-        placeholder={
-          defaultValue?.city ? defaultValue.city : t.myProfile.generalInformation.placeholderCity
-        }
+        placeholder={defaultValue?.city ?? t.myProfile.generalInformation.placeholderCity}
       />
       <ControlledTextArea
         name={'aboutMe'}
