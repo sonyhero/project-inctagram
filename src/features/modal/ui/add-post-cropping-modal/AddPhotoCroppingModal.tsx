@@ -32,27 +32,26 @@ type Props = {
 }
 
 export const AddPostCroppingModal = ({ addPostCroppingModal }: Props) => {
-  const photos = useAppSelector(state => state.profileSlice.photos)
+  const photosPost = useAppSelector(state => state.profileSlice.photosPosts)
   const [activeIndex, setActiveIndex] = useState(0)
   const [error, setError] = useState(false)
-  const activePhoto = photos[activeIndex]
+  const activePhoto = photosPost[activeIndex]
   const dispatch = useAppDispatch()
 
   const editorRef = useRef<Nullable<AvatarEditor>>(null)
 
   const closeModal = () => {
-    dispatch(profileActions.deletePhotos({}))
-    dispatch(modalActions.setCloseModal({}))
+    dispatch(modalActions.setOpenExtraModal('closeAddPostModal'))
   }
   const opPrevClickHandler = () => {
-    dispatch(profileActions.deletePhotos({}))
+    dispatch(profileActions.deletePhotosPost({}))
     dispatch(modalActions.setOpenModal('addPostModal'))
   }
 
   const mainPhotoSelected = (event: ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files && event.target.files[0]
 
-    if (file && photos.length < 10) {
+    if (file && photosPost.length < 10) {
       if (!['image/jpeg', 'image/jpg', 'image/png'].includes(file.type)) {
         setError(true)
       } else if (file.size > 20 * 1024 * 1024) {
@@ -79,7 +78,7 @@ export const AddPostCroppingModal = ({ addPostCroppingModal }: Props) => {
             filter: 'none',
           }
 
-          dispatch(profileActions.setPhoto(newPhoto))
+          dispatch(profileActions.setPhotoOfPost(newPhoto))
           setActiveIndex(activeIndex + 1)
         }
       }
@@ -198,15 +197,15 @@ export const AddPostCroppingModal = ({ addPostCroppingModal }: Props) => {
       component: (
         <div className={s.photoBlock}>
           <div className={s.photos}>
-            {photos.map((el, index) => {
+            {photosPost.map((el, index) => {
               const deletePhotoHandler = (id: string) => {
-                dispatch(profileActions.deletePhoto({ id }))
+                dispatch(profileActions.deletePhotoOfPost({ id }))
 
-                if (photos.length === 1) {
+                if (photosPost.length === 1) {
                   dispatch(modalActions.setOpenModal('addPostModal'))
                 }
-                if (activeIndex === photos.length - 1) {
-                  setActiveIndex(photos.length > 1 ? photos.length - 2 : 0)
+                if (activeIndex === photosPost.length - 1) {
+                  setActiveIndex(photosPost.length > 1 ? photosPost.length - 2 : 0)
                 }
               }
 
@@ -237,8 +236,8 @@ export const AddPostCroppingModal = ({ addPostCroppingModal }: Props) => {
   ]
 
   const changePhoto = (direction: 'next' | 'prev') => {
-    if (photos.length > 0) {
-      if (direction === 'next' && activeIndex < photos.length - 1) {
+    if (photosPost.length > 0) {
+      if (direction === 'next' && activeIndex < photosPost.length - 1) {
         setActiveIndex(activeIndex + 1)
       } else if (direction === 'prev' && activeIndex > 0) {
         setActiveIndex(activeIndex - 1)
@@ -263,7 +262,7 @@ export const AddPostCroppingModal = ({ addPostCroppingModal }: Props) => {
       nextClick={nextContentHandler}
       contentBoxClassname={s.contentBox}
     >
-      {photos && photos.length > 0 && activePhoto && (
+      {photosPost && photosPost.length > 0 && activePhoto && (
         <div className={s.modalContent}>
           {activeIndex > 0 && (
             <div className={s.back} onClick={() => changePhoto('prev')}>
@@ -282,7 +281,7 @@ export const AddPostCroppingModal = ({ addPostCroppingModal }: Props) => {
             disableHiDPIScaling={true}
             scale={activePhoto?.zoom?.[0]}
           />
-          {activeIndex < photos.length - 1 && (
+          {activeIndex < photosPost.length - 1 && (
             <div className={s.forvard} onClick={() => changePhoto('next')}>
               <ArrowIosForward />
             </div>

@@ -30,6 +30,7 @@ type Props = {
   nextContent?: boolean
   nextClick?: () => void
   nextContentTitle?: string
+  showHeader?: boolean
 } & ComponentProps<'div'>
 
 const MODAL_ANIMATION = {
@@ -55,6 +56,7 @@ export const Modal = (props: Props) => {
     nextContent = false,
     nextClick,
     nextContentTitle,
+    showHeader = true,
   } = props
 
   function handleModalClosed() {
@@ -68,24 +70,26 @@ export const Modal = (props: Props) => {
           <motion.div variants={MODAL_ANIMATION} initial={'hidden'} animate={'visible'}>
             <DialogOverlay className={s.overlay} />
             <DialogContent className={`${s.content} ${className}`}>
-              <header className={s.header}>
-                {prevContent && <ArrowIosBack onClick={prevClick} className={s.prevContent} />}
-                <DialogTitle asChild>
-                  <Typography variant={'h1'}>{title}</Typography>
-                </DialogTitle>
+              {showHeader && (
+                <header className={s.header}>
+                  {prevContent && <ArrowIosBack onClick={prevClick} className={s.prevContent} />}
+                  <DialogTitle asChild>
+                    <Typography variant={'h1'}>{title}</Typography>
+                  </DialogTitle>
 
-                {showCloseButton && (
-                  <DialogClose className={s.closeButton}>
-                    <Close />
-                  </DialogClose>
-                )}
+                  {showCloseButton && (
+                    <DialogClose className={s.closeButton}>
+                      <Close />
+                    </DialogClose>
+                  )}
 
-                {nextContent && (
-                  <Typography variant={'h3'} className={s.nextContent} onClick={nextClick}>
-                    {nextContentTitle}
-                  </Typography>
-                )}
-              </header>
+                  {nextContent && (
+                    <Typography variant={'h3'} className={s.nextContent} onClick={nextClick}>
+                      {nextContentTitle}
+                    </Typography>
+                  )}
+                </header>
+              )}
               <div className={`${s.contentBox} ${contentBoxClassname}`}>{children}</div>
               <div className={buttonBlockClassName}>
                 {titleFirstButton && (

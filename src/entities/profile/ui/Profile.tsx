@@ -8,8 +8,9 @@ import loader from '../../../../public/loader.svg'
 import s from './Profile.module.scss'
 
 import { useGetProfileQuery } from '@/entities/profile'
-import { useGetPostsByUserIdQuery } from '@/entities/profile/api/postsApi'
-import { GetAllPostsItemsImages } from '@/entities/profile/api/postsApi.types'
+import { useGetPostsByUserIdQuery, useLazyGetPostByIdQuery } from '@/entities/profile/api/postsApi'
+import { profileActions } from '@/entities/profile/model'
+import { modalActions } from '@/features/modal'
 import { useTranslation } from '@/shared/hooks'
 import { useAppDispatch } from '@/shared/store'
 import { Button, Typography } from '@/shared/ui'
@@ -27,9 +28,11 @@ export const Profile = ({ userId }: Props) => {
     sortBy: '',
     sortDirection: 'desc',
   })
+  const [getPost] = useLazyGetPostByIdQuery()
 
   const dispatch = useAppDispatch()
 
+  // console.log(postsData)
   const showProfileSettingsHandler = () => {
     dispatch(profileSettingsSlice.actions.setShowProfileSettings({ value: true }))
   }
@@ -39,6 +42,15 @@ export const Profile = ({ userId }: Props) => {
       loader: () => data.avatars[0].url,
       className: s.photo,
     }
+
+  const openPostModalHandler = (id: number) => {
+    getPost({ postId: id })
+      .unwrap()
+      .then(async postData => {
+        await dispatch(profileActions.setPost(postData))
+        dispatch(modalActions.setOpenModal('viewPostModal'))
+      })
+  }
 
   const isLoadingAvatar = isLoading && isFetching
 
@@ -83,9 +95,17 @@ export const Profile = ({ userId }: Props) => {
           </div>
         </div>
       </div>
-      <div>
+      <div className={s.postsBlock}>
         {postsData?.items.map(el => {
-          return <img src={el.images[0].url} />
+          return (
+            <img
+              src={el.images[0].url}
+              key={el.id}
+              alt={'postItem'}
+              className={s.post}
+              onClick={() => openPostModalHandler(el.id)}
+            />
+          )
         })}
       </div>
     </div>
