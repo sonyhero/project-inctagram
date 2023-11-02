@@ -1,0 +1,11 @@
+.modalContent {
+  display: flex;
+  flex-direction: column;
+  gap: 1.12rem;
+  width: 100%;
+
+  .activeWithModal {
+    display: flex;
+    justify-content: space-between;
+  }
+}

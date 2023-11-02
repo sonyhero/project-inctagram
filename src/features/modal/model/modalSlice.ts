@@ -1,9 +1,10 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
-import { ModalType, NameModal } from '@/features/modal'
+import { ModalType, NameExtraModal, NameModal } from '@/features/modal'
 
 const initialState: ModalType = {
   open: '',
+  openExtraModal: '',
 }
 
 export const modalSlice = createSlice({
@@ -15,6 +16,12 @@ export const modalSlice = createSlice({
     },
     setCloseModal: (state, _) => {
       state.open = ''
+    },
+    setOpenExtraModal: (state, action: PayloadAction<NameExtraModal>) => {
+      state.openExtraModal = action.payload
+    },
+    setCloseExtraModal: (state, _) => {
+      state.openExtraModal = ''
     },
   },
 })

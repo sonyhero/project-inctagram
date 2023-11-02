@@ -16,22 +16,22 @@ type Props = {
 }
 
 export const AddPostFilterModal = ({ addPostFilterModal }: Props) => {
-  const photos = useAppSelector(state => state.profileSlice.photos)
+  const photosPost = useAppSelector(state => state.profileSlice.photosPosts)
   const [activeIndex, setActiveIndex] = useState(0)
-  const activePhoto = photos[activeIndex]
+  const activePhoto = photosPost[activeIndex]
   const dispatch = useAppDispatch()
 
   const editorRef = useRef<Nullable<AvatarEditor>>(null)
   const closeModal = () => {
-    dispatch(modalActions.setCloseModal({}))
+    dispatch(modalActions.setOpenExtraModal('closeAddPostModal'))
   }
   const opPrevClickHandler = () => {
     dispatch(modalActions.setOpenModal('addPostCroppingModal'))
   }
 
   const changePhoto = (direction: 'next' | 'prev') => {
-    if (photos.length > 0) {
-      if (direction === 'next' && activeIndex < photos.length - 1) {
+    if (photosPost.length > 0) {
+      if (direction === 'next' && activeIndex < photosPost.length - 1) {
         setActiveIndex(activeIndex + 1)
       } else if (direction === 'prev' && activeIndex > 0) {
         setActiveIndex(activeIndex - 1)
@@ -61,7 +61,7 @@ export const AddPostFilterModal = ({ addPostFilterModal }: Props) => {
       nextClick={nextContentHandler}
       contentBoxClassname={s.contentBox}
     >
-      {photos && photos.length > 0 && activePhoto && (
+      {photosPost && photosPost.length > 0 && activePhoto && (
         <div className={s.modalContent}>
           <div className={s.filterPhoto}>
             {activeIndex > 0 && (
@@ -84,7 +84,7 @@ export const AddPostFilterModal = ({ addPostFilterModal }: Props) => {
               disableHiDPIScaling={true}
               scale={activePhoto?.zoom?.[0]}
             />
-            {activeIndex < photos.length - 1 && (
+            {activeIndex < photosPost.length - 1 && (
               <div className={s.forvard} onClick={() => changePhoto('next')}>
                 <ArrowIosForward />
               </div>

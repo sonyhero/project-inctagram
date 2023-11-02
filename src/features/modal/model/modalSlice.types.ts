@@ -1,5 +1,6 @@
 export type ModalType = {
   open: NameModal | ''
+  openExtraModal: NameExtraModal | ''
 }
 
 export type NameModal =
@@ -8,4 +9,6 @@ export type NameModal =
   | 'addPostCroppingModal'
   | 'addPostFilterModal'
   | 'addPostPublicationsModal'
-  | 'closeAddPostModal'
+  | 'viewPostModal'
+
+export type NameExtraModal = 'closeAddPostModal' | 'deletePostModal'

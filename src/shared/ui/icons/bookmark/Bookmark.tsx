@@ -13,7 +13,7 @@ const SvgComponent = (
     width="24"
     height="24"
     viewBox="0 0 24 24"
-    fill={props.color}
+    fill="white"
     ref={ref}
     {...props}
   >
