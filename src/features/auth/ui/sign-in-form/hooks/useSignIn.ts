@@ -1,6 +1,5 @@
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useRouter } from 'next/router'
-import NProgress from 'nprogress'
 import { useForm } from 'react-hook-form'
 import { toast } from 'react-toastify'
 import { z } from 'zod'
@@ -20,7 +19,7 @@ const getSigInSchema = (t: LocaleType) => {
 }
 
 export const useSignIn = () => {
-  const [signIn, { isError, isLoading }] = useLoginMutation()
+  const [signIn] = useLoginMutation()
   const router = useRouter()
   const { t } = useTranslation()
   const sigInSchema = getSigInSchema(t)
@@ -60,9 +59,6 @@ export const useSignIn = () => {
         }
       })
   }
-
-  isLoading ? NProgress.start() : NProgress.done()
-  isError && toast.error(t.toast.fetchError)
 
   const handleSubmitForm = handleSubmit(onSubmit)
 
