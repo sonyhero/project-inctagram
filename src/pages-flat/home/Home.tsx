@@ -4,6 +4,7 @@ import { useRouter } from 'next/router'
 
 import { profileActions } from '@/entities/profile/model'
 import { useMeQuery } from '@/features/auth'
+import { PATH } from '@/shared/config/routes'
 import { useTranslation } from '@/shared/hooks/useTranstaion'
 import { useAppDispatch } from '@/shared/store'
 
@@ -29,7 +30,7 @@ export const Home = () => {
     return <div>Loading...</div>
   }
   if (!data) {
-    router.push('auth/sign-in')
+    router.push(PATH.SIGN_IN)
   }
 
   return <div>{t.sidebar.home}</div>
