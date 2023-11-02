@@ -1,6 +1,5 @@
 import { ChangeEvent, useRef, useState, WheelEvent } from 'react'
 
-import NProgress from 'nprogress'
 import AvatarEditor from 'react-avatar-editor'
 import { toast } from 'react-toastify'
 
@@ -20,7 +19,7 @@ type Props = {
 }
 
 export const AddPhotoModal = ({ addPhotoModal, setAddPhotoModal }: Props) => {
-  const [updatePhoto, { isError, isLoading }] = useUploadAvatarMutation()
+  const [updatePhoto] = useUploadAvatarMutation()
   const { t } = useTranslation()
 
   const [photo, setPhoto] = useState<Nullable<FormData>>(null)
@@ -103,9 +102,6 @@ export const AddPhotoModal = ({ addPhotoModal, setAddPhotoModal }: Props) => {
       handleZoomIn()
     }
   }
-
-  isLoading ? NProgress.start() : NProgress.done()
-  isError && toast.error(t.toast.fetchError)
 
   return (
     <Modal

@@ -1,7 +1,6 @@
 import { useState } from 'react'
 
 import { zodResolver } from '@hookform/resolvers/zod'
-import NProgress from 'nprogress'
 import { useForm } from 'react-hook-form'
 import { toast } from 'react-toastify'
 import { z } from 'zod'
@@ -50,8 +49,7 @@ const getSigUpSchema = (t: LocaleType) => {
 export type SignUpFormShem = z.infer<ReturnType<typeof getSigUpSchema>>
 
 export const useSignUp = () => {
-  const [signUp, { isLoading, isError }] = useSignUpMutation()
-
+  const [signUp] = useSignUpMutation()
   const [emailModal, setEmailModal] = useState('')
   const [isOpenModal, setIsOpenModal] = useState(false)
   const { t } = useTranslation()
@@ -90,7 +88,7 @@ export const useSignUp = () => {
         reset()
       })
       .catch(err => {
-        err.data.messages.map(() => {
+        err.data?.messages.map(() => {
           if (err.data.messages[0].field === 'userName') {
             setError(`${err.data.messages[0].field}` as 'root', {
               type: 'manual',
@@ -111,9 +109,6 @@ export const useSignUp = () => {
   const onCloseModalHandler = () => {
     setIsOpenModal(false)
   }
-
-  isLoading ? NProgress.start() : NProgress.done()
-  isError && toast.error(t.toast.fetchError)
 
   return { control, handleSubmitForm, disableButton, emailModal, isOpenModal, onCloseModalHandler }
 }

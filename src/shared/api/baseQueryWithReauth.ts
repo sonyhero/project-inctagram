@@ -1,5 +1,7 @@
 import { BaseQueryFn, FetchArgs, fetchBaseQuery, FetchBaseQueryError } from '@reduxjs/toolkit/query'
 import { Mutex } from 'async-mutex'
+import NProgress from 'nprogress'
+import { toast } from 'react-toastify'
 
 const baseUrl = 'https://inctagram.work/api'
 
@@ -25,35 +27,46 @@ export const customFetchBase: BaseQueryFn<
   unknown,
   FetchBaseQueryError
 > = async (args, api, extraOptions) => {
-  // wait until the mutex is available without locking it
-  await mutex.waitForUnlock()
-  let result = await baseQuery(args, api, extraOptions)
+  try {
+    NProgress.start()
+    await mutex.waitForUnlock()
+    let result = await baseQuery(args, api, extraOptions)
 
-  if (result.error?.status === 401) {
-    if (!mutex.isLocked()) {
-      const release = await mutex.acquire()
+    if (result.error?.status === 'FETCH_ERROR') {
+      const locale = localStorage.getItem('locale')
 
-      try {
-        const refreshResult = await baseQuery(
-          { url: 'v1/auth/update-tokens', method: 'POST' },
-          api,
-          extraOptions
-        )
-
-        if (refreshResult?.meta?.response?.status === 200) {
-          // @ts-ignore
-          localStorage.setItem('access', refreshResult?.data?.accessToken)
-          // Retry the initial query
-          result = await baseQuery(args, api, extraOptions)
-        }
-      } finally {
-        release()
-      }
-    } else {
-      await mutex.waitForUnlock()
-      result = await baseQuery(args, api, extraOptions)
+      locale === 'en' ? toast.error('Network Error') : toast.error('Ошибка соединения с сервером')
     }
-  }
 
-  return result
+    if (result.error?.status === 401) {
+      if (!mutex.isLocked()) {
+        const release = await mutex.acquire()
+
+        try {
+          const refreshResult = await baseQuery(
+            { url: 'v1/auth/update-tokens', method: 'POST' },
+            api,
+            extraOptions
+          )
+
+          if (refreshResult?.meta?.response?.status === 200) {
+            // @ts-ignore
+            localStorage.setItem('access', refreshResult?.data?.accessToken)
+            // Retry the initial query
+            result = await baseQuery(args, api, extraOptions)
+          }
+        } finally {
+          release()
+        }
+      } else {
+        await mutex.waitForUnlock()
+        result = await baseQuery(args, api, extraOptions)
+      }
+    }
+
+    return result
+  } finally {
+    NProgress.done()
+  }
+  // wait until the mutex is available without locking it
 }

@@ -52,10 +52,14 @@ export const SelectBox = (props: SelectBoxProps) => {
           tabIndex={1}
         >
           <div>
-            <Select.Value placeholder={placeholder}>
-              {value?.img && value.img}
-              {value?.description && <Typography>{value.description}</Typography>}
-            </Select.Value>
+            {value ? (
+              <Select.Value placeholder={placeholder}>
+                {value.img && value.img}
+                {value.description && <Typography>{value.description}</Typography>}
+              </Select.Value>
+            ) : (
+              <Select.Value placeholder={placeholder} />
+            )}
             <ArrowIosDown className={disabled ? s.iconDisabled : s.icon} />
           </div>
         </Select.Trigger>
