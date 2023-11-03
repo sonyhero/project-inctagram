@@ -1,5 +1,6 @@
-import React, { useState } from 'react'
+import React, { ChangeEvent, useState } from 'react'
 
+import { da } from 'date-fns/locale'
 import ImageNext from 'next/image'
 
 import loaderIcon from '../../../../../public/loader.svg'
@@ -7,6 +8,7 @@ import loaderIcon from '../../../../../public/loader.svg'
 import s from './VewPostModal.module.scss'
 
 import { useGetProfileQuery } from '@/entities/profile'
+import { useUpdatePostByIdMutation } from '@/entities/profile/api/postsApi'
 import { modalActions } from '@/features/modal'
 import { useAppDispatch, useAppSelector } from '@/shared/store'
 import {
@@ -21,11 +23,13 @@ import {
   PaperPlane,
   Size1to1,
   SizeOriginal,
+  TextAreaField,
   TextField,
   Trash,
   Typography,
 } from '@/shared/ui'
 import { DropDownMenu } from '@/shared/ui/drop-down-menu'
+import { getDayMonthTime } from '@/shared/utils'
 
 type Props = {
   open: boolean
@@ -37,10 +41,14 @@ export const ViewPostModal = ({ open, userId }: Props) => {
   const { data } = useGetProfileQuery(userId)
   const [activeIndex, setActiveIndex] = useState(0)
   const activePhoto = post?.images[activeIndex]
+  const [editMode, setEditMode] = useState(false)
+  const [updatePost] = useUpdatePostByIdMutation()
+
+  const [value, setValue] = useState(post?.description ?? '')
 
   const dispatch = useAppDispatch()
   const closeModal = () => {
-    dispatch(modalActions.setCloseModal({}))
+    editMode ? setEditMode(false) : dispatch(modalActions.setCloseModal({}))
   }
   const changePhoto = (direction: 'next' | 'prev') => {
     if (post?.images && post?.images.length > 2) {
@@ -54,8 +62,12 @@ export const ViewPostModal = ({ open, userId }: Props) => {
   const profileAvatarLoader = () =>
     data?.avatars.length && {
       loader: () => data.avatars[0].url,
-      className: s.photo,
+      className: s.photoAva,
     }
+
+  const onChangeTextHandler = (event: ChangeEvent<HTMLTextAreaElement>) => {
+    setValue(event.currentTarget.value)
+  }
 
   const dropDownMenuSize = [
     {
@@ -63,7 +75,7 @@ export const ViewPostModal = ({ open, userId }: Props) => {
       component: (
         <div onClick={() => {}} className={s.itemActivity}>
           <Edit />
-          <Typography variant={'regular14'} color={'primary'}>
+          <Typography variant={'regular14'} color={'primary'} onClick={() => setEditMode(true)}>
             Edit Post
           </Typography>
         </div>
@@ -87,14 +99,27 @@ export const ViewPostModal = ({ open, userId }: Props) => {
     },
   ]
 
+  const onSaveHandler = () => {
+    if (post?.id) {
+      updatePost({
+        postId: post?.id,
+        description: value.length > 500 ? value.slice(0, 500) : value,
+      })
+        .unwrap()
+        .then(() => {
+          setEditMode(false)
+        })
+    }
+  }
+
   return (
     <Modal
       className={s.modalBlock}
-      showHeader={false}
-      title={'Post'}
+      showHeader={editMode}
+      title={'Edit Post'}
       open={open}
       onClose={closeModal}
-      showCloseButton={false}
+      showCloseButton={editMode}
       contentBoxClassname={s.contentBox}
     >
       {post?.images && post?.images.length > 0 && activePhoto && (
@@ -112,64 +137,112 @@ export const ViewPostModal = ({ open, userId }: Props) => {
               </div>
             )}
           </div>
-          <div className={s.postDescriptionBlock}>
-            <div className={s.topContent}>
-              <div className={s.photoBlock}>
-                <ImageNext
-                  src={loaderIcon}
-                  priority={true}
-                  {...profileAvatarLoader()}
-                  alt={'profilePhoto'}
+          {!editMode ? (
+            <div className={s.postDescriptionBlock}>
+              <div className={s.topContent}>
+                <div className={s.photoBlock}>
+                  <ImageNext
+                    src={loaderIcon}
+                    priority={true}
+                    {...profileAvatarLoader()}
+                    alt={'profilePhoto'}
+                  />
+                  <Typography variant={'h3'}>{data?.userName}</Typography>
+                </div>
+                <DropDownMenu
+                  trigger={<MoreHorizontal />}
+                  side={'bottom'}
+                  items={dropDownMenuSize}
+                  align={'end'}
                 />
-                <Typography>{data?.userName}</Typography>
               </div>
-              <DropDownMenu
-                trigger={<MoreHorizontal />}
-                side={'bottom'}
-                items={dropDownMenuSize}
-                align={'end'}
-              />
-            </div>
-            <div className={s.middleContent}>
-              <div className={s.comments}></div>
-              <div className={s.bottomActivityBlock}>
-                <div className={s.likeSaveSetBlock}>
-                  <div className={s.likeAndSet}>
-                    <Heart />
-                    <PaperPlane />
-                  </div>
-                  <Bookmark />
-                </div>
-                <div className={s.viewsAndCount}>
-                  <div className={s.views}>
-                    {[0, 1, 2].map(el => {
-                      return <div key={el} className={s.view}></div>
-                    })}
-                  </div>
-                  <div className={s.count}>
-                    <Typography variant={'regular14'} color={'primary'}>
-                      2243
+              <div className={s.middleContent}>
+                <div className={s.comments}>
+                  <ImageNext
+                    src={loaderIcon}
+                    priority={true}
+                    {...profileAvatarLoader()}
+                    alt={'profilePhoto'}
+                  />
+                  <div className={s.descriptionBlock}>
+                    <Typography variant={'regular14'} className={s.desc}>
+                      <strong>{data?.userName}</strong> {post.description}
                     </Typography>
-                    <Typography variant={'bold14'} color={'primary'}>
-                      &quot;Like&quot;
+                    <Typography variant={'small'} color={'secondary'}>
+                      {getDayMonthTime(post.createdAt)}
                     </Typography>
                   </div>
                 </div>
-                <Typography variant={'small'} color={'secondary'}>
-                  July 3, 2021
-                </Typography>
+                <div className={s.bottomActivityBlock}>
+                  <div className={s.likeSaveSetBlock}>
+                    <div className={s.likeAndSet}>
+                      <Heart />
+                      <PaperPlane />
+                    </div>
+                    <Bookmark />
+                  </div>
+                  <div className={s.viewsAndCount}>
+                    <div className={s.views}>
+                      {[0, 1, 2].map(el => {
+                        return <div key={el} className={s.view}></div>
+                      })}
+                    </div>
+                    <div className={s.count}>
+                      <Typography variant={'regular14'} color={'primary'}>
+                        2243
+                      </Typography>
+                      <Typography variant={'bold14'} color={'primary'}>
+                        &quot;Like&quot;
+                      </Typography>
+                    </div>
+                  </div>
+                  <Typography variant={'small'} color={'secondary'}>
+                    {getDayMonthTime(post.createdAt)}
+                  </Typography>
+                </div>
+              </div>
+              <div className={s.bottomContent}>
+                <TextField
+                  style={{ border: 'none' }}
+                  type={'default'}
+                  className={s.addComment}
+                  placeholder={'Add a Comment...'}
+                />
+                <Button variant={'text'}>Publish</Button>
               </div>
             </div>
-            <div className={s.bottomContent}>
-              <TextField
-                style={{ border: 'none' }}
-                type={'default'}
-                className={s.addComment}
-                placeholder={'Add a Comment...'}
-              />
-              <Button variant={'text'}>Publish</Button>
+          ) : (
+            <div className={s.editBlock}>
+              <div className={s.topContent}>
+                <div className={s.photoBlock}>
+                  <ImageNext
+                    src={loaderIcon}
+                    priority={true}
+                    {...profileAvatarLoader()}
+                    alt={'profilePhoto'}
+                  />
+                  <Typography variant={'h3'}>{data?.userName}</Typography>
+                </div>
+                <div>
+                  <TextAreaField
+                    label={'Add publication descriptions'}
+                    placeholder={'Add your description'}
+                    value={value}
+                    onChange={onChangeTextHandler}
+                    disabled={value.length > 500}
+                  />
+                  <Typography variant={'small'} color={'secondary'} className={s.balance}>
+                    {value.length}/500
+                  </Typography>
+                </div>
+              </div>
+              <div className={s.saveChangesBlock}>
+                <Button variant={'primary'} onClick={onSaveHandler}>
+                  Save Changes
+                </Button>
+              </div>
             </div>
-          </div>
+          )}
         </div>
       )}
     </Modal>
