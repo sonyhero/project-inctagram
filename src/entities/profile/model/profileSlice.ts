@@ -77,6 +77,11 @@ export const profileSlice = createSlice({
     setPost: (state, action: PayloadAction<Nullable<GetAllPostsItems>>) => {
       state.post = action.payload
     },
+    updatePost: (state, action: PayloadAction<{ description: string }>) => {
+      if (state.post) {
+        state.post.description = action.payload.description
+      }
+    },
   },
 })
 

@@ -1,6 +1,5 @@
 import React, { ChangeEvent, useState } from 'react'
 
-import { da } from 'date-fns/locale'
 import ImageNext from 'next/image'
 
 import loaderIcon from '../../../../../public/loader.svg'
@@ -9,6 +8,7 @@ import s from './VewPostModal.module.scss'
 
 import { useGetProfileQuery } from '@/entities/profile'
 import { useUpdatePostByIdMutation } from '@/entities/profile/api/postsApi'
+import { profileActions } from '@/entities/profile/model'
 import { modalActions } from '@/features/modal'
 import { useAppDispatch, useAppSelector } from '@/shared/store'
 import {
@@ -21,8 +21,6 @@ import {
   Modal,
   MoreHorizontal,
   PaperPlane,
-  Size1to1,
-  SizeOriginal,
   TextAreaField,
   TextField,
   Trash,
@@ -51,11 +49,11 @@ export const ViewPostModal = ({ open, userId }: Props) => {
     editMode ? setEditMode(false) : dispatch(modalActions.setCloseModal({}))
   }
   const changePhoto = (direction: 'next' | 'prev') => {
-    if (post?.images && post?.images.length > 2) {
-      if (direction === 'next' && activeIndex < post?.images.length - 2) {
-        setActiveIndex(activeIndex + 2)
-      } else if (direction === 'prev' && activeIndex > 1) {
-        setActiveIndex(activeIndex - 2)
+    if (post?.images && post?.images.length > 0) {
+      if (direction === 'next' && activeIndex < post?.images.length / 2 - 1) {
+        setActiveIndex(activeIndex + 1)
+      } else if (direction === 'prev' && activeIndex > 0) {
+        setActiveIndex(activeIndex - 1)
       }
     }
   }
@@ -98,7 +96,6 @@ export const ViewPostModal = ({ open, userId }: Props) => {
       ),
     },
   ]
-
   const onSaveHandler = () => {
     if (post?.id) {
       updatePost({
@@ -107,6 +104,11 @@ export const ViewPostModal = ({ open, userId }: Props) => {
       })
         .unwrap()
         .then(() => {
+          dispatch(
+            profileActions.updatePost({
+              description: value.length > 500 ? value.slice(0, 500) : value,
+            })
+          )
           setEditMode(false)
         })
     }
@@ -131,7 +133,7 @@ export const ViewPostModal = ({ open, userId }: Props) => {
               </div>
             )}
             <img src={activePhoto.url} alt={'post'} className={s.photo} />
-            {activeIndex < post?.images.length - 2 && (
+            {activeIndex < post?.images.length / 2 - 1 && (
               <div className={s.forvard} onClick={() => changePhoto('next')}>
                 <ArrowIosForward />
               </div>
