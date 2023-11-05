@@ -87,6 +87,10 @@
   border-left: none;
 }
 
-.activeTrigger svg {
-  stroke: var(--color-accent-500);
+.activeTrigger {
+  svg {
+    path {
+      fill: var(--color-accent-500);
+    }
+  }
 }

@@ -1,4 +1,4 @@
-import { ReactNode, useEffect, useState } from 'react'
+import { ReactNode, useState } from 'react'
 
 import * as DropdownMenu from '@radix-ui/react-dropdown-menu'
 import { motion } from 'framer-motion'
@@ -12,7 +12,7 @@ type Props = {
     component: JSX.Element
   }[]
   align?: 'center' | 'end' | 'start'
-  side?: 'top' | 'bottom'
+  side?: 'top' | 'right' | 'bottom' | 'left'
 }
 
 const container = {
@@ -21,8 +21,8 @@ const container = {
     opacity: 1,
     scale: 1,
     transition: {
-      delayChildren: 0.2,
-      staggerChildren: 0.1,
+      delayChildren: 0.1,
+      staggerChildren: 0.05,
     },
   },
 }
@@ -56,35 +56,33 @@ export const DropDownMenu = ({ items, trigger, align = 'start', side = 'top' }: 
     )
   })
 
-  // const onCloseHandler = () => {
-  //   debugger
-  //   setIsOpen(false)
-  // }
-  //
-  // const onOpenHandler = () => {
-  //   setIsOpen(true)
-  // }
-
-  useEffect(() => {
-    return () => {
-      setIsOpen(false)
-    }
-  }, [])
+  const onCloseAutoFocusHandler = () => {
+    setIsOpen(false)
+  }
+  const onClickHandler = () => {
+    setIsOpen(true)
+  }
+  const onOpenChangeHandler = (e: boolean) => {
+    setIsOpen(e)
+  }
+  const onOpenHandler = () => {
+    setIsOpen(true)
+  }
 
   return (
-    <DropdownMenu.Root open={isOpen}>
-      <DropdownMenu.Trigger asChild>
+    <DropdownMenu.Root open={isOpen} onOpenChange={onOpenChangeHandler}>
+      <DropdownMenu.Trigger asChild onClick={onOpenHandler}>
         <button
           className={`${s.iconButton} ${isOpen ? s.activeTrigger : ''}`}
           aria-label="Customise options"
-          onClick={() => setIsOpen(!isOpen)}
         >
           {trigger}
         </button>
       </DropdownMenu.Trigger>
       <DropdownMenu.Portal>
         <DropdownMenu.Content
-          // onInteractOutside={onCloseHandler}
+          onClick={onClickHandler}
+          onCloseAutoFocus={onCloseAutoFocusHandler}
           align={align}
           side={side}
           className={s.dropdownMenuContent}

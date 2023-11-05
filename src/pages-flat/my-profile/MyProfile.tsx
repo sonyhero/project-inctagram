@@ -2,6 +2,7 @@ import { useRouter } from 'next/router'
 
 import { Profile } from '@/entities/profile'
 import { useMeQuery } from '@/features/auth'
+import { PATH } from '@/shared/config/routes'
 import { useAppSelector } from '@/shared/store'
 import { ProfileSettings } from '@/widgets/profile-settings'
 
@@ -16,7 +17,7 @@ export const MyProfile = () => {
     return <div>Loading...</div>
   }
   if (!data) {
-    router.push('auth/sign-in')
+    router.push(PATH.SIGN_IN)
 
     return
   }
