@@ -24,7 +24,7 @@ export const Profile = ({ userId }: Props) => {
   const { data, isLoading, isFetching } = useGetProfileQuery(userId)
   const { data: postsData } = useGetPostsByUserIdQuery({
     idLastUploadedPost: userId,
-    pageSize: 10,
+    pageSize: 8,
     sortBy: '',
     sortDirection: 'desc',
   })

@@ -46,7 +46,7 @@ const postsApi = baseApi.injectEndpoints({
           url: `v1/posts/p/${args.postId}`,
           method: 'GET',
         }),
-        providesTags: ['Posts'],
+        providesTags: [],
       }),
       getPostsByUserId: builder.query<GetAllPosts, GetDecksArgs>({
         query: args => ({
