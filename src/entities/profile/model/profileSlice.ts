@@ -1,4 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
+import { number } from 'zod'
 
 import { GetAllPostsItems } from '@/entities/profile/api/postsApi.types'
 import { Nullable } from '@/shared/types'
@@ -31,6 +32,7 @@ const initialState = {
     userName: null,
   } as ProfileDataType,
   post: null as Nullable<GetAllPostsItems>,
+  posts: [] as GetAllPostsItems[],
 }
 
 export const profileSlice = createSlice({
@@ -76,6 +78,12 @@ export const profileSlice = createSlice({
     },
     setPost: (state, action: PayloadAction<Nullable<GetAllPostsItems>>) => {
       state.post = action.payload
+    },
+    createNewPost: (state, action: PayloadAction<Array<GetAllPostsItems>>) => {
+      state.posts = [...action.payload, ...state.posts]
+    },
+    setPosts: (state, action: PayloadAction<Array<GetAllPostsItems>>) => {
+      state.posts = [...state.posts, ...action.payload]
     },
     updatePost: (state, action: PayloadAction<{ description: string }>) => {
       if (state.post) {

@@ -132,6 +132,10 @@ export const AddPostPublicationModal = ({ addPostPublicationModal, userId }: Pro
           description: value.length > 500 ? value.slice(0, 500) : value,
           childrenMetadata: uploadId,
         })
+          .unwrap()
+          .then(postData => {
+            dispatch(profileActions.createNewPost([postData]))
+          })
         dispatch(modalActions.setCloseModal({}))
         dispatch(profileActions.deletePhotosPost({}))
       })
