@@ -24,7 +24,7 @@ const postsApi = baseApi.injectEndpoints({
           method: 'POST',
           body,
         }),
-        invalidatesTags: ['Posts'],
+        invalidatesTags: [],
       }),
       uploadPostImage: builder.mutation<PostsImagesResponse, FormData>({
         query: body => ({
@@ -50,7 +50,7 @@ const postsApi = baseApi.injectEndpoints({
       }),
       getPostsByUserId: builder.query<GetAllPosts, GetDecksArgs>({
         query: args => ({
-          url: `v1/posts/user`,
+          url: `v1/posts/user/${args.idLastUploadedPost}`,
           method: 'GET',
           params: args,
         }),
@@ -82,7 +82,8 @@ export const {
   useDeletePostImageMutation,
   useGetPostByIdQuery,
   useLazyGetPostByIdQuery,
-  useGetPostsByUserIdQuery,
   useUpdatePostByIdMutation,
   useDeletePostByIdMutation,
+  useGetPostsByUserIdQuery,
+  useLazyGetPostsByUserIdQuery,
 } = postsApi
