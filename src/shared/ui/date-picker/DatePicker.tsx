@@ -15,11 +15,13 @@ import { DatePickerHeader } from './DatePickerHeader'
 import { PATH } from '@/shared/config/routes'
 import { useTranslation } from '@/shared/hooks/useTranstaion'
 import { Nullable } from '@/shared/types'
+import { Typography } from '@/shared/ui'
 import { customizeDatePickerInput } from '@/shared/utils/customizeDatePickerInput'
 
 type Props = {
   control: Control<any>
   className?: string
+  requiredField?: boolean
   name: string
   error?: FieldError
   title?: string
@@ -33,7 +35,8 @@ type Value = Nullable<Date>
 type RangeValue = [Value, Value]
 
 export const DatePicker = (props: Props) => {
-  const { className, max, width, range, error, control, name, title, placeholder } = props
+  const { className, max, width, range, error, control, name, title, placeholder, requiredField } =
+    props
   const [startDate, setStartDate] = useState<Value>(placeholder ? new Date(placeholder) : null)
   const [endDate, setEndDate] = useState<Value>(null)
   const { t } = useTranslation()
@@ -85,6 +88,11 @@ export const DatePicker = (props: Props) => {
           <div className={`${s.datePickerField} ${className}`}>
             <label htmlFor={name} className={s.label}>
               {title}
+              {requiredField && (
+                <Typography as={'span'} color={'error'}>
+                  *
+                </Typography>
+              )}
             </label>
             <DatePickerInstance
               renderCustomHeader={params => <DatePickerHeader {...params} />}
