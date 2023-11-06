@@ -19,6 +19,10 @@
   .firstButtonText {
     color: var(--color-primary-500);
   }
+
+  @media (width <= 1400px) {
+    top: 50%;
+  }
 }
 
 .header {

@@ -66,6 +66,7 @@ export const UpdateProfileForm = ({ defaultValue }: Props) => {
         className={errors.dateOfBirth ? '' : s.errorField}
         control={control}
         name={'dateOfBirth'}
+        requiredField
         title={t.myProfile.generalInformation.dateOfBirth}
         error={errors.dateOfBirth}
         placeholder={
