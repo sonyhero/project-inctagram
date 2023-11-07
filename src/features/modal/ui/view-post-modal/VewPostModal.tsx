@@ -6,9 +6,8 @@ import loaderIcon from '../../../../../public/loader.svg'
 
 import s from './VewPostModal.module.scss'
 
+import { postsActions, useUpdatePostByIdMutation } from '@/entities/posts'
 import { useGetProfileQuery } from '@/entities/profile'
-import { useUpdatePostByIdMutation } from '@/entities/profile/api/postsApi'
-import { profileActions } from '@/entities/profile/model'
 import { modalActions } from '@/features/modal'
 import { useAppDispatch, useAppSelector } from '@/shared/store'
 import {
@@ -35,7 +34,7 @@ type Props = {
 }
 
 export const ViewPostModal = ({ open, userId }: Props) => {
-  const post = useAppSelector(state => state.profileSlice.post)
+  const post = useAppSelector(state => state.postsSlice.post)
   const { data } = useGetProfileQuery(userId)
   const [activeIndex, setActiveIndex] = useState(0)
   const activePhoto = post?.images[activeIndex]
@@ -111,7 +110,7 @@ export const ViewPostModal = ({ open, userId }: Props) => {
         .unwrap()
         .then(() => {
           dispatch(
-            profileActions.updatePost({
+            postsActions.updatePost({
               description: value.length > 500 ? value.slice(0, 500) : value,
             })
           )

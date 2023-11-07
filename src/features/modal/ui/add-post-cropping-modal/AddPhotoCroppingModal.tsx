@@ -5,7 +5,7 @@ import { v1 } from 'uuid'
 
 import s from './AddPostCroppingModal.module.scss'
 
-import { PostType, profileActions, SizeType } from '@/entities/profile/model'
+import { postsActions, PostType, SizeType } from '@/entities/posts'
 import { modalActions } from '@/features/modal'
 import { useAppDispatch, useAppSelector } from '@/shared/store'
 import { Nullable } from '@/shared/types'
@@ -32,7 +32,7 @@ type Props = {
 }
 
 export const AddPostCroppingModal = ({ addPostCroppingModal }: Props) => {
-  const photosPost = useAppSelector(state => state.profileSlice.photosPosts)
+  const photosPost = useAppSelector(state => state.postsSlice.photosPosts)
   const [activeIndex, setActiveIndex] = useState(0)
   const [error, setError] = useState(false)
   const activePhoto = photosPost[activeIndex]
@@ -44,7 +44,7 @@ export const AddPostCroppingModal = ({ addPostCroppingModal }: Props) => {
     dispatch(modalActions.setOpenExtraModal('closeAddPostModal'))
   }
   const opPrevClickHandler = () => {
-    dispatch(profileActions.deletePhotosPost({}))
+    dispatch(postsActions.deletePhotosPost({}))
     dispatch(modalActions.setOpenModal('addPostModal'))
   }
   const mainPhotoSelected = (event: ChangeEvent<HTMLInputElement>) => {
@@ -76,7 +76,7 @@ export const AddPostCroppingModal = ({ addPostCroppingModal }: Props) => {
             filter: 'none',
           }
 
-          dispatch(profileActions.setPhotoOfPost(newPhoto))
+          dispatch(postsActions.setPhotoOfPost(newPhoto))
           setActiveIndex(activeIndex + 1)
         }
       }
@@ -84,11 +84,11 @@ export const AddPostCroppingModal = ({ addPostCroppingModal }: Props) => {
   }
   const changeZoom = (zoom: number[]) => {
     if (activePhoto) {
-      dispatch(profileActions.updateZoom({ id: activePhoto.id, zoom }))
+      dispatch(postsActions.updateZoom({ id: activePhoto.id, zoom }))
     }
   }
   const changeSize = (size: SizeType) => {
-    dispatch(profileActions.updateSize({ id: activePhoto.id, sizeScale: size }))
+    dispatch(postsActions.updateSize({ id: activePhoto.id, sizeScale: size }))
 
     const originalImage = new Image()
 
@@ -116,7 +116,7 @@ export const AddPostCroppingModal = ({ addPostCroppingModal }: Props) => {
           width = maxWidth
           height = originalHeight
       }
-      dispatch(profileActions.updateWidthAndHeight({ id: activePhoto.id, width, height }))
+      dispatch(postsActions.updateWidthAndHeight({ id: activePhoto.id, width, height }))
     }
   }
 
@@ -196,7 +196,7 @@ export const AddPostCroppingModal = ({ addPostCroppingModal }: Props) => {
           <div className={s.photos}>
             {photosPost.map((el, index) => {
               const deletePhotoHandler = (id: string) => {
-                dispatch(profileActions.deletePhotoOfPost({ id }))
+                dispatch(postsActions.deletePhotoOfPost({ id }))
 
                 if (photosPost.length === 1) {
                   dispatch(modalActions.setOpenModal('addPostModal'))

@@ -4,7 +4,7 @@ import {
   PostArgsType,
   PostsImagesResponse,
   PostsResponseType,
-} from '@/entities/profile/api/postsApi.types'
+} from '@/entities/posts'
 import { baseApi } from '@/shared/api'
 
 const postsApi = baseApi.injectEndpoints({

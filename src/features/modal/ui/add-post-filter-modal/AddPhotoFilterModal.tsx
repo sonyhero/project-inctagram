@@ -4,7 +4,7 @@ import AvatarEditor from 'react-avatar-editor'
 
 import s from './AddPostFilterModal.module.scss'
 
-import { profileActions } from '@/entities/profile/model'
+import { postsActions } from '@/entities/posts'
 import { modalActions } from '@/features/modal'
 import { filters } from '@/shared/contstants'
 import { useAppDispatch, useAppSelector } from '@/shared/store'
@@ -16,7 +16,7 @@ type Props = {
 }
 
 export const AddPostFilterModal = ({ addPostFilterModal }: Props) => {
-  const photosPost = useAppSelector(state => state.profileSlice.photosPosts)
+  const photosPost = useAppSelector(state => state.postsSlice.photosPosts)
   const [activeIndex, setActiveIndex] = useState(0)
   const activePhoto = photosPost[activeIndex]
   const dispatch = useAppDispatch()
@@ -40,7 +40,7 @@ export const AddPostFilterModal = ({ addPostFilterModal }: Props) => {
   }
 
   const changeFilter = (id: string, filter: string) => {
-    dispatch(profileActions.updateFilter({ id, filter }))
+    dispatch(postsActions.updateFilter({ id, filter }))
   }
 
   const nextContentHandler = () => {

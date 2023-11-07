@@ -1,9 +1,9 @@
 import { useRouter } from 'next/router'
 
-import { Profile } from '@/entities/profile'
 import { useMeQuery } from '@/features/auth'
 import { PATH } from '@/shared/config/routes'
 import { useAppSelector } from '@/shared/store'
+import { ProfileInfo } from '@/widgets/profile-info'
 import { ProfileSettings } from '@/widgets/profile-settings'
 
 export const MyProfile = () => {
@@ -25,6 +25,6 @@ export const MyProfile = () => {
   return showProfileSettings ? (
     <ProfileSettings userId={data.userId} />
   ) : (
-    <Profile userId={data.userId} />
+    <ProfileInfo userId={data.userId} />
   )
 }

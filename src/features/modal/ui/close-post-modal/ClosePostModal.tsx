@@ -2,7 +2,7 @@ import React from 'react'
 
 import s from './ClosePostModal.module.scss'
 
-import { profileActions } from '@/entities/profile/model'
+import { postsActions } from '@/entities/posts'
 import { modalActions } from '@/features/modal'
 import { useAppDispatch } from '@/shared/store'
 import { Button, Modal, Typography } from '@/shared/ui'
@@ -14,7 +14,7 @@ type Props = {
 export const ClosePostModal = ({ closeAddPostModal }: Props) => {
   const dispatch = useAppDispatch()
   const handleClose = () => {
-    dispatch(profileActions.deletePhotosPost({}))
+    dispatch(postsActions.deletePhotosPost({}))
     dispatch(modalActions.setCloseExtraModal({}))
     dispatch(modalActions.setCloseModal({}))
   }
