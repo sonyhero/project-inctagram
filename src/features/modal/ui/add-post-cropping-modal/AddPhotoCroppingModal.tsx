@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useEffect, useRef, useState } from 'react'
+import React, { ChangeEvent, useRef, useState } from 'react'
 
 import AvatarEditor from 'react-avatar-editor'
 import { v1 } from 'uuid'
@@ -47,7 +47,6 @@ export const AddPostCroppingModal = ({ addPostCroppingModal }: Props) => {
     dispatch(profileActions.deletePhotosPost({}))
     dispatch(modalActions.setOpenModal('addPostModal'))
   }
-
   const mainPhotoSelected = (event: ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files && event.target.files[0]
 
@@ -58,7 +57,6 @@ export const AddPostCroppingModal = ({ addPostCroppingModal }: Props) => {
         setError(true)
       } else {
         setError(false)
-        // const formData = new FormData()
         const photoId = v1()
 
         const image = new Image()
@@ -86,7 +84,6 @@ export const AddPostCroppingModal = ({ addPostCroppingModal }: Props) => {
   }
   const changeZoom = (zoom: number[]) => {
     if (activePhoto) {
-      // updateZoom(activePhoto.id, zoom)
       dispatch(profileActions.updateZoom({ id: activePhoto.id, zoom }))
     }
   }

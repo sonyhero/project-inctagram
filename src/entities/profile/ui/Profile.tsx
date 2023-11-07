@@ -13,11 +13,11 @@ import {
   useLazyGetPostByIdQuery,
   useLazyGetPostsByUserIdQuery,
 } from '@/entities/profile/api/postsApi'
-import { GetAllPostsItems } from '@/entities/profile/api/postsApi.types'
 import { profileActions } from '@/entities/profile/model'
 import { modalActions } from '@/features/modal'
 import { useTranslation } from '@/shared/hooks'
 import { useAppDispatch, useAppSelector } from '@/shared/store'
+import { Nullable } from '@/shared/types'
 import { Button, Typography } from '@/shared/ui'
 import { profileSettingsSlice } from '@/widgets/profile-settings'
 
@@ -30,9 +30,10 @@ export const Profile = ({ userId }: Props) => {
 
   const dispatch = useAppDispatch()
   const posts = useAppSelector(state => state.profileSlice.posts)
+  const [getLastUploadedPostId, setLastUploadedPostId] = useState<Nullable<number>>(null)
 
-  const { data: postsData, isFetching: fetchPost } = useGetPostsByUserIdQuery({
-    pageSize: 12,
+  const { data: postsData } = useGetPostsByUserIdQuery({
+    pageSize: 8,
     sortBy: '',
     sortDirection: 'desc',
   })
@@ -40,8 +41,8 @@ export const Profile = ({ userId }: Props) => {
   const [getNextPosts] = useLazyGetPostsByUserIdQuery()
 
   useEffect(() => {
-    if (postsData) {
-      if (postsData.items.length > 1) {
+    if (posts.length === 0) {
+      if (postsData && postsData.items.length > 0) {
         dispatch(profileActions.setPosts(postsData.items))
       }
     }
@@ -67,7 +68,7 @@ export const Profile = ({ userId }: Props) => {
         dispatch(modalActions.setOpenModal('viewPostModal'))
       })
   }
-  const postsBlockRef = useRef<HTMLDivElement | null>(null)
+  const postsBlockRef = useRef<Nullable<HTMLDivElement>>(null)
 
   useEffect(() => {
     const element = postsBlockRef.current
@@ -77,16 +78,21 @@ export const Profile = ({ userId }: Props) => {
         const atBottom = element.scrollTop + element.clientHeight >= element.scrollHeight
 
         if (atBottom) {
-          getNextPosts({
-            idLastUploadedPost: posts.slice(-1)[0].id,
-            pageSize: 8,
-            sortBy: '',
-            sortDirection: 'desc',
-          })
-            .unwrap()
-            .then(postsData => {
-              dispatch(profileActions.setPosts(postsData.items))
+          const lastPostId = posts.slice(-1)[0].id
+
+          if (lastPostId !== getLastUploadedPostId) {
+            getNextPosts({
+              idLastUploadedPost: lastPostId,
+              pageSize: 8,
+              sortBy: '',
+              sortDirection: 'desc',
             })
+              .unwrap()
+              .then(postsData => {
+                dispatch(profileActions.setPosts(postsData.items))
+                setLastUploadedPostId(lastPostId)
+              })
+          }
         }
       }
 
@@ -96,7 +102,7 @@ export const Profile = ({ userId }: Props) => {
         element.removeEventListener('scroll', handleScroll)
       }
     }
-  }, [posts])
+  }, [posts, getNextPosts, getLastUploadedPostId])
 
   const isLoadingAvatar = isLoading && isFetching
 
