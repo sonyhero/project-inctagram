@@ -46,7 +46,13 @@ export const ViewPostModal = ({ open, userId }: Props) => {
 
   const dispatch = useAppDispatch()
   const closeModal = () => {
-    editMode ? setEditMode(false) : dispatch(modalActions.setCloseModal({}))
+    if (editMode) {
+      setEditMode(false)
+    } else {
+      setTimeout(() => {
+        dispatch(modalActions.setCloseModal({}))
+      }, 0)
+    }
   }
   const changePhoto = (direction: 'next' | 'prev') => {
     if (post?.images && post?.images.length > 0) {
