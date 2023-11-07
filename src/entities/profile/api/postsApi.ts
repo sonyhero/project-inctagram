@@ -32,7 +32,7 @@ const postsApi = baseApi.injectEndpoints({
           method: 'POST',
           body,
         }),
-        invalidatesTags: ['Posts'],
+        invalidatesTags: [],
       }),
       deletePostImage: builder.mutation<void, { uploadId: string }>({
         query: body => ({
@@ -52,7 +52,11 @@ const postsApi = baseApi.injectEndpoints({
         query: args => ({
           url: `v1/posts/user/${args.idLastUploadedPost}`,
           method: 'GET',
-          params: args,
+          params: {
+            pageSize: args.pageSize,
+            sortBy: args.sortBy,
+            sortDirection: args.sortDirection,
+          },
         }),
         providesTags: ['Posts'],
       }),
@@ -69,7 +73,7 @@ const postsApi = baseApi.injectEndpoints({
           url: `v1/posts/${body.postId}`,
           method: 'DELETE',
         }),
-        invalidatesTags: ['Posts'],
+        invalidatesTags: [],
       }),
     }
   },

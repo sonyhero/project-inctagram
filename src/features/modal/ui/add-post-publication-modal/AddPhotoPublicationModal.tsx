@@ -134,7 +134,7 @@ export const AddPostPublicationModal = ({ addPostPublicationModal, userId }: Pro
         })
           .unwrap()
           .then(postData => {
-            dispatch(profileActions.createNewPost([postData]))
+            dispatch(profileActions.createNewPost(postData))
           })
         dispatch(modalActions.setCloseModal({}))
         dispatch(profileActions.deletePhotosPost({}))

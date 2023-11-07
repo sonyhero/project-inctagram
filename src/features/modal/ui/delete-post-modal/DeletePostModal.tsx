@@ -24,6 +24,7 @@ export const DeletePostModal = ({ open }: Props) => {
       deletePhoto({ postId })
         .unwrap()
         .then(() => {
+          dispatch(profileActions.deletePost({ postId }))
           dispatch(profileActions.setPost(null))
           dispatch(modalActions.setCloseModal({}))
           dispatch(modalActions.setCloseExtraModal({}))
