@@ -17,7 +17,7 @@ export const EmailVerification = () => {
       </Typography>
 
       <Button variant={'primary'} className={s.btn}>
-        <Typography variant={'h3'}>{t.auth.badRecoveryLink.resendLink}</Typography>
+        {t.auth.badRecoveryLink.resendLink}
       </Button>
       <VereficationIcon className={s.pic} />
     </div>

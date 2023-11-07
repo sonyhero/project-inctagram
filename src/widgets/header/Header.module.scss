@@ -4,7 +4,9 @@
   height: 3.75rem;
   border-bottom: 1px solid var(--color-dark-100);
 
-  .home {
+  .home,
+  .home:active,
+  .home:hover {
     text-decoration: none;
   }
 

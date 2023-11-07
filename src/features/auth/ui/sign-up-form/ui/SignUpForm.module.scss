@@ -10,18 +10,6 @@
   margin: 1.5rem auto 0;
   padding: 1.5rem;
 
-  .signIn {
-    text-decoration: none;
-
-    .signInBtn {
-      padding: 0;
-
-      &:focus {
-        outline: none;
-      }
-    }
-  }
-
   .title {
     margin-bottom: 0.8125rem;
     text-align: center;
@@ -58,10 +46,6 @@
 
   .terms {
     @include margin15;
-
-    .link {
-      color: var(--color-accent-300);
-    }
   }
 
   .signUpBtn {

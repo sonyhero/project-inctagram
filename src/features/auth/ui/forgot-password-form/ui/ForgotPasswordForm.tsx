@@ -1,11 +1,10 @@
-import Link from 'next/link'
-
 import s from './ForgotPasswordForm.module.scss'
 
 import { useForgotPassword } from '@/features/auth/ui/forgot-password-form/hooks/useForgotPassword'
 import { PATH } from '@/shared/config/routes'
 import { useTranslation } from '@/shared/hooks/useTranstaion'
 import { Button, Card, ControlledTextField, Modal, Recaptcha, Typography } from '@/shared/ui'
+import { LinkButton } from '@/shared/ui/link-button/LinkButton'
 
 export const ForgotPasswordForm = () => {
   const {
@@ -36,14 +35,12 @@ export const ForgotPasswordForm = () => {
         <Typography variant={'regular14'} className={s.text}>
           {t.auth.forgotPassword.description}{' '}
         </Typography>
-        <Button fullWidth={true} className={s.submit} type="submit">
+        <Button fullWidth className={s.submit} type="submit">
           {t.auth.forgotPassword.sendLink}
         </Button>
-        <Button variant={'text'}>
-          <Link href={PATH.SIGN_IN} className={s.backBtn}>
-            {t.auth.forgotPassword.backToSignIn}
-          </Link>
-        </Button>
+        <LinkButton href={PATH.SIGN_IN} className={s.backBtn}>
+          {t.auth.forgotPassword.backToSignIn}
+        </LinkButton>
         <Recaptcha onRecaptchaChangeHandler={onRecaptchaChangeHandler} />
       </form>
       <Modal
