@@ -11,7 +11,6 @@ import {
   ControlledTextArea,
   ControlledTextField,
   DatePicker,
-  Typography,
 } from '@/shared/ui'
 import { formatDate } from '@/shared/utils'
 
@@ -89,7 +88,7 @@ export const UpdateProfileForm = ({ defaultValue }: Props) => {
         placeholder={t.myProfile.generalInformation.placeholderAboutMe}
       />
       <Button disabled={saveButtonDisabled} type={'submit'} className={s.saveChanges}>
-        <Typography variant={'h3'}>{t.myProfile.generalInformation.saveChanges}</Typography>
+        {t.myProfile.generalInformation.saveChanges}
       </Button>
     </form>
   )

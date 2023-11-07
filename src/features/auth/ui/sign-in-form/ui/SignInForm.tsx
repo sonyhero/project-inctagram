@@ -7,6 +7,7 @@ import { PATH } from '@/shared/config/routes'
 import { useThirdPartyAuth } from '@/shared/hooks'
 import { useTranslation } from '@/shared/hooks/useTranstaion'
 import { Button, Card, ControlledTextField, GitIcon, GoogleIcon, Typography } from '@/shared/ui'
+import { LinkButton } from '@/shared/ui/link-button/LinkButton'
 
 export const SignInForm = () => {
   const { onGitHubAuth, onGoogleAuth } = useThirdPartyAuth()
@@ -45,24 +46,18 @@ export const SignInForm = () => {
           autoComplete={'on'}
         />
         <div className={s.forgotWrapper}>
-          <Button variant={'text'} className={s.forgotPassword}>
-            <Link className={s.forgotText} href={PATH.FORGOT_PASSWORD}>
-              {t.auth.signIn.forgotPassword}
-            </Link>
-          </Button>
+          <Link className={s.link} href={PATH.FORGOT_PASSWORD}>
+            <Typography variant={'regular14'}>{t.auth.signIn.forgotPassword}</Typography>
+          </Link>
         </div>
         <Button fullWidth className={s.submit} type={'submit'} disabled={!isValid}>
-          <Typography variant={'h3'}>{t.auth.signIn.signIn}</Typography>
+          {t.auth.signIn.signIn}
         </Button>
       </form>
       <Typography variant={'regular16'} className={s.question}>
         {t.auth.signIn.question}
       </Typography>
-      <Button variant={'text'}>
-        <Link href={PATH.SIGN_UP} className={s.signUp}>
-          <Typography variant={'h3'}>{t.auth.signIn.signUp}</Typography>
-        </Link>
-      </Button>
+      <LinkButton href={PATH.SIGN_UP}>{t.auth.signIn.signUp}</LinkButton>
     </Card>
   )
 }

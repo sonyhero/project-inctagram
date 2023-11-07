@@ -104,7 +104,7 @@ export const Modal = (props: Props) => {
                     variant={'primary'}
                     onClick={titleFirstButton ? () => onClose?.() : callBack}
                   >
-                    <Typography variant={'h3'}>{titleSecondButton}</Typography>
+                    {titleSecondButton}
                   </Button>
                 )}
               </div>

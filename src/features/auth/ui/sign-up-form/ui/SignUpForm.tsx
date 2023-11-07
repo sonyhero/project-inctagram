@@ -17,6 +17,7 @@ import {
   Modal,
   Typography,
 } from '@/shared/ui'
+import { LinkButton } from '@/shared/ui/link-button/LinkButton'
 
 export const SignUpForm = () => {
   const { onGitHubAuth, onGoogleAuth } = useThirdPartyAuth()
@@ -81,13 +82,13 @@ export const SignUpForm = () => {
                 <Typography variant={'small'}>
                   {t.auth.signUp.checkboxOneChart}{' '}
                   <Link href={PATH.TERMS_OF_SERVICE}>
-                    <Typography className={s.link} as={'span'} variant={'s_link'}>
+                    <Typography as={'span'} variant={'s_link'}>
                       {t.auth.signUp.termsOfService}
                     </Typography>
                   </Link>{' '}
                   {t.auth.signUp.checkboxTwoChart}{' '}
                   <Link href={PATH.POLICY}>
-                    <Typography className={s.link} as={'span'} variant={'s_link'}>
+                    <Typography as={'span'} variant={'s_link'}>
                       {t.auth.signUp.privacyPolicy}
                     </Typography>
                   </Link>
@@ -96,18 +97,13 @@ export const SignUpForm = () => {
             />
           </div>
           <Button disabled={disableButton} className={s.signUpBtn} type={'submit'} fullWidth>
-            <Typography variant={'h3'}>{t.auth.signUp.signUp}</Typography>
+            {t.auth.signUp.signUp}
           </Button>
         </form>
         <Typography className={s.subtitle} variant={'regular16'}>
           {t.auth.signUp.question}
         </Typography>
-
-        <Link href={PATH.SIGN_IN} className={s.signIn}>
-          <Button variant={'text'} className={s.signInBtn} fullWidth={true}>
-            <Typography variant={'h3'}>{t.auth.signUp.signIn}</Typography>
-          </Button>
-        </Link>
+        <LinkButton href={PATH.SIGN_IN}>{t.auth.signUp.signIn}</LinkButton>
       </Card>
       <Modal
         title={t.auth.signUp.modal}

@@ -1,10 +1,9 @@
-import Link from 'next/link'
-
 import s from './BadRecoveryLink.module.scss'
 
 import { PATH } from '@/shared/config/routes'
 import { useTranslation } from '@/shared/hooks/useTranstaion'
-import { Button, Typography, VereficationIcon } from '@/shared/ui'
+import { Typography, VereficationIcon } from '@/shared/ui'
+import { LinkButton } from '@/shared/ui/link-button/LinkButton'
 
 export const BadRecoveryLink = () => {
   const { t } = useTranslation()
@@ -17,11 +16,9 @@ export const BadRecoveryLink = () => {
       <Typography variant={'regular16'} className={s.description}>
         {t.auth.badRecoveryLink.description}
       </Typography>
-      <Button variant={'primary'} className={s.signBtn}>
-        <Link href={PATH.FORGOT_PASSWORD}>
-          <Typography variant={'h3'}>{t.auth.badRecoveryLink.resendLink}</Typography>
-        </Link>
-      </Button>
+      <LinkButton variant={'primary'} className={s.link} href={PATH.FORGOT_PASSWORD}>
+        {t.auth.badRecoveryLink.resendLink}
+      </LinkButton>
       <VereficationIcon className={s.pic} />
     </div>
   )

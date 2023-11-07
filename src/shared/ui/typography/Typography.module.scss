@@ -63,6 +63,7 @@
   @include typography(var(--font-size-xs), var(--line-height-s), var(--font-weight-s));
 
   cursor: pointer;
+  color: var(--color-accent-300);
   text-decoration: underline;
 }
 

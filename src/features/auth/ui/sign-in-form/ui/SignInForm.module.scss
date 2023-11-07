@@ -35,21 +35,15 @@
     justify-content: right;
     margin-bottom: 1.5rem;
 
-    .forgotText {
+    .link {
       color: var(--light-900, #8d9094);
       text-decoration: none;
-    }
-  }
 
-  .forgotPassword {
-    padding: 0;
-    color: var(--color-light-100);
-
-    &:focus,
-    &:active,
-    &:hover {
-      color: var(--color-light-100);
-      outline: none;
+      &:focus,
+      &:active,
+      &:hover {
+        text-decoration: none;
+      }
     }
   }
 
@@ -62,9 +56,5 @@
     margin-bottom: 0.38rem;
     color: var(--light-100, #fff);
     text-align: center;
-  }
-
-  .signUp {
-    text-decoration: none;
   }
 }
