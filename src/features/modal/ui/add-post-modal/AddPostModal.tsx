@@ -4,7 +4,7 @@ import { v1 } from 'uuid'
 
 import s from './AddPostModal.module.scss'
 
-import { PostType, profileActions } from '@/entities/profile/model'
+import { postsActions, PostType } from '@/entities/posts'
 import { modalActions, modalSlice } from '@/features/modal'
 import { useAppDispatch, useAppSelector } from '@/shared/store'
 import { Button, ImageIcon, Modal, Typography } from '@/shared/ui'
@@ -14,7 +14,7 @@ type Props = {
 }
 export const AddPostModal = ({ openAddPhotoModal }: Props) => {
   const [errorPhoto, setErrorPhoto] = useState('')
-  const photosPost = useAppSelector(state => state.profileSlice.photosPosts)
+  const photosPost = useAppSelector(state => state.postsSlice.photosPosts)
 
   const dispatch = useAppDispatch()
 
@@ -48,7 +48,7 @@ export const AddPostModal = ({ openAddPhotoModal }: Props) => {
             filter: 'none',
           }
 
-          dispatch(profileActions.setPhotoOfPost(newPhoto))
+          dispatch(postsActions.setPhotoOfPost(newPhoto))
           dispatch(modalActions.setOpenModal('addPostCroppingModal'))
         }
       }

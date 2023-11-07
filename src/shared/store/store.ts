@@ -1,6 +1,7 @@
 import { configureStore } from '@reduxjs/toolkit'
 import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux'
 
+import { postsSlice } from '@/entities/posts'
 import { profileSlice } from '@/entities/profile/model'
 import { modalSlice } from '@/features/modal/model/modalSlice'
 import { baseApi } from '@/shared/api/baseApi'
@@ -12,6 +13,7 @@ export const store = configureStore({
     [modalSlice.name]: modalSlice.reducer,
     [profileSettingsSlice.name]: profileSettingsSlice.reducer,
     [profileSlice.name]: profileSlice.reducer,
+    [postsSlice.name]: postsSlice.reducer,
   },
   middleware: getDefaultMiddleware => getDefaultMiddleware().concat(baseApi.middleware),
 })

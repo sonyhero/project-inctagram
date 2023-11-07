@@ -5,15 +5,15 @@ import Image from 'next/image'
 import imageIcon from '../../../../public/imageIcon.svg'
 import loader from '../../../../public/loader.svg'
 
-import s from './Profile.module.scss'
+import s from './ProfileInfo.module.scss'
 
-import { useGetProfileQuery } from '@/entities/profile'
 import {
+  postsActions,
   useGetPostsByUserIdQuery,
   useLazyGetPostByIdQuery,
   useLazyGetPostsByUserIdQuery,
-} from '@/entities/profile/api/postsApi'
-import { profileActions } from '@/entities/profile/model'
+} from '@/entities/posts'
+import { useGetProfileQuery } from '@/entities/profile'
 import { modalActions } from '@/features/modal'
 import { useTranslation } from '@/shared/hooks'
 import { useAppDispatch, useAppSelector } from '@/shared/store'
@@ -24,12 +24,12 @@ import { profileSettingsSlice } from '@/widgets/profile-settings'
 type Props = {
   userId: number
 }
-export const Profile = ({ userId }: Props) => {
+export const ProfileInfo = ({ userId }: Props) => {
   const { t } = useTranslation()
   const { data, isLoading, isFetching } = useGetProfileQuery(userId)
 
   const dispatch = useAppDispatch()
-  const posts = useAppSelector(state => state.profileSlice.posts)
+  const posts = useAppSelector(state => state.postsSlice.posts)
   const [getLastUploadedPostId, setLastUploadedPostId] = useState<Nullable<number>>(null)
 
   const { data: postsData } = useGetPostsByUserIdQuery({
@@ -43,7 +43,7 @@ export const Profile = ({ userId }: Props) => {
   useEffect(() => {
     if (posts.length === 0) {
       if (postsData && postsData.items.length > 0) {
-        dispatch(profileActions.setPosts(postsData.items))
+        dispatch(postsActions.setPosts(postsData.items))
       }
     }
   }, [postsData])
@@ -64,7 +64,7 @@ export const Profile = ({ userId }: Props) => {
     getPost({ postId: id })
       .unwrap()
       .then(async postData => {
-        await dispatch(profileActions.setPost(postData))
+        await dispatch(postsActions.setPost(postData))
         dispatch(modalActions.setOpenModal('viewPostModal'))
       })
   }
@@ -89,7 +89,7 @@ export const Profile = ({ userId }: Props) => {
             })
               .unwrap()
               .then(postsData => {
-                dispatch(profileActions.setPosts(postsData.items))
+                dispatch(postsActions.setPosts(postsData.items))
                 setLastUploadedPostId(lastPostId)
               })
           }

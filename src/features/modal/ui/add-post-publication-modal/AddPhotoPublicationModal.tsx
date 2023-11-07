@@ -7,9 +7,8 @@ import loaderIcon from '../../../../../public/loader.svg'
 
 import s from './AddPostPublicationModal.module.scss'
 
+import { postsActions, useCreatePostMutation, useUploadPostImageMutation } from '@/entities/posts'
 import { useGetProfileQuery } from '@/entities/profile'
-import { useCreatePostMutation, useUploadPostImageMutation } from '@/entities/profile/api/postsApi'
-import { profileActions } from '@/entities/profile/model'
 import { modalActions } from '@/features/modal'
 import { useAppDispatch, useAppSelector } from '@/shared/store'
 import { Nullable } from '@/shared/types'
@@ -28,7 +27,7 @@ type Props = {
 }
 
 export const AddPostPublicationModal = ({ addPostPublicationModal, userId }: Props) => {
-  const photosPost = useAppSelector(state => state.profileSlice.photosPosts)
+  const photosPost = useAppSelector(state => state.postsSlice.photosPosts)
   const { data } = useGetProfileQuery(userId)
   const [activeIndex, setActiveIndex] = useState(0)
   const activePhoto = photosPost[activeIndex]
@@ -134,10 +133,10 @@ export const AddPostPublicationModal = ({ addPostPublicationModal, userId }: Pro
         })
           .unwrap()
           .then(postData => {
-            dispatch(profileActions.createNewPost(postData))
+            dispatch(postsActions.createNewPost(postData))
           })
         dispatch(modalActions.setCloseModal({}))
-        dispatch(profileActions.deletePhotosPost({}))
+        dispatch(postsActions.deletePhotosPost({}))
       })
   }
 

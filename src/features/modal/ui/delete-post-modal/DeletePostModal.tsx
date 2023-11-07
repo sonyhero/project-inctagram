@@ -2,8 +2,7 @@ import React from 'react'
 
 import s from './DeletePostModal.module.scss'
 
-import { useDeletePostByIdMutation } from '@/entities/profile/api/postsApi'
-import { profileActions } from '@/entities/profile/model'
+import { postsActions, useDeletePostByIdMutation } from '@/entities/posts'
 import { modalActions } from '@/features/modal'
 import { useTranslation } from '@/shared/hooks/useTranstaion'
 import { useAppDispatch, useAppSelector } from '@/shared/store'
@@ -15,7 +14,7 @@ type Props = {
 
 export const DeletePostModal = ({ open }: Props) => {
   const [deletePhoto] = useDeletePostByIdMutation()
-  const postId = useAppSelector(state => state.profileSlice.post?.id)
+  const postId = useAppSelector(state => state.postsSlice.post?.id)
   const { t } = useTranslation()
   const dispatch = useAppDispatch()
 
@@ -24,8 +23,8 @@ export const DeletePostModal = ({ open }: Props) => {
       deletePhoto({ postId })
         .unwrap()
         .then(() => {
-          dispatch(profileActions.deletePost({ postId }))
-          dispatch(profileActions.setPost(null))
+          dispatch(postsActions.deletePost({ postId }))
+          dispatch(postsActions.setPost(null))
           dispatch(modalActions.setCloseModal({}))
           dispatch(modalActions.setCloseExtraModal({}))
         })
