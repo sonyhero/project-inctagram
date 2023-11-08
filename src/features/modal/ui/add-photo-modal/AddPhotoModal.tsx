@@ -66,7 +66,6 @@ export const AddPhotoModal = ({ addPhotoModal, setAddPhotoModal }: Props) => {
             .then(() => {
               toast.success(t.toast.success)
               setAddPhotoModal(false)
-              dispatch(profileSettingsSlice.actions.setShowProfileSettings({ value: false }))
 
               setPhoto(null)
               setZoom(1)
@@ -80,7 +79,6 @@ export const AddPhotoModal = ({ addPhotoModal, setAddPhotoModal }: Props) => {
     setZoom(1)
     setErrorPhoto('')
     setAddPhotoModal(false)
-    dispatch(profileSettingsSlice.actions.setShowProfileSettings({ value: false }))
     setPhoto(null)
   }
 
