@@ -1,5 +1,13 @@
-.link,
-.link:active,
-.link:hover {
+.link {
+  color: var(--color-accent-500);
   text-decoration: none;
+  border: none;
+
+  &:hover {
+    color: var(--color-accent-100);
+  }
+
+  &:active {
+    color: var(--color-accent-700);
+  }
 }
