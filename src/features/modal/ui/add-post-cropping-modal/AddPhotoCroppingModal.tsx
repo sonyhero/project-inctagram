@@ -33,13 +33,12 @@ type Props = {
 
 export const AddPostCroppingModal = ({ addPostCroppingModal }: Props) => {
   const photosPost = useAppSelector(state => state.postsSlice.photosPosts)
-  const [activeIndex, setActiveIndex] = useState(0)
+  const activeIndex = useAppSelector(state => state.postsSlice.activeIndex)
   const [error, setError] = useState(false)
   const activePhoto = photosPost[activeIndex]
   const dispatch = useAppDispatch()
 
   const editorRef = useRef<Nullable<AvatarEditor>>(null)
-
   const closeModal = () => {
     dispatch(modalActions.setOpenExtraModal('closeAddPostModal'))
   }
@@ -56,6 +55,13 @@ export const AddPostCroppingModal = ({ addPostCroppingModal }: Props) => {
       } else if (file.size > 20 * 1024 * 1024) {
         setError(true)
       } else {
+        const imageUrl = editorRef.current?.getImageScaledToCanvas().toDataURL()
+
+        if (imageUrl) {
+          dispatch(postsActions.updateImgUrl({ id: activePhoto.id, url: imageUrl }))
+        }
+        dispatch(postsActions.updateZoom({ id: activePhoto.id, zoom: [1] }))
+
         setError(false)
         const photoId = v1()
 
@@ -77,7 +83,7 @@ export const AddPostCroppingModal = ({ addPostCroppingModal }: Props) => {
           }
 
           dispatch(postsActions.setPhotoOfPost(newPhoto))
-          setActiveIndex(activeIndex + 1)
+          dispatch(postsActions.setActiveIndex(activeIndex + 1))
         }
       }
     }
@@ -202,7 +208,9 @@ export const AddPostCroppingModal = ({ addPostCroppingModal }: Props) => {
                   dispatch(modalActions.setOpenModal('addPostModal'))
                 }
                 if (activeIndex === photosPost.length - 1) {
-                  setActiveIndex(photosPost.length > 1 ? photosPost.length - 2 : 0)
+                  dispatch(
+                    postsActions.setActiveIndex(photosPost.length > 1 ? photosPost.length - 2 : 0)
+                  )
                 }
               }
 
@@ -232,16 +240,34 @@ export const AddPostCroppingModal = ({ addPostCroppingModal }: Props) => {
     },
   ]
 
-  const changePhoto = (direction: 'next' | 'prev') => {
+  const changePhoto = async (direction: 'next' | 'prev') => {
     if (photosPost.length > 0) {
       if (direction === 'next' && activeIndex < photosPost.length - 1) {
-        setActiveIndex(activeIndex + 1)
+        const imageUrl = editorRef.current?.getImageScaledToCanvas().toDataURL()
+
+        if (imageUrl) {
+          dispatch(postsActions.updateImgUrl({ id: activePhoto.id, url: imageUrl }))
+        }
+        dispatch(postsActions.updateZoom({ id: activePhoto.id, zoom: [1] }))
+        dispatch(postsActions.setActiveIndex(activeIndex + 1))
       } else if (direction === 'prev' && activeIndex > 0) {
-        setActiveIndex(activeIndex - 1)
+        const imageUrl = editorRef.current?.getImageScaledToCanvas().toDataURL()
+
+        if (imageUrl) {
+          dispatch(postsActions.updateImgUrl({ id: activePhoto.id, url: imageUrl }))
+        }
+        dispatch(postsActions.updateZoom({ id: activePhoto.id, zoom: [1] }))
+        dispatch(postsActions.setActiveIndex(activeIndex - 1))
       }
     }
   }
-  const nextContentHandler = () => {
+  const nextContentHandler = async () => {
+    const imageUrl = editorRef.current?.getImageScaledToCanvas().toDataURL()
+
+    if (imageUrl) {
+      dispatch(postsActions.updateImgUrl({ id: activePhoto.id, url: imageUrl }))
+    }
+    dispatch(postsActions.updateZoom({ id: activePhoto.id, zoom: [1] }))
     dispatch(modalActions.setOpenModal('addPostFilterModal'))
   }
 

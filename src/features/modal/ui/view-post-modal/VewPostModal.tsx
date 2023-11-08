@@ -165,21 +165,26 @@ export const ViewPostModal = ({ open, userId }: Props) => {
               </div>
               <div className={s.middleContent}>
                 <div className={s.comments}>
-                  <ImageNext
-                    src={loaderIcon}
-                    priority={true}
-                    {...profileAvatarLoader()}
-                    alt={'profilePhoto'}
-                  />
-                  <div className={s.descriptionBlock}>
-                    <Typography variant={'regular14'} className={s.desc}>
-                      <strong>{data?.userName}</strong> {post.description}
-                    </Typography>
-                    <Typography variant={'small'} color={'secondary'}>
-                      {getDayMonthTime(post.createdAt)}
-                    </Typography>
-                  </div>
+                  {post.description && (
+                    <>
+                      <ImageNext
+                        src={loaderIcon}
+                        priority={true}
+                        {...profileAvatarLoader()}
+                        alt={'profilePhoto'}
+                      />
+                      <div className={s.descriptionBlock}>
+                        <Typography variant={'regular14'} className={s.desc}>
+                          <strong>{data?.userName}</strong> {post.description}
+                        </Typography>
+                        <Typography variant={'small'} color={'secondary'}>
+                          {getDayMonthTime(post.createdAt)}
+                        </Typography>
+                      </div>
+                    </>
+                  )}
                 </div>
+
                 <div className={s.bottomActivityBlock}>
                   <div className={s.likeSaveSetBlock}>
                     <div className={s.likeAndSet}>
