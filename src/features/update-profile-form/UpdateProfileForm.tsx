@@ -20,10 +20,7 @@ type Props = {
 
 export const UpdateProfileForm = ({ defaultValue }: Props) => {
   const { t } = useTranslation()
-  const { control, handleSubmitForm, errors, isValid, dirty, handleChangeForm } =
-    useUpdateProfile(defaultValue)
-
-  const saveButtonDisabled = !dirty || !isValid
+  const { control, handleSubmitForm, errors, disableButton } = useUpdateProfile(defaultValue)
 
   const cities = [
     { id: '1', value: t.myProfile.generalInformation.cities.minsk },
@@ -32,7 +29,7 @@ export const UpdateProfileForm = ({ defaultValue }: Props) => {
   ]
 
   return (
-    <form onSubmit={handleSubmitForm} onChange={handleChangeForm} className={s.updateProfileBlock}>
+    <form onSubmit={handleSubmitForm} className={s.updateProfileBlock}>
       <DevTool control={control} />
       <ControlledTextField
         className={errors.userName ? '' : s.errorField}
@@ -87,7 +84,7 @@ export const UpdateProfileForm = ({ defaultValue }: Props) => {
         label={t.myProfile.generalInformation.aboutMe}
         placeholder={t.myProfile.generalInformation.placeholderAboutMe}
       />
-      <Button disabled={saveButtonDisabled} type={'submit'} className={s.saveChanges}>
+      <Button disabled={!disableButton} type={'submit'} className={s.saveChanges}>
         {t.myProfile.generalInformation.saveChanges}
       </Button>
     </form>
