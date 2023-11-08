@@ -1,5 +1,3 @@
-import { useState } from 'react'
-
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
 import { toast } from 'react-toastify'
@@ -55,6 +53,7 @@ export const useUpdateProfile = (defaultValue: GetProfileResponse | undefined) =
   const {
     control,
     handleSubmit,
+    reset,
     formState: { isValid, isDirty, errors },
   } = useForm<UpdateProfileFormShem>({
     defaultValues: {
@@ -69,21 +68,18 @@ export const useUpdateProfile = (defaultValue: GetProfileResponse | undefined) =
     resolver: zodResolver(updateProfileSchema),
   })
 
-  const [dirty, setDirty] = useState(isDirty)
+  const disableButton = isDirty || !isValid
 
   const onSubmit = (data: UpdateProfileFormShem) => {
     updateProfile(data)
       .unwrap()
       .then(() => {
         toast.success(t.toast.success)
-        setDirty(false)
+        reset()
       })
   }
 
   const handleSubmitForm = handleSubmit(onSubmit)
-  const handleChangeForm = () => {
-    setDirty(true)
-  }
 
-  return { handleSubmitForm, control, errors, isValid, dirty, handleChangeForm }
+  return { handleSubmitForm, control, errors, disableButton }
 }
