@@ -6,7 +6,12 @@ import loaderIcon from '../../../../../public/loader.svg'
 
 import s from './AddPostPublicationModal.module.scss'
 
-import { postsActions, useCreatePostMutation, useUploadPostImageMutation } from '@/entities/posts'
+import {
+  PostArgsTypeChildrenMetadata,
+  postsActions,
+  useCreatePostMutation,
+  useUploadPostImageMutation,
+} from '@/entities/posts'
 import { useGetProfileQuery } from '@/entities/profile'
 import { modalActions } from '@/features/modal'
 import { useAppDispatch, useAppSelector } from '@/shared/store'
@@ -92,40 +97,42 @@ export const AddPostPublicationModal = ({ addPostPublicationModal, userId }: Pro
           img.src = URL.createObjectURL(blob)
         })
     }
-  }, [photosPost])
+  }, [])
 
-  const onPublishHandler = () => {
-    const formData = new FormData()
-
-    for (let i = 0; i < photosFormData.length; i++) {
-      const file = photosFormData[i].get('file')
+  const onPublishHandler = async () => {
+    const uploadPromises = photosFormData.map(formData => {
+      const file = formData.get('file')
 
       if (file) {
+        const formData = new FormData()
+
         formData.append('file', file)
-      }
-    }
-    uploadImage(formData)
-      .unwrap()
-      .then(data => {
-        const uploadId = []
 
-        for (let i = 0; i < data.images.length; i += 2) {
-          if (data.images[i]) {
-            uploadId.push({ uploadId: data.images[i].uploadId })
-          }
-        }
-
-        createPost({
-          description: value.length > 500 ? value.slice(0, 500) : value,
-          childrenMetadata: uploadId,
-        })
+        return uploadImage(formData)
           .unwrap()
-          .then(postData => {
-            dispatch(postsActions.createNewPost(postData))
+          .then(data => {
+            if (data.images) {
+              return { uploadId: data.images[0].uploadId } as PostArgsTypeChildrenMetadata
+            }
           })
-        dispatch(modalActions.setCloseModal({}))
-        dispatch(postsActions.deletePhotosPost({}))
+      }
+    })
+
+    const uploadIds = await Promise.all(uploadPromises)
+
+    const filteredUploadIds = uploadIds.filter(Boolean) as PostArgsTypeChildrenMetadata[]
+
+    createPost({
+      description: value.length > 500 ? value.slice(0, 500) : value,
+      childrenMetadata: filteredUploadIds,
+    })
+      .unwrap()
+      .then(postData => {
+        dispatch(postsActions.createNewPost(postData))
       })
+
+    dispatch(modalActions.setCloseModal({}))
+    dispatch(postsActions.deletePhotosPost({}))
   }
 
   const onChangeTextHandler = (event: ChangeEvent<HTMLTextAreaElement>) => {
