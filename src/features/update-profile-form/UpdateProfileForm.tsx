@@ -5,6 +5,7 @@ import s from './UpdateProfileForm.module.scss'
 import { GetProfileResponse } from '@/entities/profile'
 import { useUpdateProfile } from '@/features/update-profile-form/hooks/useUpdateProfile'
 import { useTranslation } from '@/shared/hooks/useTranstaion'
+import { cities } from '@/shared/locales/cities'
 import {
   Button,
   ControlledSelect,
@@ -22,11 +23,11 @@ export const UpdateProfileForm = ({ defaultValue }: Props) => {
   const { t } = useTranslation()
   const { control, handleSubmitForm, errors, disableButton } = useUpdateProfile(defaultValue)
 
-  const cities = [
-    { id: '1', value: t.myProfile.generalInformation.cities.minsk },
-    { id: '2', value: t.myProfile.generalInformation.cities.grodno },
-    { id: '3', value: t.myProfile.generalInformation.cities.brest },
-  ]
+  // const cities = [
+  //   { id: '1', value: t.myProfile.generalInformation.cities.minsk },
+  //   { id: '2', value: t.myProfile.generalInformation.cities.grodno },
+  //   { id: '3', value: t.myProfile.generalInformation.cities.brest },
+  // ]
 
   return (
     <form onSubmit={handleSubmitForm} className={s.updateProfileBlock}>
@@ -72,7 +73,7 @@ export const UpdateProfileForm = ({ defaultValue }: Props) => {
       <ControlledSelect
         classname={s.field}
         name={'city'}
-        options={cities}
+        options={cities.ru}
         control={control}
         label={t.myProfile.generalInformation.selectYourCity}
         errorMessage={errors.city}
