@@ -14,15 +14,9 @@ import {
 } from '@/entities/posts'
 import { useGetProfileQuery } from '@/entities/profile'
 import { modalActions } from '@/features/modal'
+import { useTranslation } from '@/shared/hooks'
 import { useAppDispatch, useAppSelector } from '@/shared/store'
-import {
-  ArrowIosBack,
-  ArrowIosForward,
-  Modal,
-  TextAreaField,
-  TextField,
-  Typography,
-} from '@/shared/ui'
+import { Modal, PhotoPagination, TextAreaField, TextField, Typography } from '@/shared/ui'
 
 type Props = {
   addPostPublicationModal: boolean
@@ -30,37 +24,18 @@ type Props = {
 }
 
 export const AddPostPublicationModal = ({ addPostPublicationModal, userId }: Props) => {
+  const { t } = useTranslation()
   const photosPost = useAppSelector(state => state.postsSlice.photosPosts)
+  const dispatch = useAppDispatch()
+
   const { data } = useGetProfileQuery(userId)
+  const [createPost] = useCreatePostMutation()
+  const [uploadImage] = useUploadPostImageMutation()
+
   const [activeIndex, setActiveIndex] = useState(0)
   const activePhoto = photosPost[activeIndex]
   const [photosFormData, serPhotoFormData] = useState<FormData[]>([])
-  const [createPost] = useCreatePostMutation()
-  const [uploadImage] = useUploadPostImageMutation()
   const [value, setValue] = useState('')
-
-  const dispatch = useAppDispatch()
-
-  const closeModal = () => {
-    dispatch(modalActions.setOpenExtraModal('closeAddPostModal'))
-  }
-  const opPrevClickHandler = () => {
-    dispatch(modalActions.setOpenModal('addPostFilterModal'))
-  }
-  const changePhoto = (direction: 'next' | 'prev') => {
-    if (photosPost.length > 0) {
-      if (direction === 'next' && activeIndex < photosPost.length - 1) {
-        setActiveIndex(activeIndex + 1)
-      } else if (direction === 'prev' && activeIndex > 0) {
-        setActiveIndex(activeIndex - 1)
-      }
-    }
-  }
-  const profileAvatarLoader = () =>
-    data?.avatars.length && {
-      loader: () => data.avatars[0].url,
-      className: s.photo,
-    }
 
   useEffect(() => {
     const newPhotosFormData = [] as FormData[]
@@ -98,7 +73,21 @@ export const AddPostPublicationModal = ({ addPostPublicationModal, userId }: Pro
         })
     }
   }, [])
-
+  const closeModal = () => {
+    dispatch(modalActions.setOpenExtraModal('closeAddPostModal'))
+  }
+  const opPrevClickHandler = () => {
+    dispatch(modalActions.setOpenModal('addPostFilterModal'))
+  }
+  const changePhoto = (direction: 'next' | 'prev') => {
+    if (photosPost.length > 0) {
+      if (direction === 'next' && activeIndex < photosPost.length - 1) {
+        setActiveIndex(activeIndex + 1)
+      } else if (direction === 'prev' && activeIndex > 0) {
+        setActiveIndex(activeIndex - 1)
+      }
+    }
+  }
   const onPublishHandler = async () => {
     const uploadPromises = photosFormData.map(formData => {
       const file = formData.get('file')
@@ -134,33 +123,32 @@ export const AddPostPublicationModal = ({ addPostPublicationModal, userId }: Pro
     dispatch(modalActions.setCloseModal({}))
     dispatch(postsActions.deletePhotosPost({}))
   }
-
   const onChangeTextHandler = (event: ChangeEvent<HTMLTextAreaElement>) => {
     setValue(event.currentTarget.value)
   }
+  const profileAvatarLoader = () =>
+    data?.avatars.length && {
+      loader: () => data.avatars[0].url,
+      className: s.photo,
+    }
 
   return (
     <Modal
       className={s.modalBlock}
-      title={'Publication'}
+      title={t.create.publication.publication}
       open={addPostPublicationModal}
       prevContent={true}
       onClose={closeModal}
       showCloseButton={false}
       prevClick={opPrevClickHandler}
       nextContent={true}
-      nextContentTitle={'Publish'}
+      nextContentTitle={t.create.publication.publish}
       nextClick={onPublishHandler}
       contentBoxClassname={s.contentBox}
     >
       {photosPost && photosPost.length > 0 && activePhoto && (
         <div className={s.modalContent}>
           <div className={s.lastPhoto}>
-            {activeIndex > 0 && (
-              <div className={s.back} onClick={() => changePhoto('prev')}>
-                <ArrowIosBack />
-              </div>
-            )}
             <img
               alt={'postItem'}
               src={activePhoto.imageUrl}
@@ -168,14 +156,15 @@ export const AddPostPublicationModal = ({ addPostPublicationModal, userId }: Pro
               height={activePhoto.height}
               style={{
                 filter: activePhoto.filter,
-                objectFit: 'cover',
               }}
             />
-            {activeIndex < photosPost.length - 1 && (
-              <div className={s.forvard} onClick={() => changePhoto('next')}>
-                <ArrowIosForward />
-              </div>
-            )}
+            <PhotoPagination
+              photosArr={photosPost}
+              changePhotoIndex={setActiveIndex}
+              activeIndex={activeIndex}
+              changePhotoNext={() => changePhoto('next')}
+              changePhotoPrev={() => changePhoto('prev')}
+            />
           </div>
           <div className={s.postDescriptionBlock}>
             <div className={s.topContent}>
@@ -190,8 +179,8 @@ export const AddPostPublicationModal = ({ addPostPublicationModal, userId }: Pro
               </div>
               <div>
                 <TextAreaField
-                  label={'Add publication descriptions'}
-                  placeholder={'Add your description'}
+                  label={t.create.publication.label}
+                  placeholder={t.create.publication.placeholder}
                   value={value}
                   onChange={onChangeTextHandler}
                   disabled={value.length > 500}
@@ -202,7 +191,11 @@ export const AddPostPublicationModal = ({ addPostPublicationModal, userId }: Pro
               </div>
             </div>
             <div className={s.bottomContent}>
-              <TextField type={'default'} value={'New York'} label={'Add location'} />
+              <TextField
+                type={'default'}
+                value={'New York'}
+                label={t.create.publication.addLocation}
+              />
               <div className={s.items}>
                 <div className={s.item}>
                   <Typography>New York</Typography>

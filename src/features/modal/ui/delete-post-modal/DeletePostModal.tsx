@@ -37,17 +37,17 @@ export const DeletePostModal = ({ open }: Props) => {
   return (
     <Modal
       className={s.modalBlock}
-      title={'Delete Post'}
+      title={t.myProfile.profilePage.viewPost.deletePost}
       open={open}
-      titleFirstButton={'YES'}
-      titleSecondButton={'NO'}
+      titleFirstButton={t.myProfile.profilePage.viewPost.yes}
+      titleSecondButton={t.myProfile.profilePage.viewPost.no}
       onClose={closeDeleteModal}
       buttonBlockClassName={s.buttonBlock}
       callBack={deletePhotoHandler}
     >
       <div className={s.modalContent}>
         <Typography variant={'regular16'} className={s.description}>
-          Are you sure you want to delete this post?
+          {t.myProfile.profilePage.viewPost.areYouSure}
         </Typography>
       </div>
     </Modal>
