@@ -8,7 +8,7 @@ import s from './AddPhotoModal.module.scss'
 import { useUploadAvatarMutation } from '@/entities/profile'
 import { useTranslation } from '@/shared/hooks/useTranstaion'
 import { Nullable } from '@/shared/types'
-import { Button, ImageIcon, Modal, Typography } from '@/shared/ui'
+import { Button, ErrorValidPhoto, Modal, PhotoPlaceholder } from '@/shared/ui'
 import { isImageFile } from '@/shared/utils/isImageFile'
 
 type Props = {
@@ -107,11 +107,7 @@ export const AddPhotoModal = ({ addPhotoModal, setAddPhotoModal }: Props) => {
     >
       {
         <div className={s.modalContent}>
-          {errorPhoto && (
-            <div className={s.modalError}>
-              <Typography variant={'regular14'}>{errorPhoto}</Typography>
-            </div>
-          )}
+          {errorPhoto && <ErrorValidPhoto error={errorPhoto} />}
           {photo ? (
             <div className={s.avatar} onWheel={handleWheel}>
               <AvatarEditor
@@ -129,9 +125,7 @@ export const AddPhotoModal = ({ addPhotoModal, setAddPhotoModal }: Props) => {
               />
             </div>
           ) : (
-            <div className={s.modalImg}>
-              <ImageIcon height={48} width={48} />
-            </div>
+            <PhotoPlaceholder />
           )}
           {photo ? (
             <div className={s.savePhoto}>

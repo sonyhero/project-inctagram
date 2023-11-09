@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react'
 
+import { useAutoAnimate } from '@formkit/auto-animate/react'
 import Image from 'next/image'
 
 import imageIcon from '../../../../public/imageIcon.svg'
@@ -26,19 +27,21 @@ type Props = {
 }
 export const ProfileInfo = ({ userId }: Props) => {
   const { t } = useTranslation()
-  const { data, isLoading, isFetching } = useGetProfileQuery(userId)
 
-  const dispatch = useAppDispatch()
   const posts = useAppSelector(state => state.postsSlice.posts)
-  const [getLastUploadedPostId, setLastUploadedPostId] = useState<Nullable<number>>(null)
+  const dispatch = useAppDispatch()
 
+  const { data, isLoading, isFetching } = useGetProfileQuery(userId)
   const { data: postsData } = useGetPostsByUserIdQuery({
     pageSize: 8,
     sortBy: '',
     sortDirection: 'desc',
   })
-
   const [getNextPosts] = useLazyGetPostsByUserIdQuery()
+  const [getPost] = useLazyGetPostByIdQuery()
+
+  const [getLastUploadedPostId, setLastUploadedPostId] = useState<Nullable<number>>(null)
+  const [postsRef] = useAutoAnimate<HTMLDivElement>()
 
   useEffect(() => {
     if (posts.length === 0) {
@@ -47,13 +50,9 @@ export const ProfileInfo = ({ userId }: Props) => {
       }
     }
   }, [postsData])
-
-  const [getPost] = useLazyGetPostByIdQuery()
-
   const showProfileSettingsHandler = () => {
     dispatch(profileSettingsSlice.actions.setShowProfileSettings({ value: true }))
   }
-
   const profileAvatarLoader = () =>
     data?.avatars.length && {
       loader: () => data.avatars[0].url,
@@ -68,6 +67,8 @@ export const ProfileInfo = ({ userId }: Props) => {
         dispatch(modalActions.setOpenModal('viewPostModal'))
       })
   }
+
+  //infinity scroll
   const postsBlockRef = useRef<Nullable<HTMLDivElement>>(null)
 
   useEffect(() => {
@@ -147,7 +148,7 @@ export const ProfileInfo = ({ userId }: Props) => {
           </div>
         </div>
       </div>
-      <div className={s.postsBlock}>
+      <div className={s.postsBlock} ref={postsRef}>
         {posts.map(el => {
           return (
             <img

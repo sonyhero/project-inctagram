@@ -1,0 +1,1 @@
+export { PhotoPagination } from './PhotoPagination'
