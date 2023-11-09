@@ -1,6 +1,4 @@
-import React, { useRef, useState } from 'react'
-
-import AvatarEditor from 'react-avatar-editor'
+import React, { useState } from 'react'
 
 import s from './AddPostFilterModal.module.scss'
 
@@ -8,7 +6,6 @@ import { postsActions } from '@/entities/posts'
 import { modalActions } from '@/features/modal'
 import { filters } from '@/shared/contstants'
 import { useAppDispatch, useAppSelector } from '@/shared/store'
-import { Nullable } from '@/shared/types'
 import { ArrowIosBack, ArrowIosForward, Modal, Typography } from '@/shared/ui'
 
 type Props = {
@@ -21,14 +18,12 @@ export const AddPostFilterModal = ({ addPostFilterModal }: Props) => {
   const activePhoto = photosPost[activeIndex]
   const dispatch = useAppDispatch()
 
-  const editorRef = useRef<Nullable<AvatarEditor>>(null)
   const closeModal = () => {
     dispatch(modalActions.setOpenExtraModal('closeAddPostModal'))
   }
   const opPrevClickHandler = () => {
     dispatch(modalActions.setOpenModal('addPostCroppingModal'))
   }
-
   const changePhoto = (direction: 'next' | 'prev') => {
     if (photosPost.length > 0) {
       if (direction === 'next' && activeIndex < photosPost.length - 1) {
@@ -38,11 +33,9 @@ export const AddPostFilterModal = ({ addPostFilterModal }: Props) => {
       }
     }
   }
-
   const changeFilter = (id: string, filter: string) => {
     dispatch(postsActions.updateFilter({ id, filter }))
   }
-
   const nextContentHandler = () => {
     dispatch(modalActions.setOpenModal('addPostPublicationsModal'))
   }
@@ -69,20 +62,15 @@ export const AddPostFilterModal = ({ addPostFilterModal }: Props) => {
                 <ArrowIosBack />
               </div>
             )}
-            <AvatarEditor
-              ref={editorRef}
-              image={activePhoto.imageUrl}
+            <img
+              alt={'postItem'}
+              src={activePhoto.imageUrl}
               width={activePhoto.width}
               height={activePhoto.height}
-              border={0}
-              color={[24, 27, 27, 0.6]}
-              rotate={0}
               style={{
                 filter: activePhoto.filter,
+                objectFit: 'cover',
               }}
-              disableBoundaryChecks={false}
-              disableHiDPIScaling={true}
-              scale={activePhoto?.zoom?.[0]}
             />
             {activeIndex < photosPost.length - 1 && (
               <div className={s.forvard} onClick={() => changePhoto('next')}>

@@ -1,17 +1,20 @@
-import React, { ChangeEvent, useEffect, useRef, useState } from 'react'
+import React, { ChangeEvent, useEffect, useState } from 'react'
 
 import ImageNext from 'next/image'
-import AvatarEditor from 'react-avatar-editor'
 
 import loaderIcon from '../../../../../public/loader.svg'
 
 import s from './AddPostPublicationModal.module.scss'
 
-import { postsActions, useCreatePostMutation, useUploadPostImageMutation } from '@/entities/posts'
+import {
+  PostArgsTypeChildrenMetadata,
+  postsActions,
+  useCreatePostMutation,
+  useUploadPostImageMutation,
+} from '@/entities/posts'
 import { useGetProfileQuery } from '@/entities/profile'
 import { modalActions } from '@/features/modal'
 import { useAppDispatch, useAppSelector } from '@/shared/store'
-import { Nullable } from '@/shared/types'
 import {
   ArrowIosBack,
   ArrowIosForward,
@@ -38,7 +41,6 @@ export const AddPostPublicationModal = ({ addPostPublicationModal, userId }: Pro
 
   const dispatch = useAppDispatch()
 
-  const editorRef = useRef<Nullable<AvatarEditor>>(null)
   const closeModal = () => {
     dispatch(modalActions.setOpenExtraModal('closeAddPostModal'))
   }
@@ -64,80 +66,73 @@ export const AddPostPublicationModal = ({ addPostPublicationModal, userId }: Pro
     const newPhotosFormData = [] as FormData[]
 
     for (let i = 0; i < photosPost.length; i++) {
-      const canvas = document.createElement('canvas')
-      const ctx = canvas.getContext('2d')
+      fetch(photosPost[i].imageUrl)
+        .then(res => res.blob())
+        .then(blob => {
+          const formData = new FormData()
+          const canvas = document.createElement('canvas')
+          const ctx = canvas.getContext('2d')
+          const img = new Image()
 
-      if (canvas && ctx) {
-        canvas.width = photosPost[i].width
-        canvas.height = photosPost[i].height
+          img.onload = function () {
+            if (ctx) {
+              canvas.width = photosPost[i].width
+              canvas.height = photosPost[i].height
 
-        const image = new Image()
+              ctx.filter = photosPost[i].filter
+              ctx.drawImage(img, 0, 0, photosPost[i].width, photosPost[i].height)
+              canvas.toBlob(blob => {
+                if (blob) {
+                  formData.append('file', blob)
+                  newPhotosFormData.push(formData)
 
-        image.onload = () => {
-          // Применяем фильтры
+                  if (newPhotosFormData.length === photosPost.length) {
+                    serPhotoFormData(newPhotosFormData)
+                  }
+                }
+              })
+            }
+          }
 
-          ctx.filter = photosPost[i].filter
-          const scale = photosPost[i].zoom[0]
-          const zoomedWidth = photosPost[i].width * scale
-          const zoomedHeight = photosPost[i].height * scale
-
-          // Отрисовываем изображение на canvas с примененными фильтрами и зумом
-          ctx.drawImage(image, 0, 0, zoomedWidth, zoomedHeight)
-
-          // Преобразуем canvas в Data URL
-          const editedImageDataURL = canvas.toDataURL('image/jpeg')
-
-          // Преобразуем Data URL в Blob
-          fetch(editedImageDataURL)
-            .then(res => res.blob())
-            .then(blob => {
-              const formData = new FormData()
-
-              formData.append('file', blob)
-              newPhotosFormData.push(formData)
-
-              if (newPhotosFormData.length === photosPost.length) {
-                serPhotoFormData(newPhotosFormData)
-              }
-            })
-        }
-
-        image.src = photosPost[i].imageUrl
-      }
+          img.src = URL.createObjectURL(blob)
+        })
     }
-  }, [photosPost])
-  const onPublishHandler = () => {
-    const formData = new FormData()
+  }, [])
 
-    for (let i = 0; i < photosFormData.length; i++) {
-      const file = photosFormData[i].get('file')
+  const onPublishHandler = async () => {
+    const uploadPromises = photosFormData.map(formData => {
+      const file = formData.get('file')
 
       if (file) {
+        const formData = new FormData()
+
         formData.append('file', file)
-      }
-    }
-    uploadImage(formData)
-      .unwrap()
-      .then(data => {
-        const uploadId = []
 
-        for (let i = 0; i < data.images.length; i += 2) {
-          if (data.images[i]) {
-            uploadId.push({ uploadId: data.images[i].uploadId })
-          }
-        }
-
-        createPost({
-          description: value.length > 500 ? value.slice(0, 500) : value,
-          childrenMetadata: uploadId,
-        })
+        return uploadImage(formData)
           .unwrap()
-          .then(postData => {
-            dispatch(postsActions.createNewPost(postData))
+          .then(data => {
+            if (data.images) {
+              return { uploadId: data.images[0].uploadId } as PostArgsTypeChildrenMetadata
+            }
           })
-        dispatch(modalActions.setCloseModal({}))
-        dispatch(postsActions.deletePhotosPost({}))
+      }
+    })
+
+    const uploadIds = await Promise.all(uploadPromises)
+
+    const filteredUploadIds = uploadIds.filter(Boolean) as PostArgsTypeChildrenMetadata[]
+
+    createPost({
+      description: value.length > 500 ? value.slice(0, 500) : value,
+      childrenMetadata: filteredUploadIds,
+    })
+      .unwrap()
+      .then(postData => {
+        dispatch(postsActions.createNewPost(postData))
       })
+
+    dispatch(modalActions.setCloseModal({}))
+    dispatch(postsActions.deletePhotosPost({}))
   }
 
   const onChangeTextHandler = (event: ChangeEvent<HTMLTextAreaElement>) => {
@@ -166,20 +161,15 @@ export const AddPostPublicationModal = ({ addPostPublicationModal, userId }: Pro
                 <ArrowIosBack />
               </div>
             )}
-            <AvatarEditor
-              ref={editorRef}
-              image={activePhoto.imageUrl}
+            <img
+              alt={'postItem'}
+              src={activePhoto.imageUrl}
               width={activePhoto.width}
               height={activePhoto.height}
-              border={0}
-              color={[24, 27, 27, 0.6]}
-              rotate={0}
               style={{
                 filter: activePhoto.filter,
+                objectFit: 'cover',
               }}
-              disableBoundaryChecks={false}
-              disableHiDPIScaling={true}
-              scale={activePhoto?.zoom?.[0]}
             />
             {activeIndex < photosPost.length - 1 && (
               <div className={s.forvard} onClick={() => changePhoto('next')}>
@@ -234,64 +224,3 @@ export const AddPostPublicationModal = ({ addPostPublicationModal, userId }: Pro
     </Modal>
   )
 }
-
-// const onPublishHandler = () => {
-//   const newPhotosFormData = [] as FormData[]
-//
-//   for (const photo of photos) {
-//     const canvas = document.createElement('canvas')
-//     const ctx = canvas.getContext('2d')
-//
-//     if (canvas && ctx) {
-//       canvas.width = photo.width
-//       canvas.height = photo.height
-//
-//       const image = new Image()
-//
-//       image.src = photo.imageUrl
-//
-//       image.onload = () => {
-//         // Создаем новый div-элемент для AvatarEditor
-//         const editorContainer = document.createElement('div')
-//
-//         document.body.appendChild(editorContainer)
-//
-//         // Создаем новый AvatarEditor
-//         const editor = new AvatarEditor(
-//           {
-//             image: image,
-//             width: photo.width,
-//             height: photo.height,
-//             scale: photo.zoom[0],
-//             style: { filter: photo.filter },
-//           },
-//           editorContainer
-//         )
-//
-//         // Отрисовываем изображение с примененными filter и zoom
-//         const editedImage = editor.getImage()
-//
-//         // Отрисовываем editedImage на canvas
-//         ctx.drawImage(editedImage, 0, 0, photo.width, photo.height)
-//
-//         // Преобразуем canvas в Blob и добавляем его к FormData
-//         canvas.toBlob(blob => {
-//           if (blob) {
-//             const formData = new FormData()
-//
-//             formData.append('files', blob)
-//
-//             newPhotosFormData.push(formData)
-//
-//             if (newPhotosFormData.length === photos.length) {
-//               serPhotoFormData(newPhotosFormData)
-//
-//               // Удаляем временный div-элемент
-//               document.body.removeChild(editorContainer)
-//             }
-//           }
-//         }, 'image/jpeg')
-//       }
-//     }
-//   }
-// }
