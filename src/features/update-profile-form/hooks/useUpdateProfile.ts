@@ -33,7 +33,7 @@ const getUpdateProfileSchema = (t: LocaleType) => {
     city: z.string(),
     dateOfBirth: z
       .date()
-      .min(new Date('01-01-1910Z'))
+      .min(new Date(1910, 0, 1, 0, 0, 0, 0))
       .max(
         new Date(Date.now() - 13 * 365 * 24 * 60 * 60 * 1000),
         t.myProfile.generalInformation.ageDateError
