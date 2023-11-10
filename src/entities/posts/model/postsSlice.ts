@@ -22,6 +22,7 @@ const initialState = {
   post: null as Nullable<GetAllPostsItems>,
   posts: [] as GetAllPostsItems[],
   activeIndex: 0,
+  publicationCount: 0,
 }
 
 export const postsSlice = createSlice({
@@ -86,6 +87,9 @@ export const postsSlice = createSlice({
       if (state.post) {
         state.post.description = action.payload.description
       }
+    },
+    updatePublicationCount: (state, action: PayloadAction<number>) => {
+      state.publicationCount = action.payload
     },
   },
 })
