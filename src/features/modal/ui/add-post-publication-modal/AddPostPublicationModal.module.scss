@@ -21,44 +21,8 @@
       width: 50%;
       height: 99.7%;
 
-      .back {
-        cursor: pointer;
-
-        position: absolute;
-        z-index: 1;
-        top: 50%;
-        left: 12px;
-
-        display: flex;
-        flex-shrink: 0;
-        align-items: center;
-        justify-content: center;
-
-        width: 3rem;
-        height: 3rem;
-
-        opacity: 0.8;
-        background: var(--color-dark-500);
-      }
-
-      .forvard {
-        cursor: pointer;
-
-        position: absolute;
-        z-index: 1;
-        top: 50%;
-        right: 12px;
-
-        display: flex;
-        flex-shrink: 0;
-        align-items: center;
-        justify-content: center;
-
-        width: 3rem;
-        height: 3rem;
-
-        opacity: 0.8;
-        background: var(--color-dark-500);
+      & img {
+        object-fit: cover;
       }
     }
 

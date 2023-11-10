@@ -6,9 +6,9 @@ export function formatDate(date: Date): string {
   return `${month}.${day}.${year}`
 }
 
-export const getDayMonthTime = (dateString: string) => {
+export const getDayMonthTime = (dateString: string, locale: string) => {
   const date = new Date(dateString)
   const options = { year: 'numeric', month: 'short', day: '2-digit' } as const
 
-  return date.toLocaleDateString('en-US', options)
+  return date.toLocaleDateString(locale, options)
 }

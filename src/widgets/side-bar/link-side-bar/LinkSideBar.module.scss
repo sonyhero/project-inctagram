@@ -39,10 +39,5 @@
         color: var(--color-accent-100);
       }
     }
-
-    &:focus-visible,
-    &:focus {
-      outline: 2px solid var(--color-accent-700);
-    }
   }
 }

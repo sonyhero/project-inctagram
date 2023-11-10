@@ -1,6 +1,7 @@
 import React, { ChangeEvent, useState } from 'react'
 
 import ImageNext from 'next/image'
+import { useRouter } from 'next/router'
 
 import loaderIcon from '../../../../../public/loader.svg'
 
@@ -9,10 +10,9 @@ import s from './VewPostModal.module.scss'
 import { postsActions, useUpdatePostByIdMutation } from '@/entities/posts'
 import { useGetProfileQuery } from '@/entities/profile'
 import { modalActions } from '@/features/modal'
+import { useTranslation } from '@/shared/hooks'
 import { useAppDispatch, useAppSelector } from '@/shared/store'
 import {
-  ArrowIosBack,
-  ArrowIosForward,
   Bookmark,
   Button,
   Edit,
@@ -20,6 +20,7 @@ import {
   Modal,
   MoreHorizontal,
   PaperPlane,
+  PhotoPagination,
   TextAreaField,
   TextField,
   Trash,
@@ -34,7 +35,11 @@ type Props = {
 }
 
 export const ViewPostModal = ({ open, userId }: Props) => {
+  const { t } = useTranslation()
+  const { locale } = useRouter()
+
   const post = useAppSelector(state => state.postsSlice.post)
+
   const { data } = useGetProfileQuery(userId)
   const [activeIndex, setActiveIndex] = useState(0)
   const activePhoto = post?.images[activeIndex]
@@ -79,7 +84,7 @@ export const ViewPostModal = ({ open, userId }: Props) => {
         <div onClick={() => {}} className={s.itemActivity}>
           <Edit />
           <Typography variant={'regular14'} color={'primary'} onClick={() => setEditMode(true)}>
-            Edit Post
+            {t.myProfile.profilePage.viewPost.editPost}
           </Typography>
         </div>
       ),
@@ -95,7 +100,7 @@ export const ViewPostModal = ({ open, userId }: Props) => {
         >
           <Trash />
           <Typography variant={'regular14'} color={'primary'}>
-            Delete Post
+            {t.myProfile.profilePage.viewPost.deletePost}
           </Typography>
         </div>
       ),
@@ -123,7 +128,7 @@ export const ViewPostModal = ({ open, userId }: Props) => {
     <Modal
       className={s.modalBlock}
       showHeader={editMode}
-      title={'Edit Post'}
+      title={t.myProfile.profilePage.viewPost.editPost}
       open={open}
       onClose={closeModal}
       showCloseButton={editMode}
@@ -132,17 +137,14 @@ export const ViewPostModal = ({ open, userId }: Props) => {
       {post?.images && post?.images.length > 0 && activePhoto && (
         <div className={s.modalContent}>
           <div className={s.lastPhoto}>
-            {activeIndex > 0 && (
-              <div className={s.back} onClick={() => changePhoto('prev')}>
-                <ArrowIosBack />
-              </div>
-            )}
             <img src={activePhoto.url} alt={'post'} className={s.photo} />
-            {activeIndex < post?.images.length / 2 - 1 && (
-              <div className={s.forvard} onClick={() => changePhoto('next')}>
-                <ArrowIosForward />
-              </div>
-            )}
+            <PhotoPagination
+              changePhotoNext={() => changePhoto('next')}
+              changePhotoPrev={() => changePhoto('prev')}
+              photosArr={post?.images.slice(0, post.images.length / 2)}
+              changePhotoIndex={setActiveIndex}
+              activeIndex={activeIndex}
+            />
           </div>
           {!editMode ? (
             <div className={s.postDescriptionBlock}>
@@ -165,21 +167,26 @@ export const ViewPostModal = ({ open, userId }: Props) => {
               </div>
               <div className={s.middleContent}>
                 <div className={s.comments}>
-                  <ImageNext
-                    src={loaderIcon}
-                    priority={true}
-                    {...profileAvatarLoader()}
-                    alt={'profilePhoto'}
-                  />
-                  <div className={s.descriptionBlock}>
-                    <Typography variant={'regular14'} className={s.desc}>
-                      <strong>{data?.userName}</strong> {post.description}
-                    </Typography>
-                    <Typography variant={'small'} color={'secondary'}>
-                      {getDayMonthTime(post.createdAt)}
-                    </Typography>
-                  </div>
+                  {post.description && (
+                    <>
+                      <ImageNext
+                        src={loaderIcon}
+                        priority={true}
+                        {...profileAvatarLoader()}
+                        alt={'profilePhoto'}
+                      />
+                      <div className={s.descriptionBlock}>
+                        <Typography variant={'regular14'} className={s.desc}>
+                          <strong>{data?.userName}</strong> {post.description}
+                        </Typography>
+                        <Typography variant={'small'} color={'secondary'}>
+                          {getDayMonthTime(post.createdAt, locale ?? 'en')}
+                        </Typography>
+                      </div>
+                    </>
+                  )}
                 </div>
+
                 <div className={s.bottomActivityBlock}>
                   <div className={s.likeSaveSetBlock}>
                     <div className={s.likeAndSet}>
@@ -196,15 +203,15 @@ export const ViewPostModal = ({ open, userId }: Props) => {
                     </div>
                     <div className={s.count}>
                       <Typography variant={'regular14'} color={'primary'}>
-                        2243
+                        0
                       </Typography>
                       <Typography variant={'bold14'} color={'primary'}>
-                        &quot;Like&quot;
+                        &quot;{t.myProfile.profilePage.viewPost.like}&quot;
                       </Typography>
                     </div>
                   </div>
                   <Typography variant={'small'} color={'secondary'}>
-                    {getDayMonthTime(post.createdAt)}
+                    {getDayMonthTime(post.createdAt, locale ?? 'en')}
                   </Typography>
                 </div>
               </div>
@@ -213,9 +220,9 @@ export const ViewPostModal = ({ open, userId }: Props) => {
                   style={{ border: 'none' }}
                   type={'default'}
                   className={s.addComment}
-                  placeholder={'Add a Comment...'}
+                  placeholder={t.myProfile.profilePage.viewPost.addAComment}
                 />
-                <Button variant={'text'}>Publish</Button>
+                <Button variant={'text'}>{t.myProfile.profilePage.viewPost.publish}</Button>
               </div>
             </div>
           ) : (
@@ -232,8 +239,8 @@ export const ViewPostModal = ({ open, userId }: Props) => {
                 </div>
                 <div>
                   <TextAreaField
-                    label={'Add publication descriptions'}
-                    placeholder={'Add your description'}
+                    label={t.myProfile.profilePage.viewPost.label}
+                    placeholder={t.myProfile.profilePage.viewPost.placeholder}
                     value={value}
                     onChange={onChangeTextHandler}
                     disabled={value.length > 500}
@@ -245,7 +252,7 @@ export const ViewPostModal = ({ open, userId }: Props) => {
               </div>
               <div className={s.saveChangesBlock}>
                 <Button variant={'primary'} onClick={onSaveHandler}>
-                  Save Changes
+                  {t.myProfile.profilePage.viewPost.saveChanges}
                 </Button>
               </div>
             </div>

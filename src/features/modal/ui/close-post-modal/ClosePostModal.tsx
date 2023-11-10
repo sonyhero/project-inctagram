@@ -4,6 +4,7 @@ import s from './ClosePostModal.module.scss'
 
 import { postsActions } from '@/entities/posts'
 import { modalActions } from '@/features/modal'
+import { useTranslation } from '@/shared/hooks'
 import { useAppDispatch } from '@/shared/store'
 import { Button, Modal, Typography } from '@/shared/ui'
 
@@ -12,6 +13,7 @@ type Props = {
 }
 
 export const ClosePostModal = ({ closeAddPostModal }: Props) => {
+  const { t } = useTranslation()
   const dispatch = useAppDispatch()
   const handleClose = () => {
     dispatch(postsActions.deletePhotosPost({}))
@@ -27,18 +29,23 @@ export const ClosePostModal = ({ closeAddPostModal }: Props) => {
   }
 
   return (
-    <Modal className={s.modalBlock} title={'Close'} open={closeAddPostModal} onClose={backToPage}>
+    <Modal
+      className={s.modalBlock}
+      title={t.create.closeCreatingPost.close}
+      open={closeAddPostModal}
+      onClose={backToPage}
+    >
       <div className={s.modalContent}>
         <Typography>
-          Do you really want to close the creation of a publication?
-          <br /> If you close everything will be deleted
+          {t.create.closeCreatingPost.doYouWant}
+          <br /> {t.create.closeCreatingPost.ifYou}
         </Typography>
         <div className={s.activeWithModal}>
           <Button variant={'outline'} onClick={handleClose}>
-            Discard
+            {t.create.closeCreatingPost.discard}
           </Button>
           <Button className={'primary'} onClick={saveDraftHandler}>
-            Save draft
+            {t.create.closeCreatingPost.saveDraft}
           </Button>
         </div>
       </div>

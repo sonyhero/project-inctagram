@@ -1,9 +1,9 @@
-.contentBox {
-  padding: 0;
-}
-
 .modalBlock {
   width: 30.75rem;
+
+  .contentBox {
+    padding: 0;
+  }
 
   .modalContent {
     position: relative;
@@ -14,44 +14,6 @@
     justify-content: center;
 
     height: 564px;
-
-    .back {
-      cursor: pointer;
-
-      position: absolute;
-      top: 50%;
-      left: 12px;
-
-      display: flex;
-      flex-shrink: 0;
-      align-items: center;
-      justify-content: center;
-
-      width: 3rem;
-      height: 3rem;
-
-      opacity: 0.8;
-      background: var(--color-dark-500);
-    }
-
-    .forvard {
-      cursor: pointer;
-
-      position: absolute;
-      top: 50%;
-      right: 12px;
-
-      display: flex;
-      flex-shrink: 0;
-      align-items: center;
-      justify-content: center;
-
-      width: 3rem;
-      height: 3rem;
-
-      opacity: 0.8;
-      background: var(--color-dark-500);
-    }
 
     .activities {
       position: absolute;
@@ -68,20 +30,20 @@
         display: flex;
         gap: 1.5rem;
       }
-    }
 
-    .activity {
-      display: flex;
-      flex-shrink: 0;
-      align-items: center;
-      justify-content: center;
+      .activity {
+        display: flex;
+        flex-shrink: 0;
+        align-items: center;
+        justify-content: center;
 
-      width: 36px;
-      height: 36px;
+        width: 36px;
+        height: 36px;
 
-      opacity: 0.8;
-      background: var(--color-dark-500);
-      border-radius: 2px;
+        opacity: 0.8;
+        background: var(--color-dark-500);
+        border-radius: 2px;
+      }
     }
   }
 }

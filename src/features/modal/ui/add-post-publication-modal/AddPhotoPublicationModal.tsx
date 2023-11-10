@@ -1,25 +1,22 @@
-import React, { ChangeEvent, useEffect, useRef, useState } from 'react'
+import React, { ChangeEvent, useEffect, useState } from 'react'
 
 import ImageNext from 'next/image'
-import AvatarEditor from 'react-avatar-editor'
 
 import loaderIcon from '../../../../../public/loader.svg'
 
 import s from './AddPostPublicationModal.module.scss'
 
-import { postsActions, useCreatePostMutation, useUploadPostImageMutation } from '@/entities/posts'
+import {
+  PostArgsTypeChildrenMetadata,
+  postsActions,
+  useCreatePostMutation,
+  useUploadPostImageMutation,
+} from '@/entities/posts'
 import { useGetProfileQuery } from '@/entities/profile'
 import { modalActions } from '@/features/modal'
+import { useTranslation } from '@/shared/hooks'
 import { useAppDispatch, useAppSelector } from '@/shared/store'
-import { Nullable } from '@/shared/types'
-import {
-  ArrowIosBack,
-  ArrowIosForward,
-  Modal,
-  TextAreaField,
-  TextField,
-  Typography,
-} from '@/shared/ui'
+import { Modal, PhotoPagination, TextAreaField, TextField, Typography } from '@/shared/ui'
 
 type Props = {
   addPostPublicationModal: boolean
@@ -27,18 +24,55 @@ type Props = {
 }
 
 export const AddPostPublicationModal = ({ addPostPublicationModal, userId }: Props) => {
+  const { t } = useTranslation()
   const photosPost = useAppSelector(state => state.postsSlice.photosPosts)
+  const dispatch = useAppDispatch()
+
   const { data } = useGetProfileQuery(userId)
+  const [createPost] = useCreatePostMutation()
+  const [uploadImage] = useUploadPostImageMutation()
+
   const [activeIndex, setActiveIndex] = useState(0)
   const activePhoto = photosPost[activeIndex]
   const [photosFormData, serPhotoFormData] = useState<FormData[]>([])
-  const [createPost] = useCreatePostMutation()
-  const [uploadImage] = useUploadPostImageMutation()
   const [value, setValue] = useState('')
 
-  const dispatch = useAppDispatch()
+  useEffect(() => {
+    const newPhotosFormData = [] as FormData[]
 
-  const editorRef = useRef<Nullable<AvatarEditor>>(null)
+    for (let i = 0; i < photosPost.length; i++) {
+      fetch(photosPost[i].imageUrl)
+        .then(res => res.blob())
+        .then(blob => {
+          const formData = new FormData()
+          const canvas = document.createElement('canvas')
+          const ctx = canvas.getContext('2d')
+          const img = new Image()
+
+          img.onload = function () {
+            if (ctx) {
+              canvas.width = photosPost[i].width
+              canvas.height = photosPost[i].height
+
+              ctx.filter = photosPost[i].filter
+              ctx.drawImage(img, 0, 0, photosPost[i].width, photosPost[i].height)
+              canvas.toBlob(blob => {
+                if (blob) {
+                  formData.append('file', blob)
+                  newPhotosFormData.push(formData)
+
+                  if (newPhotosFormData.length === photosPost.length) {
+                    serPhotoFormData(newPhotosFormData)
+                  }
+                }
+              })
+            }
+          }
+
+          img.src = URL.createObjectURL(blob)
+        })
+    }
+  }, [])
   const closeModal = () => {
     dispatch(modalActions.setOpenExtraModal('closeAddPostModal'))
   }
@@ -54,138 +88,83 @@ export const AddPostPublicationModal = ({ addPostPublicationModal, userId }: Pro
       }
     }
   }
+  const onPublishHandler = async () => {
+    const uploadPromises = photosFormData.map(formData => {
+      const file = formData.get('file')
+
+      if (file) {
+        const formData = new FormData()
+
+        formData.append('file', file)
+
+        return uploadImage(formData)
+          .unwrap()
+          .then(data => {
+            if (data.images) {
+              return { uploadId: data.images[0].uploadId } as PostArgsTypeChildrenMetadata
+            }
+          })
+      }
+    })
+
+    const uploadIds = await Promise.all(uploadPromises)
+
+    const filteredUploadIds = uploadIds.filter(Boolean) as PostArgsTypeChildrenMetadata[]
+
+    createPost({
+      description: value.length > 500 ? value.slice(0, 500) : value,
+      childrenMetadata: filteredUploadIds,
+    })
+      .unwrap()
+      .then(postData => {
+        dispatch(postsActions.createNewPost(postData))
+      })
+
+    dispatch(modalActions.setCloseModal({}))
+    dispatch(postsActions.deletePhotosPost({}))
+  }
+  const onChangeTextHandler = (event: ChangeEvent<HTMLTextAreaElement>) => {
+    setValue(event.currentTarget.value)
+  }
   const profileAvatarLoader = () =>
     data?.avatars.length && {
       loader: () => data.avatars[0].url,
       className: s.photo,
     }
 
-  useEffect(() => {
-    const newPhotosFormData = [] as FormData[]
-
-    for (let i = 0; i < photosPost.length; i++) {
-      const canvas = document.createElement('canvas')
-      const ctx = canvas.getContext('2d')
-
-      if (canvas && ctx) {
-        canvas.width = photosPost[i].width
-        canvas.height = photosPost[i].height
-
-        const image = new Image()
-
-        image.onload = () => {
-          // Применяем фильтры
-
-          ctx.filter = photosPost[i].filter
-          const scale = photosPost[i].zoom[0]
-          const zoomedWidth = photosPost[i].width * scale
-          const zoomedHeight = photosPost[i].height * scale
-
-          // Отрисовываем изображение на canvas с примененными фильтрами и зумом
-          ctx.drawImage(image, 0, 0, zoomedWidth, zoomedHeight)
-
-          // Преобразуем canvas в Data URL
-          const editedImageDataURL = canvas.toDataURL('image/jpeg')
-
-          // Преобразуем Data URL в Blob
-          fetch(editedImageDataURL)
-            .then(res => res.blob())
-            .then(blob => {
-              const formData = new FormData()
-
-              formData.append('file', blob)
-              newPhotosFormData.push(formData)
-
-              if (newPhotosFormData.length === photosPost.length) {
-                serPhotoFormData(newPhotosFormData)
-              }
-            })
-        }
-
-        image.src = photosPost[i].imageUrl
-      }
-    }
-  }, [photosPost])
-  const onPublishHandler = () => {
-    const formData = new FormData()
-
-    for (let i = 0; i < photosFormData.length; i++) {
-      const file = photosFormData[i].get('file')
-
-      if (file) {
-        formData.append('file', file)
-      }
-    }
-    uploadImage(formData)
-      .unwrap()
-      .then(data => {
-        const uploadId = []
-
-        for (let i = 0; i < data.images.length; i += 2) {
-          if (data.images[i]) {
-            uploadId.push({ uploadId: data.images[i].uploadId })
-          }
-        }
-
-        createPost({
-          description: value.length > 500 ? value.slice(0, 500) : value,
-          childrenMetadata: uploadId,
-        })
-          .unwrap()
-          .then(postData => {
-            dispatch(postsActions.createNewPost(postData))
-          })
-        dispatch(modalActions.setCloseModal({}))
-        dispatch(postsActions.deletePhotosPost({}))
-      })
-  }
-
-  const onChangeTextHandler = (event: ChangeEvent<HTMLTextAreaElement>) => {
-    setValue(event.currentTarget.value)
-  }
-
   return (
     <Modal
       className={s.modalBlock}
-      title={'Publication'}
+      title={t.create.publication.publication}
       open={addPostPublicationModal}
       prevContent={true}
       onClose={closeModal}
       showCloseButton={false}
       prevClick={opPrevClickHandler}
       nextContent={true}
-      nextContentTitle={'Publish'}
+      nextContentTitle={t.create.publication.publish}
       nextClick={onPublishHandler}
       contentBoxClassname={s.contentBox}
     >
       {photosPost && photosPost.length > 0 && activePhoto && (
         <div className={s.modalContent}>
           <div className={s.lastPhoto}>
-            {activeIndex > 0 && (
-              <div className={s.back} onClick={() => changePhoto('prev')}>
-                <ArrowIosBack />
-              </div>
-            )}
-            <AvatarEditor
-              ref={editorRef}
-              image={activePhoto.imageUrl}
+            <img
+              alt={'postItem'}
+              src={activePhoto.imageUrl}
               width={activePhoto.width}
               height={activePhoto.height}
-              border={0}
-              color={[24, 27, 27, 0.6]}
-              rotate={0}
               style={{
                 filter: activePhoto.filter,
               }}
-              disableBoundaryChecks={false}
-              disableHiDPIScaling={true}
-              scale={activePhoto?.zoom?.[0]}
             />
-            {activeIndex < photosPost.length - 1 && (
-              <div className={s.forvard} onClick={() => changePhoto('next')}>
-                <ArrowIosForward />
-              </div>
-            )}
+            <PhotoPagination
+              photosArr={photosPost}
+              changePhotoIndex={setActiveIndex}
+              activeIndex={activeIndex}
+              changePhotoNext={() => changePhoto('next')}
+              changePhotoPrev={() => changePhoto('prev')}
+            />
           </div>
           <div className={s.postDescriptionBlock}>
             <div className={s.topContent}>
@@ -200,8 +179,8 @@ export const AddPostPublicationModal = ({ addPostPublicationModal, userId }: Pro
               </div>
               <div>
                 <TextAreaField
-                  label={'Add publication descriptions'}
-                  placeholder={'Add your description'}
+                  label={t.create.publication.label}
+                  placeholder={t.create.publication.placeholder}
                   value={value}
                   onChange={onChangeTextHandler}
                   disabled={value.length > 500}
@@ -212,7 +191,11 @@ export const AddPostPublicationModal = ({ addPostPublicationModal, userId }: Pro
               </div>
             </div>
             <div className={s.bottomContent}>
-              <TextField type={'default'} value={'New York'} label={'Add location'} />
+              <TextField
+                type={'default'}
+                value={'New York'}
+                label={t.create.publication.addLocation}
+              />
               <div className={s.items}>
                 <div className={s.item}>
                   <Typography>New York</Typography>
@@ -234,64 +217,3 @@ export const AddPostPublicationModal = ({ addPostPublicationModal, userId }: Pro
     </Modal>
   )
 }
-
-// const onPublishHandler = () => {
-//   const newPhotosFormData = [] as FormData[]
-//
-//   for (const photo of photos) {
-//     const canvas = document.createElement('canvas')
-//     const ctx = canvas.getContext('2d')
-//
-//     if (canvas && ctx) {
-//       canvas.width = photo.width
-//       canvas.height = photo.height
-//
-//       const image = new Image()
-//
-//       image.src = photo.imageUrl
-//
-//       image.onload = () => {
-//         // Создаем новый div-элемент для AvatarEditor
-//         const editorContainer = document.createElement('div')
-//
-//         document.body.appendChild(editorContainer)
-//
-//         // Создаем новый AvatarEditor
-//         const editor = new AvatarEditor(
-//           {
-//             image: image,
-//             width: photo.width,
-//             height: photo.height,
-//             scale: photo.zoom[0],
-//             style: { filter: photo.filter },
-//           },
-//           editorContainer
-//         )
-//
-//         // Отрисовываем изображение с примененными filter и zoom
-//         const editedImage = editor.getImage()
-//
-//         // Отрисовываем editedImage на canvas
-//         ctx.drawImage(editedImage, 0, 0, photo.width, photo.height)
-//
-//         // Преобразуем canvas в Blob и добавляем его к FormData
-//         canvas.toBlob(blob => {
-//           if (blob) {
-//             const formData = new FormData()
-//
-//             formData.append('files', blob)
-//
-//             newPhotosFormData.push(formData)
-//
-//             if (newPhotosFormData.length === photos.length) {
-//               serPhotoFormData(newPhotosFormData)
-//
-//               // Удаляем временный div-элемент
-//               document.body.removeChild(editorContainer)
-//             }
-//           }
-//         }, 'image/jpeg')
-//       }
-//     }
-//   }
-// }

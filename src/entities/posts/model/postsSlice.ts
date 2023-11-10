@@ -21,6 +21,7 @@ const initialState = {
   photosPosts: [] as PostType[],
   post: null as Nullable<GetAllPostsItems>,
   posts: [] as GetAllPostsItems[],
+  activeIndex: 0,
 }
 
 export const postsSlice = createSlice({
@@ -57,6 +58,14 @@ export const postsSlice = createSlice({
       state.photosPosts = state.photosPosts.map(el =>
         el.id === action.payload.id ? { ...el, filter: action.payload.filter } : el
       )
+    },
+    updateImgUrl: (state, action: PayloadAction<{ id: string; url: string }>) => {
+      state.photosPosts = state.photosPosts.map(el =>
+        el.id === action.payload.id ? { ...el, imageUrl: action.payload.url } : el
+      )
+    },
+    setActiveIndex: (state, action: PayloadAction<number>) => {
+      state.activeIndex = action.payload
     },
     deletePhotosPost: (state, _) => {
       state.photosPosts = []

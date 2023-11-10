@@ -6,14 +6,16 @@ import s from './AddPostModal.module.scss'
 
 import { postsActions, PostType } from '@/entities/posts'
 import { modalActions, modalSlice } from '@/features/modal'
+import { useTranslation } from '@/shared/hooks'
 import { useAppDispatch, useAppSelector } from '@/shared/store'
-import { Button, ImageIcon, Modal, Typography } from '@/shared/ui'
+import { Button, ErrorValidPhoto, Modal, PhotoPlaceholder } from '@/shared/ui'
 
 type Props = {
   openAddPhotoModal: boolean
 }
 export const AddPostModal = ({ openAddPhotoModal }: Props) => {
   const [errorPhoto, setErrorPhoto] = useState('')
+  const { t } = useTranslation()
   const photosPost = useAppSelector(state => state.postsSlice.photosPosts)
 
   const dispatch = useAppDispatch()
@@ -23,12 +25,11 @@ export const AddPostModal = ({ openAddPhotoModal }: Props) => {
 
     if (file) {
       if (!['image/jpeg', 'image/jpg', 'image/png'].includes(file.type)) {
-        setErrorPhoto('Error! The format of the uploaded photo must PNG and JPEG')
+        setErrorPhoto(t.create.addPost.errorType)
       } else if (file.size > 20 * 1024 * 1024) {
-        setErrorPhoto('Error! Photo size must be less than 20 MB!')
+        setErrorPhoto(t.create.addPost.errorSize)
       } else {
         setErrorPhoto('')
-        // const formData = new FormData()
         const photoId = v1()
 
         const image = new Image()
@@ -54,7 +55,6 @@ export const AddPostModal = ({ openAddPhotoModal }: Props) => {
       }
     }
   }
-
   const closeAddPhotoModal = () => {
     dispatch(modalSlice.actions.setCloseModal({}))
   }
@@ -65,23 +65,17 @@ export const AddPostModal = ({ openAddPhotoModal }: Props) => {
   return (
     <Modal
       className={s.modalBlock}
-      title={'Add Photo'}
+      title={t.create.addPost.addPhoto}
       open={openAddPhotoModal}
       onClose={closeAddPhotoModal}
     >
       {
         <div className={s.modalContent}>
-          {errorPhoto && (
-            <div className={s.modalError}>
-              <Typography variant={'regular14'}>{errorPhoto}</Typography>
-            </div>
-          )}
-          <div className={s.modalImg}>
-            <ImageIcon height={48} width={48} />
-          </div>
+          {errorPhoto && <ErrorValidPhoto error={errorPhoto} />}
+          <PhotoPlaceholder />
           <label htmlFor={'mainPhotoInput'}>
             <Button as={'a'} variant={'primary'}>
-              Select from Computer
+              {t.create.addPost.select}
             </Button>
             <div>
               <input
@@ -98,7 +92,7 @@ export const AddPostModal = ({ openAddPhotoModal }: Props) => {
             className={s.openDraft}
             onClick={openDraft}
           >
-            Open Draft
+            {t.create.addPost.openDraft}
           </Button>
         </div>
       }

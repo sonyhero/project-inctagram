@@ -7,11 +7,9 @@ import s from './AddPhotoModal.module.scss'
 
 import { useUploadAvatarMutation } from '@/entities/profile'
 import { useTranslation } from '@/shared/hooks/useTranstaion'
-import { useAppDispatch } from '@/shared/store'
 import { Nullable } from '@/shared/types'
-import { Button, ImageIcon, Modal, Typography } from '@/shared/ui'
+import { Button, ErrorValidPhoto, Modal, PhotoPlaceholder } from '@/shared/ui'
 import { isImageFile } from '@/shared/utils/isImageFile'
-import { profileSettingsSlice } from '@/widgets/profile-settings'
 
 type Props = {
   addPhotoModal: boolean
@@ -26,7 +24,6 @@ export const AddPhotoModal = ({ addPhotoModal, setAddPhotoModal }: Props) => {
   const [errorPhoto, setErrorPhoto] = useState('')
   const editorRef = useRef<Nullable<AvatarEditor>>(null)
   const [zoom, setZoom] = useState(1)
-  const dispatch = useAppDispatch()
 
   const mainPhotoSelected = async (event: ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files && event.target.files[0]
@@ -66,7 +63,6 @@ export const AddPhotoModal = ({ addPhotoModal, setAddPhotoModal }: Props) => {
             .then(() => {
               toast.success(t.toast.success)
               setAddPhotoModal(false)
-              dispatch(profileSettingsSlice.actions.setShowProfileSettings({ value: false }))
 
               setPhoto(null)
               setZoom(1)
@@ -80,7 +76,6 @@ export const AddPhotoModal = ({ addPhotoModal, setAddPhotoModal }: Props) => {
     setZoom(1)
     setErrorPhoto('')
     setAddPhotoModal(false)
-    dispatch(profileSettingsSlice.actions.setShowProfileSettings({ value: false }))
     setPhoto(null)
   }
 
@@ -112,11 +107,7 @@ export const AddPhotoModal = ({ addPhotoModal, setAddPhotoModal }: Props) => {
     >
       {
         <div className={s.modalContent}>
-          {errorPhoto && (
-            <div className={s.modalError}>
-              <Typography variant={'regular14'}>{errorPhoto}</Typography>
-            </div>
-          )}
+          {errorPhoto && <ErrorValidPhoto error={errorPhoto} />}
           {photo ? (
             <div className={s.avatar} onWheel={handleWheel}>
               <AvatarEditor
@@ -134,9 +125,7 @@ export const AddPhotoModal = ({ addPhotoModal, setAddPhotoModal }: Props) => {
               />
             </div>
           ) : (
-            <div className={s.modalImg}>
-              <ImageIcon height={48} width={48} />
-            </div>
+            <PhotoPlaceholder />
           )}
           {photo ? (
             <div className={s.savePhoto}>
