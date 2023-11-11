@@ -13,10 +13,13 @@ type Props = {
 }
 
 export const DeletePostModal = ({ open }: Props) => {
-  const [deletePhoto] = useDeletePostByIdMutation()
-  const postId = useAppSelector(state => state.postsSlice.post?.id)
   const { t } = useTranslation()
+
+  const postId = useAppSelector(state => state.postsSlice.post?.id)
+  const publicationCount = useAppSelector(state => state.postsSlice.publicationCount)
   const dispatch = useAppDispatch()
+
+  const [deletePhoto] = useDeletePostByIdMutation()
 
   const deletePhotoHandler = () => {
     if (postId) {
@@ -24,6 +27,7 @@ export const DeletePostModal = ({ open }: Props) => {
         .unwrap()
         .then(() => {
           dispatch(postsActions.deletePost({ postId }))
+          dispatch(postsActions.updatePublicationCount(publicationCount - 1))
           dispatch(postsActions.setPost(null))
           dispatch(modalActions.setCloseModal({}))
           dispatch(modalActions.setCloseExtraModal({}))

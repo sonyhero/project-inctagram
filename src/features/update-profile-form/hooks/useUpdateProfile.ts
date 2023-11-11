@@ -26,6 +26,13 @@ const getUpdateProfileSchema = (t: LocaleType) => {
     regexMessage: t.zodSchema.firstLastNameRegex,
   })
 
+  //Расчет максимальной даты
+  const today = new Date()
+  const maxBirthday = new Date()
+
+  maxBirthday.setFullYear(today.getFullYear() - 13)
+  maxBirthday.setDate(today.getDate() - 1)
+
   return z.object({
     userName: userNameZod,
     firstName: firstLastNameZod,
@@ -33,11 +40,8 @@ const getUpdateProfileSchema = (t: LocaleType) => {
     city: z.string(),
     dateOfBirth: z
       .date()
-      .min(new Date('01-01-1910Z'))
-      .max(
-        new Date(Date.now() - 13 * 365 * 24 * 60 * 60 * 1000),
-        t.myProfile.generalInformation.ageDateError
-      ),
+      .min(new Date(1910, 0, 1, 0, 0, 0, 0))
+      .max(maxBirthday, t.myProfile.generalInformation.ageDateError),
     aboutMe: z.string().min(0).max(200, `${t.zodSchema.maxNumberOfCharacters} 200`),
   })
 }

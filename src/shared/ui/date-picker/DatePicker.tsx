@@ -28,7 +28,7 @@ type Props = {
   range?: boolean
   max?: boolean
   width?: number
-  placeholder?: string
+  placeholder?: string | Date
 }
 
 type Value = Nullable<Date>
@@ -103,7 +103,7 @@ export const DatePicker = (props: Props) => {
               locale={locale === 'ru' ? ru : ''}
               startDate={range ? startDate : undefined}
               endDate={range ? endDate : undefined}
-              placeholderText={placeholder !== '' ? placeholder : placeholderText}
+              placeholderText={placeholder ? placeholder.toString() : placeholderText}
               dateFormat="dd.MM.yyyy"
             />
             {error && (

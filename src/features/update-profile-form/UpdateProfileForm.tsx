@@ -13,7 +13,6 @@ import {
   ControlledTextField,
   DatePicker,
 } from '@/shared/ui'
-import { formatDate } from '@/shared/utils'
 
 type Props = {
   defaultValue?: GetProfileResponse
@@ -66,9 +65,7 @@ export const UpdateProfileForm = ({ defaultValue }: Props) => {
         requiredField
         title={t.myProfile.generalInformation.dateOfBirth}
         error={errors.dateOfBirth}
-        placeholder={
-          defaultValue?.dateOfBirth ? formatDate(new Date(defaultValue.dateOfBirth)) : ''
-        }
+        placeholder={defaultValue?.dateOfBirth && defaultValue.dateOfBirth}
       />
       <ControlledSelect
         classname={s.field}

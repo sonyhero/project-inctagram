@@ -29,6 +29,7 @@ export const ProfileInfo = ({ userId }: Props) => {
   const { t } = useTranslation()
 
   const posts = useAppSelector(state => state.postsSlice.posts)
+  const publicationCount = useAppSelector(state => state.postsSlice.publicationCount)
   const dispatch = useAppDispatch()
 
   const { data, isLoading, isFetching } = useGetProfileQuery(userId)
@@ -46,6 +47,7 @@ export const ProfileInfo = ({ userId }: Props) => {
   useEffect(() => {
     if (posts.length === 0) {
       if (postsData && postsData.items.length > 0) {
+        dispatch(postsActions.updatePublicationCount(postsData.totalCount))
         dispatch(postsActions.setPosts(postsData.items))
       }
     }
@@ -139,7 +141,7 @@ export const ProfileInfo = ({ userId }: Props) => {
               <Typography variant={'regular14'}>{t.myProfile.profilePage.followers}</Typography>
             </div>
             <div>
-              <Typography variant={'bold14'}>0</Typography>
+              <Typography variant={'bold14'}>{publicationCount}</Typography>
               <Typography variant={'regular14'}>{t.myProfile.profilePage.publications}</Typography>
             </div>
           </div>
