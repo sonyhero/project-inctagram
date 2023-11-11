@@ -1,4 +1,5 @@
 import { zodResolver } from '@hookform/resolvers/zod'
+import { log } from 'next/dist/server/typescript/utils'
 import { useForm } from 'react-hook-form'
 import { toast } from 'react-toastify'
 import { z } from 'zod'
@@ -79,7 +80,7 @@ export const useUpdateProfile = (defaultValue: GetProfileResponse | undefined) =
       .unwrap()
       .then(() => {
         toast.success(t.toast.success)
-        reset()
+        reset(data)
       })
   }
 
