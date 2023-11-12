@@ -19,6 +19,8 @@ export const ru: LocaleType = {
     inctagram: 'Инктаграм',
     ru: 'Русский',
     en: 'English',
+    logIn: 'Войти',
+    signUp: 'Зарегистрироваться',
   },
   sidebar: {
     home: 'Главная',

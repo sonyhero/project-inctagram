@@ -84,6 +84,10 @@ export const SideBar = () => {
     dispatch(modalSlice.actions.setOpenModal('addPostModal'))
   }
 
+  if (!data) {
+    return
+  }
+
   return (
     <>
       <div className={s.navbar}>
