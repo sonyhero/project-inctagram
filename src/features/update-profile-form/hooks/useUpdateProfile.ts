@@ -79,7 +79,7 @@ export const useUpdateProfile = (defaultValue: GetProfileResponse | undefined) =
       .unwrap()
       .then(() => {
         toast.success(t.toast.success)
-        reset()
+        reset(data)
       })
   }
 

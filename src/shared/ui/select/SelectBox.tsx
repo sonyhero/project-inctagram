@@ -1,6 +1,7 @@
 import { ReactNode } from 'react'
 
 import * as Select from '@radix-ui/react-select'
+import { clsx } from 'clsx'
 import { FieldError } from 'react-hook-form'
 
 import s from './SelectBox.module.scss'
@@ -18,6 +19,8 @@ export type SelectBoxProps = {
   required?: boolean
   classname?: string
   errorMessage?: FieldError
+  height?: boolean
+  idValue?: boolean
 }
 
 export const SelectBox = (props: SelectBoxProps) => {
@@ -32,6 +35,8 @@ export const SelectBox = (props: SelectBoxProps) => {
     required,
     classname,
     errorMessage,
+    height,
+    idValue = false,
   } = props
 
   return (
@@ -64,10 +69,14 @@ export const SelectBox = (props: SelectBoxProps) => {
           </div>
         </Select.Trigger>
         <Select.Portal>
-          <Select.Content position={'popper'} className={s.content} sideOffset={-1}>
+          <Select.Content
+            position={'popper'}
+            className={clsx(s.content, { [s.height]: height })}
+            sideOffset={-1}
+          >
             <Select.Viewport>
               {options.map(el => (
-                <Select.Item key={el.value} value={el.value} className={s.item}>
+                <Select.Item key={el.value} value={idValue ? el.id : el.value} className={s.item}>
                   {el?.img}
                   <Select.ItemText>{el.description ?? el.value}</Select.ItemText>
                 </Select.Item>

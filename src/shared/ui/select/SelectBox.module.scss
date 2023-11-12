@@ -79,7 +79,10 @@
 }
 
 .content {
+  overflow: auto;
+
   width: var(--radix-select-trigger-width);
+
   background: var(--color-dark-500);
   border: 1px solid var(--color-light-100);
   border-radius: 0 0 2px 2px;
@@ -107,4 +110,8 @@
       background-color: var(--color-dark-300);
     }
   }
+}
+
+.height {
+  height: 200px;
 }

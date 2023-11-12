@@ -1,9 +1,13 @@
+import { useMemo } from 'react'
+
 import { DevTool } from '@hookform/devtools'
+import { useRouter } from 'next/router'
 
 import s from './UpdateProfileForm.module.scss'
 
 import { GetProfileResponse } from '@/entities/profile'
 import { useUpdateProfile } from '@/features/update-profile-form/hooks/useUpdateProfile'
+import { cities } from '@/shared/contstants'
 import { useTranslation } from '@/shared/hooks/useTranstaion'
 import {
   Button,
@@ -20,12 +24,12 @@ type Props = {
 export const UpdateProfileForm = ({ defaultValue }: Props) => {
   const { t } = useTranslation()
   const { control, handleSubmitForm, errors, disableButton } = useUpdateProfile(defaultValue)
-
-  const cities = [
-    { id: '1', value: t.myProfile.generalInformation.cities.minsk },
-    { id: '2', value: t.myProfile.generalInformation.cities.grodno },
-    { id: '3', value: t.myProfile.generalInformation.cities.brest },
-  ]
+  const { locale } = useRouter()
+  const getDefaultCity = useMemo(() => {
+    if (locale && defaultValue?.city) {
+      return cities[locale].find(el => el.id === defaultValue.city)?.value
+    }
+  }, [locale, defaultValue?.city])
 
   return (
     <form onSubmit={handleSubmitForm} className={s.updateProfileBlock}>
@@ -69,11 +73,15 @@ export const UpdateProfileForm = ({ defaultValue }: Props) => {
       <ControlledSelect
         classname={s.field}
         name={'city'}
-        options={cities}
+        height={true}
+        idValue={true}
+        options={locale === 'en' ? cities.en : cities.ru}
         control={control}
         label={t.myProfile.generalInformation.selectYourCity}
         errorMessage={errors.city}
-        placeholder={defaultValue?.city ?? t.myProfile.generalInformation.placeholderCity}
+        placeholder={
+          defaultValue?.city ? getDefaultCity : t.myProfile.generalInformation.placeholderCity
+        }
       />
       <ControlledTextArea
         name={'aboutMe'}
