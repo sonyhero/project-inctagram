@@ -28,6 +28,7 @@ const getUpdateProfileSchema = (t: LocaleType) => {
 
   //Расчет максимальной даты
   const today = new Date()
+  const minBirthday = new Date(1910, 0, 1, 0, 0, 0, 0)
   const maxBirthday = new Date()
 
   maxBirthday.setFullYear(today.getFullYear() - 13)
@@ -40,8 +41,8 @@ const getUpdateProfileSchema = (t: LocaleType) => {
     city: z.string(),
     dateOfBirth: z
       .date()
-      .min(new Date(1910, 0, 1, 0, 0, 0, 0))
-      .max(maxBirthday, t.myProfile.generalInformation.ageDateError),
+      .min(minBirthday, t.myProfile.generalInformation.ageMinDateError)
+      .max(maxBirthday, t.myProfile.generalInformation.ageMaxDateError),
     aboutMe: z.string().min(0).max(200, `${t.zodSchema.maxNumberOfCharacters} 200`),
   })
 }
