@@ -4,7 +4,7 @@ export const ToastNotify = () => {
   return (
     <ToastContainer
       position="bottom-left"
-      autoClose={5000}
+      autoClose={3000}
       hideProgressBar
       closeOnClick
       pauseOnFocusLoss
