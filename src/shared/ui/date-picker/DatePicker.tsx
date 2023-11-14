@@ -103,7 +103,7 @@ export const DatePicker = (props: Props) => {
               locale={locale === 'ru' ? ru : ''}
               startDate={range ? startDate : undefined}
               endDate={range ? endDate : undefined}
-              placeholderText={placeholder ? placeholder.toString() : placeholderText}
+              placeholderText={placeholderText}
               dateFormat="dd.MM.yyyy"
             />
             {error && (

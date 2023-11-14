@@ -3,9 +3,6 @@ import React, { useEffect, useRef, useState } from 'react'
 import { useAutoAnimate } from '@formkit/auto-animate/react'
 import Image from 'next/image'
 
-import imageIcon from '../../../../public/imageIcon.svg'
-import loader from '../../../../public/loader.svg'
-
 import s from './ProfileInfo.module.scss'
 
 import {
@@ -21,6 +18,8 @@ import { useAppDispatch, useAppSelector } from '@/shared/store'
 import { Nullable } from '@/shared/types'
 import { Button, Typography } from '@/shared/ui'
 import { profileSettingsSlice } from '@/widgets/profile-settings'
+import imageIcon from 'public/imageIcon.svg'
+import loader from 'public/loader.svg'
 
 type Props = {
   userId: number
@@ -41,6 +40,10 @@ export const ProfileInfo = ({ userId }: Props) => {
   const [getNextPosts] = useLazyGetPostsByUserIdQuery()
   const [getPost] = useLazyGetPostByIdQuery()
 
+  const isLoadingAvatar = isLoading && isFetching
+  const avatar = data?.avatars.length && data.avatars[0].url
+  const profilePhoto = isLoadingAvatar ? loader : avatar ?? imageIcon
+
   const [getLastUploadedPostId, setLastUploadedPostId] = useState<Nullable<number>>(null)
   const [postsRef] = useAutoAnimate<HTMLDivElement>()
 
@@ -55,11 +58,6 @@ export const ProfileInfo = ({ userId }: Props) => {
   const showProfileSettingsHandler = () => {
     dispatch(profileSettingsSlice.actions.setShowProfileSettings({ value: true }))
   }
-  const profileAvatarLoader = () =>
-    data?.avatars.length && {
-      loader: () => data.avatars[0].url,
-      className: s.photo,
-    }
 
   const openPostModalHandler = (id: number) => {
     getPost({ postId: id })
@@ -107,22 +105,18 @@ export const ProfileInfo = ({ userId }: Props) => {
     }
   }, [posts, getNextPosts, getLastUploadedPostId])
 
-  const isLoadingAvatar = isLoading && isFetching
-
   return (
     <div className={s.profileBlock} ref={postsBlockRef}>
       <div className={s.mainInfo}>
         <div className={s.photoBlock}>
-          {isLoadingAvatar ? (
-            <Image src={loader} priority={true} alt={'profilePhoto'} />
-          ) : (
-            <Image
-              src={imageIcon}
-              priority={true}
-              {...profileAvatarLoader()}
-              alt={'profilePhoto'}
-            />
-          )}
+          <Image
+            src={profilePhoto}
+            priority={true}
+            width={192}
+            height={192}
+            className={s.photo}
+            alt={'profilePhoto'}
+          />
         </div>
         <div className={s.descriptionBlock}>
           <div className={s.nameAndSettings}>
@@ -153,9 +147,12 @@ export const ProfileInfo = ({ userId }: Props) => {
       <div className={s.postsBlock} ref={postsRef}>
         {posts.map(el => {
           return (
-            <img
+            <Image
               src={el.images[0].url}
               key={el.id}
+              width={1000}
+              height={1000}
+              priority={true}
               alt={'postItem'}
               className={s.post}
               onClick={() => openPostModalHandler(el.id)}
