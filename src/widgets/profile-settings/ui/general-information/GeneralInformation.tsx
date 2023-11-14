@@ -2,8 +2,6 @@ import { useState } from 'react'
 
 import Image from 'next/image'
 
-import imageIcon from '../../../../../public/imageIcon.svg'
-
 import s from './GeneralInformation.module.scss'
 
 import { useGetProfileQuery } from '@/entities/profile'
@@ -11,6 +9,7 @@ import { AddPhotoModal, DeletePhotoModal } from '@/features/modal'
 import { UpdateProfileForm } from '@/features/update-profile-form'
 import { useTranslation } from '@/shared/hooks'
 import { Button, Close, Typography } from '@/shared/ui'
+import imageIcon from 'public/imageIcon.svg'
 
 type Props = {
   userId: number

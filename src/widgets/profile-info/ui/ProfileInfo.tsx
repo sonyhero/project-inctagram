@@ -3,9 +3,6 @@ import React, { useEffect, useRef, useState } from 'react'
 import { useAutoAnimate } from '@formkit/auto-animate/react'
 import Image from 'next/image'
 
-import imageIcon from '../../../../public/imageIcon.svg'
-import loader from '../../../../public/loader.svg'
-
 import s from './ProfileInfo.module.scss'
 
 import {
@@ -21,6 +18,8 @@ import { useAppDispatch, useAppSelector } from '@/shared/store'
 import { Nullable } from '@/shared/types'
 import { Button, Typography } from '@/shared/ui'
 import { profileSettingsSlice } from '@/widgets/profile-settings'
+import imageIcon from 'public/imageIcon.svg'
+import loader from 'public/loader.svg'
 
 type Props = {
   userId: number
