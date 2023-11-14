@@ -63,6 +63,7 @@ export const ru: LocaleType = {
         dec: 'Декабрь',
       },
       placeholderDateOfBirth: 'дд.мм.гггг',
+      ageDateError: 'Введите дату рождения',
       ageMinDateError: 'Дата должна быть больше или равна: 01 января 1910г',
       ageMaxDateError: 'Пользователь младше 13 лет не может создать профиль',
       selectYourCity: 'Выберите свой город',

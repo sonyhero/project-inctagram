@@ -111,6 +111,7 @@ export const ProfileInfo = ({ userId }: Props) => {
         <div className={s.photoBlock}>
           <Image
             src={profilePhoto}
+            priority={true}
             width={192}
             height={192}
             className={s.photo}

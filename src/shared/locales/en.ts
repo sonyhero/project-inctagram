@@ -63,6 +63,7 @@ export const en = {
         dec: 'December',
       },
       placeholderDateOfBirth: 'dd.mm.yyyy',
+      ageDateError: 'Enter the date of birth',
       ageMinDateError: 'Date must be greater than or equal to Jan 01 1910',
       ageMaxDateError: 'A user under 13 years of age cannot create a profile',
       selectYourCity: 'Select your city',

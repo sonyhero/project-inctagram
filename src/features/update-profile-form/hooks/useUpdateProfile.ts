@@ -40,7 +40,7 @@ const getUpdateProfileSchema = (t: LocaleType) => {
     lastName: firstLastNameZod,
     city: z.string(),
     dateOfBirth: z
-      .date()
+      .date({ invalid_type_error: t.myProfile.generalInformation.ageDateError })
       .min(minBirthday, t.myProfile.generalInformation.ageMinDateError)
       .max(maxBirthday, t.myProfile.generalInformation.ageMaxDateError),
     aboutMe: z.string().min(0).max(200, `${t.zodSchema.maxNumberOfCharacters} 200`),
