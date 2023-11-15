@@ -27,6 +27,7 @@ export const AddPostPublicationModal = ({ addPostPublicationModal, userId }: Pro
   const { t } = useTranslation()
   const photosPost = useAppSelector(state => state.postsSlice.photosPosts)
   const publicationCount = useAppSelector(state => state.postsSlice.publicationCount)
+  const currentDescription = useAppSelector(state => state.postsSlice.currentDescription)
   const dispatch = useAppDispatch()
 
   const { data } = useGetProfileQuery(userId)
@@ -36,7 +37,7 @@ export const AddPostPublicationModal = ({ addPostPublicationModal, userId }: Pro
   const [activeIndex, setActiveIndex] = useState(0)
   const activePhoto = photosPost[activeIndex]
   const [photosFormData, serPhotoFormData] = useState<FormData[]>([])
-  const [value, setValue] = useState('')
+  const [descriptionValue, setDescriptionValue] = useState(currentDescription)
 
   useEffect(() => {
     const newPhotosFormData = [] as FormData[]
@@ -76,6 +77,7 @@ export const AddPostPublicationModal = ({ addPostPublicationModal, userId }: Pro
   }, [])
   const closeModal = () => {
     dispatch(modalActions.setOpenExtraModal('closeAddPostModal'))
+    dispatch(postsActions.setCurrentDescription({ currentDescription: descriptionValue }))
   }
   const opPrevClickHandler = () => {
     dispatch(modalActions.setOpenModal('addPostFilterModal'))
@@ -113,7 +115,8 @@ export const AddPostPublicationModal = ({ addPostPublicationModal, userId }: Pro
     const filteredUploadIds = uploadIds.filter(Boolean) as PostArgsTypeChildrenMetadata[]
 
     createPost({
-      description: value.length > 500 ? value.slice(0, 500) : value,
+      description:
+        descriptionValue.length > 500 ? descriptionValue.slice(0, 500) : descriptionValue,
       childrenMetadata: filteredUploadIds,
     })
       .unwrap()
@@ -126,7 +129,7 @@ export const AddPostPublicationModal = ({ addPostPublicationModal, userId }: Pro
     dispatch(postsActions.deletePhotosPost({}))
   }
   const onChangeTextHandler = (event: ChangeEvent<HTMLTextAreaElement>) => {
-    setValue(event.currentTarget.value)
+    setDescriptionValue(event.currentTarget.value)
   }
   const profileAvatarLoader = () =>
     data?.avatars.length && {
@@ -183,12 +186,12 @@ export const AddPostPublicationModal = ({ addPostPublicationModal, userId }: Pro
                 <TextAreaField
                   label={t.create.publication.label}
                   placeholder={t.create.publication.placeholder}
-                  value={value}
+                  value={descriptionValue}
                   onChange={onChangeTextHandler}
-                  disabled={value.length > 500}
+                  disabled={descriptionValue.length > 500}
                 />
                 <Typography variant={'small'} color={'secondary'} className={s.balance}>
-                  {value.length}/500
+                  {descriptionValue.length}/500
                 </Typography>
               </div>
             </div>
