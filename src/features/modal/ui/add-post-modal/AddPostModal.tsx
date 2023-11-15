@@ -17,10 +17,10 @@ export const AddPostModal = ({ openAddPhotoModal }: Props) => {
   const [errorPhoto, setErrorPhoto] = useState('')
   const { t } = useTranslation()
   const photosPost = useAppSelector(state => state.postsSlice.photosPosts)
-
   const dispatch = useAppDispatch()
 
   const mainPhotoSelected = (event: ChangeEvent<HTMLInputElement>) => {
+    dispatch(postsActions.setCurrentDescription({ currentDescription: '' }))
     const file = event.target.files && event.target.files[0]
 
     if (file) {
