@@ -55,6 +55,7 @@ export const ProfileInfo = ({ userId }: Props) => {
       }
     }
   }, [postsData])
+
   const showProfileSettingsHandler = () => {
     dispatch(profileSettingsSlice.actions.setShowProfileSettings({ value: true }))
   }
@@ -105,6 +106,9 @@ export const ProfileInfo = ({ userId }: Props) => {
     }
   }, [posts, getNextPosts, getLastUploadedPostId])
 
+  const windowHeight = window.innerHeight
+  const paddingValue = windowHeight * 0.67
+
   return (
     <div className={s.profileBlock} ref={postsBlockRef}>
       <div className={s.mainInfo}>
@@ -144,7 +148,7 @@ export const ProfileInfo = ({ userId }: Props) => {
           </div>
         </div>
       </div>
-      <div className={s.postsBlock} ref={postsRef}>
+      <div className={s.postsBlock} style={{ paddingBottom: `${paddingValue}px` }} ref={postsRef}>
         {posts.map(el => {
           return (
             <Image
