@@ -1,7 +1,11 @@
-.overlay {
+.overlay,
+.noOverlay {
   position: fixed;
   z-index: 100;
   inset: 0;
+}
+
+.overlay {
   background-color: rgb(0 0 0 / 50%);
 }
 

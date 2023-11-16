@@ -34,6 +34,7 @@ export const ClosePostModal = ({ closeAddPostModal }: Props) => {
       title={t.create.closeCreatingPost.close}
       open={closeAddPostModal}
       onClose={backToPage}
+      isOverlay={false}
     >
       <div className={s.modalContent}>
         <Typography>
