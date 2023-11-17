@@ -1,6 +1,9 @@
 import {
   GetAllPosts,
   GetDecksArgs,
+  GetPublicPosts,
+  GetUserDecksArgs,
+  GetUsersAllPosts,
   PostArgsType,
   PostsImagesResponse,
   PostsResponseType,
@@ -75,6 +78,25 @@ const postsApi = baseApi.injectEndpoints({
         }),
         invalidatesTags: [],
       }),
+      getPublicPostById: builder.query<GetPublicPosts, { postId: number }>({
+        query: args => ({
+          url: `v1/public-posts/p/${args.postId}`,
+          method: 'GET',
+        }),
+        providesTags: [],
+      }),
+      getPublicPostsByUserId: builder.query<GetUsersAllPosts, GetUserDecksArgs>({
+        query: args => ({
+          url: `v1/public-posts/user/${args.userId}`,
+          method: 'GET',
+          params: {
+            pageSize: args.pageSize,
+            sortBy: args.sortBy,
+            sortDirection: args.sortDirection,
+          },
+        }),
+        providesTags: ['Posts'],
+      }),
     }
   },
 })
@@ -90,4 +112,10 @@ export const {
   useDeletePostByIdMutation,
   useGetPostsByUserIdQuery,
   useLazyGetPostsByUserIdQuery,
+  useGetPublicPostByIdQuery,
+  useGetPublicPostsByUserIdQuery,
+  util: { getRunningQueriesThunk: getPostsRunningQueriesThunk },
 } = postsApi
+
+//export endpoints for use in SSR
+export const { getAllPosts, getPublicPostsByUserId, getPublicPostById } = postsApi.endpoints
