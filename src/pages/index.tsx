@@ -39,4 +39,3 @@ export default function HomePage() {
 }
 
 HomePage.getLayout = getBaseLayout
-// HomePage.getLayout = getAuthLayout
