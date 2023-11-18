@@ -13,14 +13,6 @@ import { baseApi } from '@/shared/api'
 const postsApi = baseApi.injectEndpoints({
   endpoints: builder => {
     return {
-      getAllPosts: builder.query<GetAllPosts, GetDecksArgs>({
-        query: args => ({
-          url: `v1/posts/all`,
-          method: 'GET',
-          params: args,
-        }),
-        providesTags: ['Posts'],
-      }),
       createPost: builder.mutation<PostsResponseType, PostArgsType>({
         query: body => ({
           url: `v1/posts`,
@@ -97,13 +89,25 @@ const postsApi = baseApi.injectEndpoints({
         }),
         providesTags: ['Posts'],
       }),
+      getAllPublicPosts: builder.query<GetAllPosts, GetDecksArgs>({
+        query: args => ({
+          url: `v1/public-posts/all/${args.idLastUploadedPost}`,
+          method: 'GET',
+          params: {
+            pageSize: args.pageSize,
+            sortBy: args.sortBy,
+            sortDirection: args.sortDirection,
+          },
+        }),
+        providesTags: ['Posts'],
+      }),
     }
   },
 })
 
 export const {
   useCreatePostMutation,
-  useGetAllPostsQuery,
+  useGetAllPublicPostsQuery,
   useUploadPostImageMutation,
   useDeletePostImageMutation,
   useGetPostByIdQuery,
@@ -118,4 +122,4 @@ export const {
 } = postsApi
 
 //export endpoints for use in SSR
-export const { getAllPosts, getPublicPostsByUserId, getPublicPostById } = postsApi.endpoints
+export const { getAllPublicPosts, getPublicPostsByUserId, getPublicPostById } = postsApi.endpoints

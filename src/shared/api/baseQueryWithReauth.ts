@@ -43,17 +43,19 @@ export const customFetchBase: BaseQueryFn<
         const release = await mutex.acquire()
 
         try {
-          const refreshResult = await baseQuery(
-            { url: 'v1/auth/update-tokens', method: 'POST' },
-            api,
-            extraOptions
-          )
+          if (localStorage.getItem('access')) {
+            const refreshResult = await baseQuery(
+              { url: 'v1/auth/update-tokens', method: 'POST' },
+              api,
+              extraOptions
+            )
 
-          if (refreshResult?.meta?.response?.status === 200) {
-            // @ts-ignore
-            localStorage.setItem('access', refreshResult?.data?.accessToken)
-            // Retry the initial query
-            result = await baseQuery(args, api, extraOptions)
+            if (refreshResult?.meta?.response?.status === 200) {
+              // @ts-ignore
+              localStorage.setItem('access', refreshResult?.data?.accessToken)
+              // Retry the initial query
+              result = await baseQuery(args, api, extraOptions)
+            }
           }
         } finally {
           release()

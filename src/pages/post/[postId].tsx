@@ -31,6 +31,7 @@ export default function UserPost({ post }: InferGetServerSidePropsType<typeof ge
         width={200}
         height={200}
       />
+      <div>Description: {posts.description}</div>
     </div>
   )
 }
