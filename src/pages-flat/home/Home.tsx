@@ -1,29 +1,12 @@
-import { GetAllPosts, useGetAllPostsQuery } from '@/entities/posts'
+import { PostsResponseType } from '@/entities/posts'
 import { useMeQuery } from '@/features/auth'
-import { useTranslation } from '@/shared/hooks/useTranstaion'
-
-export const getStaticProps = async () => {
-  const { data } = useMeQuery()
-  const { data: postsData } = await useGetAllPostsQuery({
-    sortDirection: 'desc',
-    pageSize: 4,
-  })
-
-  const posts = !data ? null : postsData
-
-  return {
-    props: { posts },
-    revalidate: 60,
-  }
-}
+import { HomeUnregister } from '@/widgets/home-unregistered-posts'
 
 type PropsType = {
-  posts: GetAllPosts
+  posts?: PostsResponseType[]
 }
 export const Home = ({ posts }: PropsType) => {
-  const { t } = useTranslation()
+  const { data } = useMeQuery()
 
-  // console.log(posts)
-
-  return <div>{t.sidebar.home}</div>
+  return data ? <div>Posts in register account</div> : <HomeUnregister posts={posts} />
 }

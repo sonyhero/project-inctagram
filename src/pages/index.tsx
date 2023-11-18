@@ -1,10 +1,9 @@
-import Image from 'next/image'
-
 import {
   getAllPublicPosts,
   getPostsRunningQueriesThunk,
   useGetAllPublicPostsQuery,
 } from '@/entities/posts'
+import { Home } from '@/pages-flat/home'
 import { getBaseLayout } from '@/shared/providers'
 import { wrapper } from '@/shared/store'
 
@@ -21,21 +20,7 @@ export const getStaticProps = wrapper.getStaticProps(store => async () => {
 export default function HomePage() {
   const { data } = useGetAllPublicPostsQuery({ pageSize: 6 })
 
-  console.log(data)
-
-  const mappedPosts = data?.items.map(post => {
-    return (
-      <Image
-        key={post.id}
-        src={post.images[0].url}
-        width={200}
-        height={200}
-        alt={'post picturer'}
-      />
-    )
-  })
-
-  return <div>{mappedPosts}</div>
+  return <Home posts={data?.items} />
 }
 
 HomePage.getLayout = getBaseLayout

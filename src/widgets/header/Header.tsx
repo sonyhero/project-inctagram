@@ -23,7 +23,7 @@ export const Header = () => {
 
   return (
     <header className={s.header}>
-      <div className={s.container}>
+      <div className={`${s.container} ${data ? '' : s.unregisterContainer}`}>
         <Link href={PATH.HOME} className={s.home}>
           <Typography variant={'large'}>{t.header.inctagram}</Typography>
         </Link>
