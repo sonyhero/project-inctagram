@@ -1,20 +1,29 @@
-import { useRouter } from 'next/router'
-
+import { GetAllPosts, useGetAllPostsQuery } from '@/entities/posts'
 import { useMeQuery } from '@/features/auth'
-import { PATH } from '@/shared/config/routes'
 import { useTranslation } from '@/shared/hooks/useTranstaion'
 
-export const Home = () => {
-  const { data, isLoading } = useMeQuery()
-  const router = useRouter()
+export const getStaticProps = async () => {
+  const { data } = useMeQuery()
+  const { data: postsData } = await useGetAllPostsQuery({
+    sortDirection: 'desc',
+    pageSize: 4,
+  })
+
+  const posts = !data ? null : postsData
+
+  return {
+    props: { posts },
+    revalidate: 60,
+  }
+}
+
+type PropsType = {
+  posts: GetAllPosts
+}
+export const Home = ({ posts }: PropsType) => {
   const { t } = useTranslation()
 
-  if (isLoading) {
-    return <div>Loading...</div>
-  }
-  if (!data) {
-    router.push(PATH.SIGN_IN)
-  }
+  // console.log(posts)
 
   return <div>{t.sidebar.home}</div>
 }
