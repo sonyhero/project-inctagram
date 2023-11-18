@@ -1,20 +1,12 @@
-import { useRouter } from 'next/router'
-
+import { PostsResponseType } from '@/entities/posts'
 import { useMeQuery } from '@/features/auth'
-import { PATH } from '@/shared/config/routes'
-import { useTranslation } from '@/shared/hooks/useTranstaion'
+import { HomeUnregister } from '@/widgets/home-unregistered-posts'
 
-export const Home = () => {
-  const { data, isLoading } = useMeQuery()
-  const router = useRouter()
-  const { t } = useTranslation()
+type PropsType = {
+  posts?: PostsResponseType[]
+}
+export const Home = ({ posts }: PropsType) => {
+  const { data } = useMeQuery()
 
-  if (isLoading) {
-    return <div>Loading...</div>
-  }
-  if (!data) {
-    router.push(PATH.SIGN_IN)
-  }
-
-  return <div>{t.sidebar.home}</div>
+  return data ? <div>Posts in register account</div> : <HomeUnregister posts={posts} />
 }

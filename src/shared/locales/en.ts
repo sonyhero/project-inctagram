@@ -19,6 +19,8 @@ export const en = {
     inctagram: 'Inctagram',
     ru: 'Русский',
     en: 'English',
+    logIn: 'Log in',
+    signUp: 'Sign up',
   },
   sidebar: {
     home: 'Home',

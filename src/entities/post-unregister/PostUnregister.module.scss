@@ -1,0 +1,16 @@
+.photoBlock {
+  position: relative;
+  width: 240px;
+  height: 240px;
+
+  .urlAndAvatar {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    margin-bottom: 0.75rem;
+
+    .avatar {
+      border-radius: 50%;
+    }
+  }
+}

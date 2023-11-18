@@ -1,6 +1,9 @@
 import {
   GetAllPosts,
   GetDecksArgs,
+  GetPublicPosts,
+  GetUserDecksArgs,
+  GetUsersAllPosts,
   PostArgsType,
   PostsImagesResponse,
   PostsResponseType,
@@ -10,14 +13,6 @@ import { baseApi } from '@/shared/api'
 const postsApi = baseApi.injectEndpoints({
   endpoints: builder => {
     return {
-      getAllPosts: builder.query<GetAllPosts, GetDecksArgs>({
-        query: args => ({
-          url: `v1/posts/all`,
-          method: 'GET',
-          params: args,
-        }),
-        providesTags: ['Posts'],
-      }),
       createPost: builder.mutation<PostsResponseType, PostArgsType>({
         query: body => ({
           url: `v1/posts`,
@@ -75,13 +70,44 @@ const postsApi = baseApi.injectEndpoints({
         }),
         invalidatesTags: [],
       }),
+      getPublicPostById: builder.query<GetPublicPosts, { postId: number }>({
+        query: args => ({
+          url: `v1/public-posts/p/${args.postId}`,
+          method: 'GET',
+        }),
+        providesTags: [],
+      }),
+      getPublicPostsByUserId: builder.query<GetUsersAllPosts, GetUserDecksArgs>({
+        query: args => ({
+          url: `v1/public-posts/user/${args.userId}`,
+          method: 'GET',
+          params: {
+            pageSize: args.pageSize,
+            sortBy: args.sortBy,
+            sortDirection: args.sortDirection,
+          },
+        }),
+        providesTags: ['Posts'],
+      }),
+      getAllPublicPosts: builder.query<GetAllPosts, GetDecksArgs>({
+        query: args => ({
+          url: `v1/public-posts/all/${args.idLastUploadedPost}`,
+          method: 'GET',
+          params: {
+            pageSize: args.pageSize,
+            sortBy: args.sortBy,
+            sortDirection: args.sortDirection,
+          },
+        }),
+        providesTags: ['Posts'],
+      }),
     }
   },
 })
 
 export const {
   useCreatePostMutation,
-  useGetAllPostsQuery,
+  useGetAllPublicPostsQuery,
   useUploadPostImageMutation,
   useDeletePostImageMutation,
   useGetPostByIdQuery,
@@ -90,4 +116,10 @@ export const {
   useDeletePostByIdMutation,
   useGetPostsByUserIdQuery,
   useLazyGetPostsByUserIdQuery,
+  useGetPublicPostByIdQuery,
+  useGetPublicPostsByUserIdQuery,
+  util: { getRunningQueriesThunk: getPostsRunningQueriesThunk },
 } = postsApi
+
+//export endpoints for use in SSR
+export const { getAllPublicPosts, getPublicPostsByUserId, getPublicPostById } = postsApi.endpoints

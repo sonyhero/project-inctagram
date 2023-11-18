@@ -4,6 +4,7 @@ import { NextPage } from 'next'
 
 import s from './AuthLayout.module.scss'
 
+import { StoreProvider } from '@/shared/providers'
 import { HeadMeta } from '@/shared/ui/head-meta'
 import { Header } from '@/widgets/header'
 
@@ -18,5 +19,9 @@ export const AuthLayout: NextPage<PropsWithChildren> = ({ children }) => {
 }
 
 export const getAuthLayout = (page: ReactElement) => {
-  return <AuthLayout>{page}</AuthLayout>
+  return (
+    <StoreProvider>
+      <AuthLayout>{page}</AuthLayout>
+    </StoreProvider>
+  )
 }

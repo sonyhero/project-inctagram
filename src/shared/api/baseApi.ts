@@ -1,4 +1,5 @@
 import { createApi } from '@reduxjs/toolkit/query/react'
+import { HYDRATE } from 'next-redux-wrapper'
 
 import { customFetchBase } from '@/shared/api/baseQueryWithReauth'
 
@@ -6,5 +7,10 @@ export const baseApi = createApi({
   reducerPath: 'baseApi',
   tagTypes: ['Me', 'Profile', 'Posts'],
   baseQuery: customFetchBase,
+  extractRehydrationInfo(action, { reducerPath }) {
+    if (action.type === HYDRATE) {
+      return action.payload[reducerPath]
+    }
+  },
   endpoints: () => ({}),
 })
