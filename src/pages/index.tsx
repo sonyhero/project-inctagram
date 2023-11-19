@@ -8,7 +8,7 @@ import { getBaseLayout } from '@/shared/providers'
 import { wrapper } from '@/shared/store'
 
 export const getStaticProps = wrapper.getStaticProps(store => async () => {
-  store.dispatch(getAllPublicPosts.initiate({ pageSize: 6 }))
+  store.dispatch(getAllPublicPosts.initiate({ pageSize: 4 }))
   await Promise.all(store.dispatch(getPostsRunningQueriesThunk()))
 
   return {
@@ -18,7 +18,7 @@ export const getStaticProps = wrapper.getStaticProps(store => async () => {
 })
 
 export default function HomePage() {
-  const { data } = useGetAllPublicPostsQuery({ pageSize: 6 })
+  const { data } = useGetAllPublicPostsQuery({ pageSize: 4 })
 
   return <Home posts={data?.items} />
 }

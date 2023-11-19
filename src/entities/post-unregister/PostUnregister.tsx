@@ -3,6 +3,8 @@ import React, { useState } from 'react'
 import Image from 'next/image'
 import { useRouter } from 'next/router'
 
+import imageIcon from '/public/imageIcon.svg'
+
 import s from './PostUnregister.module.scss'
 
 import { PostsResponseTypeImages } from '@/entities/posts'
@@ -33,7 +35,7 @@ export const PostUnregister = ({ photos, desc, createdAt }: Props) => {
   return (
     <div>
       <div className={s.photoBlock}>
-        <Image src={activePhoto.url} width={240} height={240} alt={'post picture'} />
+        <Image src={activePhoto?.url ?? imageIcon} width={240} height={240} alt={'post picture'} />
         <PhotoPagination
           changePhotoNext={() => changePhoto('next')}
           changePhotoPrev={() => changePhoto('prev')}
@@ -44,7 +46,7 @@ export const PostUnregister = ({ photos, desc, createdAt }: Props) => {
       </div>
       <div className={s.urlAndAvatar}>
         <Image
-          src={photos[0].url}
+          src={photos[0]?.url ?? imageIcon}
           width={36}
           height={36}
           alt={'post picture'}
