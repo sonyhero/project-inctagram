@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
-import { GetAllPostsItems } from '@/entities/posts/api'
+import { PostsResponseType } from '@/entities/posts/api'
 import { Nullable } from '@/shared/types'
 
 export type SizeType = 'Оригинал' | '1:1' | '16:9' | '4:5'
@@ -19,8 +19,8 @@ export type PostType = {
 }
 const initialState = {
   photosPosts: [] as PostType[],
-  post: null as Nullable<GetAllPostsItems>,
-  posts: [] as GetAllPostsItems[],
+  post: null as Nullable<PostsResponseType>,
+  posts: [] as PostsResponseType[],
   activeIndex: 0,
   publicationCount: 0,
   currentDescription: '',
@@ -75,13 +75,13 @@ export const postsSlice = createSlice({
     deletePhotosPost: (state, _) => {
       state.photosPosts = []
     },
-    setPost: (state, action: PayloadAction<Nullable<GetAllPostsItems>>) => {
+    setPost: (state, action: PayloadAction<Nullable<PostsResponseType>>) => {
       state.post = action.payload
     },
-    createNewPost: (state, action: PayloadAction<GetAllPostsItems>) => {
+    createNewPost: (state, action: PayloadAction<PostsResponseType>) => {
       state.posts.unshift(action.payload)
     },
-    setPosts: (state, action: PayloadAction<Array<GetAllPostsItems>>) => {
+    setPosts: (state, action: PayloadAction<Array<PostsResponseType>>) => {
       state.posts = [...state.posts, ...action.payload]
     },
     deletePost: (state, action: PayloadAction<{ postId: number }>) => {
