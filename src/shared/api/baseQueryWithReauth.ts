@@ -4,6 +4,7 @@ import NProgress from 'nprogress'
 import { toast } from 'react-toastify'
 
 const baseUrl = 'https://inctagram.work/api'
+const isClient = typeof window !== 'undefined'
 
 // Create a new mutex
 const mutex = new Mutex()
@@ -12,7 +13,7 @@ const baseQuery = fetchBaseQuery({
   baseUrl,
   credentials: 'include',
   prepareHeaders: headers => {
-    const access = localStorage.getItem('access')
+    const access = isClient && localStorage.getItem('access')
 
     if (access) {
       headers.set('Authorization', `Bearer ${access}`)
@@ -28,12 +29,12 @@ export const customFetchBase: BaseQueryFn<
   FetchBaseQueryError
 > = async (args, api, extraOptions) => {
   try {
-    NProgress.start()
+    isClient && NProgress.start()
     await mutex.waitForUnlock()
     let result = await baseQuery(args, api, extraOptions)
 
     if (result.error?.status === 'FETCH_ERROR') {
-      const locale = localStorage.getItem('locale')
+      const locale = isClient && localStorage.getItem('locale')
 
       locale === 'en' ? toast.error('Network Error') : toast.error('Ошибка соединения с сервером')
     }
@@ -68,7 +69,7 @@ export const customFetchBase: BaseQueryFn<
 
     return result
   } finally {
-    NProgress.done()
+    isClient && NProgress.done()
   }
   // wait until the mutex is available without locking it
 }
