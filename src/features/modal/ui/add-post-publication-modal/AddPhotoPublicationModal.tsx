@@ -39,6 +39,8 @@ export const AddPostPublicationModal = ({ addPostPublicationModal, userId }: Pro
   const [photosFormData, serPhotoFormData] = useState<FormData[]>([])
   const [descriptionValue, setDescriptionValue] = useState(currentDescription)
 
+  const iaActivePhoto = photosPost && photosPost.length > 0 && activePhoto
+
   useEffect(() => {
     const newPhotosFormData = [] as FormData[]
 
@@ -129,7 +131,12 @@ export const AddPostPublicationModal = ({ addPostPublicationModal, userId }: Pro
     dispatch(postsActions.deletePhotosPost({}))
   }
   const onChangeTextHandler = (event: ChangeEvent<HTMLTextAreaElement>) => {
-    setDescriptionValue(event.currentTarget.value)
+    const maxLength = 500
+    const textValue = event.target.value
+
+    if (textValue.length <= maxLength) {
+      setDescriptionValue(textValue)
+    }
   }
   const profileAvatarLoader = () =>
     data?.avatars.length && {
@@ -151,7 +158,7 @@ export const AddPostPublicationModal = ({ addPostPublicationModal, userId }: Pro
       nextClick={onPublishHandler}
       contentBoxClassname={s.contentBox}
     >
-      {photosPost && photosPost.length > 0 && activePhoto && (
+      {iaActivePhoto && (
         <div className={s.modalContent}>
           <div className={s.lastPhoto}>
             <img
@@ -188,7 +195,7 @@ export const AddPostPublicationModal = ({ addPostPublicationModal, userId }: Pro
                   placeholder={t.create.publication.placeholder}
                   value={descriptionValue}
                   onChange={onChangeTextHandler}
-                  disabled={descriptionValue.length > 500}
+                  maxLength={500}
                 />
                 <Typography variant={'small'} color={'secondary'} className={s.balance}>
                   {descriptionValue.length}/500

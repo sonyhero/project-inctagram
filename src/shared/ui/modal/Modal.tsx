@@ -79,16 +79,18 @@ export const Modal = (props: Props) => {
                     <Typography variant={'h1'}>{title}</Typography>
                   </DialogTitle>
 
+                  <div>
+                    {nextContent && (
+                      <Typography variant={'h3'} className={s.nextContent} onClick={nextClick}>
+                        {nextContentTitle}
+                      </Typography>
+                    )}
+                  </div>
+
                   {showCloseButton && (
                     <DialogClose className={s.closeButton}>
                       <Close />
                     </DialogClose>
-                  )}
-
-                  {nextContent && (
-                    <Typography variant={'h3'} className={s.nextContent} onClick={nextClick}>
-                      {nextContentTitle}
-                    </Typography>
                   )}
                 </header>
               )}
