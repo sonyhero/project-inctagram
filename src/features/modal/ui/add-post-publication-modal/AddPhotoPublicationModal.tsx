@@ -1,11 +1,8 @@
 import React, { ChangeEvent, useEffect, useState } from 'react'
 
-import ImageNext from 'next/image'
-
-import loaderIcon from '../../../../../public/loader.svg'
-
 import s from './AddPostPublicationModal.module.scss'
 
+import { Avatar } from '@/entities/avtar'
 import {
   PostArgsTypeChildrenMetadata,
   postsActions,
@@ -138,11 +135,6 @@ export const AddPostPublicationModal = ({ addPostPublicationModal, userId }: Pro
       setDescriptionValue(textValue)
     }
   }
-  const profileAvatarLoader = () =>
-    data?.avatars.length && {
-      loader: () => data.avatars[0].url,
-      className: s.photo,
-    }
 
   return (
     <Modal
@@ -181,12 +173,7 @@ export const AddPostPublicationModal = ({ addPostPublicationModal, userId }: Pro
           <div className={s.postDescriptionBlock}>
             <div className={s.topContent}>
               <div className={s.photoBlock}>
-                <ImageNext
-                  src={loaderIcon}
-                  priority={true}
-                  {...profileAvatarLoader()}
-                  alt={'profilePhoto'}
-                />
+                <Avatar userId={userId} className={s.photo} />
                 <Typography>{data?.userName}</Typography>
               </div>
               <div>

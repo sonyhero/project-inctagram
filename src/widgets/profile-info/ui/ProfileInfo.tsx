@@ -5,6 +5,7 @@ import Image from 'next/image'
 
 import s from './ProfileInfo.module.scss'
 
+import { Avatar } from '@/entities/avtar'
 import {
   postsActions,
   useGetPostsByUserIdQuery,
@@ -18,8 +19,6 @@ import { useAppDispatch, useAppSelector } from '@/shared/store'
 import { Nullable } from '@/shared/types'
 import { Button, Typography } from '@/shared/ui'
 import { profileSettingsSlice } from '@/widgets/profile-settings'
-import imageIcon from 'public/imageIcon.svg'
-import loader from 'public/loader.svg'
 
 type Props = {
   userId: number
@@ -31,7 +30,7 @@ export const ProfileInfo = ({ userId }: Props) => {
   const publicationCount = useAppSelector(state => state.postsSlice.publicationCount)
   const dispatch = useAppDispatch()
 
-  const { data, isLoading, isFetching } = useGetProfileQuery(userId)
+  const { data } = useGetProfileQuery(userId)
   const { data: postsData } = useGetPostsByUserIdQuery({
     pageSize: 8,
     sortBy: '',
@@ -39,10 +38,6 @@ export const ProfileInfo = ({ userId }: Props) => {
   })
   const [getNextPosts] = useLazyGetPostsByUserIdQuery()
   const [getPost] = useLazyGetPostByIdQuery()
-
-  const isLoadingAvatar = isLoading && isFetching
-  const avatar = data?.avatars.length && data.avatars[0].url
-  const profilePhoto = isLoadingAvatar ? loader : avatar ?? imageIcon
 
   const [getLastUploadedPostId, setLastUploadedPostId] = useState<Nullable<number>>(null)
   const [postsRef] = useAutoAnimate<HTMLDivElement>()
@@ -113,14 +108,7 @@ export const ProfileInfo = ({ userId }: Props) => {
     <div className={s.profileBlock} ref={postsBlockRef}>
       <div className={s.mainInfo}>
         <div className={s.photoBlock}>
-          <Image
-            src={profilePhoto}
-            priority={true}
-            width={192}
-            height={192}
-            className={s.photo}
-            alt={'profilePhoto'}
-          />
+          <Avatar userId={userId} className={s.photo} />
         </div>
         <div className={s.descriptionBlock}>
           <div className={s.nameAndSettings}>
