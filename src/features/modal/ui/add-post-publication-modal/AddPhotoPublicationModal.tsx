@@ -1,11 +1,8 @@
 import React, { ChangeEvent, useEffect, useState } from 'react'
 
-import ImageNext from 'next/image'
-
-import loaderIcon from '../../../../../public/loader.svg'
-
 import s from './AddPostPublicationModal.module.scss'
 
+import { Avatar } from '@/entities/avtar'
 import {
   PostArgsTypeChildrenMetadata,
   postsActions,
@@ -38,6 +35,8 @@ export const AddPostPublicationModal = ({ addPostPublicationModal, userId }: Pro
   const activePhoto = photosPost[activeIndex]
   const [photosFormData, serPhotoFormData] = useState<FormData[]>([])
   const [descriptionValue, setDescriptionValue] = useState(currentDescription)
+
+  const iaActivePhoto = photosPost && photosPost.length > 0 && activePhoto
 
   useEffect(() => {
     const newPhotosFormData = [] as FormData[]
@@ -129,13 +128,13 @@ export const AddPostPublicationModal = ({ addPostPublicationModal, userId }: Pro
     dispatch(postsActions.deletePhotosPost({}))
   }
   const onChangeTextHandler = (event: ChangeEvent<HTMLTextAreaElement>) => {
-    setDescriptionValue(event.currentTarget.value)
-  }
-  const profileAvatarLoader = () =>
-    data?.avatars.length && {
-      loader: () => data.avatars[0].url,
-      className: s.photo,
+    const maxLength = 500
+    const textValue = event.target.value
+
+    if (textValue.length <= maxLength) {
+      setDescriptionValue(textValue)
     }
+  }
 
   return (
     <Modal
@@ -151,7 +150,7 @@ export const AddPostPublicationModal = ({ addPostPublicationModal, userId }: Pro
       nextClick={onPublishHandler}
       contentBoxClassname={s.contentBox}
     >
-      {photosPost && photosPost.length > 0 && activePhoto && (
+      {iaActivePhoto && (
         <div className={s.modalContent}>
           <div className={s.lastPhoto}>
             <img
@@ -174,12 +173,7 @@ export const AddPostPublicationModal = ({ addPostPublicationModal, userId }: Pro
           <div className={s.postDescriptionBlock}>
             <div className={s.topContent}>
               <div className={s.photoBlock}>
-                <ImageNext
-                  src={loaderIcon}
-                  priority={true}
-                  {...profileAvatarLoader()}
-                  alt={'profilePhoto'}
-                />
+                <Avatar userId={userId} className={s.photo} />
                 <Typography>{data?.userName}</Typography>
               </div>
               <div>
@@ -188,7 +182,7 @@ export const AddPostPublicationModal = ({ addPostPublicationModal, userId }: Pro
                   placeholder={t.create.publication.placeholder}
                   value={descriptionValue}
                   onChange={onChangeTextHandler}
-                  disabled={descriptionValue.length > 500}
+                  maxLength={500}
                 />
                 <Typography variant={'small'} color={'secondary'} className={s.balance}>
                   {descriptionValue.length}/500
