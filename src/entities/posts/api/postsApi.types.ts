@@ -15,6 +15,11 @@ export type PostsResponseType = {
   createdAt: string
   updatedAt: string
   ownerId: number
+  avatarOwner: string
+  owner: {
+    firstName: string
+    lastName: string
+  }
 }
 export type PostsResponseTypeImages = {
   url: string
@@ -46,6 +51,7 @@ export type GetUsersAllPosts = {
 export type GetAllPosts = {
   totalCount: number
   pageSize: number
+  totalUsers: number
   items: PostsResponseType[]
 }
 export type PostsImagesResponse = {

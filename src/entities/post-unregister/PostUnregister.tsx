@@ -15,9 +15,10 @@ type Props = {
   photos: PostsResponseTypeImages[]
   desc: string
   createdAt: string
+  avatarOwner: string
 }
 
-export const PostUnregister = ({ photos, desc, createdAt }: Props) => {
+export const PostUnregister = ({ photos, desc, createdAt, avatarOwner }: Props) => {
   const [activeIndex, setActiveIndex] = useState(0)
   const activePhoto = photos[activeIndex]
   const { locale } = useRouter()
@@ -46,7 +47,7 @@ export const PostUnregister = ({ photos, desc, createdAt }: Props) => {
       </div>
       <div className={s.urlAndAvatar}>
         <Image
-          src={photos[0]?.url ?? imageIcon}
+          src={avatarOwner ?? imageIcon}
           width={36}
           height={36}
           alt={'post picture'}
