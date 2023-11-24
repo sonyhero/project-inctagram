@@ -15,6 +15,7 @@ export const HomeUnregister = ({ posts }: Props) => {
         photos={post.images}
         desc={post.description}
         createdAt={post.createdAt}
+        avatarOwner={post.avatarOwner}
       />
     )
   })
