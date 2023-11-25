@@ -38,12 +38,14 @@
 
       &:first-child {
         padding-left: 7px;
+        border-right: none;
         border-left: none;
       }
 
       &:last-child {
         padding-right: 7px;
         border-right: none;
+        border-left: none;
       }
     }
   }
