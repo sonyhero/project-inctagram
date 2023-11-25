@@ -6,12 +6,15 @@ import { Typography } from '@/shared/ui'
 
 type Props = {
   posts?: PostsResponseType[]
+  usersCount?: number
 }
-export const HomeUnregister = ({ posts }: Props) => {
+export const HomeUnregister = ({ posts, usersCount }: Props) => {
   const mappedPosts = posts?.map(post => {
     return (
       <PostUnregister
         key={post.id}
+        postId={post.id}
+        userId={post.ownerId}
         photos={post.images}
         desc={post.description}
         createdAt={post.createdAt}
@@ -26,7 +29,7 @@ export const HomeUnregister = ({ posts }: Props) => {
         <Typography variant={'h2'} color={'primary'}>
           Registered users:
         </Typography>
-        <div className={s.count}></div>
+        <div className={s.count}>{usersCount}</div>
       </div>
       <div className={s.posts}>{mappedPosts}</div>
     </div>

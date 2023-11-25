@@ -20,7 +20,7 @@ export const getStaticProps = wrapper.getStaticProps(store => async () => {
 export default function HomePage() {
   const { data } = useGetAllPublicPostsQuery({ pageSize: 4 })
 
-  return <Home posts={data?.items} />
+  return <Home posts={data?.items} usersCount={data?.totalCount} />
 }
 
 HomePage.getLayout = getBaseLayout
