@@ -5,7 +5,6 @@ import Image from 'next/image'
 
 import s from './ProfileInfo.module.scss'
 
-import { Avatar } from '@/entities/avtar'
 import {
   postsActions,
   useGetPostsByUserIdQuery,
@@ -19,6 +18,7 @@ import { useAppDispatch, useAppSelector } from '@/shared/store'
 import { Nullable } from '@/shared/types'
 import { Button, Typography } from '@/shared/ui'
 import { profileSettingsSlice } from '@/widgets/profile-settings'
+import { Avatar } from 'src/entities/avatar'
 
 type Props = {
   userId: number

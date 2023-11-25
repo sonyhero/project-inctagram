@@ -2,7 +2,7 @@ import React, { ChangeEvent, useEffect, useState } from 'react'
 
 import s from './AddPostPublicationModal.module.scss'
 
-import { Avatar } from '@/entities/avtar'
+import { Avatar } from '@/entities'
 import {
   PostArgsTypeChildrenMetadata,
   postsActions,

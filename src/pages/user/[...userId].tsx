@@ -14,10 +14,11 @@ import {
   useGetPublicPostByIdQuery,
   useGetPublicPostsByUserIdQuery,
 } from '@/entities/posts'
+import { ViewPublicPostModal } from '@/features/modal'
 import { useTranslation } from '@/shared/hooks'
 import { getBaseLayout } from '@/shared/providers'
 import { wrapper } from '@/shared/store'
-import { Modal, Typography } from '@/shared/ui'
+import { Typography } from '@/shared/ui'
 
 export const getServerSideProps = wrapper.getServerSideProps(store => async context => {
   const query = context.query
@@ -52,7 +53,6 @@ export default function UserPage() {
 
   const onCloseHandler = () => {
     setOpenModal(false)
-    // push(`/`)
   }
 
   const mappedPosts = userData?.posts.items.slice(0, 4).map(post => {
@@ -86,9 +86,6 @@ export default function UserPage() {
         <div className={s.descriptionBlock}>
           <div className={s.nameAndSettings}>
             <Typography variant={'h1'}>{userData?.profile.userName}</Typography>
-            {/*<Button variant={'secondary'} onClick={showProfileSettingsHandler}>*/}
-            {/*  {t.myProfile.profilePage.profileSettings}*/}
-            {/*</Button>*/}
           </div>
           <div className={s.statistic}>
             <div>
@@ -110,24 +107,17 @@ export default function UserPage() {
         </div>
       </div>
       <div className={s.postsBlock}>{mappedPosts}</div>
-      {postId && (
-        <Modal open={openModal} onClose={onCloseHandler}>
-          {postData ? (
-            <>
-              <Image
-                priority={true}
-                src={postData.posts.images[0].url}
-                alt={'post picture'}
-                width={200}
-                height={200}
-              />
-              Description: {postData.posts.description}
-            </>
-          ) : (
-            'Post not found!'
-          )}
-        </Modal>
-      )}
+      {postId &&
+        (postData ? (
+          <ViewPublicPostModal
+            open={openModal}
+            onClose={onCloseHandler}
+            avatar={postData?.profile.avatars}
+            postData={postData.posts}
+          />
+        ) : (
+          'Post not found!'
+        ))}
     </div>
   )
 }
