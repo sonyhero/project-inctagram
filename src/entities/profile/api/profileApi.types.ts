@@ -7,6 +7,7 @@ export type GetProfileResponse = {
   dateOfBirth: Date
   aboutMe: string
   avatars: Avatar[]
+  createdAt: Date
 }
 export type Avatar = {
   url: string
