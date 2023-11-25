@@ -42,7 +42,10 @@ export default function UserPage() {
   const { t } = useTranslation()
   const [openModal, setOpenModal] = useState(false)
   const { data: userData } = useGetPublicPostsByUserIdQuery({ userId: Number(userId) })
-  const { data: postData } = useGetPublicPostByIdQuery({ postId: Number(postId) })
+  const { data: postData } = useGetPublicPostByIdQuery(
+    { postId: Number(postId ?? '') },
+    { skip: true }
+  )
 
   useEffect(() => {
     setOpenModal(true)
