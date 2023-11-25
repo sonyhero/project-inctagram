@@ -12,4 +12,5 @@ export const PATH = {
   LOGOUT: '/logout',
   POLICY: '/auth/privacy-policy',
   TERMS_OF_SERVICE: '/auth/terms-of-service',
+  USER: '/user',
 }

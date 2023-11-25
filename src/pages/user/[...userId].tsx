@@ -17,7 +17,7 @@ import {
 import { useTranslation } from '@/shared/hooks'
 import { getBaseLayout } from '@/shared/providers'
 import { wrapper } from '@/shared/store'
-import { Button, Modal, Typography } from '@/shared/ui'
+import { Modal, Typography } from '@/shared/ui'
 
 export const getServerSideProps = wrapper.getServerSideProps(store => async context => {
   const query = context.query
@@ -35,15 +35,13 @@ export const getServerSideProps = wrapper.getServerSideProps(store => async cont
 })
 
 export default function UserPage() {
-  const { query, push } = useRouter()
+  const { query } = useRouter()
   const userId = query.userId?.[0]
   const postId = query.userId?.[1]
   const { t } = useTranslation()
   const [openModal, setOpenModal] = useState(false)
   const { data: userData } = useGetPublicPostsByUserIdQuery({ userId: Number(userId) })
   const { data: postData } = useGetPublicPostByIdQuery({ postId: Number(postId) })
-
-  console.log(query.userId?.[1])
 
   useEffect(() => {
     setOpenModal(true)
@@ -68,9 +66,6 @@ export default function UserPage() {
       </div>
     )
   })
-
-  console.log('userData:', userData)
-  console.log('postData:', postData)
 
   return (
     <div className={s.profileBlock}>

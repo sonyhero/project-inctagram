@@ -4,9 +4,14 @@ import { HomeUnregister } from '@/widgets/home-unregistered-posts'
 
 type PropsType = {
   posts?: PostsResponseType[]
+  usersCount?: number
 }
-export const Home = ({ posts }: PropsType) => {
+export const Home = ({ posts, usersCount }: PropsType) => {
   const { data } = useMeQuery()
 
-  return data ? <div>Posts in register account</div> : <HomeUnregister posts={posts} />
+  return data ? (
+    <div>Posts in register account</div>
+  ) : (
+    <HomeUnregister posts={posts} usersCount={usersCount} />
+  )
 }
