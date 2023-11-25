@@ -15,7 +15,7 @@ export type Avatar = {
   height: number
   fileSize: number
 }
-export type UpdateProfileArg = Omit<GetProfileResponse, 'id' | 'avatars'>
+export type UpdateProfileArg = Omit<GetProfileResponse, 'id' | 'avatars' | 'createdAt'>
 export type UploadAvatarResponse = {
   avatars: Avatar[]
 }

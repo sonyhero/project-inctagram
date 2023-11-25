@@ -5,6 +5,8 @@ import { useRouter } from 'next/router'
 
 import imageIcon from '/public/imageIcon.svg'
 
+import { toast } from 'react-toastify'
+
 import s from '../../widgets/profile-info/ui/ProfileInfo.module.scss'
 
 import {
@@ -41,15 +43,19 @@ export default function UserPage() {
   const postId = query.userId?.[1]
   const { t } = useTranslation()
   const [openModal, setOpenModal] = useState(false)
+  const [skip, setSkip] = useState(true)
   const { data: userData } = useGetPublicPostsByUserIdQuery({ userId: Number(userId) })
-  const { data: postData } = useGetPublicPostByIdQuery(
-    { postId: Number(postId ?? '') },
-    { skip: true }
-  )
+  const { data: postData } = useGetPublicPostByIdQuery({ postId: Number(postId ?? '') }, { skip })
 
   useEffect(() => {
-    setOpenModal(true)
-  }, [])
+    if (postId) {
+      setSkip(false)
+      setOpenModal(true)
+    }
+    if (!postData) {
+      toast.error('Post not found!')
+    }
+  }, [postId])
 
   const onCloseHandler = () => {
     setOpenModal(false)
@@ -107,17 +113,14 @@ export default function UserPage() {
         </div>
       </div>
       <div className={s.postsBlock}>{mappedPosts}</div>
-      {postId &&
-        (postData ? (
-          <ViewPublicPostModal
-            open={openModal}
-            onClose={onCloseHandler}
-            avatar={postData?.profile.avatars}
-            postData={postData.posts}
-          />
-        ) : (
-          'Post not found!'
-        ))}
+      {postId && postData && (
+        <ViewPublicPostModal
+          open={openModal}
+          onClose={onCloseHandler}
+          avatar={postData.profile.avatars}
+          postData={postData.posts}
+        />
+      )}
     </div>
   )
 }
