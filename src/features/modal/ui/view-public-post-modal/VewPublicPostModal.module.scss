@@ -1,0 +1,193 @@
+.modalBlock {
+  width: 60.75rem;
+
+  .contentBox {
+    padding: 0;
+  }
+
+  .modalContent {
+    display: flex;
+    width: 100%;
+    height: 35.1875rem;
+
+    .lastPhoto {
+      position: relative;
+
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      width: 30.75rem;
+
+      .photo {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+    }
+
+    .postDescriptionBlock {
+      display: flex;
+      flex-direction: column;
+      width: 30rem;
+      height: 100%;
+
+      .topContent {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        padding: 0.7rem 1.5rem;
+
+        border-bottom: 1px solid var(--color-dark-100);
+
+        .photoBlock {
+          display: flex;
+          gap: 0.75rem;
+          align-items: center;
+
+          .photoAva {
+            width: 2.25rem;
+            height: 2.25rem;
+            object-fit: cover;
+            border-radius: 50%;
+          }
+        }
+      }
+
+      .middleContent {
+        display: flex;
+        flex-direction: column;
+        flex-grow: 1;
+        justify-content: space-between;
+
+        .comments {
+          display: flex;
+          flex-grow: 1;
+          gap: 0.75rem;
+          padding: 0.7rem 1.5rem;
+
+          .photoAva {
+            width: 2.25rem;
+            height: 2.25rem;
+            object-fit: cover;
+            border-radius: 50%;
+          }
+
+          .descriptionBlock {
+            display: flex;
+            flex-direction: column;
+            gap: 0.31rem;
+
+            .desc {
+              word-break: break-all;
+            }
+          }
+        }
+
+        .bottomBlock {
+          padding: 0.7rem 1.5rem;
+          border-top: 1px solid var(--color-dark-100);
+
+          .likeSaveSetBlock {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 1.2rem;
+
+            .likeAndSet {
+              display: flex;
+              gap: 1.5rem;
+              align-items: center;
+            }
+          }
+
+          .viewsAndCount {
+            display: flex;
+            gap: 1.45rem;
+
+            .views {
+              display: flex;
+              align-items: center;
+
+              .view {
+                width: 1.5rem;
+                height: 1.5rem;
+                margin-right: -0.7rem;
+
+                background-color: var(--color-dark-500);
+                border-radius: 50%;
+              }
+            }
+
+            .count {
+              display: flex;
+              gap: 5px;
+            }
+          }
+        }
+      }
+
+      .bottomContent {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        padding: 0.7rem 1.5rem;
+
+        border-top: 1px solid var(--color-dark-100);
+
+        .addComment {
+          flex-grow: 1;
+          border: none;
+        }
+      }
+    }
+
+    .editBlock {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+
+      width: 50%;
+      padding: 0.7rem 1.5rem;
+
+      .topContent {
+        display: flex;
+        flex-direction: column;
+        flex-grow: 1;
+        gap: 1.5rem;
+
+        .photoBlock {
+          display: flex;
+          gap: 0.75rem;
+          align-items: center;
+
+          .photoAva {
+            width: 2.25rem;
+            height: 2.25rem;
+            object-fit: cover;
+            border-radius: 50%;
+          }
+        }
+
+        .balance {
+          text-align: end;
+        }
+      }
+
+      .saveChangesBlock {
+        display: flex;
+        justify-content: flex-end;
+      }
+    }
+  }
+}
+
+.itemActivity {
+  cursor: pointer;
+  display: flex;
+  gap: 0.75rem;
+  align-items: center;
+}
