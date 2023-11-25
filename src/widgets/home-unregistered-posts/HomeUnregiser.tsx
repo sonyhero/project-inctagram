@@ -22,6 +22,19 @@ export const HomeUnregister = ({ posts, usersCount }: Props) => {
       />
     )
   })
+  const totalUserCount = String('00' + usersCount).split('')
+
+  const renderUsersCount = (
+    <ul className={s.countList}>
+      {totalUserCount.map((el, index) => {
+        return (
+          <li key={index} className={s.countItem}>
+            <Typography variant={'h2'}>{el}</Typography>
+          </li>
+        )
+      })}
+    </ul>
+  )
 
   return (
     <div className={s.unregisterBlock}>
@@ -29,7 +42,7 @@ export const HomeUnregister = ({ posts, usersCount }: Props) => {
         <Typography variant={'h2'} color={'primary'}>
           Registered users:
         </Typography>
-        <div className={s.count}>{usersCount}</div>
+        <div className={s.count}>{renderUsersCount}</div>
       </div>
       <div className={s.posts}>{mappedPosts}</div>
     </div>
