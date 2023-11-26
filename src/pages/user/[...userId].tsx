@@ -12,14 +12,16 @@ import s from '../../widgets/profile-info/ui/ProfileInfo.module.scss'
 import {
   getPostsRunningQueriesThunk,
   getPublicPostById,
+  GetPublicPosts,
   getPublicPostsByUserId,
-  useGetPublicPostByIdQuery,
   useGetPublicPostsByUserIdQuery,
+  useLazyGetPublicPostByIdQuery,
 } from '@/entities/posts'
 import { ViewPublicPostModal } from '@/features/modal'
 import { useTranslation } from '@/shared/hooks'
 import { getBaseLayout } from '@/shared/providers'
 import { wrapper } from '@/shared/store'
+import { Nullable } from '@/shared/types'
 import { Typography } from '@/shared/ui'
 
 export const getServerSideProps = wrapper.getServerSideProps(store => async context => {
@@ -43,17 +45,24 @@ export default function UserPage() {
   const postId = query.userId?.[1]
   const { t } = useTranslation()
   const [openModal, setOpenModal] = useState(false)
-  const [skip, setSkip] = useState(true)
   const { data: userData } = useGetPublicPostsByUserIdQuery({ userId: Number(userId) })
-  const { data: postData } = useGetPublicPostByIdQuery({ postId: Number(postId ?? '') }, { skip })
+  const [postData, setPostData] = useState<Nullable<GetPublicPosts>>(null)
+  const [getPostData] = useLazyGetPublicPostByIdQuery()
 
   useEffect(() => {
     if (postId) {
-      setSkip(false)
-      setOpenModal(true)
-    }
-    if (postId && !postData) {
-      toast.error('Post not found!')
+      getPostData({ postId: Number(postId) })
+        .unwrap()
+        .then(res => {
+          if (!res) {
+            toast.error('Post not found!')
+          }
+          setPostData(res)
+          setOpenModal(true)
+        })
+        .catch(() => {
+          toast.error('Unknown Error')
+        })
     }
   }, [postId])
 
