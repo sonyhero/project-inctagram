@@ -52,7 +52,7 @@ export default function UserPage() {
       setSkip(false)
       setOpenModal(true)
     }
-    if (!postData) {
+    if (postId && !postData) {
       toast.error('Post not found!')
     }
   }, [postId])
