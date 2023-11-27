@@ -1,6 +1,8 @@
 export type LocaleType = typeof en
 
 export const en = {
+  metaDescription:
+    'Create an account or log in to Inсtagram - A simple, fun & creative way to capture, edit & share photos & messages with friends & family.',
   zodSchema: {
     minNumberOfCharacters: 'Minimum number of characters: ',
     maxNumberOfCharacters: 'Maximum number of characters: ',
