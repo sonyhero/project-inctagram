@@ -1,1 +1,1 @@
-export * from './VewPostModal'
+export * from './ViewPostModal'

@@ -12,6 +12,7 @@
     margin-bottom: 2.25rem;
     padding: 0.75rem 1.5rem;
 
+    background-color: var(--color-dark-500);
     border: 1px solid var(--color-dark-300);
     border-radius: 0.125rem;
 
@@ -23,6 +24,7 @@
 
       padding: 0.5rem 0.75rem 0.625rem;
 
+      background-color: var(--color-dark-700);
       border: 1px solid var(--dark-300, #333);
       border-radius: 0.125rem;
     }
@@ -34,18 +36,14 @@
     .countItem {
       padding: 9px 10px;
       border-right: 1px solid var(--color-dark-300);
-      border-left: 1px solid var(--color-dark-300);
 
       &:first-child {
         padding-left: 7px;
-        border-right: none;
-        border-left: none;
       }
 
       &:last-child {
         padding-right: 7px;
         border-right: none;
-        border-left: none;
       }
     }
   }

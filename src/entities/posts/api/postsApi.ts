@@ -118,6 +118,7 @@ export const {
   useLazyGetPostsByUserIdQuery,
   useGetPublicPostByIdQuery,
   useGetPublicPostsByUserIdQuery,
+  useLazyGetPublicPostByIdQuery,
   util: { getRunningQueriesThunk: getPostsRunningQueriesThunk },
 } = postsApi
 
