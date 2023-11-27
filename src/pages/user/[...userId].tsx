@@ -75,7 +75,7 @@ export default function UserPage() {
       <div key={post.id}>
         <Image
           priority={true}
-          src={post.images[0].url}
+          src={post.images[0].url ?? imageIcon}
           alt={'post picture'}
           width={200}
           height={200}
