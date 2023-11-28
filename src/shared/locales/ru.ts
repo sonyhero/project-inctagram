@@ -1,6 +1,8 @@
 import { LocaleType } from '@/shared/locales/en'
 
 export const ru: LocaleType = {
+  metaDescription:
+    'Создайте аккаунт или войдите в Инктаграм — это сервис, позволяющий легко и удобно снимать креативные фото и редактировать их, а также делиться ими с друзьями и родственниками.',
   zodSchema: {
     minNumberOfCharacters: 'Минимальное количество символов: ',
     maxNumberOfCharacters: 'Максимальное количество символов: ',
