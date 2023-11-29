@@ -4,12 +4,14 @@ import ImageNext from 'next/image'
 
 import imageIcon from '/public/imageIcon.svg'
 
+import Link from 'next/link'
 import { useRouter } from 'next/router'
 
-import s from './VewPublicPostModal.module.scss'
+import s from './ViewPublicPostModal.module.scss'
 
 import { PostsResponseType } from '@/entities/posts'
 import { Avatar } from '@/entities/profile'
+import { PATH } from '@/shared/config/routes'
 import { useTranslation } from '@/shared/hooks'
 import { Modal, PhotoPagination, Typography } from '@/shared/ui'
 import { getDayMonthTime } from '@/shared/utils'
@@ -68,9 +70,11 @@ export const ViewPublicPostModal = ({ open, onClose, postData, avatar }: Props) 
                   className={s.photoAva}
                   alt={'profilePhoto'}
                 />
-                <Typography variant={'h3'}>
-                  {postData?.owner.firstName} {postData?.owner.lastName}
-                </Typography>
+                <Link href={`${PATH.USER}/${postData.ownerId}`} className={s.link}>
+                  <Typography variant={'h3'} color={'primary'}>
+                    URL Profile
+                  </Typography>
+                </Link>
               </div>
             </div>
             <div className={s.middleContent}>

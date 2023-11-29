@@ -5,7 +5,7 @@ import { useRouter } from 'next/router'
 
 import loaderIcon from '../../../../../public/loader.svg'
 
-import s from './VewPostModal.module.scss'
+import s from './ViewPostModal.module.scss'
 
 import { postsActions, useUpdatePostByIdMutation } from '@/entities/posts'
 import { useGetProfileQuery } from '@/entities/profile'

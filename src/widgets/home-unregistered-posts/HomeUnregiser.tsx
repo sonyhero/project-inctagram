@@ -42,7 +42,13 @@ export const HomeUnregister = ({ posts, usersCount }: Props) => {
         <Typography variant={'h2'} color={'primary'}>
           Registered users:
         </Typography>
-        <div className={s.count}>{renderUsersCount}</div>
+        {usersCount ? (
+          <div className={s.count}>{renderUsersCount}</div>
+        ) : (
+          <Typography variant={'h2'} color={'primary'}>
+            ...bad connection
+          </Typography>
+        )}
       </div>
       <div className={s.posts}>{mappedPosts}</div>
     </div>
