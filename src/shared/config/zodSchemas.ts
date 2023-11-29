@@ -3,10 +3,10 @@ import { z } from 'zod'
 import { LocaleType } from '@/shared/locales'
 
 export const getZodSchema = (args: GetZodSchemaType) => {
-  const { t, regex, regexMessage, lengthMin, lengthMax } = args
+  const { t, stringRequiredMessage, regex, regexMessage, lengthMin, lengthMax } = args
 
   return z
-    .string()
+    .string({ required_error: stringRequiredMessage })
     .min(lengthMin, `${t.zodSchema.minNumberOfCharacters} ${lengthMin}`)
     .max(lengthMax, `${t.zodSchema.maxNumberOfCharacters} ${lengthMax}`)
     .regex(regex, regexMessage)
@@ -14,6 +14,7 @@ export const getZodSchema = (args: GetZodSchemaType) => {
 
 type GetZodSchemaType = {
   t: LocaleType
+  stringRequiredMessage?: string
   regex: RegExp
   regexMessage: string
   lengthMin: number
