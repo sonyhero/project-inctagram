@@ -90,7 +90,7 @@ export default function UserPage() {
       <div className={s.mainInfo}>
         <div className={s.photoBlock}>
           <Image
-            src={userData?.profile.avatars[0].url ?? imageIcon}
+            src={userData?.profile.avatars[0]?.url ?? imageIcon}
             priority={true}
             width={192}
             height={192}
