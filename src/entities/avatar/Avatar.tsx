@@ -17,7 +17,7 @@ export const Avatar = (props: Props) => {
   const { userId, className, width = 192, height = 192 } = props
   const { data: profileData, isFetching, isLoading } = useGetProfileQuery(userId)
   const isLoadingAvatar = isLoading && isFetching
-  const avatar = profileData?.avatars.length && profileData.avatars[0].url
+  const avatar = profileData?.avatars && profileData.avatars[0]?.url
   const profilePhoto = isLoadingAvatar ? loader : avatar ?? imageIcon
 
   return (

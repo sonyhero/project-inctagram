@@ -14,6 +14,7 @@ import { LocaleType } from '@/shared/locales'
 const getCreateNewPasswordSchema = (t: LocaleType) => {
   const passwordZod = getZodSchema({
     t,
+    stringRequiredMessage: `${t.zodSchema.minNumberOfCharacters} ${6}`,
     lengthMin: 6,
     lengthMax: 20,
     regex: PASSWORD_REGEX,
@@ -23,7 +24,7 @@ const getCreateNewPasswordSchema = (t: LocaleType) => {
   return z
     .object({
       newPassword: passwordZod,
-      passwordConfirm: z.string(),
+      passwordConfirm: z.string({ required_error: `${t.zodSchema.minNumberOfCharacters} ${6}` }),
     })
     .refine(data => data.newPassword === data.passwordConfirm, {
       path: ['passwordConfirm'],
