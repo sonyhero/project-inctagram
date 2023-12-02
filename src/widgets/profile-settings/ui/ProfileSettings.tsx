@@ -9,6 +9,7 @@ import { useTranslation } from '@/shared/hooks/useTranstaion'
 import { useAppDispatch, useAppSelector } from '@/shared/store'
 import { TabSwitcher } from '@/shared/ui'
 import { profileSettingsSlice } from '@/widgets/profile-settings'
+import { AccountManagement } from '@/widgets/profile-settings/ui/account-management/AccountManagement'
 import { GeneralInformation } from '@/widgets/profile-settings/ui/general-information/GeneralInformation'
 
 type Props = {
@@ -33,7 +34,7 @@ export const ProfileSettings = ({ userId }: Props) => {
     } else if (currentOption === t.myProfile.tabs.devices) {
       return <div>{t.myProfile.tabs.devices}</div>
     } else if (currentOption === t.myProfile.tabs.accountManagement) {
-      return <div>{t.myProfile.tabs.accountManagement}</div>
+      return <AccountManagement />
     } else if (currentOption === t.myProfile.tabs.myPayments) {
       return <div>{t.myProfile.tabs.myPayments}</div>
     }

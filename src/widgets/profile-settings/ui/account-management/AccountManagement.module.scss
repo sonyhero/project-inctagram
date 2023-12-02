@@ -1,0 +1,17 @@
+.accountManagement {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  border: 1px solid red;
+
+  .paymentsBlock {
+    display: flex;
+    justify-content: flex-end;
+    border: 1px solid green;
+
+    .payments {
+      display: flex;
+      align-items: center;
+    }
+  }
+}
