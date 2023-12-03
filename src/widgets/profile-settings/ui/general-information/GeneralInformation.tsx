@@ -33,7 +33,7 @@ export const GeneralInformation = ({ userId }: Props) => {
         <div className={s.photoBlock}>
           <div className={s.photoAndDeleteBlock}>
             <Avatar userId={userId} className={s.photo} />
-            {profileData?.avatars.length && (
+            {profileData?.avatars[0]?.url && (
               <div className={s.deletePhoto} onClick={openDeleteModalHandler}>
                 <Close />
               </div>
