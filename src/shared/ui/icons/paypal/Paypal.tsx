@@ -1,7 +1,15 @@
 import { SVGProps, Ref, forwardRef, memo } from 'react'
 
 const SvgComponent = (props: SVGProps<SVGSVGElement>, ref: Ref<SVGSVGElement>) => (
-  <svg width="96" height="64" viewBox="0 0 96 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <svg
+    width="96"
+    height="64"
+    viewBox="0 0 96 64"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+    ref={ref}
+    {...props}
+  >
     <g clipPath="url(#clip0_4735_12457)">
       <path
         d="M5.89474 0.5H90.1053C93.097 0.5 95.5 2.8598 95.5 5.74359V58.2564C95.5 61.1402 93.097 63.5 90.1053 63.5H5.89474C2.90298 63.5 0.5 61.1402 0.5 58.2564V5.74359C0.5 2.8598 2.90298 0.5 5.89474 0.5Z"

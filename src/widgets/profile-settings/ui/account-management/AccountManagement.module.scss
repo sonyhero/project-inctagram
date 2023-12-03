@@ -25,6 +25,10 @@
       display: flex;
       gap: 3.38rem;
       align-items: center;
+
+      svg {
+        cursor: pointer;
+      }
     }
   }
 }

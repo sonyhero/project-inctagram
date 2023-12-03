@@ -25,7 +25,8 @@ export const AccountManagement = () => {
   const [accountType, setAccountType] = useState<number>(accountTypeOptions[0].id)
   const [subscriptionAmount, setSubscriptionAmount] = useState<number>(subscriptionOptions[0].id)
 
-  const paypalHandler = (paymentType: 'STRIPE' | 'PAYPAL') => {
+  const paymentsHandler = (paymentType: 'STRIPE' | 'PAYPAL') => {
+    debugger
     createSub({
       typeSubscription: subscriptionOptions[subscriptionAmount].typeSubscription,
       paymentType: paymentType,
@@ -56,11 +57,13 @@ export const AccountManagement = () => {
         </div>
       )}
       <div className={s.paymentsBlock}>
-        <div className={s.payments}>
-          <Paypal width={96} height={64} onClick={() => paypalHandler('PAYPAL')} />
-          <Typography variant={'regular14'}>Or</Typography>
-          <Stripe width={96} height={64} onClick={() => paypalHandler('STRIPE')} />
-        </div>
+        {accountType === 2 && (
+          <div className={s.payments}>
+            <Paypal width={96} height={64} onClick={() => paymentsHandler('PAYPAL')} />
+            <Typography variant={'regular14'}>Or</Typography>
+            <Stripe width={96} height={64} onClick={() => paymentsHandler('STRIPE')} />
+          </div>
+        )}
       </div>
     </div>
   )
