@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from 'react'
 
 import { useAutoAnimate } from '@formkit/auto-animate/react'
 import Image from 'next/image'
+import { useRouter } from 'next/router'
 
 import s from './ProfileInfo.module.scss'
 
@@ -13,11 +14,11 @@ import {
 } from '@/entities/posts'
 import { useGetProfileQuery } from '@/entities/profile'
 import { modalActions } from '@/features/modal'
+import { PATH } from '@/shared/config/routes'
 import { useTranslation } from '@/shared/hooks'
 import { useAppDispatch, useAppSelector } from '@/shared/store'
 import { Nullable } from '@/shared/types'
 import { Button, Typography } from '@/shared/ui'
-import { profileSettingsSlice } from '@/widgets/profile-settings'
 import { Avatar } from 'src/entities/avatar'
 
 type Props = {
@@ -25,7 +26,7 @@ type Props = {
 }
 export const ProfileInfo = ({ userId }: Props) => {
   const { t } = useTranslation()
-
+  const { push } = useRouter()
   const posts = useAppSelector(state => state.postsSlice.posts)
   const publicationCount = useAppSelector(state => state.postsSlice.publicationCount)
   const dispatch = useAppDispatch()
@@ -52,7 +53,7 @@ export const ProfileInfo = ({ userId }: Props) => {
   }, [postsData])
 
   const showProfileSettingsHandler = () => {
-    dispatch(profileSettingsSlice.actions.setShowProfileSettings({ value: true }))
+    push(PATH.MY_PROFILE_SETTINGS)
   }
 
   const openPostModalHandler = (id: number) => {
