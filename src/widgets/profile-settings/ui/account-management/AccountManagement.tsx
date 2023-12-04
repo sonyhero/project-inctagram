@@ -26,7 +26,6 @@ export const AccountManagement = () => {
   const [subscriptionAmount, setSubscriptionAmount] = useState<number>(subscriptionOptions[0].id)
 
   const paymentsHandler = (paymentType: 'STRIPE' | 'PAYPAL') => {
-    debugger
     createSub({
       typeSubscription: subscriptionOptions[subscriptionAmount].typeSubscription,
       paymentType: paymentType,

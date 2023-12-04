@@ -1,8 +1,8 @@
-import { MyProfile } from '@/pages-flat/my-profile'
 import { getBaseLayout } from '@/shared/providers'
+import { ProfileSettings } from '@/widgets/profile-settings'
 
 const MyProfilePage = () => {
-  return <MyProfile />
+  return <ProfileSettings />
 }
 
 export default MyProfilePage
