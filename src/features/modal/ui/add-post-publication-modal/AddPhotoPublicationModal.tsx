@@ -1,5 +1,7 @@
 import React, { ChangeEvent, useEffect, useState } from 'react'
 
+import { toast } from 'react-toastify'
+
 import s from './AddPostPublicationModal.module.scss'
 
 import { Avatar } from '@/entities'
@@ -35,6 +37,7 @@ export const AddPostPublicationModal = ({ addPostPublicationModal, userId }: Pro
   const activePhoto = photosPost[activeIndex]
   const [photosFormData, serPhotoFormData] = useState<FormData[]>([])
   const [descriptionValue, setDescriptionValue] = useState(currentDescription)
+  const [isPublish, setIsPublish] = useState(true)
 
   const iaActivePhoto = photosPost && photosPost.length > 0 && activePhoto
 
@@ -91,42 +94,49 @@ export const AddPostPublicationModal = ({ addPostPublicationModal, userId }: Pro
     }
   }
   const onPublishHandler = async () => {
-    const uploadPromises = photosFormData.map(formData => {
-      const file = formData.get('file')
+    try {
+      setIsPublish(false)
+      const uploadPromises = photosFormData.map(formData => {
+        const file = formData.get('file')
 
-      if (file) {
-        const formData = new FormData()
+        if (file) {
+          const formData = new FormData()
 
-        formData.append('file', file)
+          formData.append('file', file)
 
-        return uploadImage(formData)
-          .unwrap()
-          .then(data => {
-            if (data.images) {
-              return { uploadId: data.images[0].uploadId } as PostArgsTypeChildrenMetadata
-            }
-          })
-      }
-    })
-
-    const uploadIds = await Promise.all(uploadPromises)
-
-    const filteredUploadIds = uploadIds.filter(Boolean) as PostArgsTypeChildrenMetadata[]
-
-    createPost({
-      description:
-        descriptionValue.length > 500 ? descriptionValue.slice(0, 500) : descriptionValue,
-      childrenMetadata: filteredUploadIds,
-    })
-      .unwrap()
-      .then(postData => {
-        dispatch(postsActions.createNewPost(postData))
-        dispatch(postsActions.updatePublicationCount(publicationCount + 1))
+          return uploadImage(formData)
+            .unwrap()
+            .then(data => {
+              if (data.images) {
+                return { uploadId: data.images[0].uploadId } as PostArgsTypeChildrenMetadata
+              }
+            })
+        }
       })
 
-    dispatch(modalActions.setCloseModal({}))
-    dispatch(postsActions.deletePhotosPost({}))
+      const uploadIds = await Promise.all(uploadPromises)
+
+      const filteredUploadIds = uploadIds.filter(Boolean) as PostArgsTypeChildrenMetadata[]
+
+      createPost({
+        description: descriptionValue,
+        childrenMetadata: filteredUploadIds,
+      })
+        .unwrap()
+        .then(postData => {
+          dispatch(postsActions.createNewPost(postData))
+          dispatch(postsActions.updatePublicationCount(publicationCount + 1))
+        })
+
+      dispatch(modalActions.setCloseModal({}))
+      dispatch(postsActions.deletePhotosPost({}))
+    } catch (e) {
+      toast.error('Some Error')
+    } finally {
+      setIsPublish(true)
+    }
   }
+
   const onChangeTextHandler = (event: ChangeEvent<HTMLTextAreaElement>) => {
     const maxLength = 500
     const textValue = event.target.value
@@ -145,7 +155,7 @@ export const AddPostPublicationModal = ({ addPostPublicationModal, userId }: Pro
       onClose={closeModal}
       showCloseButton={false}
       prevClick={opPrevClickHandler}
-      nextContent={true}
+      nextContent={isPublish}
       nextContentTitle={t.create.publication.publish}
       nextClick={onPublishHandler}
       contentBoxClassname={s.contentBox}
