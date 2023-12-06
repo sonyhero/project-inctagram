@@ -50,7 +50,9 @@
           .photoAva {
             width: 2.25rem;
             height: 2.25rem;
+
             object-fit: cover;
+            border: 1px solid var(--color-dark-100);
             border-radius: 50%;
           }
         }

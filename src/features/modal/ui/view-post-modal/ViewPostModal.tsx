@@ -7,6 +7,7 @@ import loaderIcon from '../../../../../public/loader.svg'
 
 import s from './ViewPostModal.module.scss'
 
+import { Avatar } from '@/entities'
 import { postsActions, useUpdatePostByIdMutation } from '@/entities/posts'
 import { useGetProfileQuery } from '@/entities/profile'
 import { modalActions } from '@/features/modal'
@@ -150,12 +151,13 @@ export const ViewPostModal = ({ open, userId }: Props) => {
             <div className={s.postDescriptionBlock}>
               <div className={s.topContent}>
                 <div className={s.photoBlock}>
-                  <ImageNext
-                    src={loaderIcon}
-                    priority={true}
-                    {...profileAvatarLoader()}
-                    alt={'profilePhoto'}
-                  />
+                  {/*<ImageNext*/}
+                  {/*  src={loaderIcon}*/}
+                  {/*  priority={true}*/}
+                  {/*  {...profileAvatarLoader()}*/}
+                  {/*  alt={'profilePhoto'}*/}
+                  {/*/>*/}
+                  <Avatar userId={userId} className={s.photoAva} />
                   <Typography variant={'h3'}>{data?.userName}</Typography>
                 </div>
                 <DropDownMenu
