@@ -12,3 +12,14 @@ export const getDayMonthTime = (dateString: string, locale: string) => {
 
   return date.toLocaleDateString(locale, options)
 }
+
+export const getNumericDayMonthTime = (dateString: string, locale: string) => {
+  const date = new Date(dateString)
+  const options = {
+    year: 'numeric',
+    month: 'numeric',
+    day: 'numeric',
+  } as const
+
+  return date.toLocaleDateString(locale, options)
+}
