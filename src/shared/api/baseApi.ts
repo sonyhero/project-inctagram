@@ -5,7 +5,7 @@ import { customFetchBase } from '@/shared/api/baseQueryWithReauth'
 
 export const baseApi = createApi({
   reducerPath: 'baseApi',
-  tagTypes: ['Me', 'Profile', 'Posts'],
+  tagTypes: ['Me', 'Profile', 'Posts', 'Subscriptions'],
   baseQuery: customFetchBase,
   extractRehydrationInfo(action, { reducerPath }) {
     if (action.type === HYDRATE) {

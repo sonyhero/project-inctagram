@@ -1,7 +1,8 @@
 export const PATH = {
   HOME: '/',
   CREATE: '/create',
-  MY_PROFILE: '/my-profile',
+  MY_PROFILE: '/profile',
+  MY_PROFILE_SETTINGS: '/profile/settings',
   MESSENGER: '/messenger',
   SEARCH: '/search',
   STATISTIC: '/statistics',

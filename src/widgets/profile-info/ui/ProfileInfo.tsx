@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from 'react'
 
 import { useAutoAnimate } from '@formkit/auto-animate/react'
 import Image from 'next/image'
+import { useRouter } from 'next/router'
 
 import s from './ProfileInfo.module.scss'
 
@@ -13,24 +14,25 @@ import {
 } from '@/entities/posts'
 import { useGetProfileQuery } from '@/entities/profile'
 import { modalActions } from '@/features/modal'
+import { PATH } from '@/shared/config/routes'
 import { useTranslation } from '@/shared/hooks'
 import { useAppDispatch, useAppSelector } from '@/shared/store'
 import { Nullable } from '@/shared/types'
 import { Button, Typography } from '@/shared/ui'
-import { profileSettingsSlice } from '@/widgets/profile-settings'
 import { Avatar } from 'src/entities/avatar'
 
 type Props = {
   userId: number
 }
-export const ProfileInfo = ({ userId }: Props) => {
-  const { t } = useTranslation()
 
+export const ProfileInfo = ({ userId }: Props) => {
+  const { data: profileData } = useGetProfileQuery(userId)
+  const { t } = useTranslation()
+  const { push } = useRouter()
   const posts = useAppSelector(state => state.postsSlice.posts)
   const publicationCount = useAppSelector(state => state.postsSlice.publicationCount)
   const dispatch = useAppDispatch()
 
-  const { data } = useGetProfileQuery(userId)
   const { data: postsData } = useGetPostsByUserIdQuery({
     pageSize: 8,
     sortBy: '',
@@ -52,14 +54,14 @@ export const ProfileInfo = ({ userId }: Props) => {
   }, [postsData])
 
   const showProfileSettingsHandler = () => {
-    dispatch(profileSettingsSlice.actions.setShowProfileSettings({ value: true }))
+    push(PATH.MY_PROFILE_SETTINGS)
   }
 
   const openPostModalHandler = (id: number) => {
     getPost({ postId: id })
       .unwrap()
-      .then(async postData => {
-        await dispatch(postsActions.setPost(postData))
+      .then(postData => {
+        dispatch(postsActions.setPost(postData))
         dispatch(modalActions.setOpenModal('viewPostModal'))
       })
   }
@@ -112,7 +114,7 @@ export const ProfileInfo = ({ userId }: Props) => {
         </div>
         <div className={s.descriptionBlock}>
           <div className={s.nameAndSettings}>
-            <Typography variant={'h1'}>{data?.userName}</Typography>
+            <Typography variant={'h1'}>{profileData?.userName}</Typography>
             <Button variant={'secondary'} onClick={showProfileSettingsHandler}>
               {t.myProfile.profilePage.profileSettings}
             </Button>
@@ -132,7 +134,7 @@ export const ProfileInfo = ({ userId }: Props) => {
             </div>
           </div>
           <div className={s.aboutMe}>
-            <Typography variant={'regular16'}>{data?.aboutMe}</Typography>
+            <Typography variant={'regular16'}>{profileData?.aboutMe}</Typography>
           </div>
         </div>
       </div>
