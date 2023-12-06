@@ -11,28 +11,27 @@ type RadioGroupProps = {
   options?: any[]
   onChangeOption?: (option: any) => void
   isDisabled?: boolean
+  defaultValue?: any
 }
 export const RadioGroupDemo: FC<RadioGroupProps> = ({
   isDisabled = false,
   options,
   onChangeOption,
   classname,
+  defaultValue,
 }) => {
   return (
     <form>
       <RadioGroup.Root
         className={`${s.radioGroupRoot} ${classname}`}
         onValueChange={onChangeOption}
+        defaultValue={defaultValue}
+        disabled={isDisabled}
       >
         {options?.map(o => {
           return (
             <div className={s.itemGroup} key={o.id}>
-              <RadioGroup.Item
-                className={s.radioGroupItem}
-                disabled={isDisabled}
-                value={o.id}
-                id={o.id}
-              >
+              <RadioGroup.Item className={s.radioGroupItem} value={o.id} id={o.id}>
                 <RadioGroup.Indicator className={s.radioGroupIndicator} />
               </RadioGroup.Item>
               <label className={`${s.label} ${isDisabled ? s.labelDisabled : ''}`} htmlFor={o.id}>

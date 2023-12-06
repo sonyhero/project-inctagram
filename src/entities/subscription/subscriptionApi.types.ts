@@ -1,9 +1,12 @@
 export type SubscriptionType = {
-  typeSubscription: 'MONTHLY' | 'DAY' | 'WEEKLY'
+  typeSubscription: SubscriptionDurationType
   paymentType: string
   amount: number
   baseUrl: string
 }
+
+export type SubscriptionDurationType = 'MONTHLY' | 'DAY' | 'WEEKLY'
+
 export type CurrentSubscriptionType = {
   data: CurrentSubscriptionTypeData[]
   hasAutoRenewal: boolean
@@ -30,6 +33,6 @@ export type MyPaymentsType = {
   dateOfPayment: string
   endDateOfSubscription: string
   price: number
-  subscriptionType: 'MONTHLY' | 'DAY' | 'WEEKLY'
+  subscriptionType: SubscriptionDurationType
   paymentType: 'STRIPE' | 'PAYPAL'
 }
