@@ -13,6 +13,7 @@ import {
   useLazyGetPostsByUserIdQuery,
 } from '@/entities/posts'
 import { useGetProfileQuery } from '@/entities/profile'
+import { MeResponseType, useMeQuery } from '@/features/auth'
 import { modalActions } from '@/features/modal'
 import { PATH } from '@/shared/config/routes'
 import { useTranslation } from '@/shared/hooks'
@@ -21,17 +22,16 @@ import { Nullable } from '@/shared/types'
 import { Button, Typography } from '@/shared/ui'
 import { Avatar } from 'src/entities/avatar'
 
-type Props = {
-  userId: number
-}
-export const ProfileInfo = ({ userId }: Props) => {
+export const ProfileInfo = () => {
+  const { data: userData } = useMeQuery()
+  const { userId } = userData as MeResponseType
+  const { data: profileData } = useGetProfileQuery(userId)
   const { t } = useTranslation()
   const { push } = useRouter()
   const posts = useAppSelector(state => state.postsSlice.posts)
   const publicationCount = useAppSelector(state => state.postsSlice.publicationCount)
   const dispatch = useAppDispatch()
 
-  const { data } = useGetProfileQuery(userId)
   const { data: postsData } = useGetPostsByUserIdQuery({
     pageSize: 8,
     sortBy: '',
@@ -59,8 +59,8 @@ export const ProfileInfo = ({ userId }: Props) => {
   const openPostModalHandler = (id: number) => {
     getPost({ postId: id })
       .unwrap()
-      .then(async postData => {
-        await dispatch(postsActions.setPost(postData))
+      .then(postData => {
+        dispatch(postsActions.setPost(postData))
         dispatch(modalActions.setOpenModal('viewPostModal'))
       })
   }
@@ -113,7 +113,7 @@ export const ProfileInfo = ({ userId }: Props) => {
         </div>
         <div className={s.descriptionBlock}>
           <div className={s.nameAndSettings}>
-            <Typography variant={'h1'}>{data?.userName}</Typography>
+            <Typography variant={'h1'}>{profileData?.userName}</Typography>
             <Button variant={'secondary'} onClick={showProfileSettingsHandler}>
               {t.myProfile.profilePage.profileSettings}
             </Button>
@@ -133,7 +133,7 @@ export const ProfileInfo = ({ userId }: Props) => {
             </div>
           </div>
           <div className={s.aboutMe}>
-            <Typography variant={'regular16'}>{data?.aboutMe}</Typography>
+            <Typography variant={'regular16'}>{profileData?.aboutMe}</Typography>
           </div>
         </div>
       </div>

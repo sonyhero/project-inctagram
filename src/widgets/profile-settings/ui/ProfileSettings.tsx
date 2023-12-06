@@ -6,7 +6,6 @@ import s from './ProfileSettings.module.scss'
 
 import { useGetProfileQuery } from '@/entities/profile'
 import { MeResponseType, useMeQuery } from '@/features/auth'
-import { PATH } from '@/shared/config/routes'
 import { useTranslation } from '@/shared/hooks/useTranstaion'
 import { useAppDispatch, useAppSelector } from '@/shared/store'
 import { TabSwitcher } from '@/shared/ui'
@@ -17,14 +16,7 @@ import { GeneralInformation } from '@/widgets/profile-settings/ui/general-inform
 export const ProfileSettings = () => {
   const { data: userData } = useMeQuery()
   const { t } = useTranslation()
-  const { locale, push } = useRouter()
-
-  if (!userData) {
-    push(PATH.SIGN_IN)
-
-    return
-  }
-
+  const { locale } = useRouter()
   const { userId } = userData as MeResponseType
   const { data: profileData } = useGetProfileQuery(userId)
 

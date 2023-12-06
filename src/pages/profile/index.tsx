@@ -1,9 +1,26 @@
-import { MyProfile } from '@/pages-flat/my-profile'
-import { getBaseLayout } from '@/shared/providers'
+import { useRouter } from 'next/router'
 
-const SettingsPage = () => {
-  return <MyProfile />
+import { useMeQuery } from '@/features/auth'
+import { PATH } from '@/shared/config/routes'
+import { getBaseLayout } from '@/shared/providers'
+import { ProfileInfo } from '@/widgets/profile-info'
+
+const MyProfilePage = () => {
+  const { data, isLoading } = useMeQuery()
+  const { push } = useRouter()
+
+  if (isLoading) {
+    return <div>...Loading</div>
+  }
+
+  if (!data) {
+    push(PATH.SIGN_IN)
+
+    return
+  }
+
+  return <ProfileInfo />
 }
 
-export default SettingsPage
-SettingsPage.getLayout = getBaseLayout
+export default MyProfilePage
+MyProfilePage.getLayout = getBaseLayout
