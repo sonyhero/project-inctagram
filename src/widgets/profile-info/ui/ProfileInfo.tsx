@@ -13,7 +13,6 @@ import {
   useLazyGetPostsByUserIdQuery,
 } from '@/entities/posts'
 import { useGetProfileQuery } from '@/entities/profile'
-import { MeResponseType, useMeQuery } from '@/features/auth'
 import { modalActions } from '@/features/modal'
 import { PATH } from '@/shared/config/routes'
 import { useTranslation } from '@/shared/hooks'
@@ -22,9 +21,11 @@ import { Nullable } from '@/shared/types'
 import { Button, Typography } from '@/shared/ui'
 import { Avatar } from 'src/entities/avatar'
 
-export const ProfileInfo = () => {
-  const { data: userData } = useMeQuery()
-  const { userId } = userData as MeResponseType
+type Props = {
+  userId: number
+}
+
+export const ProfileInfo = ({ userId }: Props) => {
   const { data: profileData } = useGetProfileQuery(userId)
   const { t } = useTranslation()
   const { push } = useRouter()
@@ -53,7 +54,7 @@ export const ProfileInfo = () => {
   }, [postsData])
 
   const showProfileSettingsHandler = () => {
-    push(PATH.MY_PROFILE_SETTINGS)
+    push(PATH.MY_PROFILE_SETTINGS_GENERAL)
   }
 
   const openPostModalHandler = (id: number) => {

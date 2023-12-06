@@ -19,7 +19,7 @@ const MyProfilePage = () => {
     return
   }
 
-  return <ProfileInfo />
+  return <ProfileInfo userId={data.userId} />
 }
 
 export default MyProfilePage
