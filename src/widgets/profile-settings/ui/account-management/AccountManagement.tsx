@@ -18,15 +18,9 @@ const accountTypeOptions: AccountTypeOptions[] = [
   { id: 2, value: 'Business' },
 ]
 
-const _subscriptionOptions: SubscriptionOptionsType[] = [
-  { id: 0, value: '$10 per 1 Day', amount: 10, typeSubscription: 'DAY' },
-  { id: 1, value: '$50 per 7 Day', amount: 50, typeSubscription: 'WEEKLY' },
-  { id: 2, value: '$100 per month', amount: 100, typeSubscription: 'MONTHLY' },
-]
-
 export const AccountManagement = () => {
   const [createSub] = useCreateSubscriptionMutation()
-  const { data: coastData } = useCostOfSubscriptionsQuery()
+  const { data: coastData, isLoading } = useCostOfSubscriptionsQuery()
   const [accountTypeId, setAccountTypeId] = useState<number>(accountTypeOptions[0].id)
   const [subscriptionId, setSubscriptionId] = useState<number>(0)
   const [subscriptionOptions, setSubscriptionOptions] =
@@ -98,7 +92,7 @@ export const AccountManagement = () => {
           </div>
         </>
       )}
-      {!subscriptionOptions && (
+      {isLoading && !subscriptionOptions && (
         <Typography variant={'h3'}>
           Subscriptions are currently unavailable, please try again later
         </Typography>
