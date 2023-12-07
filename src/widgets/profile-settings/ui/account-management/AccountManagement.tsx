@@ -7,8 +7,8 @@ import { CurrentSubscription } from './current-subscription'
 import {
   useCostOfSubscriptionsQuery,
   useCreateSubscriptionMutation,
-} from '@/entities/subscription/subscriptionApi'
-import { SubscriptionDurationType } from '@/entities/subscription/subscriptionApi.types'
+} from '@/entities/subscription/api/subscriptionApi'
+import { SubscriptionDurationType } from '@/entities/subscription/api/subscriptionApi.types'
 import { Nullable } from '@/shared/types'
 import { Paypal, Stripe, Typography } from '@/shared/ui'
 import { RadioGroupDemo } from '@/shared/ui/radio-group'

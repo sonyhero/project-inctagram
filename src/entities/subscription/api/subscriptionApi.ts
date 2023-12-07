@@ -3,7 +3,7 @@ import {
   CurrentSubscriptionType,
   MyPaymentsType,
   SubscriptionType,
-} from '@/entities/subscription/subscriptionApi.types'
+} from '@/entities/subscription/api/subscriptionApi.types'
 import { baseApi } from '@/shared/api'
 
 const subscriptionApi = baseApi.injectEndpoints({

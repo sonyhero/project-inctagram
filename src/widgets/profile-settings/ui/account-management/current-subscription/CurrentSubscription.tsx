@@ -4,7 +4,7 @@ import { useRouter } from 'next/router'
 
 import s from './CurrentSubscription.module.scss'
 
-import { useCurrentSubscriptionsQuery } from '@/entities/subscription/subscriptionApi'
+import { useCurrentSubscriptionsQuery } from '@/entities/subscription/api/subscriptionApi'
 import { CheckBox, Typography } from '@/shared/ui'
 import { getNumericDayMonthTime } from '@/shared/utils'
 
