@@ -38,7 +38,7 @@ const subscriptionApi = baseApi.injectEndpoints({
         }),
         providesTags: ['Subscriptions'],
       }),
-      myPayments: builder.query<MyPaymentsType, void>({
+      myPayments: builder.query<MyPaymentsType[], void>({
         query: () => ({
           url: `v1/subscriptions/my-payments`,
           method: 'GET',

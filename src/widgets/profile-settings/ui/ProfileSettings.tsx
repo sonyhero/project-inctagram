@@ -12,6 +12,7 @@ import { TabSwitcher } from '@/shared/ui'
 import { profileSettingsSlice } from '@/widgets/profile-settings'
 import { AccountManagement } from '@/widgets/profile-settings/ui/account-management/AccountManagement'
 import { GeneralInformation } from '@/widgets/profile-settings/ui/general-information/GeneralInformation'
+import { MyPayments } from '@/widgets/profile-settings/ui/my-payments/MyPayments'
 
 export const ProfileSettings = () => {
   const { data: userData } = useMeQuery()
@@ -36,7 +37,7 @@ export const ProfileSettings = () => {
     } else if (currentOption === t.myProfile.tabs.accountManagement) {
       return <AccountManagement />
     } else if (currentOption === t.myProfile.tabs.myPayments) {
-      return <div>{t.myProfile.tabs.myPayments}</div>
+      return <MyPayments />
     }
   }, [currentOption, profileData])
 
