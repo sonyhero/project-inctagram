@@ -6,6 +6,7 @@ import s from './MyPayments.module.scss'
 
 import { useMyPaymentsQuery } from '@/entities/subscription/api/subscriptionApi'
 import { setCurrentPage, setPageSize } from '@/entities/subscription/model/subscriptionSlice'
+import { useTranslation } from '@/shared/hooks'
 import { useAppDispatch, useAppSelector } from '@/shared/store'
 import { Pagination, Typography } from '@/shared/ui'
 import { SelectBox } from '@/shared/ui/select/SelectBox'
@@ -16,6 +17,7 @@ export const MyPayments = () => {
   const { data: myPaymentsData } = useMyPaymentsQuery()
   const { locale } = useRouter()
   const dispatch = useAppDispatch()
+  const { t } = useTranslation()
 
   const paginationOptions = useAppSelector(state => state.subscriptionSlice.paginationOptions)
   const currentPage = useAppSelector(state => state.subscriptionSlice.currentPage)
@@ -33,11 +35,11 @@ export const MyPayments = () => {
   const pageData = getPageData(currentPage)
 
   const headOptions = [
-    'Date of Payment',
-    'End date of subscription',
-    'Price',
-    'Subscription Type',
-    'Payment Type',
+    t.myProfile.myPayments.table.dateOfPayment,
+    t.myProfile.myPayments.table.endOfSubscriptions,
+    t.myProfile.myPayments.table.price,
+    t.myProfile.myPayments.table.subscriptionType,
+    t.myProfile.myPayments.table.paymentType,
   ]
 
   const onSetPerPage = (value: number) => {
@@ -77,7 +79,7 @@ export const MyPayments = () => {
           <Typography variant={'regular14'}>{payment.subscriptionType}</Typography>
         </Cell>
         <Cell>
-          <Typography variant={'small'}>{payment.paymentType}</Typography>
+          <Typography variant={'regular14'}>{payment.paymentType}</Typography>
         </Cell>
       </Row>
     )
@@ -93,14 +95,18 @@ export const MyPayments = () => {
       </Root>
       <div className={s.pagination}>
         <Pagination count={pagesCount} page={currentPage} onChange={onSetCurrentPage} />
-        <Typography variant={'regular14'}>Показать</Typography>
+        <Typography variant={'regular14'}>
+          {t.myProfile.myPayments.paginationSelect.show}
+        </Typography>
         <SelectBox
           defaultValue={paginationOptions[0].value}
           options={paginationOptions}
           onValueChange={onSetPerPage}
           className={s.selectPagination}
         />
-        <Typography variant={'regular14'}>На странице</Typography>
+        <Typography variant={'regular14'}>
+          {t.myProfile.myPayments.paginationSelect.onPage}
+        </Typography>
       </div>
     </div>
   )

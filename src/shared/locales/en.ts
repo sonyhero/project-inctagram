@@ -92,6 +92,19 @@ export const en = {
         no: 'No',
       },
     },
+    myPayments: {
+      table: {
+        dateOfPayment: 'Date of Payment',
+        endOfSubscriptions: 'End date of subscription',
+        price: 'Price',
+        subscriptionType: 'Subscription Type',
+        paymentType: 'Payment Type',
+      },
+      paginationSelect: {
+        show: 'Show',
+        onPage: 'On page',
+      },
+    },
     profilePage: {
       following: 'Following',
       followers: 'Followers',
