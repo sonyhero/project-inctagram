@@ -17,7 +17,7 @@ export type SelectBoxProps = {
   options: any[]
   disabled?: boolean
   required?: boolean
-  classname?: string
+  className?: string
   errorMessage?: FieldError
   height?: boolean
   idValue?: boolean
@@ -33,7 +33,7 @@ export const SelectBox = (props: SelectBoxProps) => {
     options,
     disabled,
     required,
-    classname,
+    className,
     errorMessage,
     height,
     idValue = false,
@@ -51,7 +51,7 @@ export const SelectBox = (props: SelectBoxProps) => {
         required={required}
       >
         <Select.Trigger
-          className={`${disabled ? s.triggerDisabled : s.trigger} ${classname}`}
+          className={`${disabled ? s.triggerDisabled : s.trigger} ${className}`}
           asChild
           aria-label={'select'}
           tabIndex={1}
