@@ -19,7 +19,7 @@ const SettingsPage = () => {
     return
   }
 
-  return <ProfileSettings />
+  return <ProfileSettings userId={data.userId} />
 }
 
 export default SettingsPage

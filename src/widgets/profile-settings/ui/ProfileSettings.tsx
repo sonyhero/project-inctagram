@@ -5,7 +5,6 @@ import { useRouter } from 'next/router'
 import s from './ProfileSettings.module.scss'
 
 import { useGetProfileQuery } from '@/entities/profile'
-import { MeResponseType, useMeQuery } from '@/features/auth'
 import { useTranslation } from '@/shared/hooks/useTranstaion'
 import { useAppDispatch, useAppSelector } from '@/shared/store'
 import { TabSwitcher } from '@/shared/ui'
@@ -14,12 +13,14 @@ import { AccountManagement } from '@/widgets/profile-settings/ui/account-managem
 import { GeneralInformation } from '@/widgets/profile-settings/ui/general-information/GeneralInformation'
 import { MyPayments } from '@/widgets/profile-settings/ui/my-payments/MyPayments'
 
-export const ProfileSettings = () => {
-  const { data: userData } = useMeQuery()
+type Props = {
+  userId: number
+}
+
+export const ProfileSettings = ({ userId }: Props) => {
+  const { data: profileData } = useGetProfileQuery(userId)
   const { t } = useTranslation()
   const { locale } = useRouter()
-  const { userId } = userData as MeResponseType
-  const { data: profileData } = useGetProfileQuery(userId)
 
   const tabSwitcherOptions = useAppSelector(state => state.profileSettingsSlice.tabSwitcherOptions)
   const currentOption = useAppSelector(state => state.profileSettingsSlice.currentOption)
