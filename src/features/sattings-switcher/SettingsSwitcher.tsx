@@ -1,4 +1,4 @@
-import { useMemo } from 'react'
+import { useEffect, useMemo } from 'react'
 
 import { useRouter } from 'next/router'
 
@@ -11,7 +11,7 @@ import { setCurrentOption } from '@/widgets/profile-settings'
 
 export const SettingsSwitcher = () => {
   const { t } = useTranslation()
-  const { push } = useRouter()
+  const { push, asPath } = useRouter()
 
   const tabSwitcherOptions = useAppSelector(state => state.profileSettingsSlice.tabSwitcherOptions)
   const currentOption = useAppSelector(state => state.profileSettingsSlice.currentOption)
@@ -38,6 +38,10 @@ export const SettingsSwitcher = () => {
       return el
     })
   }, [tabSwitcherOptions, t])
+
+  useEffect(() => {
+    dispatch(setCurrentOption({ value: asPath }))
+  }, [])
 
   return (
     <div className={s.tabSwitcher}>
