@@ -1,7 +1,8 @@
 import { getSettingsLayout } from '@/shared/providers/settings-layout'
+import { MyPayments } from '@/widgets/profile-settings/ui/my-payments/MyPayments'
 
 const PaymentsPage = () => {
-  return <div>Payments</div>
+  return <MyPayments />
 }
 
 export default PaymentsPage
