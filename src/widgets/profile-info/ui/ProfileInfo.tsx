@@ -54,7 +54,7 @@ export const ProfileInfo = ({ userId }: Props) => {
   }, [postsData])
 
   const showProfileSettingsHandler = () => {
-    push(PATH.MY_PROFILE_SETTINGS)
+    push(PATH.MY_PROFILE_SETTINGS_GENERAL)
   }
 
   const openPostModalHandler = (id: number) => {
