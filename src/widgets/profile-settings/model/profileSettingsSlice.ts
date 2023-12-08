@@ -24,7 +24,7 @@ const initialState = {
       disabled: false,
     },
   ],
-  currentOption: 'General information',
+  currentOption: PATH.MY_PROFILE_SETTINGS_GENERAL,
   showProfileSettings: false,
 }
 
