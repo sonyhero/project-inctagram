@@ -1,11 +1,28 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
+import { PATH } from '@/shared/config/routes'
+
 const initialState = {
   tabSwitcherOptions: [
-    { id: 1, value: 'General information', disabled: false },
-    { id: 2, value: 'Devices', disabled: false },
-    { id: 3, value: 'Account Management', disabled: false },
-    { id: 4, value: 'My payments', disabled: false },
+    {
+      id: 1,
+      value: PATH.MY_PROFILE_SETTINGS_GENERAL,
+      description: 'General information',
+      disabled: false,
+    },
+    { id: 2, value: PATH.MY_PROFILE_SETTINGS_DEVICES, description: 'Devices', disabled: false },
+    {
+      id: 3,
+      value: PATH.MY_PROFILE_SETTINGS_EDIT,
+      description: 'Account Management',
+      disabled: false,
+    },
+    {
+      id: 4,
+      value: PATH.MY_PROFILE_SETTINGS_PAYMENTS,
+      description: 'My payments',
+      disabled: false,
+    },
   ],
   currentOption: 'General information',
   showProfileSettings: false,
@@ -24,4 +41,4 @@ export const profileSettingsSlice = createSlice({
   },
 })
 
-export const profileSettingsActions = profileSettingsSlice.actions
+export const { setShowProfileSettings, setCurrentOption } = profileSettingsSlice.actions
