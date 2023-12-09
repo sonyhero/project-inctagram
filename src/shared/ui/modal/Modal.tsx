@@ -80,7 +80,7 @@ export const Modal = (props: Props) => {
 
                   <div>
                     {nextContentTitle && (
-                      <Button variant={'text'} disabled={nextContent} onClick={nextClick}>
+                      <Button variant={'text'} disabled={!nextContent} onClick={nextClick}>
                         {nextContentTitle}
                       </Button>
                     )}
