@@ -8,6 +8,7 @@ import { useTranslation } from '@/shared/hooks'
 import { useAppDispatch, useAppSelector } from '@/shared/store'
 import { TabSwitcher } from '@/shared/ui'
 import { setCurrentOption } from '@/widgets/profile-settings'
+import { SettingsPathValuesTypes } from '@/widgets/profile-settings/model/profileSettingsSlice.types'
 
 export const SettingsSwitcher = () => {
   const { t } = useTranslation()
@@ -19,7 +20,7 @@ export const SettingsSwitcher = () => {
 
   const handleTabSort = (value: string) => {
     push(value)
-    dispatch(setCurrentOption({ value }))
+    dispatch(setCurrentOption({ value: value as SettingsPathValuesTypes }))
   }
 
   const changeOptionTabSwitcher = useMemo(() => {
@@ -40,7 +41,7 @@ export const SettingsSwitcher = () => {
   }, [tabSwitcherOptions, t])
 
   useEffect(() => {
-    dispatch(setCurrentOption({ value: asPath }))
+    dispatch(setCurrentOption({ value: asPath as SettingsPathValuesTypes }))
   }, [])
 
   return (

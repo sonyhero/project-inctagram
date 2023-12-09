@@ -1,6 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
 import { PATH } from '@/shared/config/routes'
+import { SettingsPathValuesTypes } from '@/widgets/profile-settings/model/profileSettingsSlice.types'
 
 const initialState = {
   tabSwitcherOptions: [
@@ -32,7 +33,7 @@ export const profileSettingsSlice = createSlice({
   name: 'profileSettingsSlice',
   initialState,
   reducers: {
-    setCurrentOption: (state, action: PayloadAction<{ value: string }>) => {
+    setCurrentOption: (state, action: PayloadAction<{ value: SettingsPathValuesTypes }>) => {
       state.currentOption = action.payload.value
     },
     setShowProfileSettings: (state, action: PayloadAction<{ value: boolean }>) => {
