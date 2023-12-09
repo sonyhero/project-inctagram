@@ -31,6 +31,7 @@ type Props = {
   nextContentTitle?: string
   showHeader?: boolean
   isOverlay?: boolean
+  secondModal?: boolean
 } & ComponentProps<'div'>
 
 const MODAL_ANIMATION = {
@@ -58,6 +59,7 @@ export const Modal = (props: Props) => {
     nextContentTitle,
     showHeader = true,
     isOverlay = true,
+    secondModal = false,
   } = props
 
   function handleModalClosed() {
@@ -69,7 +71,9 @@ export const Modal = (props: Props) => {
       {open && (
         <DialogPortal>
           <motion.div variants={MODAL_ANIMATION} initial={'hidden'} animate={'visible'}>
-            <DialogOverlay className={isOverlay ? s.overlay : s.noOverlay} />
+            <DialogOverlay
+              className={`${isOverlay ? s.overlay : s.noOverlay} ${secondModal && s.secondModal}`}
+            />
             <DialogContent className={`${s.content} ${className}`}>
               {showHeader && (
                 <header className={s.header}>

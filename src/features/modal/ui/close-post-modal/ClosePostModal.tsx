@@ -30,11 +30,12 @@ export const ClosePostModal = ({ closeAddPostModal }: Props) => {
 
   return (
     <Modal
-      className={s.modalBlock}
+      className={`${s.modalBlock}}`}
       title={t.create.closeCreatingPost.close}
       open={closeAddPostModal}
       onClose={backToPage}
-      isOverlay={false}
+      isOverlay={true}
+      secondModal={true}
     >
       <div className={s.modalContent}>
         <Typography>
