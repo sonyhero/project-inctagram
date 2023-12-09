@@ -9,6 +9,7 @@ import { CurrentSubscription } from './current-subscription'
 import {
   useCostOfSubscriptionsQuery,
   useCreateSubscriptionMutation,
+  useCurrentSubscriptionsQuery,
 } from '@/entities/subscription/api/subscriptionApi'
 import { SubscriptionDurationType } from '@/entities/subscription/api/subscriptionApi.types'
 import { SubscriptionModal } from '@/features/modal/ui/subscription-modal'
@@ -16,6 +17,7 @@ import { Nullable } from '@/shared/types'
 import { Paypal, Stripe, Typography } from '@/shared/ui'
 import { RadioGroupDemo } from '@/shared/ui/radio-group'
 
+import loader from '/public/loader.svg'
 const accountTypeOptions: AccountTypeOptions[] = [
   { id: -1, value: 'Personal' },
   { id: -2, value: 'Business' },
@@ -26,6 +28,7 @@ export const AccountManagement = () => {
   const isSuccess = query.success === 'true'
   const [isOpenModal, setIsOpenModal] = useState(false)
   const [createSub] = useCreateSubscriptionMutation()
+  const { data: currentSubscriptions } = useCurrentSubscriptionsQuery()
   const { data: coastData, isLoading } = useCostOfSubscriptionsQuery()
   const [accountTypeId, setAccountTypeId] = useState<number>(accountTypeOptions[0].id)
   const [subscriptionId, setSubscriptionId] = useState<number>(0)
@@ -43,6 +46,11 @@ export const AccountManagement = () => {
   }, [query.success])
   const isBusiness = accountTypeId === -2 && subscriptionOptions
 
+  useEffect(() => {
+    if (currentSubscriptions && currentSubscriptions.data.length > 0) {
+      setAccountTypeId(accountTypeOptions[1].id)
+    }
+  }, [currentSubscriptions, accountTypeId])
   useEffect(() => {
     if (coastData) {
       const subscriptions = coastData.data.map((coast, index) => {
@@ -73,7 +81,9 @@ export const AccountManagement = () => {
         .then(res => window.location.assign(res.url))
   }
 
-  return (
+  return isLoading ? (
+    <div>loader</div>
+  ) : (
     <div className={s.accountManagement}>
       <CurrentSubscription />
       <Typography variant={'h3'} className={s.radioHead}>
@@ -81,7 +91,7 @@ export const AccountManagement = () => {
       </Typography>
       <div className={s.radioGroup}>
         <RadioGroupDemo
-          defaultValue={accountTypeOptions[0].id}
+          value={accountTypeId}
           options={accountTypeOptions}
           onChangeOption={setAccountTypeId}
         />
