@@ -29,4 +29,4 @@ export type RootState = ReturnType<typeof store.getState>
 export const useAppDispatch: () => AppDispatch = useDispatch
 export const useAppSelector: TypedUseSelectorHook<RootState> = useSelector
 
-export const wrapper = createWrapper<AppStore>(makeStore, { debug: true })
+export const wrapper = createWrapper<AppStore>(makeStore, { debug: false })

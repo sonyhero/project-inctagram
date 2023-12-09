@@ -17,7 +17,6 @@ import { Nullable } from '@/shared/types'
 import { Paypal, Stripe, Typography } from '@/shared/ui'
 import { RadioGroupDemo } from '@/shared/ui/radio-group'
 
-import loader from '/public/loader.svg'
 const accountTypeOptions: AccountTypeOptions[] = [
   { id: -1, value: 'Personal' },
   { id: -2, value: 'Business' },

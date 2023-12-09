@@ -41,8 +41,10 @@ export const SettingsSwitcher = () => {
   }, [tabSwitcherOptions, t])
 
   useEffect(() => {
-    dispatch(setCurrentOption({ value: asPath as SettingsPathValuesTypes }))
-  }, [])
+    const pathWithoutQueries = asPath.replace(/^(.*?)(\?).*/, '$1')
+
+    dispatch(setCurrentOption({ value: pathWithoutQueries as SettingsPathValuesTypes }))
+  }, [asPath, dispatch])
 
   return (
     <div className={s.tabSwitcher}>
