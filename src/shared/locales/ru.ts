@@ -92,6 +92,19 @@ export const ru: LocaleType = {
         no: 'Нет',
       },
     },
+    myPayments: {
+      table: {
+        dateOfPayment: 'Дата платежа',
+        endOfSubscriptions: 'Дата окончания подписки',
+        price: 'Стоимость',
+        subscriptionType: 'Тип подписки',
+        paymentType: 'Тип оплаты',
+      },
+      paginationSelect: {
+        show: 'Показать',
+        onPage: 'На Странице',
+      },
+    },
     profilePage: {
       following: 'Подписки',
       followers: 'Подписчики',

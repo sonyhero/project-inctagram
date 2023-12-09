@@ -27,7 +27,7 @@ export const TabSwitcher = (props: Props) => {
                 key={index}
                 disabled={tab.disabled ?? false}
               >
-                <Typography variant={'h3'}>{tab.value}</Typography>
+                <Typography variant={'h3'}>{tab.description ?? tab.value}</Typography>
               </Tabs.Trigger>
             )
           })}

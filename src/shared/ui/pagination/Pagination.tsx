@@ -184,7 +184,7 @@ export const PerPageSelect = ({ perPageOptions, onPerPageChange }: PerPageSelect
         Show
       </Typography>
       <ControlledSelect
-        classname={classNames.select}
+        className={classNames.select}
         defaultValue={perPageOptions[0].value}
         options={perPageOptions}
         onValueChange={onPerPageChange}

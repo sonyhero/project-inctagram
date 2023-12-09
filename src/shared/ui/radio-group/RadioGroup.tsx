@@ -12,6 +12,7 @@ type RadioGroupProps = {
   onChangeOption?: (option: any) => void
   isDisabled?: boolean
   defaultValue?: any
+  value?: any
 }
 export const RadioGroupDemo: FC<RadioGroupProps> = ({
   isDisabled = false,
@@ -19,6 +20,7 @@ export const RadioGroupDemo: FC<RadioGroupProps> = ({
   onChangeOption,
   classname,
   defaultValue,
+  value,
 }) => {
   return (
     <form>
@@ -27,6 +29,7 @@ export const RadioGroupDemo: FC<RadioGroupProps> = ({
         onValueChange={onChangeOption}
         defaultValue={defaultValue}
         disabled={isDisabled}
+        value={value}
       >
         {options?.map(o => {
           return (

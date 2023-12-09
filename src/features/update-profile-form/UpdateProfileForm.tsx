@@ -71,7 +71,7 @@ export const UpdateProfileForm = ({ defaultValue }: Props) => {
         placeholder={defaultValue?.dateOfBirth && defaultValue.dateOfBirth}
       />
       <ControlledSelect
-        classname={s.field}
+        className={s.field}
         name={'city'}
         height={true}
         idValue={true}

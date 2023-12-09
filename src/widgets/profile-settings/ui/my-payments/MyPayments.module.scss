@@ -1,0 +1,11 @@
+.pagination {
+  display: flex;
+  gap: 1.5rem;
+  align-items: center;
+  margin-top: 1rem;
+
+  .selectPagination {
+    width: 4.5rem;
+    height: 1.5rem;
+  }
+}

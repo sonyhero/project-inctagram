@@ -3,7 +3,7 @@ import {
   CurrentSubscriptionType,
   MyPaymentsType,
   SubscriptionType,
-} from '@/entities/subscription/subscriptionApi.types'
+} from '@/entities/subscription/api/subscriptionApi.types'
 import { baseApi } from '@/shared/api'
 
 const subscriptionApi = baseApi.injectEndpoints({
@@ -38,7 +38,7 @@ const subscriptionApi = baseApi.injectEndpoints({
         }),
         providesTags: ['Subscriptions'],
       }),
-      myPayments: builder.query<MyPaymentsType, void>({
+      myPayments: builder.query<MyPaymentsType[], void>({
         query: () => ({
           url: `v1/subscriptions/my-payments`,
           method: 'GET',

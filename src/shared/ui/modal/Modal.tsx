@@ -2,7 +2,6 @@ import { ComponentProps } from 'react'
 
 import {
   Dialog,
-  DialogClose,
   DialogContent,
   DialogOverlay,
   DialogPortal,
@@ -87,11 +86,7 @@ export const Modal = (props: Props) => {
                     )}
                   </div>
 
-                  {showCloseButton && (
-                    <DialogClose className={s.closeButton}>
-                      <Close />
-                    </DialogClose>
-                  )}
+                  {showCloseButton && <Close className={s.closeButton} onClick={onClose} />}
                 </header>
               )}
               <div className={`${s.contentBox} ${contentBoxClassname}`}>{children}</div>

@@ -1,5 +1,7 @@
 import { useEffect, useState } from 'react'
 
+import { useRouter } from 'next/router'
+
 import s from './AccountManagement.module.scss'
 import { AccountTypeOptions, SubscriptionOptionsType } from './AccountManagement.types'
 import { CurrentSubscription } from './current-subscription'
@@ -7,27 +9,47 @@ import { CurrentSubscription } from './current-subscription'
 import {
   useCostOfSubscriptionsQuery,
   useCreateSubscriptionMutation,
-} from '@/entities/subscription/subscriptionApi'
-import { SubscriptionDurationType } from '@/entities/subscription/subscriptionApi.types'
+  useCurrentSubscriptionsQuery,
+} from '@/entities/subscription/api/subscriptionApi'
+import { SubscriptionDurationType } from '@/entities/subscription/api/subscriptionApi.types'
+import { SubscriptionModal } from '@/features/modal/ui/subscription-modal'
 import { Nullable } from '@/shared/types'
 import { Paypal, Stripe, Typography } from '@/shared/ui'
 import { RadioGroupDemo } from '@/shared/ui/radio-group'
 
 const accountTypeOptions: AccountTypeOptions[] = [
-  { id: 1, value: 'Personal' },
-  { id: 2, value: 'Business' },
+  { id: -1, value: 'Personal' },
+  { id: -2, value: 'Business' },
 ]
 
 export const AccountManagement = () => {
+  const { query } = useRouter()
+  const isSuccess = query.success === 'true'
+  const [isOpenModal, setIsOpenModal] = useState(false)
   const [createSub] = useCreateSubscriptionMutation()
+  const { data: currentSubscriptions } = useCurrentSubscriptionsQuery()
   const { data: coastData, isLoading } = useCostOfSubscriptionsQuery()
   const [accountTypeId, setAccountTypeId] = useState<number>(accountTypeOptions[0].id)
   const [subscriptionId, setSubscriptionId] = useState<number>(0)
   const [subscriptionOptions, setSubscriptionOptions] =
     useState<Nullable<SubscriptionOptionsType[]>>(null)
 
-  const isBusiness = accountTypeId === 2 && subscriptionOptions
+  const closeModal = () => {
+    setIsOpenModal(false)
+  }
 
+  useEffect(() => {
+    if (query.success) {
+      setIsOpenModal(true)
+    }
+  }, [query.success])
+  const isBusiness = accountTypeId === -2 && subscriptionOptions
+
+  useEffect(() => {
+    if (currentSubscriptions && currentSubscriptions.data.length > 0) {
+      setAccountTypeId(accountTypeOptions[1].id)
+    }
+  }, [currentSubscriptions, accountTypeId])
   useEffect(() => {
     if (coastData) {
       const subscriptions = coastData.data.map((coast, index) => {
@@ -58,7 +80,9 @@ export const AccountManagement = () => {
         .then(res => window.location.assign(res.url))
   }
 
-  return (
+  return isLoading ? (
+    <div>loader</div>
+  ) : (
     <div className={s.accountManagement}>
       <CurrentSubscription />
       <Typography variant={'h3'} className={s.radioHead}>
@@ -66,7 +90,7 @@ export const AccountManagement = () => {
       </Typography>
       <div className={s.radioGroup}>
         <RadioGroupDemo
-          defaultValue={accountTypeOptions[0].id}
+          value={accountTypeId}
           options={accountTypeOptions}
           onChangeOption={setAccountTypeId}
         />
@@ -97,6 +121,7 @@ export const AccountManagement = () => {
           Subscriptions are currently unavailable, please try again later
         </Typography>
       )}
+      <SubscriptionModal open={isOpenModal} onClose={closeModal} isSuccess={isSuccess} />
     </div>
   )
 }

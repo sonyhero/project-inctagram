@@ -1,3 +1,5 @@
+import { useEffect } from 'react'
+
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
 import { toast } from 'react-toastify'
@@ -55,20 +57,22 @@ export const useUpdateProfile = (defaultValue: GetProfileResponse | undefined) =
   const { t } = useTranslation()
   const updateProfileSchema = getUpdateProfileSchema(t)
 
+  const defaultValues = {
+    userName: defaultValue?.userName ?? '',
+    firstName: defaultValue?.firstName ?? '',
+    lastName: defaultValue?.lastName ?? '',
+    dateOfBirth: new Date(defaultValue?.dateOfBirth ?? ''),
+    city: defaultValue?.city ?? '',
+    aboutMe: defaultValue?.aboutMe ?? '',
+  }
+
   const {
     control,
     handleSubmit,
     reset,
     formState: { isValid, isDirty, errors },
   } = useForm<UpdateProfileFormShem>({
-    defaultValues: {
-      userName: defaultValue?.userName ?? '',
-      firstName: defaultValue?.firstName ?? '',
-      lastName: defaultValue?.lastName ?? '',
-      dateOfBirth: new Date(defaultValue?.dateOfBirth ?? ''),
-      city: defaultValue?.city ?? '',
-      aboutMe: defaultValue?.aboutMe ?? '',
-    },
+    defaultValues,
     mode: 'onBlur',
     resolver: zodResolver(updateProfileSchema),
   })
@@ -83,6 +87,10 @@ export const useUpdateProfile = (defaultValue: GetProfileResponse | undefined) =
         reset(data)
       })
   }
+
+  useEffect(() => {
+    reset({ ...defaultValues })
+  }, [defaultValue])
 
   const handleSubmitForm = handleSubmit(onSubmit)
 
