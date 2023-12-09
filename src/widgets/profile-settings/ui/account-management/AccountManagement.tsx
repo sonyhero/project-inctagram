@@ -17,8 +17,8 @@ import { Paypal, Stripe, Typography } from '@/shared/ui'
 import { RadioGroupDemo } from '@/shared/ui/radio-group'
 
 const accountTypeOptions: AccountTypeOptions[] = [
-  { id: 1, value: 'Personal' },
-  { id: 2, value: 'Business' },
+  { id: -1, value: 'Personal' },
+  { id: -2, value: 'Business' },
 ]
 
 export const AccountManagement = () => {
@@ -41,8 +41,7 @@ export const AccountManagement = () => {
       setIsOpenModal(true)
     }
   }, [query.success])
-
-  const isBusiness = accountTypeId === 2 && subscriptionOptions
+  const isBusiness = accountTypeId === -2 && subscriptionOptions
 
   useEffect(() => {
     if (coastData) {
