@@ -24,6 +24,7 @@ const accountTypeOptions: AccountTypeOptions[] = [
 
 export const AccountManagement = () => {
   const { query } = useRouter()
+  const router = useRouter()
   const isSuccess = query.success === 'true'
   const [isOpenModal, setIsOpenModal] = useState(false)
   const [createSub] = useCreateSubscriptionMutation()
@@ -33,6 +34,8 @@ export const AccountManagement = () => {
   const [subscriptionId, setSubscriptionId] = useState<number>(0)
   const [subscriptionOptions, setSubscriptionOptions] =
     useState<Nullable<SubscriptionOptionsType[]>>(null)
+
+  console.log(router)
 
   const closeModal = () => {
     setIsOpenModal(false)
@@ -74,7 +77,7 @@ export const AccountManagement = () => {
         typeSubscription: subscriptionOptions[subscriptionId].typeSubscription,
         paymentType: paymentType,
         amount: subscriptionOptions[subscriptionId].amount,
-        baseUrl: 'http://localhost:3000/',
+        baseUrl: process.env.NEXT_PUBLIC_BASE_URL ?? '',
       })
         .unwrap()
         .then(res => window.location.assign(res.url))
