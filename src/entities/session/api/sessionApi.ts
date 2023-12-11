@@ -4,14 +4,14 @@ import { baseApi } from '@/shared/api'
 const sessionApi = baseApi.injectEndpoints({
   endpoints: builder => {
     return {
-      getSessions: builder.query<SessionsTypeResponse, void>({
+      getSessions: builder.query<SessionsTypeResponse[], void>({
         query: () => ({
           url: `v1/sessions`,
           method: 'GET',
         }),
         providesTags: ['Sessions'],
       }),
-      terminateAllSessions: builder.mutation<void, void>({
+      terminateAllOtherSessions: builder.mutation<void, void>({
         query: () => ({
           url: `v1/sessions/terminate-all`,
           method: 'DELETE',
@@ -29,5 +29,8 @@ const sessionApi = baseApi.injectEndpoints({
   },
 })
 
-export const { useGetSessionsQuery, useTerminateAllSessionsMutation, useTerminateSessionMutation } =
-  sessionApi
+export const {
+  useGetSessionsQuery,
+  useTerminateAllOtherSessionsMutation,
+  useTerminateSessionMutation,
+} = sessionApi

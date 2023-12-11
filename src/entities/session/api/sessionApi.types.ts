@@ -1,7 +1,7 @@
 export type SessionsTypeResponse = {
   deviceId: number
   ip: string
-  lastActive: Date
+  lastActive: string
   browserName: string
   browserVersion: string
   deviceName: string
