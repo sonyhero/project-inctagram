@@ -1,0 +1,24 @@
+.devices {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+
+  .currentDeviceHead {
+    margin-bottom: 1.13rem;
+  }
+
+  .device {
+    margin-bottom: 1.5rem;
+    padding: 0.75rem 0 0.75rem 1.5rem;
+
+    background: var(--color-dark-500);
+    border: 1px solid var(--color-dark-300);
+    border-radius: 0.125rem;
+  }
+
+  .buttonBlock {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 1.125rem;
+  }
+}

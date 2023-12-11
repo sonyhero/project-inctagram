@@ -1,7 +1,8 @@
 import { getSettingsLayout } from '@/shared/providers/settings-layout'
+import { Devices } from '@/widgets/profile-settings/ui/devices/Devices'
 
 const DevicesPage = () => {
-  return <div>Devices</div>
+  return <Devices />
 }
 
 export default DevicesPage
