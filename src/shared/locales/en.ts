@@ -92,6 +92,12 @@ export const en = {
         no: 'No',
       },
     },
+    devices: {
+      currentDevice: 'Current device',
+      activeSession: 'Active sessions',
+      terminateAllOtherSession: 'Terminate all other session',
+      lastVisit: 'Last visit',
+    },
     myPayments: {
       table: {
         dateOfPayment: 'Date of Payment',

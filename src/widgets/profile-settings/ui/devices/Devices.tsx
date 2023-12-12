@@ -1,12 +1,14 @@
 import s from './Devices.module.scss'
 
 import { useGetSessionsQuery, useTerminateAllOtherSessionsMutation } from '@/entities/session/api'
+import { useTranslation } from '@/shared/hooks'
 import { Button, Typography } from '@/shared/ui'
 import { ActiveDevice } from '@/widgets/profile-settings/ui/devices/activeDevice'
 
 export const Devices = () => {
   const { data } = useGetSessionsQuery()
   const [terminateAllOther] = useTerminateAllOtherSessionsMutation()
+  const { t } = useTranslation()
 
   const terminateAllHandler = () => {
     terminateAllOther()
@@ -23,16 +25,16 @@ export const Devices = () => {
   return (
     <div className={s.devices}>
       <Typography variant={'h3'} className={s.currentDeviceHead}>
-        Current device:
+        {t.myProfile.devices.currentDevice}:
       </Typography>
       {currentDeviceData && <ActiveDevice {...currentDeviceData} isCurrentDevice />}
       <div className={s.buttonBlock}>
         <Button onClick={terminateAllHandler} variant={'outline'}>
-          Terminate all other session
+          {t.myProfile.devices.terminateAllOtherSession}
         </Button>
       </div>
       <Typography variant={'h3'} className={s.currentDeviceHead}>
-        Active sessions:
+        {t.myProfile.devices.activeSession}:
       </Typography>
       <div>{devicesList}</div>
     </div>

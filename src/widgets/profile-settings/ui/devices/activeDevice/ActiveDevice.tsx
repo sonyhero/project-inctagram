@@ -75,9 +75,11 @@ export const ActiveDevice = (props: Props) => {
         <div className={s.descriptionBlock}>
           {deviceDescription}
           <Typography variant={'bold16'}></Typography>
-          <Typography variant={'regular14'}>IP:{ip}</Typography>
+          <Typography variant={'regular14'}>IP: {ip}</Typography>
           {!isCurrentDevice && (
-            <Typography variant={'small'}>Last visit:{lastVisitDate}</Typography>
+            <Typography variant={'small'}>
+              {t.myProfile.devices.lastVisit}: {lastVisitDate}
+            </Typography>
           )}
         </div>
       </div>
