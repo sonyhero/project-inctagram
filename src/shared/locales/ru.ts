@@ -92,6 +92,12 @@ export const ru: LocaleType = {
         no: 'Нет',
       },
     },
+    devices: {
+      currentDevice: 'Текущее устройство',
+      activeSession: 'Активные сеансы',
+      terminateAllOtherSession: 'Завершить все другие сеансы',
+      lastVisit: 'Последнее посещение',
+    },
     myPayments: {
       table: {
         dateOfPayment: 'Дата платежа',
