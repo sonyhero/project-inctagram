@@ -58,6 +58,7 @@ export const useForgotPassword = () => {
   const onCloseModalHandler = () => {
     setOpenModal(false)
   }
+  const isDisableSendButton = !!recaptchaKey
 
   return {
     openModal,
@@ -67,5 +68,6 @@ export const useForgotPassword = () => {
     control,
     handleSubmitForm,
     routerHandler,
+    isDisableSendButton,
   }
 }

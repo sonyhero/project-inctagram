@@ -12,6 +12,7 @@ import { Pagination, Typography } from '@/shared/ui'
 import { SelectBox } from '@/shared/ui/select/SelectBox'
 import { Body, Cell, Head, HeadCell, Root, Row } from '@/shared/ui/table'
 import { getNumericDayMonthTime } from '@/shared/utils'
+import { comparePaymentDates } from '@/shared/utils/sortPayments'
 
 export const MyPayments = () => {
   const { data: myPaymentsData } = useMyPaymentsQuery()
@@ -25,11 +26,13 @@ export const MyPayments = () => {
 
   const pagesCount = myPaymentsData ? Math.ceil(myPaymentsData.length / pageSize) : 0
 
+  const sortedPaymentsData = myPaymentsData && [...myPaymentsData].sort(comparePaymentDates)
+
   const getPageData = (pageNumber: number) => {
     const startIndex = (pageNumber - 1) * pageSize
     const endIndex = startIndex + pageSize
 
-    return myPaymentsData?.slice(startIndex, endIndex)
+    return sortedPaymentsData?.slice(startIndex, endIndex)
   }
 
   const pageData = getPageData(currentPage)

@@ -14,7 +14,7 @@ export const ErrorPage = () => {
 
   return (
     <div className={s.errorPage}>
-      <Image src={error} alt={'error404'} className={s.errorImage} />
+      <Image src={error} priority={true} alt={'error404'} />
       <Typography variant={'regular16'} className={s.errorMessage}>
         {t.auth.error404.pageNotFound}
       </Typography>

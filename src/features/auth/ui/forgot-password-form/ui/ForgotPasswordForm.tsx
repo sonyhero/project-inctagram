@@ -15,6 +15,7 @@ export const ForgotPasswordForm = () => {
     onCloseModalHandler,
     onRecaptchaChangeHandler,
     handleSubmitForm,
+    isDisableSendButton,
   } = useForgotPassword()
   const { t } = useTranslation()
 
@@ -35,7 +36,7 @@ export const ForgotPasswordForm = () => {
         <Typography variant={'regular14'} className={s.text}>
           {t.auth.forgotPassword.description}{' '}
         </Typography>
-        <Button fullWidth className={s.submit} type="submit">
+        <Button disabled={!isDisableSendButton} fullWidth className={s.submit} type="submit">
           {t.auth.forgotPassword.sendLink}
         </Button>
         <LinkButton href={PATH.SIGN_IN} className={s.backBtn}>
