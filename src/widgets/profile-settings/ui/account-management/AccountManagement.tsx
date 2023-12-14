@@ -24,7 +24,6 @@ const accountTypeOptions: AccountTypeOptions[] = [
 
 export const AccountManagement = () => {
   const { query } = useRouter()
-  const router = useRouter()
   const isSuccess = query.success === 'true'
   const [isOpenModal, setIsOpenModal] = useState(false)
   const [createSub] = useCreateSubscriptionMutation()
@@ -34,8 +33,6 @@ export const AccountManagement = () => {
   const [subscriptionId, setSubscriptionId] = useState<number>(0)
   const [subscriptionOptions, setSubscriptionOptions] =
     useState<Nullable<SubscriptionOptionsType[]>>(null)
-
-  console.log(router)
 
   const closeModal = () => {
     setIsOpenModal(false)

@@ -83,6 +83,7 @@ export const en = {
         errorZeroSize: 'Photo size must be more than 0 MB',
         errorBrokenFile: 'Something wrong with your file, please try another one',
         selectFromComputer: 'Select from computer',
+        selectOther: 'Select other',
         save: 'Save',
       },
       deletePhotoModal: {
