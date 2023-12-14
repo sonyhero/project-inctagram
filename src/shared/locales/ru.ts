@@ -83,6 +83,7 @@ export const ru: LocaleType = {
         errorZeroSize: 'Размер фотографии должен быть больше 0 МБ',
         errorBrokenFile: 'С вашим файлом что-то не так , попробуйте другой',
         selectFromComputer: 'Выбрать с компьютера',
+        selectOther: 'Выбрать другое',
         save: 'Сохранить',
       },
       deletePhotoModal: {
