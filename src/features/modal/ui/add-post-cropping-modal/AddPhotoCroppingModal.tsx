@@ -26,6 +26,7 @@ import {
   Typography,
 } from '@/shared/ui'
 import { DropDownMenu } from '@/shared/ui/drop-down-menu'
+import { getReducedImageParams } from '@/shared/utils/getReducedOriginalImgSize'
 
 type Props = {
   addPostCroppingModal: boolean
@@ -48,6 +49,7 @@ export const AddPostCroppingModal = ({ addPostCroppingModal }: Props) => {
     dispatch(postsActions.deletePhotosPost({}))
     dispatch(modalActions.setOpenModal('addPostModal'))
   }
+
   const mainPhotoSelected = (event: ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files && event.target.files[0]
 
@@ -69,6 +71,7 @@ export const AddPostCroppingModal = ({ addPostCroppingModal }: Props) => {
 
         const image = new Image()
 
+        debugger
         image.src = URL.createObjectURL(file)
         image.onload = () => {
           const newPhoto: PostType = {
@@ -101,28 +104,31 @@ export const AddPostCroppingModal = ({ addPostCroppingModal }: Props) => {
     const originalImage = new Image()
 
     originalImage.src = activePhoto.imageUrl
+    const { originalHeight, reducedWidth, reducedHeight, maxSize } = getReducedImageParams({
+      originalWidth: originalImage.width,
+      originalHeight: originalImage.height,
+    })
 
     originalImage.onload = () => {
       let width, height
-      const maxWidth = 492
-      const originalHeight = originalImage.height
 
       switch (size) {
         case '1:1':
-          width = Math.min(maxWidth, originalHeight)
-          height = 492
+          width = Math.min(maxSize, originalHeight)
+          height = maxSize
           break
         case '16:9':
-          width = Math.min(maxWidth, originalHeight)
-          height = maxWidth / (16 / 9)
+          width = Math.min(maxSize, originalHeight)
+          height = maxSize / (16 / 9)
+
           break
         case '4:5':
-          width = Math.min(maxWidth, originalHeight)
-          height = maxWidth / (4 / 5)
+          width = Math.min(maxSize, originalHeight) * (4 / 5)
+          height = maxSize
           break
         default:
-          width = maxWidth
-          height = originalHeight
+          width = reducedWidth
+          height = reducedHeight
       }
       dispatch(postsActions.updateWidthAndHeight({ id: activePhoto.id, width, height }))
     }
