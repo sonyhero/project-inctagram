@@ -9,6 +9,7 @@ import { modalActions, modalSlice } from '@/features/modal'
 import { useTranslation } from '@/shared/hooks'
 import { useAppDispatch, useAppSelector } from '@/shared/store'
 import { Button, ErrorValidPhoto, Modal, PhotoPlaceholder } from '@/shared/ui'
+import { getReducedImageParams } from '@/shared/utils/getReducedOriginalImgSize'
 
 type Props = {
   openAddPhotoModal: boolean
@@ -36,6 +37,11 @@ export const AddPostModal = ({ openAddPhotoModal }: Props) => {
 
         image.src = URL.createObjectURL(file)
         image.onload = () => {
+          const { reducedHeight, reducedWidth } = getReducedImageParams({
+            originalWidth: image.width,
+            originalHeight: image.height,
+          })
+
           const newPhoto: PostType = {
             id: photoId,
             name: file.name,
@@ -43,8 +49,8 @@ export const AddPostModal = ({ openAddPhotoModal }: Props) => {
             size: file.size,
             zoom: [1],
             sizeScale: 'Оригинал',
-            width: 492,
-            height: image.height,
+            width: reducedWidth,
+            height: reducedHeight,
             imageUrl: URL.createObjectURL(file),
             filter: 'none',
           }
