@@ -3,7 +3,8 @@ import React, { useState } from 'react'
 import s from './GeneralInformation.module.scss'
 
 import { useGetProfileQuery } from '@/entities/profile'
-import { AddPhotoModal, DeletePhotoModal } from '@/features/modal'
+import { DeletePhotoModal } from '@/features/modal'
+import { AddProfilePhotoModal } from '@/features/modal/ui/add-profile-photo-modal'
 import { UpdateProfileForm } from '@/features/update-profile-form'
 import { useTranslation } from '@/shared/hooks'
 import { Button, Close, Typography } from '@/shared/ui'
@@ -47,7 +48,7 @@ export const GeneralInformation = ({ userId }: Props) => {
         </div>
         <UpdateProfileForm defaultValue={profileData} />
       </div>
-      <AddPhotoModal addPhotoModal={addPhotoModal} setAddPhotoModal={setAddPhotoModal} />
+      <AddProfilePhotoModal addPhotoModal={addPhotoModal} setAddPhotoModal={setAddPhotoModal} />
       <DeletePhotoModal
         deletePhotoModal={deletePhotoModal}
         setDeleteModalPhoto={setDeleteModalPhoto}
