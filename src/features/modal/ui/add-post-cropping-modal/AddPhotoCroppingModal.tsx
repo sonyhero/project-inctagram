@@ -71,7 +71,6 @@ export const AddPostCroppingModal = ({ addPostCroppingModal }: Props) => {
 
         const image = new Image()
 
-        debugger
         image.src = URL.createObjectURL(file)
         image.onload = () => {
           const newPhoto: PostType = {
