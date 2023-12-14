@@ -1,5 +1,7 @@
 import React, { useMemo, useState } from 'react'
 
+import Image from 'next/image'
+
 import s from './AddPostFilterModal.module.scss'
 
 import { postsActions } from '@/entities/posts'
@@ -8,17 +10,18 @@ import { filters } from '@/shared/contstants'
 import { useTranslation } from '@/shared/hooks'
 import { useAppDispatch, useAppSelector } from '@/shared/store'
 import { Modal, PhotoPagination, Typography } from '@/shared/ui'
+import { getReducedImageParams } from '@/shared/utils/getReducedOriginalImgSize'
 
 type Props = {
   addPostFilterModal: boolean
 }
 export const AddPostFilterModal = ({ addPostFilterModal }: Props) => {
   const { t } = useTranslation()
-  const photosPost = useAppSelector(state => state.postsSlice.photosPosts)
+  const photosPosts = useAppSelector(state => state.postsSlice.photosPosts)
   const dispatch = useAppDispatch()
 
   const [activeIndex, setActiveIndex] = useState(0)
-  const activePhoto = photosPost[activeIndex]
+  const activePhoto = photosPosts[activeIndex]
 
   const closeModal = () => {
     dispatch(modalActions.setOpenExtraModal('closeAddPostModal'))
@@ -27,8 +30,8 @@ export const AddPostFilterModal = ({ addPostFilterModal }: Props) => {
     dispatch(modalActions.setOpenModal('addPostCroppingModal'))
   }
   const changePhoto = (direction: 'next' | 'prev') => {
-    if (photosPost.length > 0) {
-      if (direction === 'next' && activeIndex < photosPost.length - 1) {
+    if (photosPosts.length > 0) {
+      if (direction === 'next' && activeIndex < photosPosts.length - 1) {
         setActiveIndex(activeIndex + 1)
       } else if (direction === 'prev' && activeIndex > 0) {
         setActiveIndex(activeIndex - 1)
@@ -46,6 +49,14 @@ export const AddPostFilterModal = ({ addPostFilterModal }: Props) => {
     return filters(t)
   }, [t])
 
+  const reducedParams =
+    activePhoto &&
+    getReducedImageParams({
+      originalHeight: activePhoto.height,
+      originalWidth: activePhoto.width,
+      maxSize: 108,
+    })
+
   return (
     <Modal
       className={s.modalBlock}
@@ -60,12 +71,12 @@ export const AddPostFilterModal = ({ addPostFilterModal }: Props) => {
       nextClick={nextContentHandler}
       contentBoxClassname={s.contentBox}
     >
-      {photosPost && photosPost.length > 0 && activePhoto && (
+      {photosPosts && photosPosts.length > 0 && activePhoto && (
         <div className={s.modalContent}>
           <div className={s.filterPhoto}>
-            <img
-              alt={'postItem'}
+            <Image
               src={activePhoto.imageUrl}
+              alt={'postItem'}
               width={activePhoto.width}
               height={activePhoto.height}
               style={{
@@ -73,7 +84,7 @@ export const AddPostFilterModal = ({ addPostFilterModal }: Props) => {
               }}
             />
             <PhotoPagination
-              photosArr={photosPost}
+              photosArr={photosPosts}
               changePhotoIndex={setActiveIndex}
               activeIndex={activeIndex}
               changePhotoNext={() => changePhoto('next')}
@@ -88,7 +99,13 @@ export const AddPostFilterModal = ({ addPostFilterModal }: Props) => {
                   key={el.name}
                   onClick={() => changeFilter(activePhoto.id, el.filter)}
                 >
-                  <img alt={el.name} style={{ filter: el.filter }} src={activePhoto.imageUrl} />
+                  <Image
+                    alt={el.name}
+                    style={{ filter: el.filter }}
+                    src={activePhoto.imageUrl}
+                    width={reducedParams.reducedWidth}
+                    height={reducedParams.reducedHeight}
+                  />
                   <Typography>{el.name}</Typography>
                 </div>
               )
