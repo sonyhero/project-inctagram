@@ -1,15 +1,13 @@
 import React, { ChangeEvent, useState } from 'react'
 
-import { v1 } from 'uuid'
-
 import s from './AddPostModal.module.scss'
 
-import { postsActions, PostType } from '@/entities/posts'
+import { postsActions } from '@/entities/posts'
 import { modalActions, modalSlice } from '@/features/modal'
 import { useTranslation } from '@/shared/hooks'
 import { useAppDispatch, useAppSelector } from '@/shared/store'
 import { Button, ErrorValidPhoto, Modal, PhotoPlaceholder } from '@/shared/ui'
-import { getReducedImageParams } from '@/shared/utils/getReducedOriginalImgSize'
+import { getNewPhoto } from '@/shared/utils'
 
 type Props = {
   openAddPhotoModal: boolean
@@ -31,33 +29,7 @@ export const AddPostModal = ({ openAddPhotoModal }: Props) => {
         setErrorPhoto(t.create.addPost.errorSize)
       } else {
         setErrorPhoto('')
-        const photoId = v1()
-
-        const image = new Image()
-
-        image.src = URL.createObjectURL(file)
-        image.onload = () => {
-          const { reducedHeight, reducedWidth } = getReducedImageParams({
-            originalWidth: image.width,
-            originalHeight: image.height,
-          })
-
-          const newPhoto: PostType = {
-            id: photoId,
-            name: file.name,
-            type: file.type,
-            size: file.size,
-            zoom: [1],
-            sizeScale: 'Оригинал',
-            width: reducedWidth,
-            height: reducedHeight,
-            imageUrl: URL.createObjectURL(file),
-            filter: 'none',
-          }
-
-          dispatch(postsActions.setPhotoOfPost(newPhoto))
-          dispatch(modalActions.setOpenModal('addPostCroppingModal'))
-        }
+        getNewPhoto({ file, dispatch, isModalPayload: true })
       }
     }
   }
