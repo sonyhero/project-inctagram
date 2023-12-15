@@ -1,5 +1,6 @@
 import React, { ChangeEvent, useRef, useState } from 'react'
 
+import NextImage from 'next/image'
 import AvatarEditor from 'react-avatar-editor'
 import { v1 } from 'uuid'
 
@@ -73,6 +74,11 @@ export const AddPostCroppingModal = ({ addPostCroppingModal }: Props) => {
 
         image.src = URL.createObjectURL(file)
         image.onload = () => {
+          const { reducedHeight, reducedWidth } = getReducedImageParams({
+            originalWidth: image.width,
+            originalHeight: image.height,
+          })
+
           const newPhoto: PostType = {
             id: photoId,
             name: file.name,
@@ -80,8 +86,8 @@ export const AddPostCroppingModal = ({ addPostCroppingModal }: Props) => {
             size: file.size,
             zoom: [1],
             sizeScale: 'Оригинал',
-            width: 492,
-            height: image.height,
+            width: reducedWidth,
+            height: reducedHeight,
             imageUrl: URL.createObjectURL(file),
             filter: 'none',
           }
@@ -103,13 +109,14 @@ export const AddPostCroppingModal = ({ addPostCroppingModal }: Props) => {
     const originalImage = new Image()
 
     originalImage.src = activePhoto.imageUrl
-    const { originalHeight, reducedWidth, reducedHeight, maxSize } = getReducedImageParams({
-      originalWidth: originalImage.width,
-      originalHeight: originalImage.height,
-    })
 
     originalImage.onload = () => {
       let width, height
+
+      const { originalHeight, reducedWidth, reducedHeight, maxSize } = getReducedImageParams({
+        originalWidth: originalImage.width,
+        originalHeight: originalImage.height,
+      })
 
       switch (size) {
         case '1:1':
@@ -255,9 +262,23 @@ export const AddPostCroppingModal = ({ addPostCroppingModal }: Props) => {
                 }
               }
 
+              const reducedParams =
+                el &&
+                getReducedImageParams({
+                  originalHeight: el.height,
+                  originalWidth: el.width,
+                  maxSize: 82,
+                })
+
               return (
                 <div key={index} className={s.photoItem}>
-                  <img src={el.imageUrl} className={s.photoDropDown} alt={`photo ${index}`} />
+                  <NextImage
+                    alt={`photo ${index}`}
+                    src={el.imageUrl}
+                    width={reducedParams.reducedWidth}
+                    height={reducedParams.reducedHeight}
+                  />
+
                   <div className={s.deletePhoto} onClick={() => deletePhotoHandler(el.id)}>
                     <Close />
                   </div>
@@ -266,14 +287,14 @@ export const AddPostCroppingModal = ({ addPostCroppingModal }: Props) => {
             })}
           </div>
           <div className={s.addNewPhoto}>
-            <label>
+            <label className={s.addPhotoInputBlock}>
               <input
                 type={'file'}
                 id={'mainPhotoInput'}
                 onChange={mainPhotoSelected}
                 className={s.addPhotoInput}
               />
-              <PlusCircle className={error ? s.error : ''} />
+              <PlusCircle className={error ? s.error : s.noError} />
             </label>
           </div>
         </div>

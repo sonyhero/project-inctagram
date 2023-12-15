@@ -106,6 +106,9 @@ export const ProfileInfo = ({ userId }: Props) => {
   const windowHeight = window.innerHeight
   const paddingValue = windowHeight * 0.67
 
+  //TODO: пофиксить скролл
+  // const ratio = window.devicePixelRatio * 100
+
   return (
     <div className={s.profileBlock} ref={postsBlockRef}>
       <div className={s.mainInfo}>
