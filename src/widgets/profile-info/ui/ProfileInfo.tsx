@@ -21,6 +21,7 @@ import { Nullable } from '@/shared/types'
 import { Button, Typography } from '@/shared/ui'
 import { Avatar } from 'src/entities/avatar'
 
+import imageIcon from '/public/imageIcon.svg'
 type Props = {
   userId: number
 }
@@ -145,7 +146,7 @@ export const ProfileInfo = ({ userId }: Props) => {
         {posts.map(el => {
           return (
             <Image
-              src={el.images[0].url}
+              src={el.images[0].url ?? imageIcon}
               key={el.id}
               width={1000}
               height={1000}

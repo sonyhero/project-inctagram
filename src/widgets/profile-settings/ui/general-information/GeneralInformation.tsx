@@ -2,13 +2,12 @@ import React, { useState } from 'react'
 
 import s from './GeneralInformation.module.scss'
 
+import { Avatar } from '@/entities'
 import { useGetProfileQuery } from '@/entities/profile'
-import { DeletePhotoModal } from '@/features/modal'
-import { AddProfilePhotoModal } from '@/features/modal/ui/add-profile-photo-modal'
+import { AddProfilePhotoModal, DeletePhotoModal } from '@/features/modal'
 import { UpdateProfileForm } from '@/features/update-profile-form'
 import { useTranslation } from '@/shared/hooks'
 import { Button, Close, Typography } from '@/shared/ui'
-import { Avatar } from 'src/entities/avatar'
 
 type Props = {
   userId: number
