@@ -10,7 +10,7 @@ import { filters } from '@/shared/contstants'
 import { useTranslation } from '@/shared/hooks'
 import { useAppDispatch, useAppSelector } from '@/shared/store'
 import { Modal, PhotoPagination, Typography } from '@/shared/ui'
-import { getReducedImageParams } from '@/shared/utils/getReducedOriginalImgSize'
+import { getReducedImageParams } from '@/shared/utils'
 
 type Props = {
   addPostFilterModal: boolean
@@ -22,6 +22,8 @@ export const AddPostFilterModal = ({ addPostFilterModal }: Props) => {
 
   const [activeIndex, setActiveIndex] = useState(0)
   const activePhoto = photosPosts[activeIndex]
+
+  const iaActivePhoto = photosPosts && photosPosts.length > 0 && activePhoto
 
   const closeModal = () => {
     dispatch(modalActions.setOpenExtraModal('closeAddPostModal'))
@@ -71,7 +73,7 @@ export const AddPostFilterModal = ({ addPostFilterModal }: Props) => {
       nextClick={nextContentHandler}
       contentBoxClassname={s.contentBox}
     >
-      {photosPosts && photosPosts.length > 0 && activePhoto && (
+      {iaActivePhoto && (
         <div className={s.modalContent}>
           <div className={s.filterPhoto}>
             <Image
