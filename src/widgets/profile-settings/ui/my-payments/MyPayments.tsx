@@ -58,7 +58,7 @@ export const MyPayments = () => {
     </HeadCell>
   ))
 
-  const paymentsTableData = pageData?.map(payment => {
+  const paymentsTableData = pageData?.map((payment, index) => {
     const dateOfPaymentCell = getNumericDayMonthTime(payment.dateOfPayment, locale as string)
 
     const endDateOfSubscriptionCell = getNumericDayMonthTime(
@@ -67,7 +67,7 @@ export const MyPayments = () => {
     )
 
     return (
-      <Row key={payment.subscriptionId}>
+      <Row key={index}>
         <Cell>
           <Typography variant={'regular14'}>{dateOfPaymentCell}</Typography>
         </Cell>
