@@ -28,15 +28,19 @@ export const Devices = () => {
         {t.myProfile.devices.currentDevice}:
       </Typography>
       {currentDeviceData && <ActiveDevice {...currentDeviceData} isCurrentDevice />}
-      <div className={s.buttonBlock}>
-        <Button onClick={terminateAllHandler} variant={'outline'}>
-          {t.myProfile.devices.terminateAllOtherSession}
-        </Button>
-      </div>
-      <Typography variant={'h3'} className={s.currentDeviceHead}>
-        {t.myProfile.devices.activeSession}:
-      </Typography>
-      <div>{devicesList}</div>
+      {devicesList && devicesList.length > 0 && (
+        <>
+          <div className={s.buttonBlock}>
+            <Button onClick={terminateAllHandler} variant={'outline'}>
+              {t.myProfile.devices.terminateAllOtherSession}
+            </Button>
+          </div>
+          <Typography variant={'h3'} className={s.currentDeviceHead}>
+            {t.myProfile.devices.activeSession}:
+          </Typography>
+          <div>{devicesList}</div>
+        </>
+      )}
     </div>
   )
 }
