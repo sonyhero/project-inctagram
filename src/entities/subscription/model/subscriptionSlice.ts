@@ -6,6 +6,10 @@ export type PaymentType = {
 }
 
 const initialState = {
+  accountTypeOptions: [
+    { id: -1, value: 'Personal' },
+    { id: -2, value: 'Business' },
+  ],
   paginationOptions: [{ value: 5 }, { value: 10 }, { value: 20 }, { value: 50 }, { value: 100 }],
   pageSize: 5,
   currentPage: 1,
@@ -16,6 +20,7 @@ const initialState = {
     },
     isOpenModal: false,
     isSuccessPayPalPayment: false,
+    isSuccessStripePayment: false,
   },
 }
 
@@ -32,14 +37,23 @@ export const subscriptionSlice = createSlice({
     setPayment: (state, action: PayloadAction<PaymentType>) => {
       state.payment.payPal = action.payload
     },
-    setOpenModal: (state, action: PayloadAction<boolean>) => {
+    setOpenPaymentModal: (state, action: PayloadAction<boolean>) => {
       state.payment.isOpenModal = action.payload
     },
-    setIsSuccessPayment: (state, action: PayloadAction<boolean>) => {
+    setIsSuccessPayPalPayment: (state, action: PayloadAction<boolean>) => {
       state.payment.isSuccessPayPalPayment = action.payload
+    },
+    setIsSuccessStripePayment: (state, action: PayloadAction<boolean>) => {
+      state.payment.isSuccessStripePayment = action.payload
     },
   },
 })
 
-export const { setPageSize, setCurrentPage, setPayment, setOpenModal, setIsSuccessPayment } =
-  subscriptionSlice.actions
+export const {
+  setPageSize,
+  setCurrentPage,
+  setPayment,
+  setOpenPaymentModal,
+  setIsSuccessPayPalPayment,
+  setIsSuccessStripePayment,
+} = subscriptionSlice.actions

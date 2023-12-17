@@ -1,9 +1,7 @@
 import { useEffect, useState } from 'react'
 
-import { useRouter } from 'next/router'
-
 import s from './AccountManagement.module.scss'
-import { AccountTypeOptions, SubscriptionOptionsType } from './AccountManagement.types'
+import { SubscriptionOptionsType } from './AccountManagement.types'
 import { CurrentSubscription } from './current-subscription'
 
 import {
@@ -12,44 +10,49 @@ import {
   useCurrentSubscriptionsQuery,
 } from '@/entities/subscription/api/subscriptionApi'
 import { SubscriptionDurationType } from '@/entities/subscription/api/subscriptionApi.types'
+import { setOpenPaymentModal } from '@/entities/subscription/model/subscriptionSlice'
 import { SubscriptionModal } from '@/features/modal/ui/subscription-modal'
+import { useAppDispatch, useAppSelector } from '@/shared/store'
 import { Nullable } from '@/shared/types'
 import { Paypal, Stripe, Typography } from '@/shared/ui'
 import { RadioGroupDemo } from '@/shared/ui/radio-group'
 
-const accountTypeOptions: AccountTypeOptions[] = [
-  { id: -1, value: 'Personal' },
-  { id: -2, value: 'Business' },
-]
-
 export const AccountManagement = () => {
-  const { query } = useRouter()
-  const isSuccess = query.success === 'true'
-  const [isOpenModal, setIsOpenModal] = useState(false)
-  const [createSub] = useCreateSubscriptionMutation()
   const { data: currentSubscriptions } = useCurrentSubscriptionsQuery()
   const { data: coastData, isLoading } = useCostOfSubscriptionsQuery()
+  const [createSub] = useCreateSubscriptionMutation()
+
+  const dispatch = useAppDispatch()
+  const isSuccessPaypal = useAppSelector(
+    state => state.subscriptionSlice.payment.isSuccessPayPalPayment
+  )
+  const isSuccessStripe = useAppSelector(
+    state => state.subscriptionSlice.payment.isSuccessStripePayment
+  )
+
+  const accountTypeOptions = useAppSelector(state => state.subscriptionSlice.accountTypeOptions)
+  const isOpenModal = useAppSelector(state => state.subscriptionSlice.payment.isOpenModal)
+
   const [accountTypeId, setAccountTypeId] = useState<number>(accountTypeOptions[0].id)
   const [subscriptionId, setSubscriptionId] = useState<number>(0)
   const [subscriptionOptions, setSubscriptionOptions] =
     useState<Nullable<SubscriptionOptionsType[]>>(null)
 
-  const closeModal = () => {
-    setIsOpenModal(false)
-  }
+  const isSuccessPayment = isSuccessPaypal || isSuccessStripe
+  const businessAccountTypeId = accountTypeOptions.find(option => option.value === 'Business')?.id
 
-  useEffect(() => {
-    if (query.success) {
-      setIsOpenModal(true)
-    }
-  }, [query.success])
-  const isBusiness = accountTypeId === -2 && subscriptionOptions
+  const isBusiness = accountTypeId === businessAccountTypeId && subscriptionOptions
+
+  const closeModal = () => {
+    dispatch(setOpenPaymentModal(false))
+  }
 
   useEffect(() => {
     if (currentSubscriptions && currentSubscriptions.data.length > 0) {
       setAccountTypeId(accountTypeOptions[1].id)
     }
   }, [currentSubscriptions, accountTypeId])
+
   useEffect(() => {
     if (coastData) {
       const subscriptions = coastData.data.map((coast, index) => {
@@ -121,7 +124,7 @@ export const AccountManagement = () => {
           Subscriptions are currently unavailable, please try again later
         </Typography>
       )}
-      <SubscriptionModal open={isOpenModal} onClose={closeModal} isSuccess={isSuccess} />
+      <SubscriptionModal open={isOpenModal} onClose={closeModal} isSuccess={isSuccessPayment} />
     </div>
   )
 }
