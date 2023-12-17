@@ -3,35 +3,35 @@ import { useEffect } from 'react'
 import { useRouter } from 'next/router'
 
 import {
-  setIsSuccessStripePayment,
+  PaymentType,
+  setIsSuccessPayPalPayment,
   setOpenPaymentModal,
+  setPayment,
 } from '@/entities/subscription/model/subscriptionSlice'
 import { useMeQuery } from '@/features/auth'
 import { PATH } from '@/shared/config/routes'
-import { getSettingsLayout } from '@/shared/providers/settings-layout'
+import { getBaseLayout } from '@/shared/providers'
 import { useAppDispatch } from '@/shared/store'
 
-const EditPage = () => {
+const PaymentAccessPage = () => {
   const { data, isLoading } = useMeQuery()
   const { push, query } = useRouter()
   const dispatch = useAppDispatch()
 
+  const token = query.token
+
   useEffect(() => {
+    const payload = query as PaymentType
+
     dispatch(setOpenPaymentModal(true))
-    switch (query.success) {
-      case 'true':
-        debugger
-        dispatch(setIsSuccessStripePayment(true))
-        break
-      case 'false':
-        dispatch(setIsSuccessStripePayment(false))
-        break
-      default:
-        debugger
-        dispatch(setIsSuccessStripePayment(false))
-        break
+    if (token) {
+      dispatch(setPayment(payload))
+
+      dispatch(setIsSuccessPayPalPayment(true))
+    } else {
+      dispatch(setIsSuccessPayPalPayment(false))
     }
-  }, [query.success])
+  }, [token])
 
   if (isLoading) {
     return <div>...Loading</div>
@@ -48,5 +48,5 @@ const EditPage = () => {
   return <div></div>
 }
 
-export default EditPage
-EditPage.getLayout = getSettingsLayout
+export default PaymentAccessPage
+PaymentAccessPage.getLayout = getBaseLayout

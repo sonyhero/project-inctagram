@@ -14,7 +14,7 @@ const initialState = {
     { id: 2, value: PATH.MY_PROFILE_SETTINGS_DEVICES, description: 'Devices', disabled: false },
     {
       id: 3,
-      value: PATH.MY_PROFILE_SETTINGS_EDIT,
+      value: PATH.MY_PROFILE_SETTINGS_ACCOUNT_MANAGEMENT,
       description: 'Account Management',
       disabled: false,
     },

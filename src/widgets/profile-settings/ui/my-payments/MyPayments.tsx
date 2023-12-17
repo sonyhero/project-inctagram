@@ -11,8 +11,7 @@ import { useAppDispatch, useAppSelector } from '@/shared/store'
 import { Pagination, Typography } from '@/shared/ui'
 import { SelectBox } from '@/shared/ui/select/SelectBox'
 import { Body, Cell, Head, HeadCell, Root, Row } from '@/shared/ui/table'
-import { getNumericDayMonthTime } from '@/shared/utils'
-import { comparePaymentDates } from '@/shared/utils/sortPayments'
+import { comparePaymentDates, getNumericDayMonthTime } from '@/shared/utils'
 
 export const MyPayments = () => {
   const { data: myPaymentsData } = useMyPaymentsQuery()
@@ -59,7 +58,7 @@ export const MyPayments = () => {
     </HeadCell>
   ))
 
-  const paymentsTableData = pageData?.map(payment => {
+  const paymentsTableData = pageData?.map((payment, index) => {
     const dateOfPaymentCell = getNumericDayMonthTime(payment.dateOfPayment, locale as string)
 
     const endDateOfSubscriptionCell = getNumericDayMonthTime(
@@ -68,7 +67,7 @@ export const MyPayments = () => {
     )
 
     return (
-      <Row key={payment.subscriptionId}>
+      <Row key={index}>
         <Cell>
           <Typography variant={'regular14'}>{dateOfPaymentCell}</Typography>
         </Cell>

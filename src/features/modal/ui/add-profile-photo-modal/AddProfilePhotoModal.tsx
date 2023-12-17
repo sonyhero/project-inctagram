@@ -9,7 +9,7 @@ import { useUploadAvatarMutation } from '@/entities/profile'
 import { useTranslation } from '@/shared/hooks/useTranstaion'
 import { Nullable } from '@/shared/types'
 import { Button, ErrorValidPhoto, Modal, PhotoPlaceholder, SuperSlider } from '@/shared/ui'
-import { isImageFile } from '@/shared/utils/isImageFile'
+import { isImageFile } from '@/shared/utils'
 
 type Props = {
   addPhotoModal: boolean

@@ -21,6 +21,7 @@ import { Nullable } from '@/shared/types'
 import { Button, Typography } from '@/shared/ui'
 import { Avatar } from 'src/entities/avatar'
 
+import imageIcon from '/public/imageIcon.svg'
 type Props = {
   userId: number
 }
@@ -106,6 +107,9 @@ export const ProfileInfo = ({ userId }: Props) => {
   const windowHeight = window.innerHeight
   const paddingValue = windowHeight * 0.67
 
+  //TODO: пофиксить скролл
+  // const ratio = window.devicePixelRatio * 100
+
   return (
     <div className={s.profileBlock} ref={postsBlockRef}>
       <div className={s.mainInfo}>
@@ -142,7 +146,7 @@ export const ProfileInfo = ({ userId }: Props) => {
         {posts.map(el => {
           return (
             <Image
-              src={el.images[0].url}
+              src={el.images[0].url ?? imageIcon}
               key={el.id}
               width={1000}
               height={1000}
