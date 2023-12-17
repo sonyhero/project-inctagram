@@ -4,8 +4,8 @@ import { useRouter } from 'next/router'
 
 import {
   PaymentType,
-  setIsSuccessPayment,
-  setOpenModal,
+  setIsSuccessPayPalPayment,
+  setOpenPaymentModal,
   setPayment,
 } from '@/entities/subscription/model/subscriptionSlice'
 import { useMeQuery } from '@/features/auth'
@@ -21,15 +21,15 @@ const PaymentAccessPage = () => {
   const token = query.token
 
   useEffect(() => {
-    if (token) {
-      const payload = query as PaymentType
+    const payload = query as PaymentType
 
+    dispatch(setOpenPaymentModal(true))
+    if (token) {
       dispatch(setPayment(payload))
-      dispatch(setOpenModal(true))
-      dispatch(setIsSuccessPayment(true))
+
+      dispatch(setIsSuccessPayPalPayment(true))
     } else {
-      dispatch(setOpenModal(true))
-      dispatch(setIsSuccessPayment(false))
+      dispatch(setIsSuccessPayPalPayment(false))
     }
   }, [token])
 
@@ -43,7 +43,7 @@ const PaymentAccessPage = () => {
     return
   }
 
-  push(PATH.MY_PROFILE_SETTINGS_EDIT)
+  push(PATH.MY_PROFILE_SETTINGS_ACCOUNT_MANAGEMENT)
 
   return <div></div>
 }
