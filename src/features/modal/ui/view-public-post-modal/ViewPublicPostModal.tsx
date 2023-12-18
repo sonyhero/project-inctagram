@@ -64,7 +64,7 @@ export const ViewPublicPostModal = ({ open, onClose, postData, avatar }: Props) 
             <div className={s.topContent}>
               <div className={s.photoBlock}>
                 <ImageNext
-                  src={avatar?.[0].url ?? imageIcon}
+                  src={avatar?.[0]?.url ?? imageIcon}
                   width={36}
                   height={36}
                   className={s.photoAva}

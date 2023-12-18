@@ -10,6 +10,7 @@ import { PATH } from '@/shared/config/routes'
 import { useTranslation } from '@/shared/hooks'
 import { useAppSelector } from '@/shared/store'
 import { Button, Typography } from '@/shared/ui'
+import { ProfileStatistic } from '@/widgets/profile-statistic'
 
 type Props = {
   userId: number
@@ -37,23 +38,7 @@ export const ProfileHeader = ({ userId }: Props) => {
             {t.myProfile.profilePage.profileSettings}
           </Button>
         </div>
-        <div className={s.statistic}>
-          <div>
-            <Typography variant={'bold14'}>0</Typography>
-            <Typography variant={'regular14'}>{t.myProfile.profilePage.following}</Typography>
-          </div>
-          <div>
-            <Typography variant={'bold14'}>0</Typography>
-            <Typography variant={'regular14'}>{t.myProfile.profilePage.followers}</Typography>
-          </div>
-          <div>
-            <Typography variant={'bold14'}>{publicationCount}</Typography>
-            <Typography variant={'regular14'}>{t.myProfile.profilePage.publications}</Typography>
-          </div>
-        </div>
-        <div className={s.aboutMe}>
-          <Typography variant={'regular16'}>{profileData?.aboutMe}</Typography>
-        </div>
+        <ProfileStatistic postsCount={publicationCount} aboutMe={profileData?.aboutMe} />
       </div>
     </div>
   )
