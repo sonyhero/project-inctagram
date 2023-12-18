@@ -28,13 +28,13 @@ export type PostsResponseTypeImages = {
   fileSize: number
   uploadId: string
 }
-export type GetDecksArgs = {
+export type GetAllPostsArgs = {
   idLastUploadedPost?: number
   pageSize?: number
   sortBy?: string
   sortDirection?: 'asc' | 'desc'
 }
-export type GetUserDecksArgs = {
+export type GetUserAllPostsArgs = {
   userId: number
   pageSize?: number
   sortBy?: string

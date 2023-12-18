@@ -1,8 +1,8 @@
 import {
   GetAllPosts,
-  GetDecksArgs,
+  GetAllPostsArgs,
   GetPublicPosts,
-  GetUserDecksArgs,
+  GetUserAllPostsArgs,
   GetUsersAllPosts,
   PostArgsType,
   PostsImagesResponse,
@@ -43,7 +43,7 @@ const postsApi = baseApi.injectEndpoints({
         }),
         providesTags: [],
       }),
-      getPostsByUserId: builder.query<GetAllPosts, GetDecksArgs>({
+      getPostsByUserId: builder.query<GetAllPosts, GetAllPostsArgs>({
         query: args => ({
           url: `v1/posts/user/${args.idLastUploadedPost}`,
           method: 'GET',
@@ -77,7 +77,7 @@ const postsApi = baseApi.injectEndpoints({
         }),
         providesTags: [],
       }),
-      getPublicPostsByUserId: builder.query<GetUsersAllPosts, GetUserDecksArgs>({
+      getPublicPostsByUserId: builder.query<GetUsersAllPosts, GetUserAllPostsArgs>({
         query: args => ({
           url: `v1/public-posts/user/${args.userId}`,
           method: 'GET',
@@ -89,7 +89,7 @@ const postsApi = baseApi.injectEndpoints({
         }),
         providesTags: ['Posts'],
       }),
-      getAllPublicPosts: builder.query<GetAllPosts, GetDecksArgs>({
+      getAllPublicPosts: builder.query<GetAllPosts, GetAllPostsArgs>({
         query: args => ({
           url: `v1/public-posts/all/${args.idLastUploadedPost}`,
           method: 'GET',
