@@ -7,7 +7,7 @@ import imageIcon from '/public/imageIcon.svg'
 
 import { toast } from 'react-toastify'
 
-import s from '../../widgets/profile-info/ui/ProfileInfo.module.scss'
+import s from './UserIdInfo.module.scss'
 
 import {
   getPostsRunningQueriesThunk,
@@ -18,11 +18,11 @@ import {
   useLazyGetPublicPostByIdQuery,
 } from '@/entities/posts'
 import { ViewPublicPostModal } from '@/features/modal'
-import { useTranslation } from '@/shared/hooks'
 import { getBaseLayout } from '@/shared/providers'
 import { wrapper } from '@/shared/store'
 import { Nullable } from '@/shared/types'
 import { Typography } from '@/shared/ui'
+import { ProfileStatistic } from '@/widgets/profile-statistic'
 
 export const getServerSideProps = wrapper.getServerSideProps(store => async context => {
   const query = context.query
@@ -43,7 +43,6 @@ export default function UserPage() {
   const { query } = useRouter()
   const userId = query.userId?.[0]
   const postId = query.userId?.[1]
-  const { t } = useTranslation()
   const [openModal, setOpenModal] = useState(false)
   const { data: userData } = useGetPublicPostsByUserIdQuery({ userId: Number(userId) })
   const [postData, setPostData] = useState<Nullable<GetPublicPosts>>(null)
@@ -102,23 +101,10 @@ export default function UserPage() {
           <div className={s.nameAndSettings}>
             <Typography variant={'h1'}>{userData?.profile.userName}</Typography>
           </div>
-          <div className={s.statistic}>
-            <div>
-              <Typography variant={'bold14'}>0</Typography>
-              <Typography variant={'regular14'}>{t.myProfile.profilePage.following}</Typography>
-            </div>
-            <div>
-              <Typography variant={'bold14'}>0</Typography>
-              <Typography variant={'regular14'}>{t.myProfile.profilePage.followers}</Typography>
-            </div>
-            <div>
-              <Typography variant={'bold14'}>{userData?.posts.totalCount}</Typography>
-              <Typography variant={'regular14'}>{t.myProfile.profilePage.publications}</Typography>
-            </div>
-          </div>
-          <div className={s.aboutMe}>
-            <Typography variant={'regular16'}>{userData?.profile.aboutMe}</Typography>
-          </div>
+          <ProfileStatistic
+            postsCount={userData?.posts.totalCount}
+            aboutMe={userData?.profile.aboutMe}
+          />
         </div>
       </div>
       <div className={s.postsBlock}>{mappedPosts}</div>
