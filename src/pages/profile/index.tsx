@@ -1,9 +1,9 @@
 import { useRouter } from 'next/router'
 
 import { useMeQuery } from '@/features/auth'
+import { MyProfile } from '@/pages-flat/my-profile'
 import { PATH } from '@/shared/config/routes'
 import { getBaseLayout } from '@/shared/providers'
-import { ProfileInfo } from '@/widgets/profile-info'
 
 const MyProfilePage = () => {
   const { data, isLoading } = useMeQuery()
@@ -19,7 +19,7 @@ const MyProfilePage = () => {
     return
   }
 
-  return <ProfileInfo userId={data.userId} />
+  return <MyProfile userId={data.userId} />
 }
 
 export default MyProfilePage
