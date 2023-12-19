@@ -27,7 +27,7 @@ export const Devices = () => {
       <Typography variant={'h3'} className={s.currentDeviceHead}>
         {t.myProfile.devices.currentDevice}:
       </Typography>
-      {currentDeviceData && <ActiveDevice {...currentDeviceData} isCurrentDevice />}
+      {!!currentDeviceData && <ActiveDevice {...currentDeviceData} isCurrentDevice />}
       {devicesList && devicesList.length > 0 && (
         <>
           <div className={s.buttonBlock}>
