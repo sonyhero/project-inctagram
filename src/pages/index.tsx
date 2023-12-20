@@ -1,26 +1,23 @@
-import {
-  getAllPublicPosts,
-  getPostsRunningQueriesThunk,
-  useGetAllPublicPostsQuery,
-} from '@/entities/posts'
+import { GetStaticProps, InferGetStaticPropsType } from 'next'
+
+import { GetAllPosts } from '@/entities/posts'
 import { Home } from '@/pages-flat/home'
 import { getBaseLayout } from '@/shared/providers'
-import { wrapper } from '@/shared/store'
 
-export const getStaticProps = wrapper.getStaticProps(store => async () => {
-  store.dispatch(getAllPublicPosts.initiate({ pageSize: 4 }))
-  await Promise.all(store.dispatch(getPostsRunningQueriesThunk()))
+export const getStaticProps = (async () => {
+  const response = await fetch('https://inctagram.work/api/v1/public-posts/all?pageSize=4')
+
+  const data = await response.json()
 
   return {
-    props: {},
+    props: { data },
     revalidate: 60,
   }
-})
+}) satisfies GetStaticProps<{ data: GetAllPosts }>
 
-export default function HomePage() {
-  const { data } = useGetAllPublicPostsQuery({ pageSize: 4 })
-
+const HomePage = ({ data }: InferGetStaticPropsType<typeof getStaticProps>) => {
   return <Home posts={data?.items} usersCount={data?.totalCount} />
 }
 
+export default HomePage
 HomePage.getLayout = getBaseLayout
