@@ -12,12 +12,8 @@ import { useAppSelector } from '@/shared/store'
 import { Button, Typography } from '@/shared/ui'
 import { ProfileStatistic } from '@/widgets/profile-statistic'
 
-type Props = {
-  userId: number
-}
-
-export const ProfileHeader = ({ userId }: Props) => {
-  const { data: profileData } = useGetProfileQuery(userId)
+export const ProfileHeader = () => {
+  const { data: profileData } = useGetProfileQuery()
   const { t } = useTranslation()
   const { push } = useRouter()
   const showProfileSettingsHandler = () => {
@@ -29,7 +25,7 @@ export const ProfileHeader = ({ userId }: Props) => {
   return (
     <div className={s.profileHeader}>
       <div className={s.photoBlock}>
-        <Avatar userId={userId} className={s.photo} />
+        <Avatar className={s.photo} />
       </div>
       <div className={s.profileDescription}>
         <div className={s.nameAndSettings}>

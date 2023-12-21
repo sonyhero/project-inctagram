@@ -182,17 +182,12 @@ export const SideBar = () => {
       )}
       <AddPostFilterModal addPostFilterModal={modal === 'addPostFilterModal'} />
       {userId && modal === 'addPostPublicationsModal' && (
-        <AddPostPublicationModal
-          addPostPublicationModal={modal === 'addPostPublicationsModal'}
-          userId={userId}
-        />
+        <AddPostPublicationModal addPostPublicationModal={modal === 'addPostPublicationsModal'} />
       )}
       {modalExtra === 'closeAddPostModal' && (
         <ClosePostModal closeAddPostModal={modalExtra === 'closeAddPostModal'} />
       )}
-      {userId && modal === 'viewPostModal' && (
-        <ViewPostModal userId={userId} open={modal === 'viewPostModal'} />
-      )}
+      {userId && modal === 'viewPostModal' && <ViewPostModal open={modal === 'viewPostModal'} />}
       {modalExtra === 'deletePostModal' && (
         <DeletePostModal open={modalExtra === 'deletePostModal'} />
       )}

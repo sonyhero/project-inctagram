@@ -9,12 +9,8 @@ import { UpdateProfileForm } from '@/features/update-profile-form'
 import { useTranslation } from '@/shared/hooks'
 import { Button, Close, Typography } from '@/shared/ui'
 
-type Props = {
-  userId: number
-}
-
-export const GeneralInformation = ({ userId }: Props) => {
-  const { data: profileData } = useGetProfileQuery(userId)
+export const GeneralInformation = () => {
+  const { data: profileData } = useGetProfileQuery()
   const { t } = useTranslation()
 
   const [deletePhotoModal, setDeleteModalPhoto] = useState<boolean>(false)
@@ -32,7 +28,7 @@ export const GeneralInformation = ({ userId }: Props) => {
       <div className={s.profileSettings}>
         <div className={s.photoBlock}>
           <div className={s.photoAndDeleteBlock}>
-            <Avatar userId={userId} className={s.photo} />
+            <Avatar className={s.photo} />
             {profileData?.avatars[0]?.url && (
               <div className={s.deletePhoto} onClick={openDeleteModalHandler}>
                 <Close />

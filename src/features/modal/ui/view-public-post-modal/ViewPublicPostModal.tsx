@@ -9,8 +9,7 @@ import { useRouter } from 'next/router'
 
 import s from './ViewPublicPostModal.module.scss'
 
-import { PostsResponseType } from '@/entities/posts'
-import { Avatar } from '@/entities/profile'
+import { ImageType, PostsResponseType } from '@/entities/posts'
 import { PATH } from '@/shared/config/routes'
 import { useTranslation } from '@/shared/hooks'
 import { Modal, PhotoPagination, Typography } from '@/shared/ui'
@@ -20,10 +19,10 @@ type Props = {
   open: boolean
   onClose: () => void
   postData: PostsResponseType
-  avatar?: Avatar[]
+  avatars?: ImageType[]
 }
 
-export const ViewPublicPostModal = ({ open, onClose, postData, avatar }: Props) => {
+export const ViewPublicPostModal = ({ open, onClose, postData, avatars }: Props) => {
   const { t } = useTranslation()
   const { locale } = useRouter()
 
@@ -64,7 +63,7 @@ export const ViewPublicPostModal = ({ open, onClose, postData, avatar }: Props) 
             <div className={s.topContent}>
               <div className={s.photoBlock}>
                 <ImageNext
-                  src={avatar?.[0]?.url ?? imageIcon}
+                  src={avatars?.[0]?.url ?? imageIcon}
                   width={36}
                   height={36}
                   className={s.photoAva}
@@ -84,7 +83,7 @@ export const ViewPublicPostModal = ({ open, onClose, postData, avatar }: Props) 
                     <ImageNext
                       width={36}
                       height={36}
-                      src={avatar?.[0].url ?? imageIcon}
+                      src={avatars?.[0].url ?? imageIcon}
                       className={s.photoAva}
                       alt={'profilePhoto'}
                     />

@@ -32,16 +32,15 @@ import { getDayMonthTime } from '@/shared/utils'
 
 type Props = {
   open: boolean
-  userId: number
 }
 
-export const ViewPostModal = ({ open, userId }: Props) => {
+export const ViewPostModal = ({ open }: Props) => {
   const { t } = useTranslation()
   const { locale } = useRouter()
 
   const post = useAppSelector(state => state.postsSlice.post)
 
-  const { data } = useGetProfileQuery(userId)
+  const { data } = useGetProfileQuery()
   const [activeIndex, setActiveIndex] = useState(0)
   const activePhoto = post?.images[activeIndex]
   const [editMode, setEditMode] = useState(false)
@@ -157,7 +156,7 @@ export const ViewPostModal = ({ open, userId }: Props) => {
                   {/*  {...profileAvatarLoader()}*/}
                   {/*  alt={'profilePhoto'}*/}
                   {/*/>*/}
-                  <Avatar userId={userId} className={s.photoAva} />
+                  <Avatar className={s.photoAva} />
                   <Typography variant={'h3'}>{data?.userName}</Typography>
                 </div>
                 <DropDownMenu
