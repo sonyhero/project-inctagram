@@ -8,13 +8,13 @@ import imageIcon from '/public/imageIcon.svg'
 
 import s from './PostUnregister.module.scss'
 
-import { PostsResponseTypeImages } from '@/entities/posts'
+import { PostsImagesResponseType } from '@/entities/posts'
 import { PATH } from '@/shared/config/routes'
 import { PhotoPagination, Typography } from '@/shared/ui'
 import { getDayMonthTime } from '@/shared/utils'
 
 type Props = {
-  photos: PostsResponseTypeImages[]
+  photos: PostsImagesResponseType[]
   desc: string
   createdAt: string
   avatarOwner: string
@@ -44,6 +44,7 @@ export const PostUnregister = (props: Props) => {
         <Link href={`${PATH.USER}/${userId}/${postId}`}>
           <Image
             src={activePhoto?.url ?? imageIcon}
+            priority={true}
             width={240}
             height={240}
             alt={'post picture'}

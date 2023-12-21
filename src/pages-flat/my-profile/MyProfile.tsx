@@ -12,8 +12,8 @@ export const MyProfile = ({ userId }: Props) => {
 
   return (
     <div id={scrollableID} className={s.myProfile}>
-      <ProfileHeader userId={userId} />
-      <Posts scrollableID={scrollableID} />
+      <ProfileHeader />
+      <Posts userId={userId} scrollableID={scrollableID} />
     </div>
   )
 }
