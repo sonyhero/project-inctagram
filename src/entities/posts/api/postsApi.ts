@@ -1,12 +1,12 @@
 import {
-  GetAllPosts,
-  GetAllPostsArgs,
-  GetPublicPosts,
-  GetUserAllPostsArgs,
-  GetUsersAllPosts,
+  GetAllPublicPostsArgs,
+  GetPublicPostsResponse,
+  GetPublicUserProfileByIdResponse,
+  GetUserPublicPostsArgs,
   PostArgsType,
   PostsImagesResponse,
   PostsResponseType,
+  UploadIdType,
 } from '@/entities/posts'
 import { baseApi } from '@/shared/api'
 
@@ -29,77 +29,68 @@ const postsApi = baseApi.injectEndpoints({
         }),
         invalidatesTags: [],
       }),
-      deletePostImage: builder.mutation<void, { uploadId: string }>({
-        query: body => ({
-          url: `v1/posts/image/${body.uploadId}`,
+      deletePostImage: builder.mutation<void, UploadIdType>({
+        query: ({ uploadId }) => ({
+          url: `v1/posts/image/${uploadId}`,
           method: 'DELETE',
         }),
         invalidatesTags: ['Posts'],
       }),
-      getPostById: builder.query<PostsResponseType, { postId: number }>({
-        query: args => ({
-          url: `v1/posts/p/${args.postId}`,
-          method: 'GET',
-        }),
-        providesTags: [],
-      }),
-      getPostsByUserId: builder.query<GetAllPosts, GetAllPostsArgs>({
-        query: args => ({
-          url: `v1/posts/user/${args.idLastUploadedPost}`,
-          method: 'GET',
-          params: {
-            pageSize: args.pageSize,
-            sortBy: args.sortBy,
-            sortDirection: args.sortDirection,
-          },
-        }),
-        providesTags: ['Posts'],
-      }),
       updatePostById: builder.mutation<void, { postId: number; description: string }>({
-        query: body => ({
-          url: `v1/posts/${body.postId}`,
+        query: ({ postId, description }) => ({
+          url: `v1/posts/${postId}`,
           method: 'PUT',
-          body: { description: body.description },
+          body: { description },
         }),
         invalidatesTags: ['Posts'],
       }),
       deletePostById: builder.mutation<void, { postId: number }>({
-        query: body => ({
-          url: `v1/posts/${body.postId}`,
+        query: ({ postId }) => ({
+          url: `v1/posts/${postId}`,
           method: 'DELETE',
         }),
         invalidatesTags: [],
       }),
-      getPublicPostById: builder.query<GetPublicPosts, { postId: number }>({
+      getAllPublicPosts: builder.query<GetPublicPostsResponse, GetAllPublicPostsArgs>({
         query: args => ({
-          url: `v1/public-posts/p/${args.postId}`,
+          url: `v1/public-posts/all/${args.endCursorPostId}`,
+          method: 'GET',
+          params: {
+            pageSize: args.pageSize,
+            sortBy: args.sortBy,
+            sortDirection: args.sortDirection,
+          },
+        }),
+        providesTags: ['Posts'],
+      }),
+      getUserPublicPosts: builder.query<GetPublicPostsResponse, GetUserPublicPostsArgs>({
+        query: args => ({
+          url: `v1/public-posts/user/${args.userId}/${args.endCursorPostId}`,
+          method: 'GET',
+          params: {
+            pageSize: args.pageSize,
+            sortBy: args.sortBy,
+            sortDirection: args.sortDirection,
+          },
+        }),
+        providesTags: ['Posts'],
+      }),
+      getPublicPostById: builder.query<PostsResponseType, { postId: number }>({
+        query: ({ postId }) => ({
+          url: `v1/public-posts/${postId}`,
           method: 'GET',
         }),
         providesTags: [],
       }),
-      getPublicPostsByUserId: builder.query<GetUsersAllPosts, GetUserAllPostsArgs>({
-        query: args => ({
-          url: `v1/public-posts/user/${args.userId}`,
+      getPublicUserProfileById: builder.query<
+        GetPublicUserProfileByIdResponse,
+        { profileId: number }
+      >({
+        query: ({ profileId }) => ({
+          url: `v1/public-user/profile/${profileId}`,
           method: 'GET',
-          params: {
-            pageSize: args.pageSize,
-            sortBy: args.sortBy,
-            sortDirection: args.sortDirection,
-          },
         }),
-        providesTags: ['Posts'],
-      }),
-      getAllPublicPosts: builder.query<GetAllPosts, GetAllPostsArgs>({
-        query: args => ({
-          url: `v1/public-posts/all/${args.idLastUploadedPost}`,
-          method: 'GET',
-          params: {
-            pageSize: args.pageSize,
-            sortBy: args.sortBy,
-            sortDirection: args.sortDirection,
-          },
-        }),
-        providesTags: ['Posts'],
+        providesTags: [],
       }),
     }
   },
@@ -107,20 +98,17 @@ const postsApi = baseApi.injectEndpoints({
 
 export const {
   useCreatePostMutation,
-  useGetAllPublicPostsQuery,
   useUploadPostImageMutation,
-  useDeletePostImageMutation,
-  useGetPostByIdQuery,
-  useLazyGetPostByIdQuery,
   useUpdatePostByIdMutation,
   useDeletePostByIdMutation,
-  useGetPostsByUserIdQuery,
-  useLazyGetPostsByUserIdQuery,
+  useGetPublicUserProfileByIdQuery,
+  useGetUserPublicPostsQuery,
+  useLazyGetUserPublicPostsQuery,
   useGetPublicPostByIdQuery,
-  useGetPublicPostsByUserIdQuery,
   useLazyGetPublicPostByIdQuery,
-  util: { getRunningQueriesThunk: getPostsRunningQueriesThunk },
+  util: { getRunningQueriesThunk },
 } = postsApi
 
 //export endpoints for use in SSR
-export const { getAllPublicPosts, getPublicPostsByUserId, getPublicPostById } = postsApi.endpoints
+export const { getUserPublicPosts, getPublicUserProfileById, getPublicPostById } =
+  postsApi.endpoints
