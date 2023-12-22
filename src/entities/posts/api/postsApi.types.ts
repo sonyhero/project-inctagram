@@ -1,17 +1,15 @@
-import { GetProfileResponse } from '@/entities/profile'
-
 export type PostArgsType = {
   description: string
-  childrenMetadata: PostArgsTypeChildrenMetadata[]
+  childrenMetadata: UploadIdType[]
 }
-export type PostArgsTypeChildrenMetadata = {
+export type UploadIdType = {
   uploadId: string
 }
 export type PostsResponseType = {
   id: number
   description: string
   location: string
-  images: PostsResponseTypeImages[]
+  images: PostsImagesResponseType[]
   createdAt: string
   updatedAt: string
   ownerId: number
@@ -21,39 +19,37 @@ export type PostsResponseType = {
     lastName: string
   }
 }
-export type PostsResponseTypeImages = {
+export type ImageType = {
   url: string
   width: number
   height: number
   fileSize: number
-  uploadId: string
 }
-export type GetAllPostsArgs = {
-  idLastUploadedPost?: number
+export type PostsImagesResponseType = ImageType & UploadIdType
+
+export type GetAllPublicPostsArgs = {
+  endCursorPostId?: number
   pageSize?: number
   sortBy?: string
   sortDirection?: 'asc' | 'desc'
 }
-export type GetUserAllPostsArgs = {
+export type GetUserPublicPostsArgs = GetAllPublicPostsArgs & {
   userId: number
-  pageSize?: number
-  sortBy?: string
-  sortDirection?: 'asc' | 'desc'
 }
-export type GetPublicPosts = {
-  profile: GetProfileResponse
-  posts: PostsResponseType
+
+export type GetPublicUserProfileByIdResponse = {
+  id: number
+  userName: string
+  aboutMe: string
+  avatars: ImageType[]
 }
-export type GetUsersAllPosts = {
-  profile: GetProfileResponse
-  posts: GetAllPosts
-}
-export type GetAllPosts = {
+
+export type GetPublicPostsResponse = {
   totalCount: number
   pageSize: number
   totalUsers: number
   items: PostsResponseType[]
 }
 export type PostsImagesResponse = {
-  images: PostsResponseTypeImages[]
+  images: PostsImagesResponseType[]
 }

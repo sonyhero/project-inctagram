@@ -6,11 +6,11 @@ import InfiniteScroll from 'react-infinite-scroll-component'
 import s from './Posts.module.scss'
 
 import {
-  GetAllPostsArgs,
+  GetAllPublicPostsArgs,
   postsActions,
-  useGetPostsByUserIdQuery,
-  useLazyGetPostByIdQuery,
-  useLazyGetPostsByUserIdQuery,
+  useGetUserPublicPostsQuery,
+  useLazyGetPublicPostByIdQuery,
+  useLazyGetUserPublicPostsQuery,
 } from '@/entities'
 import { modalActions } from '@/features/modal'
 import { useAppDispatch, useAppSelector } from '@/shared/store'
@@ -19,18 +19,20 @@ import imageIcon from 'public/imageIcon.svg'
 
 type Props = {
   scrollableID: string
+  userId: number
 }
 
-const postDataArgs: GetAllPostsArgs = {
+const postDataArgs: GetAllPublicPostsArgs = {
   pageSize: 8,
   sortBy: '',
   sortDirection: 'desc',
 }
 
-export const Posts = ({ scrollableID }: Props) => {
-  const { data: postsData } = useGetPostsByUserIdQuery(postDataArgs)
-  const [getPost] = useLazyGetPostByIdQuery()
-  const [getNextPosts] = useLazyGetPostsByUserIdQuery()
+export const Posts = ({ scrollableID, userId }: Props) => {
+  const { data: postsData } = useGetUserPublicPostsQuery({ userId, ...postDataArgs })
+
+  const [getPost] = useLazyGetPublicPostByIdQuery()
+  const [getNextPosts] = useLazyGetUserPublicPostsQuery()
   const publicationCount = useAppSelector(state => state.postsSlice.publicationCount)
   const [innerHeight, setInnerHeight] = useState<number>(window.innerHeight)
   const [paddingValue, setPaddingValue] = useState<number>(200)
@@ -69,10 +71,7 @@ export const Posts = ({ scrollableID }: Props) => {
     const lastPostId = posts.slice(-1)[0].id
 
     if (lastPostId !== lastUploadedPostId) {
-      getNextPosts({
-        idLastUploadedPost: lastPostId,
-        ...postDataArgs,
-      })
+      getNextPosts({ userId, endCursorPostId: lastPostId, ...postDataArgs })
         .unwrap()
         .then(postsData => {
           dispatch(postsActions.setPosts(postsData.items))

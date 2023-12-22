@@ -19,7 +19,7 @@ const GeneralPage = () => {
     return
   }
 
-  return <GeneralInformation userId={data.userId} />
+  return <GeneralInformation />
 }
 
 export default GeneralPage

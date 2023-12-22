@@ -6,7 +6,7 @@ import s from './AddPostPublicationModal.module.scss'
 
 import { Avatar } from '@/entities'
 import {
-  PostArgsTypeChildrenMetadata,
+  UploadIdType,
   postsActions,
   useCreatePostMutation,
   useUploadPostImageMutation,
@@ -19,17 +19,16 @@ import { Modal, PhotoPagination, TextAreaField, TextField, Typography } from '@/
 
 type Props = {
   addPostPublicationModal: boolean
-  userId: number
 }
 
-export const AddPostPublicationModal = ({ addPostPublicationModal, userId }: Props) => {
+export const AddPostPublicationModal = ({ addPostPublicationModal }: Props) => {
   const { t } = useTranslation()
   const photosPost = useAppSelector(state => state.postsSlice.photosPosts)
   const publicationCount = useAppSelector(state => state.postsSlice.publicationCount)
   const currentDescription = useAppSelector(state => state.postsSlice.currentDescription)
   const dispatch = useAppDispatch()
 
-  const { data } = useGetProfileQuery(userId)
+  const { data } = useGetProfileQuery()
   const [createPost] = useCreatePostMutation()
   const [uploadImage] = useUploadPostImageMutation()
 
@@ -108,7 +107,7 @@ export const AddPostPublicationModal = ({ addPostPublicationModal, userId }: Pro
             .unwrap()
             .then(data => {
               if (data.images) {
-                return { uploadId: data.images[0].uploadId } as PostArgsTypeChildrenMetadata
+                return { uploadId: data.images[0].uploadId } as UploadIdType
               }
             })
         }
@@ -116,7 +115,7 @@ export const AddPostPublicationModal = ({ addPostPublicationModal, userId }: Pro
 
       const uploadIds = await Promise.all(uploadPromises)
 
-      const filteredUploadIds = uploadIds.filter(Boolean) as PostArgsTypeChildrenMetadata[]
+      const filteredUploadIds = uploadIds.filter(Boolean) as UploadIdType[]
 
       createPost({
         description: descriptionValue,
@@ -183,7 +182,7 @@ export const AddPostPublicationModal = ({ addPostPublicationModal, userId }: Pro
           <div className={s.postDescriptionBlock}>
             <div className={s.topContent}>
               <div className={s.photoBlock}>
-                <Avatar userId={userId} className={s.photo} />
+                <Avatar className={s.photo} />
                 <Typography>{data?.userName}</Typography>
               </div>
               <div>

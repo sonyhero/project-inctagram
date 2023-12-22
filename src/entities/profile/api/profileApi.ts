@@ -8,9 +8,9 @@ import { baseApi } from '@/shared/api'
 const profileApi = baseApi.injectEndpoints({
   endpoints: builder => {
     return {
-      getProfile: builder.query<GetProfileResponse, number>({
-        query: body => ({
-          url: `v1/users/profile/${body}`,
+      getProfile: builder.query<GetProfileResponse, void>({
+        query: () => ({
+          url: `v1/users/profile`,
           method: 'GET',
         }),
         providesTags: ['Profile'],

@@ -7,15 +7,14 @@ import imageIcon from 'public/imageIcon.svg'
 import loader from 'public/loader.svg'
 
 type Props = {
-  userId: number
   className: string
   width?: number
   height?: number
 }
 
 export const Avatar = (props: Props) => {
-  const { userId, className, width = 192, height = 192 } = props
-  const { data: profileData, isFetching, isLoading } = useGetProfileQuery(userId)
+  const { className, width = 192, height = 192 } = props
+  const { data: profileData, isFetching, isLoading } = useGetProfileQuery()
   const isLoadingAvatar = isLoading && isFetching
   const avatar = profileData?.avatars && profileData.avatars[0]?.url
   const profilePhoto = isLoadingAvatar ? loader : avatar ?? imageIcon
