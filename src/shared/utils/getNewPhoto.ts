@@ -2,6 +2,7 @@ import { v1 } from 'uuid'
 
 import { postsActions, PostType } from '@/entities'
 import { modalActions } from '@/features/modal'
+import { db } from '@/shared/config/draftDataBase'
 import { AppDispatch } from '@/shared/store'
 import { getReducedImageParams } from '@/shared/utils/getReducedOriginalImgSize'
 
@@ -19,6 +20,7 @@ export const getNewPhoto = (props: Props) => {
   const image = new Image()
 
   image.src = URL.createObjectURL(file)
+
   image.onload = () => {
     const { reducedHeight, reducedWidth } = getReducedImageParams({
       originalWidth: image.width,
@@ -37,6 +39,8 @@ export const getNewPhoto = (props: Props) => {
       imageUrl: URL.createObjectURL(file),
       filter: 'none',
     }
+
+    db.posts.put(newPhoto)
 
     dispatch(postsActions.setPhotoOfPost(newPhoto))
     isModalPayload && dispatch(modalActions.setOpenModal('addPostCroppingModal'))

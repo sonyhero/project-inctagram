@@ -28,6 +28,8 @@
     "async-mutex": "^0.4.0",
     "clsx": "^2.0.0",
     "date-fns": "^2.30.0",
+    "dexie": "^3.2.4",
+    "dexie-react-hooks": "^1.1.7",
     "env-cmd": "^10.1.0",
     "eslint": "8.49.0",
     "eslint-config-next": "13.4.19",

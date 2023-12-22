@@ -1,9 +1,12 @@
 import React, { ChangeEvent, useState } from 'react'
 
+import { useLiveQuery } from 'dexie-react-hooks'
+
 import s from './AddPostModal.module.scss'
 
 import { postsActions } from '@/entities/posts'
 import { modalActions, modalSlice } from '@/features/modal'
+import { db } from '@/shared/config/draftDataBase'
 import { useTranslation } from '@/shared/hooks'
 import { useAppDispatch, useAppSelector } from '@/shared/store'
 import { Button, ErrorValidPhoto, Modal, PhotoPlaceholder } from '@/shared/ui'
@@ -17,6 +20,8 @@ export const AddPostModal = ({ openAddPhotoModal }: Props) => {
   const { t } = useTranslation()
   const photosPost = useAppSelector(state => state.postsSlice.photosPosts)
   const dispatch = useAppDispatch()
+
+  const postsList = useLiveQuery(() => db.posts.toArray())
 
   const mainPhotoSelected = (event: ChangeEvent<HTMLInputElement>) => {
     dispatch(postsActions.setCurrentDescription({ currentDescription: '' }))
@@ -66,7 +71,7 @@ export const AddPostModal = ({ openAddPhotoModal }: Props) => {
           </label>
           <Button
             variant={'outline'}
-            disabled={photosPost.length < 1}
+            // disabled={photosPost.length < 1}
             className={s.openDraft}
             onClick={openDraft}
           >

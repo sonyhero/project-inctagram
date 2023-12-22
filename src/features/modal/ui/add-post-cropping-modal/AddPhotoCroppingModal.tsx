@@ -1,5 +1,6 @@
-import React, { ChangeEvent, useRef, useState } from 'react'
+import React, { ChangeEvent, useEffect, useRef, useState } from 'react'
 
+import { useLiveQuery } from 'dexie-react-hooks'
 import NextImage from 'next/image'
 import AvatarEditor from 'react-avatar-editor'
 
@@ -7,6 +8,7 @@ import s from './AddPostCroppingModal.module.scss'
 
 import { postsActions, SizeType } from '@/entities/posts'
 import { modalActions } from '@/features/modal'
+import { db } from '@/shared/config/draftDataBase'
 import { useTranslation } from '@/shared/hooks'
 import { useAppDispatch, useAppSelector } from '@/shared/store'
 import { Nullable } from '@/shared/types'
@@ -37,6 +39,14 @@ export const AddPostCroppingModal = ({ addPostCroppingModal }: Props) => {
   const photosPosts = useAppSelector(state => state.postsSlice.photosPosts)
   const activeIndex = useAppSelector(state => state.postsSlice.activeIndex)
   const dispatch = useAppDispatch()
+
+  console.log(photosPosts)
+
+  const postsList = useLiveQuery(() => db.posts.toArray())
+
+  useEffect(() => {
+    postsList?.forEach(el => dispatch(postsActions.setPhotoOfPost(el)))
+  }, [postsList])
 
   const [error, setError] = useState(false)
   const activePhoto = photosPosts[activeIndex]
