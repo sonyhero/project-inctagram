@@ -40,9 +40,20 @@ export const getNewPhoto = (props: Props) => {
       filter: 'none',
     }
 
-    db.posts.put(newPhoto)
+    db.posts.add({
+      id: photoId,
+      name: file.name,
+      type: file.type,
+      size: file.size,
+      zoom: [1],
+      sizeScale: 'Оригинал',
+      width: reducedWidth,
+      height: reducedHeight,
+      image: file,
+      filter: 'none',
+    })
 
-    dispatch(postsActions.setPhotoOfPost(newPhoto))
+    // dispatch(postsActions.setPhotoOfPost(newPhoto))
     isModalPayload && dispatch(modalActions.setOpenModal('addPostCroppingModal'))
     activeIndex && dispatch(postsActions.setActiveIndex(activeIndex + 1))
   }
