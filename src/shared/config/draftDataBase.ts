@@ -1,26 +1,11 @@
 import Dexie, { Table } from 'dexie'
 
-import { SizeType } from '@/entities'
-// table inteface
-// export interface Student {
-//   id?: number
-//   name: string
-//   rollNumber: number
-// }
+import { PostType } from '@/entities'
+
+export type PostDataBaseType = Omit<PostType, 'imageUrl'> & { image: Blob }
 export class DB extends Dexie {
   // table name is student
-  posts!: Table<{
-    name: string
-    type: string
-    size: number
-    image: Blob
-    id: string
-    zoom: number[]
-    sizeScale: SizeType
-    width: number
-    height: number
-    filter: string
-  }>
+  posts!: Table<PostDataBaseType>
 
   constructor() {
     super('myDatabase')
