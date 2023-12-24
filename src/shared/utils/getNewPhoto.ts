@@ -2,7 +2,7 @@ import { v1 } from 'uuid'
 
 import { postsActions } from '@/entities'
 import { modalActions } from '@/features/modal'
-import { db, PostDataBaseType } from '@/shared/config/draftDataBase'
+import { addDataToDB, PostDataBaseType } from '@/shared/config/draftDataBase'
 import { AppDispatch } from '@/shared/store'
 import { getReducedImageParams } from '@/shared/utils/getReducedOriginalImgSize'
 
@@ -40,7 +40,7 @@ export const getNewPhoto = (props: Props) => {
       filter: 'none',
     }
 
-    db.posts.add(newPhoto)
+    addDataToDB(newPhoto)
 
     // dispatch(postsActions.setPhotoOfPost(newPhoto))
     isModalPayload && dispatch(modalActions.setOpenModal('addPostCroppingModal'))

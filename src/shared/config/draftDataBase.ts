@@ -15,4 +15,8 @@ export class DB extends Dexie {
   }
 }
 
-export const db = new DB()
+const db = new DB()
+
+export const clearDB = () => db.posts.clear()
+export const addDataToDB = (data: PostDataBaseType) => db.posts.add(data)
+export const getDataFromDB = () => db.posts.toArray()
