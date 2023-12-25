@@ -1,8 +1,7 @@
 import { v1 } from 'uuid'
 
-import { postsActions } from '@/entities'
+import { postsActions, PostType } from '@/entities'
 import { modalActions } from '@/features/modal'
-import { addDataToDB, PostDataBaseType } from '@/shared/config/draftDataBase'
 import { AppDispatch } from '@/shared/store'
 import { getReducedImageParams } from '@/shared/utils/getReducedOriginalImgSize'
 
@@ -27,7 +26,7 @@ export const getNewPhoto = (props: Props) => {
       originalHeight: image.height,
     })
 
-    const newPhoto: PostDataBaseType = {
+    const newPhoto: PostType = {
       id: photoId,
       name: file.name,
       type: file.type,
@@ -36,13 +35,11 @@ export const getNewPhoto = (props: Props) => {
       sizeScale: 'Оригинал',
       width: reducedWidth,
       height: reducedHeight,
-      image: file,
+      imageUrl: URL.createObjectURL(file),
       filter: 'none',
     }
 
-    addDataToDB(newPhoto)
-
-    // dispatch(postsActions.setPhotoOfPost(newPhoto))
+    dispatch(postsActions.setPhotoOfPost(newPhoto))
     isModalPayload && dispatch(modalActions.setOpenModal('addPostCroppingModal'))
     activeIndex && dispatch(postsActions.setActiveIndex(activeIndex + 1))
   }
