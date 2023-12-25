@@ -83,7 +83,7 @@ export const ViewPublicPostModal = ({ open, onClose, postData, avatars }: Props)
                     <ImageNext
                       width={36}
                       height={36}
-                      src={avatars?.[0].url ?? imageIcon}
+                      src={avatars?.[0]?.url ?? imageIcon}
                       className={s.photoAva}
                       alt={'profilePhoto'}
                     />
