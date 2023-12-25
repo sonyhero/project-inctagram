@@ -13,6 +13,7 @@ import {
 } from '@/entities/posts'
 import { useGetProfileQuery } from '@/entities/profile'
 import { modalActions } from '@/features/modal'
+import { clearDB } from '@/shared/config/draftDataBase'
 import { useTranslation } from '@/shared/hooks'
 import { useAppDispatch, useAppSelector } from '@/shared/store'
 import { Modal, PhotoPagination, TextAreaField, TextField, Typography } from '@/shared/ui'
@@ -129,6 +130,7 @@ export const AddPostPublicationModal = ({ addPostPublicationModal }: Props) => {
 
       dispatch(modalActions.setCloseModal({}))
       dispatch(postsActions.deletePhotosPost({}))
+      clearDB()
     } catch (e) {
       toast.error('Some Error')
     } finally {
