@@ -1,14 +1,25 @@
 import Dexie, { Table } from 'dexie'
 
-import { PostType } from '@/entities'
+import { SizeType } from '@/entities'
 
-export type PostDataBaseType = Omit<PostType, 'imageUrl'> & { image: Blob }
+export type PostDataBaseType = {
+  name: string
+  type: string
+  size: number
+  image: Blob
+  id: string
+  zoom: number[]
+  sizeScale: SizeType
+  width: number
+  height: number
+  filter: string
+}
+
 export class DB extends Dexie {
-  // table name is student
   posts!: Table<PostDataBaseType>
 
   constructor() {
-    super('myDatabase')
+    super('PostDataBase')
     this.version(1).stores({
       posts: 'id',
     })
@@ -18,5 +29,7 @@ export class DB extends Dexie {
 const db = new DB()
 
 export const clearDB = () => db.posts.clear()
-export const addDataToDB = (data: PostDataBaseType) => db.posts.add(data)
+export const putDataToDB = (data: PostDataBaseType) => {
+  db.posts.put(data)
+}
 export const getDataFromDB = () => db.posts.toArray()
