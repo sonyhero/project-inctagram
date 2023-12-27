@@ -137,7 +137,7 @@ export const AddProfilePhotoModal = ({ addPhotoModal, setAddPhotoModal }: Props)
             <PhotoPlaceholder />
           )}
 
-          <div className={s.savePhoto}>
+          <div className={photo ? s.selectButtonGroup : s.selectButton}>
             <label htmlFor={'mainPhotoInput'}>
               <Button as={'a'} variant={'primary'}>
                 {photo
