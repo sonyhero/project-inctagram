@@ -25,6 +25,10 @@
   &:focus {
     outline: 2px solid var(--color-accent-700);
   }
+
+  &:disabled {
+    cursor: auto;
+  }
 }
 
 .primary {

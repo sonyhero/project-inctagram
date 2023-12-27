@@ -1,12 +1,14 @@
-import React, { ChangeEvent, useRef, useState } from 'react'
+import React, { ChangeEvent, useEffect, useRef, useState } from 'react'
 
+import { useLiveQuery } from 'dexie-react-hooks'
 import NextImage from 'next/image'
 import AvatarEditor from 'react-avatar-editor'
 
 import s from './AddPostCroppingModal.module.scss'
 
-import { postsActions, SizeType } from '@/entities/posts'
+import { postsActions, PostType, SizeType } from '@/entities/posts'
 import { modalActions } from '@/features/modal'
+import { getDataFromDB } from '@/shared/config/draftDataBase'
 import { useTranslation } from '@/shared/hooks'
 import { useAppDispatch, useAppSelector } from '@/shared/store'
 import { Nullable } from '@/shared/types'
@@ -37,6 +39,27 @@ export const AddPostCroppingModal = ({ addPostCroppingModal }: Props) => {
   const photosPosts = useAppSelector(state => state.postsSlice.photosPosts)
   const activeIndex = useAppSelector(state => state.postsSlice.activeIndex)
   const dispatch = useAppDispatch()
+
+  const postsList = useLiveQuery(getDataFromDB)
+
+  useEffect(() => {
+    postsList?.forEach(image => {
+      const payload: PostType = {
+        id: image.id,
+        name: image.name,
+        type: image.type,
+        size: image.size,
+        zoom: image.zoom,
+        sizeScale: image.sizeScale,
+        width: image.width,
+        height: image.height,
+        imageUrl: URL.createObjectURL(image.image),
+        filter: image.filter,
+      }
+
+      dispatch(postsActions.setPhotoOfPost(payload))
+    })
+  }, [postsList])
 
   const [error, setError] = useState(false)
   const activePhoto = photosPosts[activeIndex]
@@ -221,7 +244,7 @@ export const AddPostCroppingModal = ({ addPostCroppingModal }: Props) => {
       component: (
         <div className={s.photoBlock}>
           <div className={s.photos}>
-            {photosPosts.map((el, index) => {
+            {photosPosts.map((image, index) => {
               const deletePhotoHandler = (id: string) => {
                 dispatch(postsActions.deletePhotoOfPost({ id }))
 
@@ -236,10 +259,10 @@ export const AddPostCroppingModal = ({ addPostCroppingModal }: Props) => {
               }
 
               const reducedParams =
-                el &&
+                image &&
                 getReducedImageParams({
-                  originalHeight: el.height,
-                  originalWidth: el.width,
+                  originalHeight: image.height,
+                  originalWidth: image.width,
                   maxSize: 82,
                 })
 
@@ -247,12 +270,12 @@ export const AddPostCroppingModal = ({ addPostCroppingModal }: Props) => {
                 <div key={index} className={s.photoItem}>
                   <NextImage
                     alt={`photo ${index}`}
-                    src={el.imageUrl}
+                    src={image.imageUrl}
                     width={reducedParams.reducedWidth}
                     height={reducedParams.reducedHeight}
                   />
 
-                  <div className={s.deletePhoto} onClick={() => deletePhotoHandler(el.id)}>
+                  <div className={s.deletePhoto} onClick={() => deletePhotoHandler(image.id)}>
                     <Close />
                   </div>
                 </div>

@@ -1,11 +1,14 @@
 import React, { ChangeEvent, useState } from 'react'
 
+import { useLiveQuery } from 'dexie-react-hooks'
+
 import s from './AddPostModal.module.scss'
 
 import { postsActions } from '@/entities/posts'
 import { modalActions, modalSlice } from '@/features/modal'
+import { clearDB, getDataFromDB } from '@/shared/config/draftDataBase'
 import { useTranslation } from '@/shared/hooks'
-import { useAppDispatch, useAppSelector } from '@/shared/store'
+import { useAppDispatch } from '@/shared/store'
 import { Button, ErrorValidPhoto, Modal, PhotoPlaceholder } from '@/shared/ui'
 import { getNewPhoto } from '@/shared/utils'
 
@@ -15,10 +18,14 @@ type Props = {
 export const AddPostModal = ({ openAddPhotoModal }: Props) => {
   const [errorPhoto, setErrorPhoto] = useState('')
   const { t } = useTranslation()
-  const photosPost = useAppSelector(state => state.postsSlice.photosPosts)
   const dispatch = useAppDispatch()
 
+  const postsList = useLiveQuery(getDataFromDB)
+
+  const showDraftButton = postsList && postsList.length < 1
+
   const mainPhotoSelected = (event: ChangeEvent<HTMLInputElement>) => {
+    clearDB()
     dispatch(postsActions.setCurrentDescription({ currentDescription: '' }))
     const file = event.target.files && event.target.files[0]
 
@@ -64,14 +71,11 @@ export const AddPostModal = ({ openAddPhotoModal }: Props) => {
               />
             </div>
           </label>
-          <Button
-            variant={'outline'}
-            disabled={photosPost.length < 1}
-            className={s.openDraft}
-            onClick={openDraft}
-          >
-            {t.create.addPost.openDraft}
-          </Button>
+          {!showDraftButton && (
+            <Button variant={'outline'} className={s.openDraft} onClick={openDraft}>
+              {t.create.addPost.openDraft}
+            </Button>
+          )}
         </div>
       }
     </Modal>

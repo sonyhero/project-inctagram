@@ -19,6 +19,7 @@ export const getNewPhoto = (props: Props) => {
   const image = new Image()
 
   image.src = URL.createObjectURL(file)
+
   image.onload = () => {
     const { reducedHeight, reducedWidth } = getReducedImageParams({
       originalWidth: image.width,

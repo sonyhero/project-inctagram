@@ -4,8 +4,9 @@ import s from './ClosePostModal.module.scss'
 
 import { postsActions } from '@/entities/posts'
 import { modalActions } from '@/features/modal'
+import { clearDB, PostDataBaseType, putDataToDB } from '@/shared/config/draftDataBase'
 import { useTranslation } from '@/shared/hooks'
-import { useAppDispatch } from '@/shared/store'
+import { useAppDispatch, useAppSelector } from '@/shared/store'
 import { Button, Modal, Typography } from '@/shared/ui'
 
 type Props = {
@@ -15,8 +16,11 @@ type Props = {
 export const ClosePostModal = ({ closeAddPostModal }: Props) => {
   const { t } = useTranslation()
   const dispatch = useAppDispatch()
+  const photosPosts = useAppSelector(state => state.postsSlice.photosPosts)
+
   const handleClose = () => {
-    dispatch(postsActions.deletePhotosPost({}))
+    clearDB()
+
     dispatch(modalActions.setCloseExtraModal({}))
     dispatch(modalActions.setCloseModal({}))
   }
@@ -26,6 +30,27 @@ export const ClosePostModal = ({ closeAddPostModal }: Props) => {
   const saveDraftHandler = () => {
     dispatch(modalActions.setCloseModal({}))
     dispatch(modalActions.setCloseExtraModal({}))
+
+    photosPosts.forEach(async image => {
+      const response = await fetch(image.imageUrl)
+      const imageFromUrl = await response.blob()
+
+      const data: PostDataBaseType = {
+        id: image.id,
+        name: image.name,
+        type: image.type,
+        size: image.size,
+        zoom: image.zoom,
+        sizeScale: image.sizeScale,
+        width: image.width,
+        height: image.height,
+        image: imageFromUrl,
+        filter: image.filter,
+      }
+
+      putDataToDB(data)
+      dispatch(postsActions.deletePhotosPost({}))
+    })
   }
 
   return (
