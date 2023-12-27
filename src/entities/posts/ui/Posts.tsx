@@ -42,7 +42,7 @@ export const Posts = ({ scrollableID, userId }: Props) => {
   const dispatch = useAppDispatch()
 
   useEffect(() => {
-    if (postsData && postsData.items.length > 0) {
+    if (postsData && postsData.items.length > 0 && posts.length < 1) {
       dispatch(postsActions.setPosts(postsData.items))
       dispatch(postsActions.updatePublicationCount(postsData.totalCount))
     }
