@@ -21,6 +21,8 @@ export const ClosePostModal = ({ closeAddPostModal }: Props) => {
   const handleClose = () => {
     clearDB()
 
+    dispatch(postsActions.setActiveIndex(0))
+    dispatch(postsActions.deletePhotosPost({}))
     dispatch(modalActions.setCloseExtraModal({}))
     dispatch(modalActions.setCloseModal({}))
   }
@@ -31,24 +33,17 @@ export const ClosePostModal = ({ closeAddPostModal }: Props) => {
     dispatch(modalActions.setCloseModal({}))
     dispatch(modalActions.setCloseExtraModal({}))
 
-    photosPosts.forEach(async image => {
-      const response = await fetch(image.imageUrl)
-      const imageFromUrl = await response.blob()
+    photosPosts.forEach(async ({ imageUrl, ...rest }) => {
+      const response = await fetch(imageUrl)
+      const image = await response.blob()
 
       const data: PostDataBaseType = {
-        id: image.id,
-        name: image.name,
-        type: image.type,
-        size: image.size,
-        zoom: image.zoom,
-        sizeScale: image.sizeScale,
-        width: image.width,
-        height: image.height,
-        image: imageFromUrl,
-        filter: image.filter,
+        ...rest,
+        image,
       }
 
       putDataToDB(data)
+      dispatch(postsActions.setActiveIndex(0))
       dispatch(postsActions.deletePhotosPost({}))
     })
   }

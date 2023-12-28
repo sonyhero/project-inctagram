@@ -43,21 +43,18 @@ export const AddPostCroppingModal = ({ addPostCroppingModal }: Props) => {
   const postsList = useLiveQuery(getDataFromDB)
 
   useEffect(() => {
-    postsList?.forEach(image => {
+    postsList?.forEach(({ image, ...rest }) => {
+      const imageUrl = URL.createObjectURL(image)
       const payload: PostType = {
-        id: image.id,
-        name: image.name,
-        type: image.type,
-        size: image.size,
-        zoom: image.zoom,
-        sizeScale: image.sizeScale,
-        width: image.width,
-        height: image.height,
-        imageUrl: URL.createObjectURL(image.image),
-        filter: image.filter,
+        ...rest,
+        imageUrl,
       }
 
-      dispatch(postsActions.setPhotoOfPost(payload))
+      const currentPostPhoto = photosPosts.find(photoPost => photoPost.id === rest.id)
+
+      if (currentPostPhoto?.id !== rest.id) {
+        dispatch(postsActions.setPhotoOfPost(payload))
+      }
     })
   }, [postsList])
 
