@@ -23,7 +23,6 @@ const initialState = {
   posts: [] as PostsResponseType[],
   activeIndex: 0,
   publicationCount: 0,
-  currentDescription: '',
 }
 
 export const postsSlice = createSlice({
@@ -32,9 +31,6 @@ export const postsSlice = createSlice({
   reducers: {
     setPhotoOfPost: (state, action: PayloadAction<PostType>) => {
       state.photosPosts = [...state.photosPosts, action.payload]
-    },
-    setCurrentDescription: (state, action: PayloadAction<{ currentDescription: string }>) => {
-      state.currentDescription = action.payload.currentDescription
     },
     deletePhotoOfPost: (state, action: PayloadAction<{ id: string }>) => {
       state.photosPosts = state.photosPosts.filter(el => el.id !== action.payload.id)
