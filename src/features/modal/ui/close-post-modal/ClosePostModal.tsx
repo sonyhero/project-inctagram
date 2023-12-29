@@ -4,7 +4,12 @@ import s from './ClosePostModal.module.scss'
 
 import { postsActions } from '@/entities/posts'
 import { modalActions } from '@/features/modal'
-import { clearDB, PostDataBaseType, putDataToDB } from '@/shared/config/draftDataBase'
+import {
+  clearDescriptionDB,
+  clearPostsDB,
+  PostDataBaseType,
+  putPostsDataToDB,
+} from '@/shared/config/draftDataBase'
 import { useTranslation } from '@/shared/hooks'
 import { useAppDispatch, useAppSelector } from '@/shared/store'
 import { Button, Modal, Typography } from '@/shared/ui'
@@ -19,7 +24,8 @@ export const ClosePostModal = ({ closeAddPostModal }: Props) => {
   const photosPosts = useAppSelector(state => state.postsSlice.photosPosts)
 
   const handleClose = () => {
-    clearDB()
+    clearPostsDB()
+    clearDescriptionDB()
 
     dispatch(postsActions.setActiveIndex(0))
     dispatch(postsActions.deletePhotosPost({}))
@@ -42,7 +48,7 @@ export const ClosePostModal = ({ closeAddPostModal }: Props) => {
         image,
       }
 
-      putDataToDB(data)
+      putPostsDataToDB(data)
       dispatch(postsActions.setActiveIndex(0))
       dispatch(postsActions.deletePhotosPost({}))
     })

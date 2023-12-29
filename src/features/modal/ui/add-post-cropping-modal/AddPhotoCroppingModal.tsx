@@ -8,7 +8,7 @@ import s from './AddPostCroppingModal.module.scss'
 
 import { postsActions, PostType, SizeType } from '@/entities/posts'
 import { modalActions } from '@/features/modal'
-import { getDataFromDB } from '@/shared/config/draftDataBase'
+import { getPostsDataFromDB } from '@/shared/config/draftDataBase'
 import { useTranslation } from '@/shared/hooks'
 import { useAppDispatch, useAppSelector } from '@/shared/store'
 import { Nullable } from '@/shared/types'
@@ -40,7 +40,7 @@ export const AddPostCroppingModal = ({ addPostCroppingModal }: Props) => {
   const activeIndex = useAppSelector(state => state.postsSlice.activeIndex)
   const dispatch = useAppDispatch()
 
-  const postsList = useLiveQuery(getDataFromDB)
+  const postsList = useLiveQuery(getPostsDataFromDB)
 
   useEffect(() => {
     postsList?.forEach(({ image, ...rest }) => {
