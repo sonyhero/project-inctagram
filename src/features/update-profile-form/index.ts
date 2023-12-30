@@ -1,0 +1,1 @@
+export { UpdateProfileForm } from './UpdateProfileForm'

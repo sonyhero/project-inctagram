@@ -1,0 +1,15 @@
+.devices {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+
+  .currentDeviceHead {
+    margin-bottom: 1.13rem;
+  }
+
+  .buttonBlock {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 1.125rem;
+  }
+}

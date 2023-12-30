@@ -1,0 +1,13 @@
+.errorPage {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  max-width: 80rem;
+  margin: 0 auto;
+
+  .errorMessage {
+    margin-bottom: 1.75rem;
+  }
+}

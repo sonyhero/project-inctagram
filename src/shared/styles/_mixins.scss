@@ -1,0 +1,26 @@
+/// Миксин для контейнера с использованием flex.
+/// @param {string} $display - Значение свойства display для контейнера. По умолчанию 'flex'.
+/// @param {string} $flex-direction - Значение свойства flex-direction для контейнера. По умолчанию 'column'.
+/// @param {number} $gap - Значение свойства gap для контейнера. По умолчанию 0.
+/// @param {string} $align-items - Значение свойства align-items для контейнера. По умолчанию 'center'.
+/// @param {string} $justify-content - Значение свойства justify-content для контейнера. По умолчанию 'center'.
+/// @returns {object} Свойства CSS для контейнера с использованием flex.
+
+@mixin flex-container(
+  $display: flex,
+  $flex-direction: column,
+  $gap: 0,
+  $align-items: center,
+  $justify-content: center,
+  $width: 80rem,
+  $margin: 0 auto
+) {
+  display: $display;
+  flex-direction: $flex-direction;
+  gap: $gap;
+  align-items: $align-items;
+  justify-content: $justify-content;
+
+  max-width: $width;
+  margin: $margin;
+}

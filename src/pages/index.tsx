@@ -1,7 +1,23 @@
-import { getBaseLayout } from '@/components/layout/layout'
+import { GetStaticProps, InferGetStaticPropsType } from 'next'
 
-export default function Home() {
-  return <div>main page</div>
+import { GetPublicPostsResponse } from '@/entities/posts'
+import { Home } from '@/pages-flat/home'
+import { getBaseLayout } from '@/shared/providers'
+
+export const getStaticProps = (async () => {
+  const response = await fetch(`https://inctagram.work/api/v1/public-posts/all/${null}?pageSize=4`)
+
+  const data = await response.json()
+
+  return {
+    props: { data },
+    revalidate: 60,
+  }
+}) satisfies GetStaticProps<{ data: GetPublicPostsResponse }>
+
+const HomePage = ({ data }: InferGetStaticPropsType<typeof getStaticProps>) => {
+  return <Home posts={data?.items} usersCount={data?.totalCount} />
 }
 
-Home.getLayout = getBaseLayout
+export default HomePage
+HomePage.getLayout = getBaseLayout

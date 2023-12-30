@@ -1,0 +1,149 @@
+.modalBlock {
+  width: 30.75rem;
+
+  .contentBox {
+    padding: 0;
+  }
+
+  .modalContent {
+    position: relative;
+
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    height: 564px;
+
+    .activities {
+      position: absolute;
+      bottom: 0;
+
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+
+      width: 100%;
+      padding: 0 10px 10px;
+
+      .activityLeft {
+        display: flex;
+        gap: 1.5rem;
+      }
+
+      .activity {
+        display: flex;
+        flex-shrink: 0;
+        align-items: center;
+        justify-content: center;
+
+        width: 36px;
+        height: 36px;
+
+        opacity: 0.8;
+        background: var(--color-dark-500);
+        border-radius: 2px;
+      }
+    }
+  }
+}
+
+.photoBlock {
+  display: flex;
+  gap: 12px;
+
+  .photos {
+    overflow-x: auto;
+    overflow-y: hidden;
+    display: flex;
+    gap: 12px;
+
+    max-width: 12rem;
+
+    .photoItem {
+      position: relative;
+      width: 5.125rem;
+      height: 5.125rem;
+
+      .deletePhoto {
+        cursor: pointer;
+
+        position: absolute;
+        top: 2px;
+        right: 2px;
+
+        display: flex;
+        flex-shrink: 0;
+        align-items: center;
+        justify-content: center;
+
+        width: 0.75rem;
+        height: 0.75rem;
+
+        opacity: 0.8;
+        background-color: var(--color-dark-700);
+        border-radius: 2px;
+
+        & svg {
+          width: 100%;
+          height: 100%;
+        }
+      }
+    }
+  }
+
+  .addNewPhoto {
+    .addPhotoInputBlock {
+      .addPhotoInput {
+        display: none;
+      }
+
+      .error {
+        cursor: pointer;
+        stroke: var(--color-danger-500);
+      }
+
+      .noError {
+        cursor: pointer;
+      }
+    }
+  }
+}
+
+.itemSize {
+  cursor: pointer;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  width: 9.75rem;
+
+  color: var(--color-light-900);
+
+  stroke: var(--color-light-900);
+}
+
+.activeItem {
+  color: var(--color-light-100);
+  stroke: var(--color-light-100);
+}
+
+.itemSizeOriginal {
+  cursor: pointer;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  width: 9.75rem;
+
+  color: var(--color-light-900);
+
+  fill: var(--color-light-900);
+}
+
+.activeItemOriginal {
+  color: var(--color-light-100);
+  fill: var(--color-light-100);
+}

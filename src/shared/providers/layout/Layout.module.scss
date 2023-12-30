@@ -1,0 +1,10 @@
+.container {
+  display: flex;
+  max-width: 80rem;
+  height: calc(100vh - 3.75rem);
+  margin: 0 auto;
+
+  .main {
+    flex-grow: 1;
+  }
+}

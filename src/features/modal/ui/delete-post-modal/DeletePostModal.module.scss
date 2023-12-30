@@ -1,0 +1,18 @@
+.modalBlock {
+  width: 30.75rem;
+
+  .buttonBlock {
+    display: flex;
+    gap: 1.5rem;
+    justify-content: flex-end;
+    padding: 0 1.5rem 2.25rem 0;
+  }
+
+  .modalContent {
+    width: 100%;
+
+    .description {
+      text-align: start;
+    }
+  }
+}

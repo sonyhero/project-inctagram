@@ -1,0 +1,36 @@
+.profileHeader {
+  display: flex;
+  gap: 2.37rem;
+  margin-bottom: 3.3rem;
+
+  .photoBlock {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 192px;
+    height: 192px;
+
+    background-color: var(--color-dark-500);
+    border-radius: 50%;
+
+    .photo {
+      width: 100%;
+      height: auto;
+      border-radius: 50%;
+    }
+  }
+
+  .profileDescription {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    gap: 1.3rem;
+
+    .nameAndSettings {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+  }
+}

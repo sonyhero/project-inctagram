@@ -1,0 +1,43 @@
+.container {
+  display: flex;
+  align-items: center;
+  margin-bottom: 1.5rem;
+
+  .link {
+    cursor: pointer;
+
+    display: flex;
+    align-items: center;
+
+    padding-right: 0.2rem;
+
+    text-decoration: none;
+
+    border: none;
+    border-radius: 0.125rem;
+
+    .nameLink {
+      padding-left: 0.75rem;
+    }
+
+    .active {
+      color: var(--color-accent-500);
+    }
+
+    &:hover {
+      svg {
+        path {
+          fill: var(--color-accent-100);
+        }
+      }
+
+      .active {
+        color: var(--color-accent-100);
+      }
+
+      .nameLink {
+        color: var(--color-accent-100);
+      }
+    }
+  }
+}

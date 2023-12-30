@@ -1,0 +1,12 @@
+.postsBlock {
+  display: grid;
+  grid-gap: 0.75rem;
+  grid-template-columns: repeat(auto-fill, minmax(228px, 1fr));
+
+  .post {
+    cursor: pointer;
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+  }
+}

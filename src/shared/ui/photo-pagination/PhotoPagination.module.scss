@@ -1,0 +1,77 @@
+.carouselPagination {
+  position: absolute;
+  z-index: 1;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+
+  display: flex;
+  gap: 8px;
+
+  padding: 8px;
+
+  opacity: 0.8;
+  background-color: var(--color-dark-700);
+  border-radius: 2px;
+
+  .paginationIndicator {
+    all: unset;
+
+    cursor: pointer;
+
+    z-index: 1;
+
+    width: 8px;
+    height: 8px;
+
+    background-color: var(--color-light-100);
+    border: none;
+    border-radius: 50%;
+    outline: none;
+  }
+
+  .paginationIndicator.active {
+    z-index: 1;
+    background-color: var(--color-accent-500);
+  }
+}
+
+.back {
+  cursor: pointer;
+
+  position: absolute;
+  z-index: 1;
+  top: 50%;
+  left: 12px;
+
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+
+  width: 3rem;
+  height: 3rem;
+
+  opacity: 0.8;
+  background: var(--color-dark-500);
+}
+
+.forvard {
+  cursor: pointer;
+
+  position: absolute;
+  z-index: 1;
+  top: 50%;
+  right: 12px;
+
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+
+  width: 3rem;
+  height: 3rem;
+
+  opacity: 0.8;
+  background: var(--color-dark-500);
+}

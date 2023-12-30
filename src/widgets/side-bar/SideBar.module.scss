@@ -1,0 +1,60 @@
+.navbar {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: space-between;
+
+  width: 13.75rem;
+  padding: 4.5rem 2rem 2.25rem;
+
+  border-right: 1px solid var(--color-dark-300);
+
+  .mainBlock {
+    min-width: 8.5rem;
+    margin-bottom: 1.25rem;
+
+    .primaryBlock {
+      display: flex;
+      flex-direction: column;
+      margin-bottom: 1.25rem;
+    }
+
+    .secondaryBlock {
+      margin-bottom: 1.25rem;
+    }
+  }
+
+  .logout {
+    cursor: pointer;
+
+    display: flex;
+    align-items: center;
+
+    margin-bottom: 7.5rem;
+    padding: 0 0.2rem 0 0;
+
+    &:hover {
+      svg {
+        path {
+          fill: var(--color-accent-100);
+        }
+      }
+
+      p {
+        color: var(--color-accent-100);
+      }
+    }
+
+    &:active {
+      svg {
+        path {
+          fill: var(--color-accent-500);
+        }
+      }
+
+      p {
+        color: var(--color-accent-500);
+      }
+    }
+  }
+}

@@ -1,0 +1,1 @@
+export { BadRecoveryLink } from './BadRecoveryLink'
