@@ -1,19 +1,25 @@
 import React, { ChangeEvent, useEffect, useState } from 'react'
 
+import { useLiveQuery } from 'dexie-react-hooks'
 import { toast } from 'react-toastify'
 
 import s from './AddPostPublicationModal.module.scss'
 
 import { Avatar } from '@/entities'
 import {
-  UploadIdType,
   postsActions,
+  UploadIdType,
   useCreatePostMutation,
   useUploadPostImageMutation,
 } from '@/entities/posts'
 import { useGetProfileQuery } from '@/entities/profile'
 import { modalActions } from '@/features/modal'
-import { clearDB } from '@/shared/config/draftDataBase'
+import {
+  clearDescriptionDB,
+  clearPostsDB,
+  getPostsDescriptionDataFromDB,
+  putPostDescriptionDataToDB,
+} from '@/shared/config/draftDataBase'
 import { useTranslation } from '@/shared/hooks'
 import { useAppDispatch, useAppSelector } from '@/shared/store'
 import { Modal, PhotoPagination, TextAreaField, TextField, Typography } from '@/shared/ui'
@@ -26,7 +32,6 @@ export const AddPostPublicationModal = ({ addPostPublicationModal }: Props) => {
   const { t } = useTranslation()
   const photosPost = useAppSelector(state => state.postsSlice.photosPosts)
   const publicationCount = useAppSelector(state => state.postsSlice.publicationCount)
-  const currentDescription = useAppSelector(state => state.postsSlice.currentDescription)
   const dispatch = useAppDispatch()
 
   const { data } = useGetProfileQuery()
@@ -36,10 +41,18 @@ export const AddPostPublicationModal = ({ addPostPublicationModal }: Props) => {
   const [activeIndex, setActiveIndex] = useState(0)
   const activePhoto = photosPost[activeIndex]
   const [photosFormData, serPhotoFormData] = useState<FormData[]>([])
-  const [descriptionValue, setDescriptionValue] = useState(currentDescription)
+  const [descriptionValue, setDescriptionValue] = useState<string>('')
   const [isPublish, setIsPublish] = useState(true)
 
+  const currentDescriptionValues = useLiveQuery(getPostsDescriptionDataFromDB)
+
   const iaActivePhoto = photosPost && photosPost.length > 0 && activePhoto
+
+  useEffect(() => {
+    if (currentDescriptionValues && currentDescriptionValues[0]) {
+      setDescriptionValue(currentDescriptionValues[0].currentDescription)
+    }
+  }, [currentDescriptionValues])
 
   useEffect(() => {
     const newPhotosFormData = [] as FormData[]
@@ -79,7 +92,7 @@ export const AddPostPublicationModal = ({ addPostPublicationModal }: Props) => {
   }, [])
   const closeModal = () => {
     dispatch(modalActions.setOpenExtraModal('closeAddPostModal'))
-    dispatch(postsActions.setCurrentDescription({ currentDescription: descriptionValue }))
+    putPostDescriptionDataToDB({ currentDescription: descriptionValue })
   }
   const opPrevClickHandler = () => {
     dispatch(modalActions.setOpenModal('addPostFilterModal'))
@@ -130,7 +143,8 @@ export const AddPostPublicationModal = ({ addPostPublicationModal }: Props) => {
 
       dispatch(modalActions.setCloseModal({}))
       dispatch(postsActions.deletePhotosPost({}))
-      clearDB()
+      clearPostsDB()
+      clearDescriptionDB()
     } catch (e) {
       toast.error('Some Error')
     } finally {

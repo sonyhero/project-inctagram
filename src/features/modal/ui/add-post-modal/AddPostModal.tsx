@@ -4,9 +4,8 @@ import { useLiveQuery } from 'dexie-react-hooks'
 
 import s from './AddPostModal.module.scss'
 
-import { postsActions } from '@/entities/posts'
 import { modalActions, modalSlice } from '@/features/modal'
-import { clearDB, getDataFromDB } from '@/shared/config/draftDataBase'
+import { clearDescriptionDB, clearPostsDB, getPostsDataFromDB } from '@/shared/config/draftDataBase'
 import { useTranslation } from '@/shared/hooks'
 import { useAppDispatch } from '@/shared/store'
 import { Button, ErrorValidPhoto, Modal, PhotoPlaceholder } from '@/shared/ui'
@@ -20,13 +19,13 @@ export const AddPostModal = ({ openAddPhotoModal }: Props) => {
   const { t } = useTranslation()
   const dispatch = useAppDispatch()
 
-  const postsList = useLiveQuery(getDataFromDB)
+  const postsList = useLiveQuery(getPostsDataFromDB)
 
   const showDraftButton = postsList && postsList.length < 1
 
   const mainPhotoSelected = (event: ChangeEvent<HTMLInputElement>) => {
-    clearDB()
-    dispatch(postsActions.setCurrentDescription({ currentDescription: '' }))
+    clearPostsDB()
+    clearDescriptionDB()
     const file = event.target.files && event.target.files[0]
 
     if (file) {

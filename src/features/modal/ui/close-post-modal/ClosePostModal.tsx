@@ -4,7 +4,12 @@ import s from './ClosePostModal.module.scss'
 
 import { postsActions } from '@/entities/posts'
 import { modalActions } from '@/features/modal'
-import { clearDB, PostDataBaseType, putDataToDB } from '@/shared/config/draftDataBase'
+import {
+  clearDescriptionDB,
+  clearPostsDB,
+  PostDataBaseType,
+  putPostsDataToDB,
+} from '@/shared/config/draftDataBase'
 import { useTranslation } from '@/shared/hooks'
 import { useAppDispatch, useAppSelector } from '@/shared/store'
 import { Button, Modal, Typography } from '@/shared/ui'
@@ -19,8 +24,11 @@ export const ClosePostModal = ({ closeAddPostModal }: Props) => {
   const photosPosts = useAppSelector(state => state.postsSlice.photosPosts)
 
   const handleClose = () => {
-    clearDB()
+    clearPostsDB()
+    clearDescriptionDB()
 
+    dispatch(postsActions.setActiveIndex(0))
+    dispatch(postsActions.deletePhotosPost({}))
     dispatch(modalActions.setCloseExtraModal({}))
     dispatch(modalActions.setCloseModal({}))
   }
@@ -31,24 +39,17 @@ export const ClosePostModal = ({ closeAddPostModal }: Props) => {
     dispatch(modalActions.setCloseModal({}))
     dispatch(modalActions.setCloseExtraModal({}))
 
-    photosPosts.forEach(async image => {
-      const response = await fetch(image.imageUrl)
-      const imageFromUrl = await response.blob()
+    photosPosts.forEach(async ({ imageUrl, ...rest }) => {
+      const response = await fetch(imageUrl)
+      const image = await response.blob()
 
       const data: PostDataBaseType = {
-        id: image.id,
-        name: image.name,
-        type: image.type,
-        size: image.size,
-        zoom: image.zoom,
-        sizeScale: image.sizeScale,
-        width: image.width,
-        height: image.height,
-        image: imageFromUrl,
-        filter: image.filter,
+        ...rest,
+        image,
       }
 
-      putDataToDB(data)
+      putPostsDataToDB(data)
+      dispatch(postsActions.setActiveIndex(0))
       dispatch(postsActions.deletePhotosPost({}))
     })
   }

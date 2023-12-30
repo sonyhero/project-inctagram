@@ -8,7 +8,7 @@ import s from './AddPostCroppingModal.module.scss'
 
 import { postsActions, PostType, SizeType } from '@/entities/posts'
 import { modalActions } from '@/features/modal'
-import { getDataFromDB } from '@/shared/config/draftDataBase'
+import { getPostsDataFromDB } from '@/shared/config/draftDataBase'
 import { useTranslation } from '@/shared/hooks'
 import { useAppDispatch, useAppSelector } from '@/shared/store'
 import { Nullable } from '@/shared/types'
@@ -40,24 +40,21 @@ export const AddPostCroppingModal = ({ addPostCroppingModal }: Props) => {
   const activeIndex = useAppSelector(state => state.postsSlice.activeIndex)
   const dispatch = useAppDispatch()
 
-  const postsList = useLiveQuery(getDataFromDB)
+  const postsList = useLiveQuery(getPostsDataFromDB)
 
   useEffect(() => {
-    postsList?.forEach(image => {
+    postsList?.forEach(({ image, ...rest }) => {
+      const imageUrl = URL.createObjectURL(image)
       const payload: PostType = {
-        id: image.id,
-        name: image.name,
-        type: image.type,
-        size: image.size,
-        zoom: image.zoom,
-        sizeScale: image.sizeScale,
-        width: image.width,
-        height: image.height,
-        imageUrl: URL.createObjectURL(image.image),
-        filter: image.filter,
+        ...rest,
+        imageUrl,
       }
 
-      dispatch(postsActions.setPhotoOfPost(payload))
+      const currentPostPhoto = photosPosts.find(photoPost => photoPost.id === rest.id)
+
+      if (currentPostPhoto?.id !== rest.id) {
+        dispatch(postsActions.setPhotoOfPost(payload))
+      }
     })
   }, [postsList])
 
