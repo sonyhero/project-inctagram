@@ -45,7 +45,6 @@ export default function UserPage() {
   const postIdQuery = query.userId?.[1]
   const postId = Number(postIdQuery)
   const [openModal, setOpenModal] = useState(false)
-  const [skip, setSkip] = useState(true)
 
   const { data: profileData } = useGetPublicUserProfileByIdQuery({ profileId })
   const { data: postsData } = useGetUserPublicPostsQuery({
@@ -53,7 +52,7 @@ export default function UserPage() {
     pageSize: 4,
   })
 
-  const { data: postById } = useGetPublicPostByIdQuery({ postId }, { skip })
+  const { data: postById } = useGetPublicPostByIdQuery({ postId }, { skip: !postId })
 
   const mappedPosts = postsData?.items.slice(0, 4).map(post => {
     return (
@@ -72,7 +71,6 @@ export default function UserPage() {
 
   useEffect(() => {
     if (postId) {
-      setSkip(false)
       setOpenModal(true)
     }
   }, [postId])
