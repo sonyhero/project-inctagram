@@ -100,14 +100,34 @@ const authApi = baseApi.injectEndpoints({
         }),
         invalidatesTags: ['Me'],
       }),
+      // me: builder.query<Nullable<MeResponseType>, void>({
+      //   query: () => ({
+      //     url: 'v1/auth/me',
+      //     method: 'GET',
+      //   }),
+      //   extraOptions: { maxRetries: 0 },
+      //   providesTags: ['Me'],
+      // }),
+
+      //Взял реализацию запроса 'me' из группы по стажировке в ТГ, есть скриншоты у @o_an_ton
       me: builder.query<Nullable<MeResponseType>, void>({
-        query: () => ({
-          url: 'v1/auth/me',
-          method: 'GET',
-        }),
-        extraOptions: { maxRetries: 0 },
+        async queryFn(_name, _api, _extraOptions, baseQuery) {
+          const result = await baseQuery({
+            url: 'v1/auth/me',
+            method: 'GET',
+          })
+
+          return {
+            data:
+              result.data === undefined
+                ? ('' as unknown as MeResponseType)
+                : (result.data as MeResponseType),
+          }
+        },
+        extraOptions: { maxRetries: 1 },
         providesTags: ['Me'],
       }),
+      //
       googleLogin: builder.mutation<GoogleLoginType, { code: string }>({
         query: body => ({
           url: 'v1/auth/google/login',
