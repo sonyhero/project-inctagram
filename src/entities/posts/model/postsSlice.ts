@@ -78,7 +78,7 @@ export const postsSlice = createSlice({
       state.posts.unshift(action.payload)
     },
     setPosts: (state, action: PayloadAction<Array<PostsResponseType>>) => {
-      state.posts = [...state.posts, ...action.payload]
+      state.posts = [...action.payload]
     },
     deletePost: (state, action: PayloadAction<{ postId: number }>) => {
       state.posts = state.posts.filter(el => el.id !== action.payload.postId)

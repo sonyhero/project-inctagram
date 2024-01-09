@@ -19,7 +19,7 @@ const postsApi = baseApi.injectEndpoints({
           method: 'POST',
           body,
         }),
-        invalidatesTags: [],
+        invalidatesTags: ['Posts'],
       }),
       uploadPostImage: builder.mutation<PostsImagesResponse, FormData>({
         query: body => ({
@@ -49,7 +49,7 @@ const postsApi = baseApi.injectEndpoints({
           url: `v1/posts/${postId}`,
           method: 'DELETE',
         }),
-        invalidatesTags: [],
+        invalidatesTags: ['Posts'],
       }),
       getAllPublicPosts: builder.query<GetPublicPostsResponse, GetAllPublicPostsArgs>({
         query: args => ({
