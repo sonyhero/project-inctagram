@@ -74,9 +74,6 @@ export const postsSlice = createSlice({
     setPost: (state, action: PayloadAction<Nullable<PostsResponseType>>) => {
       state.post = action.payload
     },
-    createNewPost: (state, action: PayloadAction<PostsResponseType>) => {
-      state.posts.unshift(action.payload)
-    },
     setPosts: (state, action: PayloadAction<Array<PostsResponseType>>) => {
       state.posts = [...state.posts, ...action.payload]
     },

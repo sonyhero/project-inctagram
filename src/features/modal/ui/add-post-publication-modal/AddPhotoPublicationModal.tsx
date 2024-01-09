@@ -136,8 +136,7 @@ export const AddPostPublicationModal = ({ addPostPublicationModal }: Props) => {
         childrenMetadata: filteredUploadIds,
       })
         .unwrap()
-        .then(postData => {
-          dispatch(postsActions.createNewPost(postData))
+        .then(() => {
           dispatch(postsActions.updatePublicationCount(publicationCount + 1))
         })
 
