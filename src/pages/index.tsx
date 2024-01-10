@@ -1,22 +1,26 @@
 import { GetStaticProps, InferGetStaticPropsType } from 'next'
 
 import { GetPublicPostsResponse } from '@/entities/posts'
+import { useMeQuery } from '@/features/auth'
 import { Home } from '@/pages-flat/home'
 import { getBaseLayout } from '@/shared/providers'
+import { HomeUnregister } from '@/widgets/home-unregistered-posts'
 
 export const getStaticProps = (async () => {
   const response = await fetch(`https://inctagram.work/api/v1/public-posts/all/${null}?pageSize=4`)
 
-  const data = await response.json()
+  const posts = await response.json()
 
   return {
-    props: { data },
+    props: { posts },
     revalidate: 60,
   }
-}) satisfies GetStaticProps<{ data: GetPublicPostsResponse }>
+}) satisfies GetStaticProps<{ posts: GetPublicPostsResponse }>
 
-const HomePage = ({ data }: InferGetStaticPropsType<typeof getStaticProps>) => {
-  return <Home posts={data?.items} usersCount={data?.totalCount} />
+const HomePage = ({ posts }: InferGetStaticPropsType<typeof getStaticProps>) => {
+  const { data } = useMeQuery()
+
+  return data ? <Home /> : <HomeUnregister posts={posts?.items} usersCount={posts?.totalCount} />
 }
 
 export default HomePage
