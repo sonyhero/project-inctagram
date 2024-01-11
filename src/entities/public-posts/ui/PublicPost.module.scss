@@ -1,0 +1,31 @@
+.post {
+  width: 30.7rem;
+  margin: 1.5rem;
+
+  .postHeader {
+    .urlAndAvatar {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+      margin-bottom: 0.75rem;
+    }
+
+    .textBlock {
+      display: flex;
+      gap: 0.5rem;
+      align-items: center;
+
+      .link {
+        text-decoration: none;
+      }
+
+      .marker {
+        color: var(--color-light-700);
+      }
+
+      .date {
+        padding: 0.38rem 0 0.13rem;
+      }
+    }
+  }
+}
