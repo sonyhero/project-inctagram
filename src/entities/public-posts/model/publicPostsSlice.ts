@@ -8,8 +8,8 @@ const initialState = {
   lastUploadedPostId: null as Nullable<number>,
 }
 
-export const allPostsSlice = createSlice({
-  name: 'allPostsSlice',
+export const publicPostsSlice = createSlice({
+  name: 'publicPostsSlice',
   initialState,
   reducers: {
     setPosts: (state, action: PayloadAction<PostsResponseType[]>) => {
@@ -24,4 +24,4 @@ export const allPostsSlice = createSlice({
   },
 })
 
-export const allPostsActions = allPostsSlice.actions
+export const publicPostsActions = publicPostsSlice.actions

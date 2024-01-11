@@ -2,13 +2,13 @@ import { configureStore } from '@reduxjs/toolkit'
 import { createWrapper } from 'next-redux-wrapper'
 import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux'
 
-import { allPostsSlice } from '@/entities/all-posts/model'
 import { postsSlice } from '@/entities/posts'
 import { profileSlice } from '@/entities/profile/model'
 import { subscriptionSlice } from '@/entities/subscription/model/subscriptionSlice'
 import { modalSlice } from '@/features/modal/model/modalSlice'
 import { baseApi } from '@/shared/api/baseApi'
 import { profileSettingsSlice } from '@/widgets/profile-settings/model/profileSettingsSlice'
+import { publicPostsSlice } from 'src/entities/public-posts/model'
 
 export const store = configureStore({
   reducer: {
@@ -18,7 +18,7 @@ export const store = configureStore({
     [profileSlice.name]: profileSlice.reducer,
     [postsSlice.name]: postsSlice.reducer,
     [subscriptionSlice.name]: subscriptionSlice.reducer,
-    [allPostsSlice.name]: allPostsSlice.reducer,
+    [publicPostsSlice.name]: publicPostsSlice.reducer,
   },
   middleware: getDefaultMiddleware => getDefaultMiddleware().concat(baseApi.middleware),
 })
