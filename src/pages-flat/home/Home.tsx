@@ -1,17 +1,17 @@
 import React, { useEffect, useState } from 'react'
 
-import Image from 'next/image'
 import InfiniteScroll from 'react-infinite-scroll-component'
 
-import { allPostsActions } from '@/entities/all-posts/model'
+import s from './Home.module.scss'
+
 import {
   GetAllPublicPostsArgs,
   useGetAllPublicPostsQuery,
   useLazyGetAllPublicPostsQuery,
 } from '@/entities/posts'
-import s from '@/entities/posts/ui/Posts.module.scss'
+import { PublicPost } from '@/entities/public-posts/ui/PublicPost'
 import { useAppDispatch, useAppSelector } from '@/shared/store'
-import imageIcon from 'public/imageIcon.svg'
+import { publicPostsActions } from 'src/entities/public-posts/model'
 
 const postDataArgs: GetAllPublicPostsArgs = {
   pageSize: 8,
@@ -20,19 +20,20 @@ const postDataArgs: GetAllPublicPostsArgs = {
 }
 
 export const Home = () => {
+  const scrollableID = 'scrollableID'
   const { data: allUsersPostsData } = useGetAllPublicPostsQuery(postDataArgs)
 
   const [getNextPosts] = useLazyGetAllPublicPostsQuery()
 
   const [innerHeight, setInnerHeight] = useState<number>(window.innerHeight)
   const [paddingValue, setPaddingValue] = useState<number>(200)
-  const allPosts = useAppSelector(state => state.allPostsSlice.allPosts)
-  const lastUploadedPostId = useAppSelector(state => state.allPostsSlice.lastUploadedPostId)
+  const allPosts = useAppSelector(state => state.publicPostsSlice.allPosts)
+  const lastUploadedPostId = useAppSelector(state => state.publicPostsSlice.lastUploadedPostId)
   const dispatch = useAppDispatch()
 
   useEffect(() => {
     if (allUsersPostsData && allUsersPostsData.items.length > 0) {
-      dispatch(allPostsActions.setPosts(allUsersPostsData.items))
+      dispatch(publicPostsActions.setPosts(allUsersPostsData.items))
     }
   }, [allUsersPostsData])
 
@@ -62,34 +63,27 @@ export const Home = () => {
       getNextPosts({ endCursorPostId: lastPostId, ...postDataArgs })
         .unwrap()
         .then(postsData => {
-          dispatch(allPostsActions.fetchScrollPosts(postsData.items))
-          dispatch(allPostsActions.setLastUploadedPostId(lastPostId))
+          dispatch(publicPostsActions.fetchScrollPosts(postsData.items))
+          dispatch(publicPostsActions.setLastUploadedPostId(lastPostId))
         })
     }
   }
 
+  const mappedPosts = allPosts.map(publicPost => <PublicPost key={publicPost.id} {...publicPost} />)
+
   return (
-    <InfiniteScroll
-      dataLength={allPosts.length}
-      next={fetchPostsData}
-      hasMore={true}
-      loader={<span>...loading</span>}
-      className={s.postsBlock}
-      scrollableTarget={'scrollableID'}
-      style={{ paddingBottom: `${paddingValue}px` }}
-    >
-      {allPosts.map(el => (
-        <Image
-          src={el.images[0]?.url ?? imageIcon}
-          key={el.id}
-          width={200}
-          height={200}
-          priority={true}
-          alt={'postItem'}
-          className={s.post}
-          // onClick={() => openPostModalHandler(el.id)}
-        />
-      ))}
-    </InfiniteScroll>
+    <div id={scrollableID} className={s.home}>
+      <InfiniteScroll
+        dataLength={allPosts.length}
+        next={fetchPostsData}
+        hasMore={true}
+        loader={<span>...loading</span>}
+        className={s.postsBlock}
+        scrollableTarget={scrollableID}
+        style={{ paddingBottom: `${paddingValue}px` }}
+      >
+        {mappedPosts}
+      </InfiniteScroll>
+    </div>
   )
 }
