@@ -8,6 +8,7 @@ import imageIcon from '/public/imageIcon.svg'
 
 import s from './PostUnregister.module.scss'
 
+import { AvatarOwner } from '@/entities/avatar-owner'
 import { PostsImagesResponseType } from '@/entities/posts'
 import { PATH } from '@/shared/config/routes'
 import { PhotoPagination, Typography } from '@/shared/ui'
@@ -59,13 +60,7 @@ export const PostUnregister = (props: Props) => {
         />
       </div>
       <div className={s.urlAndAvatar}>
-        <Image
-          src={avatarOwner ?? imageIcon}
-          width={36}
-          height={36}
-          alt={'post picture'}
-          className={s.avatar}
-        />
+        <AvatarOwner avatarOwner={avatarOwner} />
         <Link href={`${PATH.USER}/${userId}`} className={s.link}>
           <Typography variant={'h3'} color={'primary'}>
             URL Profile
