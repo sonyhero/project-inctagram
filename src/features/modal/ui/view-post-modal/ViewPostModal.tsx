@@ -1,5 +1,6 @@
 import React, { ChangeEvent, useState } from 'react'
 
+import ImageNext from 'next/image'
 import { useRouter } from 'next/router'
 
 import s from './ViewPostModal.module.scss'
@@ -129,7 +130,13 @@ export const ViewPostModal = ({ open }: Props) => {
       {post?.images && post?.images.length > 0 && activePhoto && (
         <div className={s.modalContent}>
           <div className={s.lastPhoto}>
-            <img src={activePhoto.url} alt={'post'} className={s.photo} />
+            <ImageNext
+              src={activePhoto.url}
+              alt={'post'}
+              className={s.photo}
+              width={400}
+              height={400}
+            />
             <PhotoPagination
               changePhotoNext={() => changePhoto('next')}
               changePhotoPrev={() => changePhoto('prev')}
