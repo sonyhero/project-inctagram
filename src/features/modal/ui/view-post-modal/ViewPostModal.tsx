@@ -3,8 +3,6 @@ import React, { ChangeEvent, useState } from 'react'
 import ImageNext from 'next/image'
 import { useRouter } from 'next/router'
 
-import loaderIcon from '../../../../../public/loader.svg'
-
 import s from './ViewPostModal.module.scss'
 
 import { Avatar } from '@/entities'
@@ -67,11 +65,6 @@ export const ViewPostModal = ({ open }: Props) => {
       }
     }
   }
-  const profileAvatarLoader = () =>
-    data?.avatars.length && {
-      loader: () => data.avatars[0].url,
-      className: s.photoAva,
-    }
 
   const onChangeTextHandler = (event: ChangeEvent<HTMLTextAreaElement>) => {
     setValue(event.currentTarget.value)
@@ -137,7 +130,13 @@ export const ViewPostModal = ({ open }: Props) => {
       {post?.images && post?.images.length > 0 && activePhoto && (
         <div className={s.modalContent}>
           <div className={s.lastPhoto}>
-            <img src={activePhoto.url} alt={'post'} className={s.photo} />
+            <ImageNext
+              src={activePhoto.url}
+              alt={'post'}
+              className={s.photo}
+              width={400}
+              height={400}
+            />
             <PhotoPagination
               changePhotoNext={() => changePhoto('next')}
               changePhotoPrev={() => changePhoto('prev')}
@@ -150,12 +149,6 @@ export const ViewPostModal = ({ open }: Props) => {
             <div className={s.postDescriptionBlock}>
               <div className={s.topContent}>
                 <div className={s.photoBlock}>
-                  {/*<ImageNext*/}
-                  {/*  src={loaderIcon}*/}
-                  {/*  priority={true}*/}
-                  {/*  {...profileAvatarLoader()}*/}
-                  {/*  alt={'profilePhoto'}*/}
-                  {/*/>*/}
                   <Avatar className={s.photoAva} />
                   <Typography variant={'h3'}>{data?.userName}</Typography>
                 </div>
@@ -170,12 +163,7 @@ export const ViewPostModal = ({ open }: Props) => {
                 <div className={s.comments}>
                   {post.description && (
                     <>
-                      <ImageNext
-                        src={loaderIcon}
-                        priority={true}
-                        {...profileAvatarLoader()}
-                        alt={'profilePhoto'}
-                      />
+                      <Avatar className={s.photoAva} />
                       <div className={s.descriptionBlock}>
                         <Typography variant={'regular14'} className={s.desc}>
                           <strong>{data?.userName}</strong> {post.description}
@@ -230,12 +218,7 @@ export const ViewPostModal = ({ open }: Props) => {
             <div className={s.editBlock}>
               <div className={s.topContent}>
                 <div className={s.photoBlock}>
-                  <ImageNext
-                    src={loaderIcon}
-                    priority={true}
-                    {...profileAvatarLoader()}
-                    alt={'profilePhoto'}
-                  />
+                  <Avatar className={s.photoAva} />
                   <Typography variant={'h3'}>{data?.userName}</Typography>
                 </div>
                 <div>

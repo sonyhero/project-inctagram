@@ -1,0 +1,117 @@
+.post {
+  width: 30.7rem;
+  margin: 1.5rem;
+
+  .postHeader {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    justify-content: space-between;
+
+    margin-bottom: 0.75rem;
+
+    .textBlock {
+      display: flex;
+      gap: 0.5rem;
+      align-items: center;
+
+      .avatar {
+        margin-right: 0.25rem;
+      }
+
+      .link {
+        text-decoration: none;
+      }
+
+      .marker {
+        color: var(--color-light-700);
+      }
+
+      .date {
+        padding: 0.38rem 0 0.13rem;
+      }
+    }
+
+    .dots {
+      cursor: pointer;
+    }
+  }
+
+  .imageContent {
+    position: relative;
+
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 30.75rem;
+  }
+
+  .postFooter {
+    padding: 0.7rem 0;
+
+    .likeSaveSetBlock {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 1.06rem;
+
+      .likeAndSet {
+        display: flex;
+        gap: 1.5rem;
+        align-items: center;
+      }
+    }
+
+    .comments {
+      display: flex;
+      flex-grow: 1;
+      gap: 0.75rem;
+      margin-bottom: 0.87rem;
+
+      .description {
+        overflow: hidden; /* Обрезаем всё за пределами блока */
+        display: -webkit-box; /* Включаем флексбоксы */
+
+        width: 100%;
+
+        word-wrap: break-word;
+
+        -webkit-box-orient: vertical; /* Вертикальная ориентация */
+        -webkit-line-clamp: 3; /* Число отображаемых строк */
+      }
+    }
+
+    .viewsAndCount {
+      display: flex;
+      gap: 1.45rem;
+
+      .views {
+        display: flex;
+        align-items: center;
+
+        .view {
+          width: 1.5rem;
+          height: 1.5rem;
+          margin-right: -0.7rem;
+
+          background-color: var(--color-dark-500);
+          border-radius: 50%;
+        }
+      }
+
+      .count {
+        display: flex;
+        gap: 5px;
+      }
+    }
+  }
+}
+
+.itemActivity {
+  cursor: pointer;
+  display: flex;
+  gap: 0.75rem;
+  align-items: center;
+}

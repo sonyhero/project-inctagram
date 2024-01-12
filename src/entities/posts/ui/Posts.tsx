@@ -74,7 +74,7 @@ export const Posts = ({ scrollableID, userId }: Props) => {
       getNextPosts({ userId, endCursorPostId: lastPostId, ...postDataArgs })
         .unwrap()
         .then(postsData => {
-          dispatch(postsActions.setPosts(postsData.items))
+          dispatch(postsActions.fetchScrollPosts(postsData.items))
           setLastUploadedPostId(lastPostId)
         })
     }
@@ -102,7 +102,7 @@ export const Posts = ({ scrollableID, userId }: Props) => {
       {posts.map(el => {
         return (
           <Image
-            src={el.images[0].url ?? imageIcon}
+            src={el.images[0]?.url ?? imageIcon}
             key={el.id}
             width={200}
             height={200}

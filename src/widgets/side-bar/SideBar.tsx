@@ -1,5 +1,7 @@
 import { useEffect, useState } from 'react'
 
+import { useRouter } from 'next/router'
+
 import s from './SideBar.module.scss'
 
 import { profileActions } from '@/entities/profile/model'
@@ -49,6 +51,7 @@ const LINK_COLOR = '#fff'
 
 export const SideBar = () => {
   const [open, setOpen] = useState(false)
+  const { asPath } = useRouter()
   const [variantIcon, setVariantIcon] = useState<Nullable<VariantIconType>>()
   const { t } = useTranslation()
   const modal = useAppSelector(state => state.modalSlice.open)
@@ -68,9 +71,18 @@ export const SideBar = () => {
       )
     }
   }, [data])
+
+  useEffect(() => {
+    const result = asPath.match(/\/([^/]+)/)
+    const trimmedUrl = result?.[0] ?? PATH.HOME
+
+    setVariantIcon(trimmedUrl)
+  }, [asPath])
+
   const handleItemClick = (variant: Nullable<VariantIconType>) => {
     setVariantIcon(variant)
   }
+
   const logoutHandler = () => {
     setOpen(true)
   }
