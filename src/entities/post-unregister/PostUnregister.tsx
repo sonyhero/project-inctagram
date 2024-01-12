@@ -9,29 +9,22 @@ import imageIcon from '/public/imageIcon.svg'
 import s from './PostUnregister.module.scss'
 
 import { AvatarOwner } from '@/entities/avatar-owner'
-import { PostsImagesResponseType } from '@/entities/posts'
+import { PostsResponseType } from '@/entities/posts'
 import { PATH } from '@/shared/config/routes'
 import { PhotoPagination, Typography } from '@/shared/ui'
 import { getDayMonthTime } from '@/shared/utils'
 
-type Props = {
-  photos: PostsImagesResponseType[]
-  desc: string
-  createdAt: string
-  avatarOwner: string
-  userId: number
-  postId: number
-}
+type Props = PostsResponseType
 
 export const PostUnregister = (props: Props) => {
-  const { photos, desc, createdAt, avatarOwner, userId, postId } = props
+  const { images, description, createdAt, avatarOwner, ownerId, id } = props
   const [activeIndex, setActiveIndex] = useState(0)
-  const activePhoto = photos[activeIndex]
+  const activePhoto = images[activeIndex]
   const { locale } = useRouter()
 
   const changePhoto = (direction: 'next' | 'prev') => {
-    if (photos && photos.length > 0) {
-      if (direction === 'next' && activeIndex < photos.length / 2 - 1) {
+    if (images && images.length > 0) {
+      if (direction === 'next' && activeIndex < images.length / 2 - 1) {
         setActiveIndex(activeIndex + 1)
       } else if (direction === 'prev' && activeIndex > 0) {
         setActiveIndex(activeIndex - 1)
@@ -42,7 +35,7 @@ export const PostUnregister = (props: Props) => {
   return (
     <div className={s.postWrapper}>
       <div className={s.photoBlock}>
-        <Link href={`${PATH.USER}/${userId}/${postId}`}>
+        <Link href={`${PATH.USER}/${ownerId}/${id}`}>
           <Image
             src={activePhoto?.url ?? imageIcon}
             priority={true}
@@ -54,14 +47,14 @@ export const PostUnregister = (props: Props) => {
         <PhotoPagination
           changePhotoNext={() => changePhoto('next')}
           changePhotoPrev={() => changePhoto('prev')}
-          photosArr={photos.slice(0, photos.length / 2)}
+          photosArr={images.slice(0, images.length / 2)}
           changePhotoIndex={setActiveIndex}
           activeIndex={activeIndex}
         />
       </div>
       <div className={s.urlAndAvatar}>
         <AvatarOwner avatarOwner={avatarOwner} />
-        <Link href={`${PATH.USER}/${userId}`} className={s.link}>
+        <Link href={`${PATH.USER}/${ownerId}`} className={s.link}>
           <Typography variant={'h3'} color={'primary'}>
             URL Profile
           </Typography>
@@ -71,7 +64,7 @@ export const PostUnregister = (props: Props) => {
         {getDayMonthTime(createdAt, locale ?? 'en')}
       </Typography>
       <Typography variant={'regular14'} color={'primary'} className={s.description}>
-        {desc}
+        {description}
       </Typography>
     </div>
   )

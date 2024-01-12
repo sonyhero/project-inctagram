@@ -10,17 +10,7 @@ type Props = {
 }
 export const HomeUnregister = ({ posts, usersCount }: Props) => {
   const mappedPosts = posts?.map(post => {
-    return (
-      <PostUnregister
-        key={post.id}
-        postId={post.id}
-        userId={post.ownerId}
-        photos={post.images}
-        desc={post.description}
-        createdAt={post.createdAt}
-        avatarOwner={post.avatarOwner}
-      />
-    )
+    return <PostUnregister key={post.id} {...post} />
   })
   const totalUserCount = String('00' + usersCount).split('')
 
