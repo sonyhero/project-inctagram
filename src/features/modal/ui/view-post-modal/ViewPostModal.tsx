@@ -9,7 +9,7 @@ import { Avatar } from '@/entities'
 import { postsActions, useUpdatePostByIdMutation } from '@/entities/posts'
 import { useGetProfileQuery } from '@/entities/profile'
 import { modalActions } from '@/features/modal'
-import { useTranslation } from '@/shared/hooks'
+import { usePostImagePagination, useTranslation } from '@/shared/hooks'
 import { useAppDispatch, useAppSelector } from '@/shared/store'
 import {
   Bookmark,
@@ -33,20 +33,20 @@ type Props = {
 }
 
 export const ViewPostModal = ({ open }: Props) => {
+  const { data } = useGetProfileQuery()
+  const [updatePost] = useUpdatePostByIdMutation()
   const { t } = useTranslation()
   const { locale } = useRouter()
-
+  const dispatch = useAppDispatch()
   const post = useAppSelector(state => state.postsSlice.post)
-
-  const { data } = useGetProfileQuery()
-  const [activeIndex, setActiveIndex] = useState(0)
-  const activePhoto = post?.images[activeIndex]
   const [editMode, setEditMode] = useState(false)
-  const [updatePost] = useUpdatePostByIdMutation()
-
   const [value, setValue] = useState(post?.description ?? '')
 
-  const dispatch = useAppDispatch()
+  const { filterImages, activeImage, prevImage, nextImage, activeIndex, setActiveIndex } =
+    usePostImagePagination({ images: post?.images })
+
+  const iaActivePhoto = post?.images && post?.images.length > 0 && activeImage
+
   const closeModal = () => {
     if (editMode) {
       setEditMode(false)
@@ -54,15 +54,6 @@ export const ViewPostModal = ({ open }: Props) => {
       setTimeout(() => {
         dispatch(modalActions.setCloseModal({}))
       }, 0)
-    }
-  }
-  const changePhoto = (direction: 'next' | 'prev') => {
-    if (post?.images && post?.images.length > 0) {
-      if (direction === 'next' && activeIndex < post?.images.length / 2 - 1) {
-        setActiveIndex(activeIndex + 1)
-      } else if (direction === 'prev' && activeIndex > 0) {
-        setActiveIndex(activeIndex - 1)
-      }
     }
   }
 
@@ -127,20 +118,20 @@ export const ViewPostModal = ({ open }: Props) => {
       showCloseButton={editMode}
       contentBoxClassname={s.contentBox}
     >
-      {post?.images && post?.images.length > 0 && activePhoto && (
+      {iaActivePhoto && (
         <div className={s.modalContent}>
           <div className={s.lastPhoto}>
             <ImageNext
-              src={activePhoto.url}
+              src={activeImage}
               alt={'post'}
               className={s.photo}
               width={400}
               height={400}
             />
             <PhotoPagination
-              changePhotoNext={() => changePhoto('next')}
-              changePhotoPrev={() => changePhoto('prev')}
-              photosArr={post?.images.slice(0, post.images.length / 2)}
+              changePhotoNext={nextImage}
+              changePhotoPrev={prevImage}
+              photosArr={filterImages}
               changePhotoIndex={setActiveIndex}
               activeIndex={activeIndex}
             />
@@ -161,7 +152,7 @@ export const ViewPostModal = ({ open }: Props) => {
               </div>
               <div className={s.middleContent}>
                 <div className={s.comments}>
-                  {post.description && (
+                  {post?.description && (
                     <>
                       <Avatar className={s.photoAva} />
                       <div className={s.descriptionBlock}>

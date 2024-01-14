@@ -7,7 +7,7 @@ import s from './AvatarOwner.module.scss'
 import imageIcon from 'public/imageIcon.svg'
 
 type Props = {
-  avatarOwner: string
+  avatarOwner?: string
   className?: string
 }
 
