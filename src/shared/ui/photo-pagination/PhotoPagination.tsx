@@ -5,7 +5,7 @@ import s from './PhotoPagination.module.scss'
 import { ArrowIosBack, ArrowIosForward } from '@/shared/ui'
 
 type Props = {
-  photosArr: any[]
+  photosArr?: any[]
   changePhotoIndex: (index: number) => void
   activeIndex: number
   changePhotoNext: () => void
@@ -15,7 +15,7 @@ type Props = {
 export const PhotoPagination = (props: Props) => {
   const { photosArr, changePhotoIndex, activeIndex, changePhotoPrev, changePhotoNext } = props
 
-  return (
+  return photosArr ? (
     <>
       {activeIndex > 0 && (
         <div className={s.back} onClick={changePhotoPrev}>
@@ -41,5 +41,5 @@ export const PhotoPagination = (props: Props) => {
         </div>
       )}
     </>
-  )
+  ) : null
 }
