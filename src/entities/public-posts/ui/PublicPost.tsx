@@ -1,16 +1,15 @@
-import React, { useState } from 'react'
+import React from 'react'
 
 import Image from 'next/image'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
-import { toast } from 'react-toastify'
 
 import s from './PublicPost.module.scss'
 
 import { PostsResponseType } from '@/entities'
 import { AvatarOwner } from '@/entities/avatar-owner'
 import { PATH } from '@/shared/config/routes'
-import { useTranslation } from '@/shared/hooks'
+import { usePostImagePagination, useTranslation } from '@/shared/hooks'
 import {
   Bookmark,
   Copy,
@@ -24,45 +23,19 @@ import {
   Typography,
 } from '@/shared/ui'
 import { DropDownMenu } from '@/shared/ui/drop-down-menu'
-import { getDayMonthTime } from '@/shared/utils'
-import imageIcon from 'public/imageIcon.svg'
+import { copyToClipboard, getDayMonthTime } from '@/shared/utils'
 
 type Props = PostsResponseType
 
 export const PublicPost = (props: Props) => {
-  const { images: postImages, avatarOwner, ownerId, createdAt, id, description, owner } = props
+  const { images, avatarOwner, ownerId, createdAt, id, description, owner } = props
   const { locale } = useRouter()
   const { t } = useTranslation()
-
-  const [activeIndex, setActiveIndex] = useState(0)
-
-  const images = postImages.filter(img => img.width === 1440)
-
-  const activePhoto = images[activeIndex]
-
-  const copyToClipboard = (text: string) => {
-    navigator.clipboard
-      .writeText(text)
-      .then(() => {
-        toast.success('Ссылка на пост скопирована')
-      })
-      .catch(() => {
-        toast.error('Не удалось скопировать ссылку на пост')
-      })
-  }
+  const { filterImages, activeImage, prevImage, nextImage, activeIndex, setActiveIndex } =
+    usePostImagePagination({ images })
 
   const copyHandler = () =>
     copyToClipboard(`${process.env.NEXT_PUBLIC_BASE_URL}${PATH.USER}/${ownerId}/${id}`)
-
-  const changePhoto = (direction: 'next' | 'prev') => {
-    if (images && images.length > 0) {
-      if (direction === 'next' && activeIndex < images.length - 1) {
-        setActiveIndex(activeIndex + 1)
-      } else if (direction === 'prev' && activeIndex > 0) {
-        setActiveIndex(activeIndex - 1)
-      }
-    }
-  }
 
   const dropDownMenuSize = [
     {
@@ -114,7 +87,7 @@ export const PublicPost = (props: Props) => {
       </div>
       <div className={s.imageContent}>
         <Image
-          src={activePhoto.url ?? imageIcon}
+          src={activeImage}
           width={490}
           height={490}
           priority={true}
@@ -122,9 +95,9 @@ export const PublicPost = (props: Props) => {
           className={s.photo}
         />
         <PhotoPagination
-          changePhotoNext={() => changePhoto('next')}
-          changePhotoPrev={() => changePhoto('prev')}
-          photosArr={images}
+          changePhotoNext={nextImage}
+          changePhotoPrev={prevImage}
+          photosArr={filterImages}
           changePhotoIndex={setActiveIndex}
           activeIndex={activeIndex}
         />

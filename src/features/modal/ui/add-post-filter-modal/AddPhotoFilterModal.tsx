@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react'
+import React, { useMemo } from 'react'
 
 import Image from 'next/image'
 
@@ -7,7 +7,7 @@ import s from './AddPostFilterModal.module.scss'
 import { postsActions } from '@/entities/posts'
 import { modalActions } from '@/features/modal'
 import { filters } from '@/shared/contstants'
-import { useTranslation } from '@/shared/hooks'
+import { useModalImagePagination, useTranslation } from '@/shared/hooks'
 import { useAppDispatch, useAppSelector } from '@/shared/store'
 import { Modal, PhotoPagination, Typography } from '@/shared/ui'
 import { getReducedImageParams } from '@/shared/utils'
@@ -17,13 +17,13 @@ type Props = {
 }
 export const AddPostFilterModal = ({ addPostFilterModal }: Props) => {
   const { t } = useTranslation()
-  const photosPosts = useAppSelector(state => state.postsSlice.photosPosts)
+  const images = useAppSelector(state => state.postsSlice.photosPosts)
   const dispatch = useAppDispatch()
 
-  const [activeIndex, setActiveIndex] = useState(0)
-  const activePhoto = photosPosts[activeIndex]
+  const { imageSrc, currentImage, activeIndex, setActiveIndex, nextImage, prevImage } =
+    useModalImagePagination({ images })
 
-  const iaActivePhoto = photosPosts && photosPosts.length > 0 && activePhoto
+  const iaActivePhoto = images && images.length > 0 && currentImage
 
   const closeModal = () => {
     dispatch(modalActions.setOpenExtraModal('closeAddPostModal'))
@@ -31,15 +31,7 @@ export const AddPostFilterModal = ({ addPostFilterModal }: Props) => {
   const opPrevClickHandler = () => {
     dispatch(modalActions.setOpenModal('addPostCroppingModal'))
   }
-  const changePhoto = (direction: 'next' | 'prev') => {
-    if (photosPosts.length > 0) {
-      if (direction === 'next' && activeIndex < photosPosts.length - 1) {
-        setActiveIndex(activeIndex + 1)
-      } else if (direction === 'prev' && activeIndex > 0) {
-        setActiveIndex(activeIndex - 1)
-      }
-    }
-  }
+
   const changeFilter = (id: string, filter: string) => {
     dispatch(postsActions.updateFilter({ id, filter }))
   }
@@ -52,10 +44,10 @@ export const AddPostFilterModal = ({ addPostFilterModal }: Props) => {
   }, [t])
 
   const reducedParams =
-    activePhoto &&
+    currentImage &&
     getReducedImageParams({
-      originalHeight: activePhoto.height,
-      originalWidth: activePhoto.width,
+      originalHeight: currentImage.height,
+      originalWidth: currentImage.width,
       maxSize: 108,
     })
 
@@ -77,20 +69,20 @@ export const AddPostFilterModal = ({ addPostFilterModal }: Props) => {
         <div className={s.modalContent}>
           <div className={s.filterPhoto}>
             <Image
-              src={activePhoto.imageUrl}
+              src={imageSrc}
               alt={'postItem'}
-              width={activePhoto.width}
-              height={activePhoto.height}
+              width={currentImage.width}
+              height={currentImage.height}
               style={{
-                filter: activePhoto.filter,
+                filter: currentImage.filter,
               }}
             />
             <PhotoPagination
-              photosArr={photosPosts}
+              photosArr={images}
               changePhotoIndex={setActiveIndex}
               activeIndex={activeIndex}
-              changePhotoNext={() => changePhoto('next')}
-              changePhotoPrev={() => changePhoto('prev')}
+              changePhotoNext={nextImage}
+              changePhotoPrev={prevImage}
             />
           </div>
           <div className={s.filters}>
@@ -99,12 +91,12 @@ export const AddPostFilterModal = ({ addPostFilterModal }: Props) => {
                 <div
                   className={s.filter}
                   key={el.name}
-                  onClick={() => changeFilter(activePhoto.id, el.filter)}
+                  onClick={() => changeFilter(currentImage.id, el.filter)}
                 >
                   <Image
                     alt={el.name}
                     style={{ filter: el.filter }}
-                    src={activePhoto.imageUrl}
+                    src={currentImage.imageUrl}
                     width={reducedParams.reducedWidth}
                     height={reducedParams.reducedHeight}
                   />

@@ -5,6 +5,7 @@ import { useRouter } from 'next/router'
 import s from './LogoutModal.module.scss'
 
 import { useLogoutMutation, useMeQuery } from '@/features/auth'
+import { clearDescriptionDB, clearPostsDB } from '@/shared/config/draftDataBase'
 import { PATH } from '@/shared/config/routes'
 import { useTranslation } from '@/shared/hooks/useTranstaion'
 import { Modal, Typography } from '@/shared/ui'
@@ -31,6 +32,8 @@ export const LogoutModal = ({ open, setOpen }: Props) => {
       .unwrap()
       .then(() => {
         router.push(PATH.SIGN_IN)
+        clearPostsDB()
+        clearDescriptionDB()
       })
     localStorage.removeItem('access')
     setOpen(false)

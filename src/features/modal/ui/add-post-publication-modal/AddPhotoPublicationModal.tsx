@@ -1,6 +1,7 @@
 import React, { ChangeEvent, useEffect, useState } from 'react'
 
 import { useLiveQuery } from 'dexie-react-hooks'
+import NextImage from 'next/image'
 import { toast } from 'react-toastify'
 
 import s from './AddPostPublicationModal.module.scss'
@@ -20,7 +21,7 @@ import {
   getPostsDescriptionDataFromDB,
   putPostDescriptionDataToDB,
 } from '@/shared/config/draftDataBase'
-import { useTranslation } from '@/shared/hooks'
+import { useModalImagePagination, useTranslation } from '@/shared/hooks'
 import { useAppDispatch, useAppSelector } from '@/shared/store'
 import { Modal, PhotoPagination, TextAreaField, TextField, Typography } from '@/shared/ui'
 
@@ -30,7 +31,7 @@ type Props = {
 
 export const AddPostPublicationModal = ({ addPostPublicationModal }: Props) => {
   const { t } = useTranslation()
-  const photosPost = useAppSelector(state => state.postsSlice.photosPosts)
+  const images = useAppSelector(state => state.postsSlice.photosPosts)
   const publicationCount = useAppSelector(state => state.postsSlice.publicationCount)
   const dispatch = useAppDispatch()
 
@@ -38,15 +39,16 @@ export const AddPostPublicationModal = ({ addPostPublicationModal }: Props) => {
   const [createPost] = useCreatePostMutation()
   const [uploadImage] = useUploadPostImageMutation()
 
-  const [activeIndex, setActiveIndex] = useState(0)
-  const activePhoto = photosPost[activeIndex]
   const [photosFormData, serPhotoFormData] = useState<FormData[]>([])
   const [descriptionValue, setDescriptionValue] = useState<string>('')
   const [isPublish, setIsPublish] = useState(true)
 
   const currentDescriptionValues = useLiveQuery(getPostsDescriptionDataFromDB)
 
-  const iaActivePhoto = photosPost && photosPost.length > 0 && activePhoto
+  const { imageSrc, currentImage, activeIndex, setActiveIndex, nextImage, prevImage } =
+    useModalImagePagination({ images })
+
+  const iaActivePhoto = images && images.length > 0 && currentImage
 
   useEffect(() => {
     if (currentDescriptionValues && currentDescriptionValues[0]) {
@@ -57,8 +59,8 @@ export const AddPostPublicationModal = ({ addPostPublicationModal }: Props) => {
   useEffect(() => {
     const newPhotosFormData = [] as FormData[]
 
-    for (let i = 0; i < photosPost.length; i++) {
-      fetch(photosPost[i].imageUrl)
+    for (let i = 0; i < images.length; i++) {
+      fetch(images[i].imageUrl)
         .then(res => res.blob())
         .then(blob => {
           const formData = new FormData()
@@ -68,17 +70,17 @@ export const AddPostPublicationModal = ({ addPostPublicationModal }: Props) => {
 
           img.onload = function () {
             if (ctx) {
-              canvas.width = photosPost[i].width
-              canvas.height = photosPost[i].height
+              canvas.width = images[i].width
+              canvas.height = images[i].height
 
-              ctx.filter = photosPost[i].filter
-              ctx.drawImage(img, 0, 0, photosPost[i].width, photosPost[i].height)
+              ctx.filter = images[i].filter
+              ctx.drawImage(img, 0, 0, images[i].width, images[i].height)
               canvas.toBlob(blob => {
                 if (blob) {
                   formData.append('file', blob)
                   newPhotosFormData.push(formData)
 
-                  if (newPhotosFormData.length === photosPost.length) {
+                  if (newPhotosFormData.length === images.length) {
                     serPhotoFormData(newPhotosFormData)
                   }
                 }
@@ -97,15 +99,7 @@ export const AddPostPublicationModal = ({ addPostPublicationModal }: Props) => {
   const opPrevClickHandler = () => {
     dispatch(modalActions.setOpenModal('addPostFilterModal'))
   }
-  const changePhoto = (direction: 'next' | 'prev') => {
-    if (photosPost.length > 0) {
-      if (direction === 'next' && activeIndex < photosPost.length - 1) {
-        setActiveIndex(activeIndex + 1)
-      } else if (direction === 'prev' && activeIndex > 0) {
-        setActiveIndex(activeIndex - 1)
-      }
-    }
-  }
+
   const onPublishHandler = async () => {
     try {
       setIsPublish(false)
@@ -178,21 +172,21 @@ export const AddPostPublicationModal = ({ addPostPublicationModal }: Props) => {
       {iaActivePhoto && (
         <div className={s.modalContent}>
           <div className={s.lastPhoto}>
-            <img
+            <NextImage
               alt={'postItem'}
-              src={activePhoto.imageUrl}
-              width={activePhoto.width}
-              height={activePhoto.height}
+              src={imageSrc}
+              width={currentImage.width}
+              height={currentImage.height}
               style={{
-                filter: activePhoto.filter,
+                filter: currentImage.filter,
               }}
             />
             <PhotoPagination
-              photosArr={photosPost}
+              photosArr={images}
               changePhotoIndex={setActiveIndex}
               activeIndex={activeIndex}
-              changePhotoNext={() => changePhoto('next')}
-              changePhotoPrev={() => changePhoto('prev')}
+              changePhotoNext={nextImage}
+              changePhotoPrev={prevImage}
             />
           </div>
           <div className={s.postDescriptionBlock}>
