@@ -9,7 +9,7 @@ import s from './AddPostCroppingModal.module.scss'
 import { postsActions, PostType, SizeType } from '@/entities/posts'
 import { modalActions } from '@/features/modal'
 import { getPostsDataFromDB } from '@/shared/config/draftDataBase'
-import { useTranslation } from '@/shared/hooks'
+import { useModalImagePagination, useTranslation } from '@/shared/hooks'
 import { useAppDispatch, useAppSelector } from '@/shared/store'
 import { Nullable } from '@/shared/types'
 import {
@@ -36,8 +36,7 @@ type Props = {
 
 export const AddPostCroppingModal = ({ addPostCroppingModal }: Props) => {
   const { t } = useTranslation()
-  const photosPosts = useAppSelector(state => state.postsSlice.photosPosts)
-  const activeIndex = useAppSelector(state => state.postsSlice.activeIndex)
+  const images = useAppSelector(state => state.postsSlice.photosPosts)
   const dispatch = useAppDispatch()
 
   const postsList = useLiveQuery(getPostsDataFromDB)
@@ -50,7 +49,7 @@ export const AddPostCroppingModal = ({ addPostCroppingModal }: Props) => {
         imageUrl,
       }
 
-      const currentPostPhoto = photosPosts.find(photoPost => photoPost.id === rest.id)
+      const currentPostPhoto = images.find(photoPost => photoPost.id === rest.id)
 
       if (currentPostPhoto?.id !== rest.id) {
         dispatch(postsActions.setPhotoOfPost(payload))
@@ -59,11 +58,22 @@ export const AddPostCroppingModal = ({ addPostCroppingModal }: Props) => {
   }, [postsList])
 
   const [error, setError] = useState(false)
-  const activePhoto = photosPosts[activeIndex]
+
+  const { imageSrc, currentImage, activeIndex, setActiveIndex, nextImage, prevImage } =
+    useModalImagePagination({ images })
+
   const editorRef = useRef<Nullable<AvatarEditor>>(null)
 
-  const iaActivePhoto = photosPosts && photosPosts.length > 0 && activePhoto
+  const iaActivePhoto = images && images.length > 0 && currentImage
 
+  const updateZoomAndUrl = () => {
+    const imageUrl = editorRef.current?.getImageScaledToCanvas().toDataURL()
+
+    if (imageUrl) {
+      dispatch(postsActions.updateImgUrl({ id: currentImage.id, url: imageUrl }))
+    }
+    dispatch(postsActions.updateZoom({ id: currentImage.id, zoom: [1] }))
+  }
   const closeModal = () => {
     dispatch(modalActions.setOpenExtraModal('closeAddPostModal'))
   }
@@ -74,34 +84,29 @@ export const AddPostCroppingModal = ({ addPostCroppingModal }: Props) => {
   const mainPhotoSelected = (event: ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files && event.target.files[0]
 
-    if (file && photosPosts.length < 10) {
+    if (file && images.length < 10) {
       if (!['image/jpeg', 'image/jpg', 'image/png'].includes(file.type)) {
         setError(true)
       } else if (file.size > 20 * 1024 * 1024) {
         setError(true)
       } else {
-        const imageUrl = editorRef.current?.getImageScaledToCanvas().toDataURL()
-
-        if (imageUrl) {
-          dispatch(postsActions.updateImgUrl({ id: activePhoto.id, url: imageUrl }))
-        }
-        dispatch(postsActions.updateZoom({ id: activePhoto.id, zoom: [1] }))
+        updateZoomAndUrl()
         setError(false)
         getNewPhoto({ file, dispatch, activeIndex })
       }
     }
   }
   const changeZoom = (zoom: number[]) => {
-    if (activePhoto) {
-      dispatch(postsActions.updateZoom({ id: activePhoto.id, zoom }))
+    if (currentImage) {
+      dispatch(postsActions.updateZoom({ id: currentImage.id, zoom }))
     }
   }
   const changeSize = (size: SizeType) => {
-    dispatch(postsActions.updateSize({ id: activePhoto.id, sizeScale: size }))
+    dispatch(postsActions.updateSize({ id: currentImage.id, sizeScale: size }))
 
     const originalImage = new Image()
 
-    originalImage.src = activePhoto.imageUrl
+    originalImage.src = currentImage.imageUrl
 
     originalImage.onload = () => {
       let width, height
@@ -129,41 +134,20 @@ export const AddPostCroppingModal = ({ addPostCroppingModal }: Props) => {
           width = reducedWidth
           height = reducedHeight
       }
-      dispatch(postsActions.updateWidthAndHeight({ id: activePhoto.id, width, height }))
+      dispatch(postsActions.updateWidthAndHeight({ id: currentImage.id, width, height }))
     }
   }
-  const changePhoto = async (direction: 'next' | 'prev') => {
-    if (photosPosts.length > 0) {
-      if (direction === 'next' && activeIndex < photosPosts.length - 1) {
-        const imageUrl = editorRef.current?.getImageScaledToCanvas().toDataURL()
-
-        if (imageUrl) {
-          dispatch(postsActions.updateImgUrl({ id: activePhoto.id, url: imageUrl }))
-        }
-        dispatch(postsActions.updateZoom({ id: activePhoto.id, zoom: [1] }))
-        dispatch(postsActions.setActiveIndex(activeIndex + 1))
-      } else if (direction === 'prev' && activeIndex > 0) {
-        const imageUrl = editorRef.current?.getImageScaledToCanvas().toDataURL()
-
-        if (imageUrl) {
-          dispatch(postsActions.updateImgUrl({ id: activePhoto.id, url: imageUrl }))
-        }
-        dispatch(postsActions.updateZoom({ id: activePhoto.id, zoom: [1] }))
-        dispatch(postsActions.setActiveIndex(activeIndex - 1))
-      }
-    }
+  const nextImageHandler = () => {
+    updateZoomAndUrl()
+    nextImage()
+  }
+  const prevImageHandler = () => {
+    updateZoomAndUrl()
+    prevImage()
   }
   const nextContentHandler = async () => {
-    const imageUrl = editorRef.current?.getImageScaledToCanvas().toDataURL()
-
-    if (imageUrl) {
-      dispatch(postsActions.updateImgUrl({ id: activePhoto.id, url: imageUrl }))
-    }
-    dispatch(postsActions.updateZoom({ id: activePhoto.id, zoom: [1] }))
+    updateZoomAndUrl()
     dispatch(modalActions.setOpenModal('addPostFilterModal'))
-  }
-  const changePhotoIndex = (index: number) => {
-    dispatch(postsActions.setActiveIndex(index))
   }
 
   // DropDownMenu Items
@@ -173,7 +157,7 @@ export const AddPostCroppingModal = ({ addPostCroppingModal }: Props) => {
       component: (
         <div style={{ width: '124px' }}>
           <SuperSlider
-            value={activePhoto?.zoom}
+            value={currentImage?.zoom}
             setValue={changeZoom}
             maxValue={10}
             minValue={1}
@@ -190,7 +174,7 @@ export const AddPostCroppingModal = ({ addPostCroppingModal }: Props) => {
         <div
           onClick={() => changeSize('Оригинал')}
           className={`${s.itemSizeOriginal} ${
-            activePhoto?.sizeScale === 'Оригинал' ? s.activeItemOriginal : ''
+            currentImage?.sizeScale === 'Оригинал' ? s.activeItemOriginal : ''
           }`}
         >
           <Typography>{t.create.croppingModal.original}</Typography>
@@ -203,7 +187,7 @@ export const AddPostCroppingModal = ({ addPostCroppingModal }: Props) => {
       component: (
         <div
           onClick={() => changeSize('1:1')}
-          className={`${s.itemSize} ${activePhoto?.sizeScale === '1:1' ? s.activeItem : ''}`}
+          className={`${s.itemSize} ${currentImage?.sizeScale === '1:1' ? s.activeItem : ''}`}
         >
           <Typography>1:1</Typography>
           <Size1to1 />
@@ -215,7 +199,7 @@ export const AddPostCroppingModal = ({ addPostCroppingModal }: Props) => {
       component: (
         <div
           onClick={() => changeSize('4:5')}
-          className={`${s.itemSize} ${activePhoto?.sizeScale === '4:5' ? s.activeItem : ''}`}
+          className={`${s.itemSize} ${currentImage?.sizeScale === '4:5' ? s.activeItem : ''}`}
         >
           <Typography>4:5</Typography>
           <Size4to5 />
@@ -227,7 +211,7 @@ export const AddPostCroppingModal = ({ addPostCroppingModal }: Props) => {
       component: (
         <div
           onClick={() => changeSize('16:9')}
-          className={`${s.itemSize} ${activePhoto?.sizeScale === '16:9' ? s.activeItem : ''}`}
+          className={`${s.itemSize} ${currentImage?.sizeScale === '16:9' ? s.activeItem : ''}`}
         >
           <Typography>16:9</Typography>
           <Size16to9 />
@@ -241,17 +225,15 @@ export const AddPostCroppingModal = ({ addPostCroppingModal }: Props) => {
       component: (
         <div className={s.photoBlock}>
           <div className={s.photos}>
-            {photosPosts.map((image, index) => {
+            {images.map((image, index) => {
               const deletePhotoHandler = (id: string) => {
                 dispatch(postsActions.deletePhotoOfPost({ id }))
 
-                if (photosPosts.length === 1) {
+                if (images.length === 1) {
                   dispatch(modalActions.setOpenModal('addPostModal'))
                 }
-                if (activeIndex === photosPosts.length - 1) {
-                  dispatch(
-                    postsActions.setActiveIndex(photosPosts.length > 1 ? photosPosts.length - 2 : 0)
-                  )
+                if (activeIndex === images.length - 1) {
+                  setActiveIndex(images.length > 1 ? images.length - 2 : 0)
                 }
               }
 
@@ -313,22 +295,22 @@ export const AddPostCroppingModal = ({ addPostCroppingModal }: Props) => {
         <div className={s.modalContent}>
           <AvatarEditor
             ref={editorRef}
-            image={activePhoto.imageUrl}
-            width={activePhoto.width}
-            height={activePhoto.height}
+            image={imageSrc}
+            width={currentImage.width}
+            height={currentImage.height}
             border={0}
             color={[24, 27, 27, 0.6]}
             rotate={0}
             disableBoundaryChecks={false}
             disableHiDPIScaling={true}
-            scale={activePhoto?.zoom?.[0]}
+            scale={currentImage?.zoom?.[0]}
           />
           <PhotoPagination
-            photosArr={photosPosts}
-            changePhotoIndex={changePhotoIndex}
+            photosArr={images}
+            changePhotoIndex={setActiveIndex}
             activeIndex={activeIndex}
-            changePhotoNext={() => changePhoto('next')}
-            changePhotoPrev={() => changePhoto('prev')}
+            changePhotoNext={nextImageHandler}
+            changePhotoPrev={prevImageHandler}
           />
           <div className={s.activities}>
             <div className={s.activityLeft}>
