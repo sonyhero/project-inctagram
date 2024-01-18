@@ -7,6 +7,7 @@ import imageIcon from '/public/imageIcon.svg'
 
 import s from './UserIdInfo.module.scss'
 
+import { AvatarOwner } from '@/entities/avatar-owner'
 import {
   getPublicPostById,
   getPublicUserProfileById,
@@ -96,14 +97,7 @@ export default function UserPage() {
     <div className={s.profileBlock}>
       <div className={s.mainInfo}>
         <div className={s.photoBlock}>
-          <Image
-            src={profileData?.avatars[0]?.url ?? imageIcon}
-            priority={true}
-            width={192}
-            height={192}
-            className={s.photo}
-            alt={'profilePhoto'}
-          />
+          <AvatarOwner width={192} height={192} avatarOwner={profileData?.avatars[0]?.url} />
         </div>
         <div className={s.descriptionBlock}>
           <div className={s.nameAndSettings}>
