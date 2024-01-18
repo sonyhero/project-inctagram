@@ -17,7 +17,8 @@ type Props = {
   avatars?: ImageType[]
 }
 
-export const ViewPublicPostModal = ({ open, onClose, postData, avatars }: Props) => {
+export const ViewPublicPostModal = (props: Props) => {
+  const { open, onClose, postData, avatars } = props
   const { t } = useTranslation()
   const { locale } = useRouter()
 
@@ -51,7 +52,7 @@ export const ViewPublicPostModal = ({ open, onClose, postData, avatars }: Props)
               <div className={s.photoBlock}>
                 <AvatarOwner avatarOwner={avatars?.[0]?.url} />
                 <Typography className={s.link} onClick={onClose} variant={'h3'} color={'primary'}>
-                  URL Profile
+                  {postData.owner.firstName} {postData.owner.lastName}
                 </Typography>
               </div>
             </div>

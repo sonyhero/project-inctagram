@@ -70,7 +70,7 @@ export const PublicPost = (props: Props) => {
           <AvatarOwner avatarOwner={avatarOwner} className={s.avatar} />
           <Link href={`${PATH.USER}/${ownerId}`} className={s.link}>
             <Typography variant={'h3'} color={'primary'}>
-              URLProfile
+              {owner.firstName} {owner.lastName}
             </Typography>
           </Link>
           <Typography className={s.marker}>&bull;</Typography>

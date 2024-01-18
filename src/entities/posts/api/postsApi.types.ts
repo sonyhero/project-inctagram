@@ -7,6 +7,7 @@ export type UploadIdType = {
 }
 export type PostsResponseType = {
   id: number
+  userName: string
   description: string
   location: string
   images: PostsImagesResponseType[]
