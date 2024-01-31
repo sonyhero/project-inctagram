@@ -29,7 +29,7 @@ export const getServerSideProps = wrapper.getServerSideProps(store => async cont
   const profileId = Number(query.userId?.[0])
   const postId = Number(query.userId?.[1])
 
-  store.dispatch(getPublicUserProfileById.initiate({ profileId }))
+  store.dispatch(getPublicUserProfileById.initiate({ profileId }, { forceRefetch: true }))
   store.dispatch(getUserPublicPosts.initiate({ userId: profileId, pageSize: 4 }))
   store.dispatch(getPublicPostById.initiate({ postId }))
 
