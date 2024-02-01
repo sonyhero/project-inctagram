@@ -30,8 +30,10 @@ export const getServerSideProps = wrapper.getServerSideProps(store => async cont
   const postId = Number(query.userId?.[1])
 
   store.dispatch(getPublicUserProfileById.initiate({ profileId }, { forceRefetch: true }))
-  store.dispatch(getUserPublicPosts.initiate({ userId: profileId, pageSize: 4 }))
-  store.dispatch(getPublicPostById.initiate({ postId }))
+  store.dispatch(
+    getUserPublicPosts.initiate({ userId: profileId, pageSize: 4 }, { forceRefetch: true })
+  )
+  store.dispatch(getPublicPostById.initiate({ postId }, { forceRefetch: true }))
 
   await Promise.all(store.dispatch(getRunningQueriesThunk()))
 
@@ -80,18 +82,19 @@ export default function UserPage() {
     setOpenModal(false)
   }
 
-  const currentModal = postById ? (
-    <ViewPublicPostModal
-      open={openModal}
-      onClose={onCloseHandler}
-      avatars={profileData?.avatars}
-      postData={postById}
-    />
-  ) : (
-    <Modal open={openModal} onClose={onCloseHandler}>
-      Post not found!{' '}
-    </Modal>
-  )
+  const currentModal =
+    postById && postById.ownerId === profileId ? (
+      <ViewPublicPostModal
+        open={openModal}
+        onClose={onCloseHandler}
+        avatars={profileData?.avatars}
+        postData={postById}
+      />
+    ) : (
+      <Modal open={openModal} onClose={onCloseHandler}>
+        Post not found!{' '}
+      </Modal>
+    )
 
   return (
     <div className={s.profileBlock}>
