@@ -6,8 +6,6 @@ export const PATH = {
   MY_PROFILE_SETTINGS_GENERAL: '/profile/settings/general',
   MY_PROFILE_SETTINGS_DEVICES: '/profile/settings/devices',
   MY_PROFILE_SETTINGS_ACCOUNT_MANAGEMENT: '/profile/settings/account-management',
-  MY_PROFILE_SETTINGS_PAYMENTS: '/profile/settings/payments',
-  MY_PROFILE_SETTINGS_EDIT: '/profile/settings/edit',
   MESSENGER: '/messenger',
   SEARCH: '/search',
   STATISTIC: '/statistics',
