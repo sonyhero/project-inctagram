@@ -1,5 +1,7 @@
 import { useEffect, useState } from 'react'
 
+import { useRouter } from 'next/router'
+
 import s from './AccountManagement.module.scss'
 import { SubscriptionOptionsType } from './AccountManagement.types'
 import { CurrentSubscription } from './current-subscription'
@@ -10,8 +12,15 @@ import {
   useCurrentSubscriptionsQuery,
 } from '@/entities/subscription/api/subscriptionApi'
 import { SubscriptionDurationType } from '@/entities/subscription/api/subscriptionApi.types'
-import { setOpenPaymentModal } from '@/entities/subscription/model/subscriptionSlice'
+import {
+  PaymentType,
+  setIsSuccessPayPalPayment,
+  setIsSuccessStripePayment,
+  setOpenPaymentModal,
+  setPayment,
+} from '@/entities/subscription/model/subscriptionSlice'
 import { SubscriptionModal } from '@/features/modal/ui/subscription-modal'
+import { PATH } from '@/shared/config/routes'
 import { useAppDispatch, useAppSelector } from '@/shared/store'
 import { Nullable } from '@/shared/types'
 import { Paypal, Stripe, Typography } from '@/shared/ui'
@@ -21,6 +30,7 @@ export const AccountManagement = () => {
   const { data: currentSubscriptions } = useCurrentSubscriptionsQuery()
   const { data: coastData, isLoading } = useCostOfSubscriptionsQuery()
   const [createSub] = useCreateSubscriptionMutation()
+  const { push, query, pathname } = useRouter()
 
   const dispatch = useAppDispatch()
   const isSuccessPaypal = useAppSelector(
@@ -45,7 +55,35 @@ export const AccountManagement = () => {
 
   const closeModal = () => {
     dispatch(setOpenPaymentModal(false))
+    push({ pathname })
   }
+
+  useEffect(() => {
+    const payload = query as PaymentType
+
+    const isOpen = query.success || query.token
+
+    isOpen && dispatch(setOpenPaymentModal(true))
+
+    switch (query && query.success) {
+      case 'true':
+        dispatch(setIsSuccessStripePayment(true))
+        break
+      case 'false':
+        dispatch(setIsSuccessStripePayment(false))
+        break
+      default:
+        dispatch(setIsSuccessStripePayment(false))
+        break
+    }
+    if (query && query.token) {
+      dispatch(setPayment(payload))
+
+      dispatch(setIsSuccessPayPalPayment(true))
+    } else if (query && !query.token) {
+      dispatch(setIsSuccessPayPalPayment(false))
+    }
+  }, [query.success, query.token])
 
   useEffect(() => {
     if (currentSubscriptions && currentSubscriptions.data.length > 0) {
@@ -77,7 +115,9 @@ export const AccountManagement = () => {
         typeSubscription: subscriptionOptions[subscriptionId].typeSubscription,
         paymentType: paymentType,
         amount: subscriptionOptions[subscriptionId].amount,
-        baseUrl: process.env.NEXT_PUBLIC_BASE_URL ?? '',
+        baseUrl:
+          `${process.env.NEXT_PUBLIC_BASE_URL}/${PATH.MY_PROFILE_SETTINGS_ACCOUNT_MANAGEMENT}` ??
+          '',
       })
         .unwrap()
         .then(res => window.location.assign(res.url))
