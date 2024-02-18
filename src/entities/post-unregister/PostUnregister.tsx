@@ -59,7 +59,7 @@ export const PostUnregister = (props: Props) => {
       <Typography variant={'small'} color={'secondary'}>
         {getDayMonthTime(createdAt, locale ?? 'en')}
       </Typography>
-      <Typography variant={'regular14'} color={'primary'}>
+      <Typography className={s.description} variant={'regular14'} color={'primary'}>
         {showMore ? description : `${description.substring(0, 90)}`}
       </Typography>
       {description.length > 90 && (
