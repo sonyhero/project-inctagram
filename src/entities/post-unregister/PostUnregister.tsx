@@ -16,7 +16,7 @@ import { getDayMonthTime } from '@/shared/utils'
 type Props = PostsResponseType
 
 export const PostUnregister = (props: Props) => {
-  const { images, description, createdAt, avatarOwner, ownerId, id, owner } = props
+  const { images, description, createdAt, avatarOwner, ownerId, id, owner, userName } = props
   const { locale } = useRouter()
   const [showMore, setShowMore] = useState<boolean>(false)
 
@@ -52,7 +52,7 @@ export const PostUnregister = (props: Props) => {
         <AvatarOwner avatarOwner={avatarOwner} />
         <Link href={`${PATH.USER}/${ownerId}`} className={s.link}>
           <Typography variant={'h3'} color={'primary'}>
-            {owner.firstName} {owner.lastName}
+            {owner.firstName} {owner.lastName} - {userName}
           </Typography>
         </Link>
       </div>

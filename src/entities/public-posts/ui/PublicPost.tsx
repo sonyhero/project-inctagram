@@ -28,7 +28,7 @@ import { copyToClipboard, getDayMonthTime } from '@/shared/utils'
 type Props = PostsResponseType
 
 export const PublicPost = (props: Props) => {
-  const { images, avatarOwner, ownerId, createdAt, id, description, owner } = props
+  const { images, avatarOwner, ownerId, createdAt, id, description, owner, userName } = props
   const { locale } = useRouter()
   const { t } = useTranslation()
   const { filterImages, activeImage, prevImage, nextImage, activeIndex, setActiveIndex } =
@@ -70,7 +70,7 @@ export const PublicPost = (props: Props) => {
           <AvatarOwner avatarOwner={avatarOwner} className={s.avatar} />
           <Link href={`${PATH.USER}/${ownerId}`} className={s.link}>
             <Typography variant={'h3'} color={'primary'}>
-              {owner.firstName} {owner.lastName}
+              {owner.firstName} {owner.lastName} - {userName}
             </Typography>
           </Link>
           <Typography className={s.marker}>&bull;</Typography>
@@ -85,24 +85,25 @@ export const PublicPost = (props: Props) => {
           align={'end'}
         />
       </div>
-      <div className={s.imageContent}>
-        <Image
-          src={activeImage}
-          width={490}
-          height={490}
-          priority={true}
-          alt={'post image'}
-          className={s.photo}
-        />
-        <PhotoPagination
-          changePhotoNext={nextImage}
-          changePhotoPrev={prevImage}
-          photosArr={filterImages}
-          changePhotoIndex={setActiveIndex}
-          activeIndex={activeIndex}
-        />
-      </div>
-
+      <Link href={`${process.env.NEXT_PUBLIC_BASE_URL}${PATH.USER}/${ownerId}/${id}`}>
+        <div className={s.imageContent}>
+          <Image
+            src={activeImage}
+            width={490}
+            height={490}
+            priority={true}
+            alt={'post image'}
+            className={s.photo}
+          />
+          <PhotoPagination
+            changePhotoNext={nextImage}
+            changePhotoPrev={prevImage}
+            photosArr={filterImages}
+            changePhotoIndex={setActiveIndex}
+            activeIndex={activeIndex}
+          />
+        </div>
+      </Link>
       <div className={s.postFooter}>
         <div className={s.likeSaveSetBlock}>
           <div className={s.likeAndSet}>
@@ -119,7 +120,7 @@ export const PublicPost = (props: Props) => {
 
               <Typography variant={'regular14'} className={s.description}>
                 <strong>
-                  {owner.firstName} {owner.lastName}
+                  {owner.firstName} {owner.lastName} - {userName}
                 </strong>{' '}
                 {description}
               </Typography>
