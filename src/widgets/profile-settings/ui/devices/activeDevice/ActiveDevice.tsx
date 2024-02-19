@@ -33,7 +33,7 @@ export const ActiveDevice = (props: Props) => {
   const { locale } = useRouter()
   const { t } = useTranslation()
 
-  const isActiveSession = deviceType && deviceType
+  const isActiveSession = !!deviceType
 
   const deviceTypeImage = deviceType === 'mobile' ? <MobileIcon /> : <DesctopIcon />
 
