@@ -98,6 +98,7 @@ export const AddPostPublicationModal = ({ addPostPublicationModal }: Props) => {
   }
   const opPrevClickHandler = () => {
     dispatch(modalActions.setOpenModal('addPostFilterModal'))
+    putPostDescriptionDataToDB({ currentDescription: descriptionValue })
   }
 
   const onPublishHandler = async () => {
