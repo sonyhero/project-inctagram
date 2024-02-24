@@ -101,6 +101,7 @@ export const {
   useUploadPostImageMutation,
   useUpdatePostByIdMutation,
   useDeletePostByIdMutation,
+  useDeletePostImageMutation,
   useGetPublicUserProfileByIdQuery,
   useGetUserPublicPostsQuery,
   useLazyGetUserPublicPostsQuery,
