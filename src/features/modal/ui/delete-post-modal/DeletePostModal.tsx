@@ -2,7 +2,11 @@ import React from 'react'
 
 import s from './DeletePostModal.module.scss'
 
-import { postsActions, useDeletePostByIdMutation } from '@/entities/posts'
+import {
+  postsActions,
+  useDeletePostByIdMutation,
+  useDeletePostImageMutation,
+} from '@/entities/posts'
 import { modalActions } from '@/features/modal'
 import { useTranslation } from '@/shared/hooks/useTranstaion'
 import { useAppDispatch, useAppSelector } from '@/shared/store'
@@ -16,24 +20,39 @@ export const DeletePostModal = ({ open }: Props) => {
   const { t } = useTranslation()
 
   const postId = useAppSelector(state => state.postsSlice.post?.id)
+  const images = useAppSelector(state => state.postsSlice.post?.images)
   const publicationCount = useAppSelector(state => state.postsSlice.publicationCount)
   const dispatch = useAppDispatch()
 
-  const [deletePhoto] = useDeletePostByIdMutation()
+  const [deletePostImages] = useDeletePostImageMutation()
+  const [deletePost] = useDeletePostByIdMutation()
+
+  const deletePostHandler = async () => {
+    if (images) {
+      if (images) {
+        for (let i = 0; i < images.length; i++) {
+          await deletePostImages({ uploadId: images[i].uploadId })
+        }
+      }
+    }
+  }
 
   const deletePhotoHandler = () => {
     if (postId) {
-      deletePhoto({ postId })
-        .unwrap()
-        .then(() => {
-          dispatch(postsActions.deletePost({ postId }))
-          dispatch(postsActions.updatePublicationCount(publicationCount - 1))
-          dispatch(postsActions.setPost(null))
-          dispatch(modalActions.setCloseModal({}))
-          dispatch(modalActions.setCloseExtraModal({}))
-        })
+      deletePostHandler().then(() => {
+        deletePost({ postId })
+          .unwrap()
+          .then(() => {
+            dispatch(postsActions.deletePost({ postId }))
+            dispatch(postsActions.updatePublicationCount(publicationCount - 1))
+            dispatch(postsActions.setPost(null))
+            dispatch(modalActions.setCloseModal({}))
+            dispatch(modalActions.setCloseExtraModal({}))
+          })
+      })
     }
   }
+
   const closeDeleteModal = () => {
     dispatch(modalActions.setCloseExtraModal({}))
   }
