@@ -1,0 +1,8 @@
+.searchUsers {
+  overflow: auto;
+  display: flex;
+  flex-direction: column;
+
+  height: calc(100vh - 3.75rem);
+  padding: 2.25rem 4rem 1.625rem 1.5rem;
+}
