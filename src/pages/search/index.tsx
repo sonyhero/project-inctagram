@@ -19,11 +19,7 @@ const SearchPage = () => {
     return
   }
 
-  return (
-    <div>
-      <SearchUsers />
-    </div>
-  )
+  return <SearchUsers />
 }
 
 export default SearchPage

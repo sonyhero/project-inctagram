@@ -1,10 +1,10 @@
-import { GetUsersArgsType } from '@/features/following/api/followingApi.types'
+import { GetUsersArgsType, GetUsersResponse } from '@/features/following/api/followingApi.types'
 import { baseApi } from '@/shared/api'
 
 export const followingApi = baseApi.injectEndpoints({
   endpoints: builder => {
     return {
-      getUsers: builder.query<any, GetUsersArgsType>({
+      getUsers: builder.query<GetUsersResponse, GetUsersArgsType>({
         query: params => ({
           url: `v1/users`,
           method: 'GET',
