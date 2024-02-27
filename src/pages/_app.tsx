@@ -1,4 +1,5 @@
 import type { ReactElement, ReactNode } from 'react'
+import { useEffect } from 'react'
 
 import { GoogleOAuthProvider } from '@react-oauth/google'
 import { NextPage } from 'next'
@@ -18,8 +19,6 @@ import { SocketAPI } from '../../socket'
 import { useLoader } from '@/shared/hooks'
 import { wrapper } from '@/shared/store'
 import { ToastNotify } from '@/shared/ui'
-
-import { useEffect } from 'react'
 
 export type NextPageWithLayout<P = {}, IP = P> = NextPage<P, IP> & {
   getLayout?: (page: ReactElement) => ReactNode

@@ -1,7 +1,9 @@
 import { Socket, io } from 'socket.io-client'
 
+import { Nullable } from '@/shared/types'
+
 export class SocketAPI {
-  static socket: null | Socket = null
+  static socket: Nullable<Socket> = null
 
   static createConnection(accessToken: string) {
     const queryParams = {
