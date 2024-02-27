@@ -13,9 +13,13 @@ import '../shared/ui/date-picker/DatePicker.scss'
 import type { AppProps } from 'next/app'
 import { Provider } from 'react-redux'
 
+import { SocketAPI } from '../../socket'
+
 import { useLoader } from '@/shared/hooks'
 import { wrapper } from '@/shared/store'
 import { ToastNotify } from '@/shared/ui'
+
+import { useEffect } from 'react'
 
 export type NextPageWithLayout<P = {}, IP = P> = NextPage<P, IP> & {
   getLayout?: (page: ReactElement) => ReactNode
@@ -29,6 +33,27 @@ export default function App({ Component, ...pageProps }: AppPropsWithLayout) {
   useLoader()
   const { store, props } = wrapper.useWrappedStore(pageProps)
   const getLayout = Component.getLayout ?? (page => page)
+
+  const socketConnection = (accessToken: string) => {
+    console.log('render1')
+
+    SocketAPI.createConnection(accessToken)
+    SocketAPI.socket?.on('notification', data => {
+      console.log('notification', data)
+    })
+
+    console.log(SocketAPI.socket)
+    console.log('render2')
+  }
+
+  useEffect(() => {
+    const accessToken = typeof window !== 'undefined' && localStorage.getItem('access')
+
+    console.log('accessToken', accessToken)
+    if (accessToken) {
+      socketConnection(accessToken)
+    }
+  }, [])
 
   return getLayout(
     <GoogleOAuthProvider clientId={process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID ?? ''}>
