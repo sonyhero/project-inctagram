@@ -3,7 +3,7 @@ import { GetStaticProps, InferGetStaticPropsType } from 'next'
 import { GetPublicPostsResponse } from '@/entities/posts'
 import { useMeQuery } from '@/features/auth'
 import { Home } from '@/pages-flat/home'
-import { getBaseLayout } from '@/shared/providers'
+import { getAuthLayout, getBaseLayout } from '@/shared/providers'
 import { HomeUnregister } from '@/widgets/home-unregistered-posts'
 
 export const getStaticProps = (async () => {
@@ -20,8 +20,9 @@ export const getStaticProps = (async () => {
 const HomePage = ({ posts }: InferGetStaticPropsType<typeof getStaticProps>) => {
   const { data } = useMeQuery()
 
-  return data ? <Home /> : <HomeUnregister posts={posts?.items} usersCount={posts?.totalCount} />
+  return data
+    ? getBaseLayout(<Home />)
+    : getAuthLayout(<HomeUnregister posts={posts?.items} usersCount={posts?.totalCount} />)
 }
 
 export default HomePage
-HomePage.getLayout = getBaseLayout

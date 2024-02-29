@@ -8,7 +8,7 @@ import { StoreProvider } from '@/shared/providers'
 import { HeadMeta } from '@/shared/ui/head-meta'
 import { Header } from '@/widgets/header'
 
-export const AuthLayout: NextPage<PropsWithChildren> = ({ children }) => {
+const AuthLayout: NextPage<PropsWithChildren> = ({ children }) => {
   return (
     <>
       <HeadMeta title={'Inctagram'} />
