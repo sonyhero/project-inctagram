@@ -14,6 +14,7 @@ export const baseApi = createApi({
     'Followers',
     'Following',
     'User',
+    'Notifications',
   ],
   baseQuery: customFetchBase,
   extractRehydrationInfo(action, { reducerPath }) {
