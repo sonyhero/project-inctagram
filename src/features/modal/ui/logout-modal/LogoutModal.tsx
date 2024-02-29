@@ -7,6 +7,7 @@ import s from './LogoutModal.module.scss'
 import { useLogoutMutation, useMeQuery } from '@/features/auth'
 import { clearDescriptionDB, clearPostsDB } from '@/shared/config/draftDataBase'
 import { PATH } from '@/shared/config/routes'
+import { SocketAPI } from '@/shared/config/socketApi'
 import { useTranslation } from '@/shared/hooks/useTranstaion'
 import { Modal, Typography } from '@/shared/ui'
 
@@ -34,6 +35,7 @@ export const LogoutModal = ({ open, setOpen }: Props) => {
         router.push(PATH.SIGN_IN)
         clearPostsDB()
         clearDescriptionDB()
+        SocketAPI.socket?.disconnect()
       })
     localStorage.removeItem('access')
     setOpen(false)

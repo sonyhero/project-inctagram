@@ -3,14 +3,15 @@ import { Mutex } from 'async-mutex'
 import NProgress from 'nprogress'
 import { toast } from 'react-toastify'
 
-const baseUrl = 'https://inctagram.work/api'
+import { BASE_URL } from '@/shared/config/constants'
+
 const isClient = typeof window !== 'undefined'
 
 // Create a new mutex
 const mutex = new Mutex()
 
 const baseQuery = fetchBaseQuery({
-  baseUrl,
+  baseUrl: BASE_URL,
   credentials: 'include',
   prepareHeaders: headers => {
     const access = isClient && localStorage.getItem('access')
