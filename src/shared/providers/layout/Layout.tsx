@@ -4,12 +4,15 @@ import { NextPage } from 'next'
 
 import s from './Layout.module.scss'
 
+import { useConnectSocket } from '@/shared/hooks'
 import { StoreProvider } from '@/shared/providers/store-provider/StoreProvider'
 import { HeadMeta } from '@/shared/ui/head-meta'
 import { Header } from '@/widgets/header'
 import { SideBar } from '@/widgets/side-bar'
 
-export const Layout: NextPage<PropsWithChildren> = ({ children }) => {
+const Layout: NextPage<PropsWithChildren> = ({ children }) => {
+  useConnectSocket()
+
   return (
     <>
       <HeadMeta title={'Inctagram'} />
