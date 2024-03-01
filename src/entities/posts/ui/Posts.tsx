@@ -100,9 +100,11 @@ export const Posts = ({ scrollableID, userId }: Props) => {
       style={{ paddingBottom: `${paddingValue}px` }}
     >
       {posts.map(el => {
+        const src = el.images.filter(img => img.width === 1440)
+
         return (
           <Image
-            src={el.images[0]?.url ?? imageIcon}
+            src={src[0]?.url ?? imageIcon}
             key={el.id}
             width={200}
             height={200}
