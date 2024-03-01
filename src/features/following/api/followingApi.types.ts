@@ -18,3 +18,11 @@ export type GetUsersResponse = {
   prevCursor: number
   totalCount: number
 }
+
+export type GetUserResponse = Omit<GetProfileResponse, 'createdAt'> & {
+  isFollowing: boolean
+  isFollowedBy: boolean
+  followingCount: number
+  followersCount: number
+  publicationsCount: number
+}
