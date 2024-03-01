@@ -34,7 +34,11 @@ export const ProfileHeader = () => {
             {t.myProfile.profilePage.profileSettings}
           </Button>
         </div>
-        <ProfileStatistic postsCount={publicationCount} aboutMe={profileData?.aboutMe} />
+        <ProfileStatistic
+          userName={profileData?.userName}
+          postsCount={publicationCount}
+          aboutMe={profileData?.aboutMe}
+        />
       </div>
     </div>
   )

@@ -17,10 +17,15 @@ import {
   useGetPublicUserProfileByIdQuery,
   useGetUserPublicPostsQuery,
 } from '@/entities/posts'
+import {
+  useDeleteUsersFollowerMutation,
+  useFollowingUserMutation,
+  useGetUserQuery,
+} from '@/features/following/api'
 import { ViewPublicPostModal } from '@/features/modal'
 import { getBaseLayout } from '@/shared/providers'
 import { wrapper } from '@/shared/store'
-import { Modal, Typography } from '@/shared/ui'
+import { Button, Modal, Typography } from '@/shared/ui'
 import { ProfileStatistic } from '@/widgets/profile-statistic'
 
 export const getServerSideProps = wrapper.getServerSideProps(store => async context => {
@@ -56,6 +61,15 @@ export default function UserPage() {
   })
 
   const { data: postById } = useGetPublicPostByIdQuery({ postId }, { skip: !postId })
+  const { data: userData, isSuccess } = useGetUserQuery({ userName: profileData?.userName })
+  const [followUser, { isLoading: isLoadingFollow }] = useFollowingUserMutation()
+  const [unFollowUser, { isLoading: isLoadingUnfollow }] = useDeleteUsersFollowerMutation()
+
+  const followingUserHandler = () => {
+    userData?.isFollowing
+      ? unFollowUser({ userId: query.userId?.[0] })
+      : followUser({ selectedUserId: profileId })
+  }
 
   const mappedPosts = postsData?.items.slice(0, 4).map(post => {
     return (
@@ -105,8 +119,21 @@ export default function UserPage() {
         <div className={s.descriptionBlock}>
           <div className={s.nameAndSettings}>
             <Typography variant={'h1'}>{profileData?.userName}</Typography>
+            {isSuccess && (
+              <Button
+                disabled={userData?.isFollowing ? isLoadingUnfollow : isLoadingFollow}
+                variant={userData?.isFollowing ? 'outline' : 'primary'}
+                onClick={followingUserHandler}
+              >
+                {userData?.isFollowing ? 'Unfollow' : 'Follow'}
+              </Button>
+            )}
           </div>
-          <ProfileStatistic postsCount={postsData?.totalCount} aboutMe={profileData?.aboutMe} />
+          <ProfileStatistic
+            userName={userData?.userName}
+            postsCount={postsData?.totalCount}
+            aboutMe={profileData?.aboutMe}
+          />
         </div>
       </div>
       <div className={s.postsBlock}>{mappedPosts}</div>
