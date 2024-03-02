@@ -22,5 +22,6 @@ const PaymentsPage = () => {
   return <MyPayments />
 }
 
+// TODO - обернуть в laoyot для сокетов
 export default PaymentsPage
 PaymentsPage.getLayout = getSettingsLayout

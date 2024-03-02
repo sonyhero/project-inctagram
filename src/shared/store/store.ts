@@ -7,6 +7,7 @@ import { profileSlice } from '@/entities/profile/model'
 import { publicPostsSlice } from '@/entities/public-posts'
 import { subscriptionSlice } from '@/entities/subscription/model/subscriptionSlice'
 import { modalSlice } from '@/features/modal/model/modalSlice'
+import { notificationsSlice } from '@/features/notifications'
 import { baseApi } from '@/shared/api/baseApi'
 import { profileSettingsSlice } from '@/widgets/profile-settings/model/profileSettingsSlice'
 
@@ -19,6 +20,7 @@ export const store = configureStore({
     [postsSlice.name]: postsSlice.reducer,
     [subscriptionSlice.name]: subscriptionSlice.reducer,
     [publicPostsSlice.name]: publicPostsSlice.reducer,
+    [notificationsSlice.name]: notificationsSlice.reducer,
   },
   middleware: getDefaultMiddleware => getDefaultMiddleware().concat(baseApi.middleware),
 })

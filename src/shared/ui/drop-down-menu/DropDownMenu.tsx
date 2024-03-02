@@ -13,6 +13,8 @@ type Props = {
   }[]
   align?: 'center' | 'end' | 'start'
   side?: 'top' | 'right' | 'bottom' | 'left'
+  open?: boolean
+  setOpen?: (value: boolean) => void
 }
 
 const container = {
@@ -34,8 +36,15 @@ const motionItem = {
   },
 }
 
-export const DropDownMenu = ({ items, trigger, align = 'start', side = 'top' }: Props) => {
-  const [isOpen, setIsOpen] = useState(false)
+export const DropDownMenu = ({
+  items,
+  trigger,
+  align = 'start',
+  side = 'top',
+  setOpen,
+  open,
+}: Props) => {
+  const [isOpen, setIsOpen] = useState(open ? open : false)
 
   const itemsForRender = items?.map((item, index) => {
     return (
@@ -58,15 +67,19 @@ export const DropDownMenu = ({ items, trigger, align = 'start', side = 'top' }: 
 
   const onCloseAutoFocusHandler = () => {
     setIsOpen(false)
+    setOpen?.(false)
   }
   const onClickHandler = () => {
     setIsOpen(true)
+    setOpen?.(true)
   }
   const onOpenChangeHandler = (e: boolean) => {
     setIsOpen(e)
+    setOpen?.(e)
   }
   const onOpenHandler = () => {
     setIsOpen(true)
+    setOpen?.(true)
   }
 
   return (
