@@ -2,6 +2,7 @@ import { useRouter } from 'next/router'
 
 import { useMeQuery } from '@/features/auth'
 import { PATH } from '@/shared/config/routes'
+import { getBaseLayout } from '@/shared/providers'
 import { getSettingsLayout } from '@/shared/providers/settings-layout'
 import { Devices } from '@/widgets/profile-settings/ui/devices/Devices'
 
@@ -19,8 +20,8 @@ const DevicesPage = () => {
     return
   }
 
-  return <Devices />
+  return getSettingsLayout(<Devices />)
 }
 
 export default DevicesPage
-DevicesPage.getLayout = getSettingsLayout
+DevicesPage.getLayout = getBaseLayout

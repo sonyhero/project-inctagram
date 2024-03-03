@@ -2,6 +2,7 @@ import { useRouter } from 'next/router'
 
 import { useMeQuery } from '@/features/auth'
 import { PATH } from '@/shared/config/routes'
+import { getBaseLayout } from '@/shared/providers'
 import { getSettingsLayout } from '@/shared/providers/settings-layout'
 import { AccountManagement } from '@/widgets/profile-settings/ui/account-management'
 
@@ -19,8 +20,8 @@ const EditPage = () => {
     return
   }
 
-  return <AccountManagement />
+  return getSettingsLayout(<AccountManagement />)
 }
 
 export default EditPage
-EditPage.getLayout = getSettingsLayout
+EditPage.getLayout = getBaseLayout

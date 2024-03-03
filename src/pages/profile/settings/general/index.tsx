@@ -2,6 +2,7 @@ import { useRouter } from 'next/router'
 
 import { useMeQuery } from '@/features/auth'
 import { PATH } from '@/shared/config/routes'
+import { getBaseLayout } from '@/shared/providers'
 import { getSettingsLayout } from '@/shared/providers/settings-layout'
 import { GeneralInformation } from '@/widgets/profile-settings/ui/general-information/GeneralInformation'
 
@@ -19,8 +20,8 @@ const GeneralPage = () => {
     return
   }
 
-  return <GeneralInformation />
+  return getSettingsLayout(<GeneralInformation />)
 }
 
 export default GeneralPage
-GeneralPage.getLayout = getSettingsLayout
+GeneralPage.getLayout = getBaseLayout
