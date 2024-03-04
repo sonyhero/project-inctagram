@@ -44,7 +44,7 @@ export const NotificationDropDown = () => {
   const unReaderNotifications = notifications.filter(el => !el.isRead).map(el => el.id)
 
   useEffect(() => {
-    if (openDropDown) {
+    if (openDropDown && !!unReaderNotifications.length) {
       readNotifications({ ids: unReaderNotifications })
     }
   }, [openDropDown])
