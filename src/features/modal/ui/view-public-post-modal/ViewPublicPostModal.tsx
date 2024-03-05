@@ -1,5 +1,6 @@
 import React from 'react'
 
+import Image from 'next/image'
 import { useRouter } from 'next/router'
 
 import s from './ViewPublicPostModal.module.scss'
@@ -38,7 +39,7 @@ export const ViewPublicPostModal = (props: Props) => {
       {iaActivePhoto && (
         <div className={s.modalContent}>
           <div className={s.lastPhoto}>
-            <img src={activeImage} alt={'post'} className={s.photo} />
+            <Image width={400} height={400} src={activeImage} alt={'post'} className={s.photo} />
             <PhotoPagination
               changePhotoNext={nextImage}
               changePhotoPrev={prevImage}
