@@ -18,7 +18,7 @@ export const followingApi = baseApi.injectEndpoints({
         }),
         invalidatesTags: ['User', 'Followers'],
       }),
-      followingUser: builder.mutation<any, any>({
+      followingUser: builder.mutation<any, { selectedUserId: number }>({
         query: body => ({
           url: `v1/users/following`,
           method: 'POST',
