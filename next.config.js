@@ -1,4 +1,4 @@
-/** @type {import('next').NextConfig} */
+/** @type {import("next").NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
   i18n: {
@@ -8,10 +8,10 @@ const nextConfig = {
   images: {
     remotePatterns: [
       {
+        hostname: 'staging-it-incubator.s3.eu-central-1.amazonaws.com',
+        pathname: '/trainee-instagram-api/**',
         protocol: 'https',
-        hostname: 'storage.yandexcloud.net',
         port: '',
-        pathname: '/users-inctagram/**',
       },
     ],
   },
