@@ -19,7 +19,7 @@ const postsApi = baseApi.injectEndpoints({
           method: 'POST',
           body,
         }),
-        invalidatesTags: ['Posts'],
+        invalidatesTags: ['Posts', 'User'],
       }),
       uploadPostImage: builder.mutation<PostsImagesResponse, FormData>({
         query: body => ({
@@ -34,7 +34,7 @@ const postsApi = baseApi.injectEndpoints({
           url: `v1/posts/image/${uploadId}`,
           method: 'DELETE',
         }),
-        invalidatesTags: ['Posts'],
+        invalidatesTags: ['Posts', 'PostById'],
       }),
       updatePostById: builder.mutation<void, { postId: number; description: string }>({
         query: ({ postId, description }) => ({
@@ -42,14 +42,14 @@ const postsApi = baseApi.injectEndpoints({
           method: 'PUT',
           body: { description },
         }),
-        invalidatesTags: ['Posts'],
+        invalidatesTags: ['PostById'],
       }),
       deletePostById: builder.mutation<void, { postId: number }>({
         query: ({ postId }) => ({
           url: `v1/posts/${postId}`,
           method: 'DELETE',
         }),
-        invalidatesTags: ['Posts'],
+        invalidatesTags: ['Posts', 'User'],
       }),
       getAllPublicPosts: builder.query<GetPublicPostsResponse, GetAllPublicPostsArgs>({
         query: args => ({
@@ -80,7 +80,7 @@ const postsApi = baseApi.injectEndpoints({
           url: `v1/public-posts/${postId}`,
           method: 'GET',
         }),
-        providesTags: [],
+        providesTags: ['PostById'],
       }),
       getPublicUserProfileById: builder.query<
         GetPublicUserProfileByIdResponse,
