@@ -15,7 +15,6 @@ import {
   DeletePostModal,
   LogoutModal,
   modalSlice,
-  ViewPostModal,
 } from '@/features/modal'
 import { PATH } from '@/shared/config/routes'
 import { useTranslation } from '@/shared/hooks/useTranstaion'
@@ -199,7 +198,6 @@ export const SideBar = () => {
       {modalExtra === 'closeAddPostModal' && (
         <ClosePostModal closeAddPostModal={modalExtra === 'closeAddPostModal'} />
       )}
-      {userId && modal === 'viewPostModal' && <ViewPostModal open={modal === 'viewPostModal'} />}
       {modalExtra === 'deletePostModal' && (
         <DeletePostModal open={modalExtra === 'deletePostModal'} />
       )}
