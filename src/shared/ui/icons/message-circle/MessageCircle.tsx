@@ -8,7 +8,7 @@ const ACTIVE_LINK_COLOR = '#397df6'
 const LINK_COLOR = '#fff'
 
 const SvgComponent = (
-  { isActive = true, ...props }: SVGProps<SVGSVGElement> & PropsType,
+  { isActive = false, ...props }: SVGProps<SVGSVGElement> & PropsType,
   ref: Ref<SVGSVGElement>
 ) => (
   <svg
