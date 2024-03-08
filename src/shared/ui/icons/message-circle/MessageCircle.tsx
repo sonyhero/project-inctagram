@@ -1,11 +1,14 @@
 import { SVGProps, Ref, forwardRef, memo } from 'react'
 
 type PropsType = {
-  outline?: boolean
+  isActive?: boolean
 }
 
+const ACTIVE_LINK_COLOR = '#397df6'
+const LINK_COLOR = '#fff'
+
 const SvgComponent = (
-  { outline = true, ...props }: SVGProps<SVGSVGElement> & PropsType,
+  { isActive = true, ...props }: SVGProps<SVGSVGElement> & PropsType,
   ref: Ref<SVGSVGElement>
 ) => (
   <svg
@@ -13,11 +16,11 @@ const SvgComponent = (
     width="24"
     height="24"
     viewBox="0 0 24 24"
-    fill={props.color ?? 'white'}
+    fill={isActive ? ACTIVE_LINK_COLOR : LINK_COLOR}
     ref={ref}
     {...props}
   >
-    {outline ? (
+    {!isActive ? (
       <>
         <path d="M12 13C12.5523 13 13 12.5523 13 12C13 11.4477 12.5523 11 12 11C11.4477 11 11 11.4477 11 12C11 12.5523 11.4477 13 12 13Z" />
         <path d="M16 13C16.5523 13 17 12.5523 17 12C17 11.4477 16.5523 11 16 11C15.4477 11 15 11.4477 15 12C15 12.5523 15.4477 13 16 13Z" />
