@@ -3,7 +3,6 @@ import { createWrapper } from 'next-redux-wrapper'
 import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux'
 
 import { postsSlice } from '@/entities/posts'
-import { profileSlice } from '@/entities/profile/model'
 import { publicPostsSlice } from '@/entities/public-posts'
 import { subscriptionSlice } from '@/entities/subscription/model/subscriptionSlice'
 import { modalSlice } from '@/features/modal/model/modalSlice'
@@ -16,7 +15,6 @@ export const store = configureStore({
     [baseApi.reducerPath]: baseApi.reducer,
     [modalSlice.name]: modalSlice.reducer,
     [profileSettingsSlice.name]: profileSettingsSlice.reducer,
-    [profileSlice.name]: profileSlice.reducer,
     [postsSlice.name]: postsSlice.reducer,
     [subscriptionSlice.name]: subscriptionSlice.reducer,
     [publicPostsSlice.name]: publicPostsSlice.reducer,
