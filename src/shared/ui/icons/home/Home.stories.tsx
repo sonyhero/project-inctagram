@@ -7,7 +7,7 @@ const meta = {
   component: Home,
   tags: ['autodocs'],
   argTypes: {
-    outline: {
+    isActive: {
       options: [true, false],
       control: { type: 'radio' },
     },
