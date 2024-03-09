@@ -32,7 +32,6 @@ type Props = {
 export const AddPostPublicationModal = ({ addPostPublicationModal }: Props) => {
   const { t } = useTranslation()
   const images = useAppSelector(state => state.postsSlice.photosPosts)
-  const publicationCount = useAppSelector(state => state.postsSlice.publicationCount)
   const dispatch = useAppDispatch()
 
   const { data } = useGetProfileQuery()
@@ -133,7 +132,6 @@ export const AddPostPublicationModal = ({ addPostPublicationModal }: Props) => {
         .unwrap()
         .then(postData => {
           dispatch(postsActions.createNewPost(postData))
-          dispatch(postsActions.updatePublicationCount(publicationCount + 1))
         })
 
       dispatch(modalActions.setCloseModal({}))

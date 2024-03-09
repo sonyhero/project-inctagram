@@ -5,12 +5,14 @@ import { useRouter } from 'next/router'
 
 import s from './ViewPostModal.module.scss'
 
-import { Avatar } from '@/entities'
-import { postsActions, useUpdatePostByIdMutation } from '@/entities/posts'
-import { useGetProfileQuery } from '@/entities/profile'
+import { PostsResponseType, useGetPublicUserProfileByIdQuery } from '@/entities'
+import { AvatarOwner } from '@/entities/avatar-owner'
+import { useUpdatePostByIdMutation } from '@/entities/posts'
+import { useMeQuery } from '@/features/auth'
 import { modalActions } from '@/features/modal'
+import { PATH } from '@/shared/config/routes'
 import { usePostImagePagination, useTranslation } from '@/shared/hooks'
-import { useAppDispatch, useAppSelector } from '@/shared/store'
+import { useAppDispatch } from '@/shared/store'
 import {
   Bookmark,
   Button,
@@ -30,30 +32,37 @@ import { getDayMonthTime } from '@/shared/utils'
 
 type Props = {
   open: boolean
+  onClose: () => void
+  postById: PostsResponseType
 }
 
-export const ViewPostModal = ({ open }: Props) => {
-  const { data } = useGetProfileQuery()
+export const ViewPostModal = ({ open, onClose, postById }: Props) => {
+  const { locale, push, query } = useRouter()
+  const postId = Number(query.userId?.[1])
+  const profileId = Number(query.userId?.[0])
+  const { data: profileData } = useGetPublicUserProfileByIdQuery({ profileId })
   const [updatePost] = useUpdatePostByIdMutation()
   const { t } = useTranslation()
-  const { locale } = useRouter()
+
+  const { data: meData } = useMeQuery()
+  const isMe = meData ? meData.userId === profileId : false
+
   const dispatch = useAppDispatch()
-  const post = useAppSelector(state => state.postsSlice.post)
+
   const [editMode, setEditMode] = useState(false)
-  const [value, setValue] = useState(post?.description ?? '')
+  const [value, setValue] = useState(postById?.description ?? '')
 
   const { filterImages, activeImage, prevImage, nextImage, activeIndex, setActiveIndex } =
-    usePostImagePagination({ images: post?.images })
+    usePostImagePagination({ images: postById?.images })
 
-  const iaActivePhoto = post?.images && post?.images.length > 0 && activeImage
+  const isActivePhoto = postById?.images && postById?.images.length > 0 && activeImage
 
   const closeModal = () => {
     if (editMode) {
       setEditMode(false)
     } else {
-      setTimeout(() => {
-        dispatch(modalActions.setCloseModal({}))
-      }, 0)
+      onClose()
+      push(`${PATH.USER}/${profileId}`)
     }
   }
 
@@ -91,18 +100,13 @@ export const ViewPostModal = ({ open }: Props) => {
     },
   ]
   const onSaveHandler = () => {
-    if (post?.id) {
+    if (postId) {
       updatePost({
-        postId: post?.id,
+        postId,
         description: value.length > 500 ? value.slice(0, 500) : value,
       })
         .unwrap()
         .then(() => {
-          dispatch(
-            postsActions.updatePost({
-              description: value.length > 500 ? value.slice(0, 500) : value,
-            })
-          )
           setEditMode(false)
         })
     }
@@ -118,15 +122,15 @@ export const ViewPostModal = ({ open }: Props) => {
       showCloseButton={editMode}
       contentBoxClassname={s.contentBox}
     >
-      {iaActivePhoto && (
+      {isActivePhoto && (
         <div className={s.modalContent}>
           <div className={s.lastPhoto}>
             <ImageNext
               src={activeImage}
               alt={'post'}
               className={s.photo}
-              width={400}
-              height={400}
+              width={500}
+              height={500}
             />
             <PhotoPagination
               changePhotoNext={nextImage}
@@ -140,27 +144,32 @@ export const ViewPostModal = ({ open }: Props) => {
             <div className={s.postDescriptionBlock}>
               <div className={s.topContent}>
                 <div className={s.photoBlock}>
-                  <Avatar className={s.photoAva} />
-                  <Typography variant={'h3'}>{data?.userName}</Typography>
+                  <AvatarOwner avatarOwner={profileData?.avatars?.[0]?.url} className={s.avatar} />
+                  <Typography variant={'h3'}>{profileData?.userName}</Typography>
                 </div>
-                <DropDownMenu
-                  trigger={<MoreHorizontal />}
-                  side={'bottom'}
-                  items={dropDownMenuSize}
-                  align={'end'}
-                />
+                {isMe && (
+                  <DropDownMenu
+                    trigger={<MoreHorizontal />}
+                    side={'bottom'}
+                    items={dropDownMenuSize}
+                    align={'end'}
+                  />
+                )}
               </div>
               <div className={s.middleContent}>
                 <div className={s.comments}>
-                  {post?.description && (
+                  {postById?.description && (
                     <>
-                      <Avatar className={s.photoAva} />
+                      <AvatarOwner
+                        avatarOwner={profileData?.avatars?.[0]?.url}
+                        className={s.avatar}
+                      />
                       <div className={s.descriptionBlock}>
                         <Typography variant={'regular14'} className={s.desc}>
-                          <strong>{data?.userName}</strong> {post.description}
+                          <strong>{profileData?.userName}</strong> {postById.description}
                         </Typography>
                         <Typography variant={'small'} color={'secondary'}>
-                          {getDayMonthTime(post.createdAt, locale ?? 'en')}
+                          {getDayMonthTime(postById.createdAt, locale ?? 'en')}
                         </Typography>
                       </div>
                     </>
@@ -191,7 +200,7 @@ export const ViewPostModal = ({ open }: Props) => {
                     </div>
                   </div>
                   <Typography variant={'small'} color={'secondary'}>
-                    {getDayMonthTime(post.createdAt, locale ?? 'en')}
+                    {getDayMonthTime(postById.createdAt, locale ?? 'en')}
                   </Typography>
                 </div>
               </div>
@@ -209,8 +218,8 @@ export const ViewPostModal = ({ open }: Props) => {
             <div className={s.editBlock}>
               <div className={s.topContent}>
                 <div className={s.photoBlock}>
-                  <Avatar className={s.photoAva} />
-                  <Typography variant={'h3'}>{data?.userName}</Typography>
+                  <AvatarOwner avatarOwner={profileData?.avatars?.[0]?.url} className={s.avatar} />
+                  <Typography variant={'h3'}>{profileData?.userName}</Typography>
                 </div>
                 <div>
                   <TextAreaField

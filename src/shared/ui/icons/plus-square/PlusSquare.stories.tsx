@@ -7,7 +7,7 @@ const meta = {
   component: PlusSquare,
   tags: ['autodocs'],
   argTypes: {
-    outline: {
+    isActive: {
       options: [true, false],
       control: { type: 'radio' },
     },

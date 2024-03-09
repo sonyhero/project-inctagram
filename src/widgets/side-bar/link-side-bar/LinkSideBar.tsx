@@ -6,35 +6,27 @@ import Link from 'next/link'
 import s from './LinkSideBar.module.scss'
 
 import { PATH } from '@/shared/config/routes'
-import { Nullable } from '@/shared/types'
 import { Typography } from '@/shared/ui'
-import { VariantIconType } from '@/widgets/side-bar'
 
 type Props = {
   nameLink: string
-  link?: string
+  link: string
   children: ReactNode
-  variantIcon?: Nullable<VariantIconType>
-  handleClick: (variant: Nullable<VariantIconType>) => void
+  isActiveLink: boolean
+  handleClick?: () => void
   className?: string
-  callBack?: () => void
 }
 
 export const LinkSideBar = (props: Props) => {
-  const { nameLink, link, children, handleClick, variantIcon, className, callBack } = props
+  const { nameLink, link, children, isActiveLink, className, handleClick } = props
 
   const styles = {
     container: clsx(s.container, className),
-    check: clsx(s.nameLink, link === variantIcon && s.active),
-  }
-
-  const handleItemClick = () => {
-    callBack?.()
-    handleClick(variantIcon!)
+    check: clsx(s.nameLink, isActiveLink && s.active),
   }
 
   return (
-    <div className={styles.container} onClick={handleItemClick}>
+    <div className={styles.container} onClick={handleClick}>
       {link === PATH.CREATE ? (
         <div className={s.link}>
           {children}
@@ -43,7 +35,7 @@ export const LinkSideBar = (props: Props) => {
           </Typography>
         </div>
       ) : (
-        <Link tabIndex={1} href={`${link}`} className={s.link}>
+        <Link tabIndex={1} href={link} className={s.link}>
           {children}
           <Typography color={'primary'} variant={'regular14'} className={styles.check}>
             {nameLink}
