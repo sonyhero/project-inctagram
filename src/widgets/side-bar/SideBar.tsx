@@ -1,5 +1,3 @@
-import { useState } from 'react'
-
 import { useRouter } from 'next/router'
 
 import { useGetLinks } from './hooks/useGetLinks'
@@ -13,24 +11,27 @@ import {
   ClosePostModal,
   DeletePostModal,
   LogoutModal,
+  modalSlice,
+  NameExtraModal,
+  NameModal,
 } from '@/features/modal'
 import { PATH } from '@/shared/config/routes'
 import { useTranslation } from '@/shared/hooks/useTranstaion'
-import { useAppSelector } from '@/shared/store'
+import { useAppDispatch, useAppSelector } from '@/shared/store'
 import { Button, LogOut, Typography } from '@/shared/ui'
 import { LinkSideBar } from '@/widgets/side-bar/link-side-bar/LinkSideBar'
 
 export const SideBar = () => {
-  const [open, setOpen] = useState(false)
   const { pathname } = useRouter()
   const { t } = useTranslation()
   const { linksOptions } = useGetLinks()
+  const dispatch = useAppDispatch()
 
   const modal = useAppSelector(state => state.modalSlice.open)
   const modalExtra = useAppSelector(state => state.modalSlice.openExtraModal)
 
   const logoutHandler = () => {
-    setOpen(true)
+    dispatch(modalSlice.actions.setOpenModal(NameModal.logOut))
   }
 
   const mappedLinks = linksOptions.map((item, index) => {
@@ -55,21 +56,15 @@ export const SideBar = () => {
           </Typography>
         </Button>
       </div>
-      <LogoutModal open={open} setOpen={setOpen} />
-      {modal === 'addPostModal' && <AddPostModal openAddPhotoModal={modal === 'addPostModal'} />}
-      {modal === 'addPostCroppingModal' && (
-        <AddPostCroppingModal addPostCroppingModal={modal === 'addPostCroppingModal'} />
-      )}
-      <AddPostFilterModal addPostFilterModal={modal === 'addPostFilterModal'} />
-      {modal === 'addPostPublicationsModal' && (
-        <AddPostPublicationModal addPostPublicationModal={modal === 'addPostPublicationsModal'} />
-      )}
-      {modalExtra === 'closeAddPostModal' && (
-        <ClosePostModal closeAddPostModal={modalExtra === 'closeAddPostModal'} />
-      )}
-      {modalExtra === 'deletePostModal' && (
-        <DeletePostModal open={modalExtra === 'deletePostModal'} />
-      )}
+      <LogoutModal openLogoutModal={modal === NameModal.logOut} />
+      <AddPostModal openAddPhotoModal={modal === NameModal.addPostModal} />
+      <AddPostCroppingModal addPostCroppingModal={modal === NameModal.addPostCroppingModal} />
+      <AddPostFilterModal addPostFilterModal={modal === NameModal.addPostFilterModal} />
+      <AddPostPublicationModal
+        addPostPublicationModal={modal === NameModal.addPostPublicationsModal}
+      />
+      <ClosePostModal closeAddPostModal={modalExtra === NameExtraModal.closeAddPostModal} />
+      <DeletePostModal open={modalExtra === NameExtraModal.deletePostModal} />
     </>
   )
 }

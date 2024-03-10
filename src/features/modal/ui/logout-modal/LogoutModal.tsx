@@ -5,27 +5,29 @@ import { useRouter } from 'next/router'
 import s from './LogoutModal.module.scss'
 
 import { useLogoutMutation, useMeQuery } from '@/features/auth'
+import { modalSlice } from '@/features/modal'
 import { clearDescriptionDB, clearPostsDB } from '@/shared/config/draftDataBase'
 import { PATH } from '@/shared/config/routes'
 import { SocketAPI } from '@/shared/config/socketApi'
 import { useTranslation } from '@/shared/hooks/useTranstaion'
+import { useAppDispatch } from '@/shared/store'
 import { Modal, Typography } from '@/shared/ui'
 
 type Props = {
-  open: boolean
-  setOpen: (value: boolean) => void
+  openLogoutModal: boolean
 }
 
-export const LogoutModal = ({ open, setOpen }: Props) => {
+export const LogoutModal = ({ openLogoutModal }: Props) => {
   const { data } = useMeQuery()
   const [logout] = useLogoutMutation()
   const { t } = useTranslation()
   const router = useRouter()
+  const dispatch = useAppDispatch()
 
   const userEmail = data?.email ?? 'example@example.com'
 
   const handleClose = () => {
-    setOpen(false)
+    dispatch(modalSlice.actions.setCloseModal({}))
   }
 
   const logoutHandler = () => {
@@ -38,14 +40,14 @@ export const LogoutModal = ({ open, setOpen }: Props) => {
         SocketAPI.socket?.disconnect()
       })
     localStorage.removeItem('access')
-    setOpen(false)
+    dispatch(modalSlice.actions.setCloseModal({}))
   }
 
   return (
     <>
       <Modal
         showCloseButton={true}
-        open={open}
+        open={openLogoutModal}
         onClose={handleClose}
         title={t.sidebar.logout}
         titleFirstButton={t.sidebar.yes}

@@ -5,7 +5,7 @@ import Image from 'next/image'
 import s from './AddPostFilterModal.module.scss'
 
 import { postsActions } from '@/entities/posts'
-import { modalActions } from '@/features/modal'
+import { modalActions, NameExtraModal, NameModal } from '@/features/modal'
 import { filters } from '@/shared/contstants'
 import { useModalImagePagination, useTranslation } from '@/shared/hooks'
 import { useAppDispatch, useAppSelector } from '@/shared/store'
@@ -26,17 +26,17 @@ export const AddPostFilterModal = ({ addPostFilterModal }: Props) => {
   const iaActivePhoto = images && images.length > 0 && currentImage
 
   const closeModal = () => {
-    dispatch(modalActions.setOpenExtraModal('closeAddPostModal'))
+    dispatch(modalActions.setOpenExtraModal(NameExtraModal.closeAddPostModal))
   }
   const opPrevClickHandler = () => {
-    dispatch(modalActions.setOpenModal('addPostCroppingModal'))
+    dispatch(modalActions.setOpenModal(NameModal.addPostCroppingModal))
   }
 
   const changeFilter = (id: string, filter: string) => {
     dispatch(postsActions.updateFilter({ id, filter }))
   }
   const nextContentHandler = () => {
-    dispatch(modalActions.setOpenModal('addPostPublicationsModal'))
+    dispatch(modalActions.setOpenModal(NameModal.addPostPublicationsModal))
   }
 
   const getFilters = useMemo(() => {

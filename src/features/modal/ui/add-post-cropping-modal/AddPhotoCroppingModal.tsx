@@ -7,7 +7,7 @@ import AvatarEditor from 'react-avatar-editor'
 import s from './AddPostCroppingModal.module.scss'
 
 import { postsActions, PostType, SizeType } from '@/entities/posts'
-import { modalActions } from '@/features/modal'
+import { modalActions, NameExtraModal, NameModal } from '@/features/modal'
 import { getPostsDataFromDB } from '@/shared/config/draftDataBase'
 import { useModalImagePagination, useTranslation } from '@/shared/hooks'
 import { useAppDispatch, useAppSelector } from '@/shared/store'
@@ -75,11 +75,11 @@ export const AddPostCroppingModal = ({ addPostCroppingModal }: Props) => {
     dispatch(postsActions.updateZoom({ id: currentImage.id, zoom: [1] }))
   }
   const closeModal = () => {
-    dispatch(modalActions.setOpenExtraModal('closeAddPostModal'))
+    dispatch(modalActions.setOpenExtraModal(NameExtraModal.closeAddPostModal))
   }
   const opPrevClickHandler = () => {
     dispatch(postsActions.deletePhotosPost({}))
-    dispatch(modalActions.setOpenModal('addPostModal'))
+    dispatch(modalActions.setOpenModal(NameModal.addPostModal))
   }
   const mainPhotoSelected = (event: ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files && event.target.files[0]
@@ -147,7 +147,7 @@ export const AddPostCroppingModal = ({ addPostCroppingModal }: Props) => {
   }
   const nextContentHandler = async () => {
     updateZoomAndUrl()
-    dispatch(modalActions.setOpenModal('addPostFilterModal'))
+    dispatch(modalActions.setOpenModal(NameModal.addPostFilterModal))
   }
 
   // DropDownMenu Items
@@ -230,7 +230,7 @@ export const AddPostCroppingModal = ({ addPostCroppingModal }: Props) => {
                 dispatch(postsActions.deletePhotoOfPost({ id }))
 
                 if (images.length === 1) {
-                  dispatch(modalActions.setOpenModal('addPostModal'))
+                  dispatch(modalActions.setOpenModal(NameModal.addPostModal))
                 }
                 if (activeIndex === images.length - 1) {
                   setActiveIndex(images.length > 1 ? images.length - 2 : 0)

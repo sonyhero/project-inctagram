@@ -3,7 +3,7 @@ import { ReactNode } from 'react'
 import { useRouter } from 'next/router'
 
 import { useMeQuery } from '@/features/auth'
-import { modalSlice } from '@/features/modal'
+import { modalSlice, NameModal } from '@/features/modal'
 import { PATH } from '@/shared/config/routes'
 import { useTranslation } from '@/shared/hooks'
 import { useAppDispatch } from '@/shared/store'
@@ -23,7 +23,7 @@ export const useGetLinks = () => {
   const { t } = useTranslation()
   const dispatch = useAppDispatch()
   const createPostHandler = () => {
-    dispatch(modalSlice.actions.setOpenModal('addPostModal'))
+    dispatch(modalSlice.actions.setOpenModal(NameModal.addPostModal))
   }
 
   const profilePath = asPath.match(/(\/[^/]+){2}/)?.[0]

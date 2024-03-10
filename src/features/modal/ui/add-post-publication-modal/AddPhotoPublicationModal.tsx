@@ -14,7 +14,7 @@ import {
   useUploadPostImageMutation,
 } from '@/entities/posts'
 import { useGetProfileQuery } from '@/entities/profile'
-import { modalActions } from '@/features/modal'
+import { modalActions, NameExtraModal, NameModal } from '@/features/modal'
 import {
   clearDescriptionDB,
   clearPostsDB,
@@ -90,13 +90,14 @@ export const AddPostPublicationModal = ({ addPostPublicationModal }: Props) => {
           img.src = URL.createObjectURL(blob)
         })
     }
-  }, [])
+  }, [images])
+
   const closeModal = () => {
-    dispatch(modalActions.setOpenExtraModal('closeAddPostModal'))
+    dispatch(modalActions.setOpenExtraModal(NameExtraModal.closeAddPostModal))
     putPostDescriptionDataToDB({ currentDescription: descriptionValue })
   }
   const opPrevClickHandler = () => {
-    dispatch(modalActions.setOpenModal('addPostFilterModal'))
+    dispatch(modalActions.setOpenModal(NameModal.addPostFilterModal))
     putPostDescriptionDataToDB({ currentDescription: descriptionValue })
   }
 

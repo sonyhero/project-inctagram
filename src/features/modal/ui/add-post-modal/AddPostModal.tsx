@@ -4,7 +4,7 @@ import { useLiveQuery } from 'dexie-react-hooks'
 
 import s from './AddPostModal.module.scss'
 
-import { modalActions, modalSlice } from '@/features/modal'
+import { modalActions, modalSlice, NameModal } from '@/features/modal'
 import { clearDescriptionDB, clearPostsDB, getPostsDataFromDB } from '@/shared/config/draftDataBase'
 import { useTranslation } from '@/shared/hooks'
 import { useAppDispatch } from '@/shared/store'
@@ -14,6 +14,7 @@ import { getNewPhoto } from '@/shared/utils'
 type Props = {
   openAddPhotoModal: boolean
 }
+
 export const AddPostModal = ({ openAddPhotoModal }: Props) => {
   const [errorPhoto, setErrorPhoto] = useState('')
   const { t } = useTranslation()
@@ -43,7 +44,7 @@ export const AddPostModal = ({ openAddPhotoModal }: Props) => {
     dispatch(modalSlice.actions.setCloseModal({}))
   }
   const openDraft = () => {
-    dispatch(modalActions.setOpenModal('addPostCroppingModal'))
+    dispatch(modalActions.setOpenModal(NameModal.addPostCroppingModal))
   }
 
   return (

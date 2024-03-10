@@ -9,7 +9,7 @@ import { PostsResponseType, useGetPublicUserProfileByIdQuery } from '@/entities'
 import { AvatarOwner } from '@/entities/avatar-owner'
 import { useUpdatePostByIdMutation } from '@/entities/posts'
 import { useMeQuery } from '@/features/auth'
-import { modalActions } from '@/features/modal'
+import { modalActions, NameExtraModal } from '@/features/modal'
 import { PATH } from '@/shared/config/routes'
 import { usePostImagePagination, useTranslation } from '@/shared/hooks'
 import { useAppDispatch } from '@/shared/store'
@@ -87,7 +87,7 @@ export const ViewPostModal = ({ open, onClose, postById }: Props) => {
       component: (
         <div
           onClick={() => {
-            dispatch(modalActions.setOpenExtraModal('deletePostModal'))
+            dispatch(modalActions.setOpenExtraModal(NameExtraModal.deletePostModal))
           }}
           className={s.itemActivity}
         >
