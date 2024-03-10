@@ -1,10 +1,10 @@
-import { ReactNode, useState } from 'react'
+import { useState } from 'react'
 
 import { useRouter } from 'next/router'
 
+import { useGetLinks } from './hooks/useGetLinks'
 import s from './SideBar.module.scss'
 
-import { useMeQuery } from '@/features/auth'
 import {
   AddPostCroppingModal,
   AddPostFilterModal,
@@ -13,103 +13,25 @@ import {
   ClosePostModal,
   DeletePostModal,
   LogoutModal,
-  modalSlice,
 } from '@/features/modal'
 import { PATH } from '@/shared/config/routes'
 import { useTranslation } from '@/shared/hooks/useTranstaion'
-import { useAppDispatch, useAppSelector } from '@/shared/store'
-import {
-  Bookmark,
-  Button,
-  Home,
-  LogOut,
-  MessageCircle,
-  Person,
-  PlusSquare,
-  Search,
-  TrendingUp,
-  Typography,
-} from '@/shared/ui'
+import { useAppSelector } from '@/shared/store'
+import { Button, LogOut, Typography } from '@/shared/ui'
 import { LinkSideBar } from '@/widgets/side-bar/link-side-bar/LinkSideBar'
-
-type LinksOptionType = {
-  link: string
-  nameLink: string
-  isActiveLink: boolean
-  handleClick?: () => void
-  icon: ReactNode
-}
 
 export const SideBar = () => {
   const [open, setOpen] = useState(false)
-  const { pathname, asPath } = useRouter()
+  const { pathname } = useRouter()
   const { t } = useTranslation()
+  const { linksOptions } = useGetLinks()
+
   const modal = useAppSelector(state => state.modalSlice.open)
   const modalExtra = useAppSelector(state => state.modalSlice.openExtraModal)
-  const { data } = useMeQuery()
-  const dispatch = useAppDispatch()
-
-  const profilePath = asPath.match(/(\/[^/]+){2}/)?.[0]
-  const myProfilePath = `${PATH.USER}/${data?.userId}`
-  const isMyProfile = profilePath === myProfilePath
 
   const logoutHandler = () => {
     setOpen(true)
   }
-
-  const createPostHandler = () => {
-    dispatch(modalSlice.actions.setOpenModal('addPostModal'))
-  }
-
-  if (!data) {
-    return
-  }
-
-  const linksOptions: LinksOptionType[] = [
-    {
-      link: PATH.HOME,
-      nameLink: t.sidebar.home,
-      isActiveLink: pathname === PATH.HOME,
-      icon: <Home isActive={pathname === PATH.HOME} />,
-    },
-    {
-      link: PATH.CREATE,
-      nameLink: t.sidebar.create,
-      isActiveLink: pathname === PATH.CREATE,
-      icon: <PlusSquare isActive={pathname === PATH.CREATE} />,
-      handleClick: createPostHandler,
-    },
-    {
-      link: `${PATH.USER}/${data?.userId}`,
-      nameLink: t.sidebar.myProfile,
-      isActiveLink: isMyProfile,
-      icon: <Person isActive={isMyProfile} />,
-    },
-    {
-      link: PATH.MESSENGER,
-      nameLink: t.sidebar.messenger,
-      isActiveLink: pathname === PATH.MESSENGER,
-      icon: <MessageCircle isActive={pathname === PATH.MESSENGER} />,
-    },
-    {
-      link: PATH.SEARCH,
-      nameLink: t.sidebar.search,
-      isActiveLink: pathname === PATH.SEARCH,
-      icon: <Search isActive={pathname === PATH.SEARCH} />,
-    },
-    {
-      link: PATH.STATISTIC,
-      nameLink: t.sidebar.statistics,
-      isActiveLink: pathname === PATH.STATISTIC,
-      icon: <TrendingUp isActive={pathname === PATH.STATISTIC} />,
-    },
-    {
-      link: PATH.FAVORITES,
-      nameLink: t.sidebar.favorites,
-      isActiveLink: pathname === PATH.FAVORITES,
-      icon: <Bookmark isActive={pathname === PATH.FAVORITES} />,
-    },
-  ]
 
   const mappedLinks = linksOptions.map((item, index) => {
     return (
