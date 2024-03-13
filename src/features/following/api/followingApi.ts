@@ -1,17 +1,21 @@
-import { GetUsersArgsType } from '@/features/following/api/followingApi.types'
+import {
+  GetUserResponse,
+  GetUsersArgsType,
+  GetUsersResponse,
+} from '@/features/following/api/followingApi.types'
 import { baseApi } from '@/shared/api'
 
 export const followingApi = baseApi.injectEndpoints({
   endpoints: builder => {
     return {
-      getUsers: builder.query<any, GetUsersArgsType>({
+      getUsers: builder.query<GetUsersResponse, GetUsersArgsType>({
         query: params => ({
           url: `v1/users`,
           method: 'GET',
           params,
         }),
       }),
-      deleteUsersFollower: builder.mutation<any, { userId: string }>({
+      deleteUsersFollower: builder.mutation<any, { userId: string | undefined }>({
         query: ({ userId }) => ({
           url: `v1/users/follower/${userId}`,
           method: 'DELETE',
@@ -26,7 +30,7 @@ export const followingApi = baseApi.injectEndpoints({
         }),
         invalidatesTags: ['User', 'Following'],
       }),
-      getUser: builder.query<any, { userName: string }>({
+      getUser: builder.query<GetUserResponse, { userName: string | undefined }>({
         query: ({ userName }) => ({
           url: `v1/users/${userName}`,
           method: 'GET',
@@ -53,4 +57,10 @@ export const followingApi = baseApi.injectEndpoints({
   },
 })
 
-export const { useGetUsersQuery } = followingApi
+export const {
+  useGetUsersQuery,
+  useGetUserQuery,
+  useFollowingUserMutation,
+  useDeleteUsersFollowerMutation,
+  useLazyGetUserFollowersQuery,
+} = followingApi

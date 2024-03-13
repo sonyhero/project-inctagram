@@ -26,7 +26,6 @@ const initialState = {
     },
   ],
   currentOption: PATH.MY_PROFILE_SETTINGS_GENERAL,
-  showProfileSettings: false,
 }
 
 export const profileSettingsSlice = createSlice({
@@ -36,10 +35,7 @@ export const profileSettingsSlice = createSlice({
     setCurrentOption: (state, action: PayloadAction<{ value: SettingsPathValuesTypes }>) => {
       state.currentOption = action.payload.value
     },
-    setShowProfileSettings: (state, action: PayloadAction<{ value: boolean }>) => {
-      state.showProfileSettings = action.payload.value
-    },
   },
 })
 
-export const { setShowProfileSettings, setCurrentOption } = profileSettingsSlice.actions
+export const { setCurrentOption } = profileSettingsSlice.actions

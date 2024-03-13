@@ -1,12 +1,22 @@
 import { SVGProps, Ref, forwardRef, memo } from 'react'
 
-const SvgComponent = (props: SVGProps<SVGSVGElement>, ref: Ref<SVGSVGElement>) => (
+type PropsType = {
+  isActive?: boolean
+}
+
+const ACTIVE_LINK_COLOR = '#397df6'
+const LINK_COLOR = '#fff'
+
+const SvgComponent = (
+  { isActive = true, ...props }: SVGProps<SVGSVGElement> & PropsType,
+  ref: Ref<SVGSVGElement>
+) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     width="24"
     height="24"
     viewBox="0 0 24 24"
-    fill="white"
+    fill={isActive ? ACTIVE_LINK_COLOR : LINK_COLOR}
     ref={ref}
     {...props}
   >

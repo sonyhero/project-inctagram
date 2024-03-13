@@ -1,15 +1,18 @@
 import React from 'react'
 
+import { useRouter } from 'next/router'
+
 import s from './DeletePostModal.module.scss'
 
 import {
-  postsActions,
   useDeletePostByIdMutation,
   useDeletePostImageMutation,
+  useGetPublicPostByIdQuery,
 } from '@/entities/posts'
 import { modalActions } from '@/features/modal'
+import { PATH } from '@/shared/config/routes'
 import { useTranslation } from '@/shared/hooks/useTranstaion'
-import { useAppDispatch, useAppSelector } from '@/shared/store'
+import { useAppDispatch } from '@/shared/store'
 import { Modal, Typography } from '@/shared/ui'
 
 type Props = {
@@ -19,37 +22,38 @@ type Props = {
 export const DeletePostModal = ({ open }: Props) => {
   const { t } = useTranslation()
 
-  const postId = useAppSelector(state => state.postsSlice.post?.id)
-  const images = useAppSelector(state => state.postsSlice.post?.images)
-  const publicationCount = useAppSelector(state => state.postsSlice.publicationCount)
+  const { query, push } = useRouter()
+  const profileId = Number(query.userId?.[0])
+  const postId = Number(query.userId?.[1])
+
+  const { data: post } = useGetPublicPostByIdQuery({ postId }, { skip: !postId })
+
   const dispatch = useAppDispatch()
 
   const [deletePostImages] = useDeletePostImageMutation()
   const [deletePost] = useDeletePostByIdMutation()
 
   const deletePostHandler = async () => {
-    if (images) {
-      if (images) {
-        for (let i = 0; i < images.length; i++) {
-          await deletePostImages({ uploadId: images[i].uploadId })
-        }
+    if (post?.images) {
+      const images = post.images
+
+      for (let i = 0; i < images.length; i++) {
+        await deletePostImages({ uploadId: images[i].uploadId })
       }
     }
   }
 
   const deletePhotoHandler = () => {
     if (postId) {
-      deletePostHandler().then(() => {
-        deletePost({ postId })
-          .unwrap()
-          .then(() => {
-            dispatch(postsActions.deletePost({ postId }))
-            dispatch(postsActions.updatePublicationCount(publicationCount - 1))
-            dispatch(postsActions.setPost(null))
+      deletePost({ postId })
+        .unwrap()
+        .then(() => {
+          deletePostHandler().then(() => {
             dispatch(modalActions.setCloseModal({}))
             dispatch(modalActions.setCloseExtraModal({}))
+            push(`${PATH.USER}/${profileId}`)
           })
-      })
+        })
     }
   }
 

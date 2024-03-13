@@ -1,13 +1,25 @@
-import { useGetUsersQuery } from '@/features/following/api'
+import { useRouter } from 'next/router'
+
+import { useMeQuery } from '@/features/auth'
+import { SearchUsers } from '@/pages-flat/search-users'
+import { PATH } from '@/shared/config/routes'
 import { getBaseLayout } from '@/shared/providers'
 
 const SearchPage = () => {
-  const { data } = useGetUsersQuery({
-    pageSize: 4,
-    cursor: 29,
-  })
+  const { data, isLoading } = useMeQuery()
+  const { push } = useRouter()
 
-  return <div>search</div>
+  if (isLoading) {
+    return <div>...Loading</div>
+  }
+
+  if (!data) {
+    push(PATH.SIGN_IN)
+
+    return
+  }
+
+  return <SearchUsers />
 }
 
 export default SearchPage

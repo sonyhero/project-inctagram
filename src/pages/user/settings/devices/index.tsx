@@ -1,11 +1,12 @@
 import { useRouter } from 'next/router'
 
 import { useMeQuery } from '@/features/auth'
-import { MyProfile } from '@/pages-flat/my-profile'
 import { PATH } from '@/shared/config/routes'
 import { getBaseLayout } from '@/shared/providers'
+import { getSettingsLayout } from '@/shared/providers/settings-layout'
+import { Devices } from '@/widgets/profile-settings/ui/devices/Devices'
 
-const MyProfilePage = () => {
+const DevicesPage = () => {
   const { data, isLoading } = useMeQuery()
   const { push } = useRouter()
 
@@ -19,8 +20,8 @@ const MyProfilePage = () => {
     return
   }
 
-  return <MyProfile userId={data.userId} />
+  return getSettingsLayout(<Devices />)
 }
 
-export default MyProfilePage
-MyProfilePage.getLayout = getBaseLayout
+export default DevicesPage
+DevicesPage.getLayout = getBaseLayout

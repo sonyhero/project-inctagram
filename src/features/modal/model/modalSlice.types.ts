@@ -3,12 +3,15 @@ export type ModalType = {
   openExtraModal: NameExtraModal | ''
 }
 
-export type NameModal =
-  | 'logOut'
-  | 'addPostModal'
-  | 'addPostCroppingModal'
-  | 'addPostFilterModal'
-  | 'addPostPublicationsModal'
-  | 'viewPostModal'
+export enum NameModal {
+  logOut = 'logOut',
+  addPostModal = 'addPostModal',
+  addPostCroppingModal = 'addPostCroppingModal',
+  addPostFilterModal = 'addPostFilterModal',
+  addPostPublicationsModal = 'addPostPublicationsModal',
+}
 
-export type NameExtraModal = 'closeAddPostModal' | 'deletePostModal'
+export enum NameExtraModal {
+  closeAddPostModal = 'closeAddPostModal',
+  deletePostModal = 'deletePostModal',
+}

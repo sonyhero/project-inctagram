@@ -7,7 +7,7 @@ const meta = {
   component: MessageCircle,
   tags: ['autodocs'],
   argTypes: {
-    outline: {
+    isActive: {
       options: [true, false],
       control: { type: 'radio' },
     },

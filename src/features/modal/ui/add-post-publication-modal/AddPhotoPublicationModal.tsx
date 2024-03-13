@@ -14,7 +14,7 @@ import {
   useUploadPostImageMutation,
 } from '@/entities/posts'
 import { useGetProfileQuery } from '@/entities/profile'
-import { modalActions } from '@/features/modal'
+import { modalActions, NameExtraModal, NameModal } from '@/features/modal'
 import {
   clearDescriptionDB,
   clearPostsDB,
@@ -32,7 +32,6 @@ type Props = {
 export const AddPostPublicationModal = ({ addPostPublicationModal }: Props) => {
   const { t } = useTranslation()
   const images = useAppSelector(state => state.postsSlice.photosPosts)
-  const publicationCount = useAppSelector(state => state.postsSlice.publicationCount)
   const dispatch = useAppDispatch()
 
   const { data } = useGetProfileQuery()
@@ -91,13 +90,14 @@ export const AddPostPublicationModal = ({ addPostPublicationModal }: Props) => {
           img.src = URL.createObjectURL(blob)
         })
     }
-  }, [])
+  }, [images])
+
   const closeModal = () => {
-    dispatch(modalActions.setOpenExtraModal('closeAddPostModal'))
+    dispatch(modalActions.setOpenExtraModal(NameExtraModal.closeAddPostModal))
     putPostDescriptionDataToDB({ currentDescription: descriptionValue })
   }
   const opPrevClickHandler = () => {
-    dispatch(modalActions.setOpenModal('addPostFilterModal'))
+    dispatch(modalActions.setOpenModal(NameModal.addPostFilterModal))
     putPostDescriptionDataToDB({ currentDescription: descriptionValue })
   }
 
@@ -133,7 +133,6 @@ export const AddPostPublicationModal = ({ addPostPublicationModal }: Props) => {
         .unwrap()
         .then(postData => {
           dispatch(postsActions.createNewPost(postData))
-          dispatch(postsActions.updatePublicationCount(publicationCount + 1))
         })
 
       dispatch(modalActions.setCloseModal({}))

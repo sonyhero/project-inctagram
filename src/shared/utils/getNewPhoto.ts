@@ -1,7 +1,7 @@
 import { v1 } from 'uuid'
 
 import { postsActions, PostType } from '@/entities'
-import { modalActions } from '@/features/modal'
+import { modalActions, NameModal } from '@/features/modal'
 import { AppDispatch } from '@/shared/store'
 import { getReducedImageParams } from '@/shared/utils/getReducedOriginalImgSize'
 
@@ -40,7 +40,7 @@ export const getNewPhoto = (props: Props) => {
     }
 
     dispatch(postsActions.setPhotoOfPost(newPhoto))
-    isModalPayload && dispatch(modalActions.setOpenModal('addPostCroppingModal'))
+    isModalPayload && dispatch(modalActions.setOpenModal(NameModal.addPostCroppingModal))
     activeIndex && dispatch(postsActions.setActiveIndex(activeIndex + 1))
   }
 }

@@ -1,7 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
 import { PostsResponseType } from '@/entities/posts/api'
-import { Nullable } from '@/shared/types'
 
 export type SizeType = 'Оригинал' | '1:1' | '16:9' | '4:5'
 
@@ -19,10 +18,8 @@ export type PostType = {
 }
 const initialState = {
   photosPosts: [] as PostType[],
-  post: null as Nullable<PostsResponseType>,
   posts: [] as PostsResponseType[],
   activeIndex: 0,
-  publicationCount: 0,
 }
 
 export const postsSlice = createSlice({
@@ -71,9 +68,6 @@ export const postsSlice = createSlice({
     deletePhotosPost: (state, _) => {
       state.photosPosts = []
     },
-    setPost: (state, action: PayloadAction<Nullable<PostsResponseType>>) => {
-      state.post = action.payload
-    },
     createNewPost: (state, action: PayloadAction<PostsResponseType>) => {
       state.posts.unshift(action.payload)
     },
@@ -82,17 +76,6 @@ export const postsSlice = createSlice({
     },
     fetchScrollPosts: (state, action: PayloadAction<Array<PostsResponseType>>) => {
       state.posts = [...state.posts, ...action.payload]
-    },
-    deletePost: (state, action: PayloadAction<{ postId: number }>) => {
-      state.posts = state.posts.filter(el => el.id !== action.payload.postId)
-    },
-    updatePost: (state, action: PayloadAction<{ description: string }>) => {
-      if (state.post) {
-        state.post.description = action.payload.description
-      }
-    },
-    updatePublicationCount: (state, action: PayloadAction<number>) => {
-      state.publicationCount = action.payload
     },
   },
 })

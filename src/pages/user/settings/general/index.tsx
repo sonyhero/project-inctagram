@@ -2,10 +2,11 @@ import { useRouter } from 'next/router'
 
 import { useMeQuery } from '@/features/auth'
 import { PATH } from '@/shared/config/routes'
+import { getBaseLayout } from '@/shared/providers'
 import { getSettingsLayout } from '@/shared/providers/settings-layout'
-import { MyPayments } from '@/widgets/profile-settings/ui/my-payments/MyPayments'
+import { GeneralInformation } from '@/widgets/profile-settings/ui/general-information/GeneralInformation'
 
-const PaymentsPage = () => {
+const GeneralPage = () => {
   const { data, isLoading } = useMeQuery()
   const { push } = useRouter()
 
@@ -19,8 +20,8 @@ const PaymentsPage = () => {
     return
   }
 
-  return <MyPayments />
+  return getSettingsLayout(<GeneralInformation />)
 }
 
-export default PaymentsPage
-PaymentsPage.getLayout = getSettingsLayout
+export default GeneralPage
+GeneralPage.getLayout = getBaseLayout

@@ -18,6 +18,7 @@ export const LinkSideBarComponent: Story = {
   args: {
     link: PATH.HOME,
     nameLink: 'Home',
+    isActiveLink: true,
     children: <Home />,
   },
 }
