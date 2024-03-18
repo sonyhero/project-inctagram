@@ -1,0 +1,15 @@
+.content {
+  display: flex;
+  align-items: flex-start;
+}
+
+.button {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  padding: 2.25rem 3rem;
+
+  button {
+    width: 100%;
+  }
+}

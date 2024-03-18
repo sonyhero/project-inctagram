@@ -1,0 +1,24 @@
+.modalBlock {
+  width: 30.75rem;
+
+  .modalContent {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    .savePhoto {
+      display: flex;
+      justify-content: right;
+      width: 100%;
+    }
+
+    .mainPhotoInput {
+      display: none;
+    }
+
+    .openDraft {
+      margin-top: 1.5rem;
+    }
+  }
+}

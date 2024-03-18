@@ -1,0 +1,71 @@
+.fullWidth,
+.label,
+.errorMessage {
+  width: 100%;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+.textarea {
+  resize: none;
+
+  min-height: 84px;
+  padding: 6px 12px 0;
+
+  font-size: var(--font-size-m);
+  font-weight: var(--font-weight-s);
+  line-height: var(--line-height-m);
+  color: var(--color-light-900);
+
+  background-color: var(--color-dark-500);
+  border: 1px solid var(--color-dark-100);
+  border-radius: 2px;
+  outline: none;
+
+  &:active {
+    color: var(--color-light-100);
+    border: 1px solid var(--color-light-100);
+  }
+
+  &:focus {
+    color: var(--color-light-100);
+    border: 1px solid var(--color-accent-700);
+    border-radius: 2px;
+    outline: 1px solid var(--color-accent-700);
+  }
+
+  &:disabled {
+    color: var(--color-dark-100);
+    border: 1px solid var(--color-dark-100);
+
+    &::placeholder {
+      color: var(--color-dark-100);
+    }
+  }
+}
+
+.textarea::-webkit-scrollbar {
+  width: 6px;
+}
+
+.textarea::-webkit-scrollbar-track {
+  background-color: transparent;
+}
+
+.textarea::-webkit-scrollbar-thumb {
+  background-color: var(--color-dark-300);
+  border-radius: 3px;
+}
+
+.error {
+  color: var(--color-light-100);
+  border: 1px solid var(--color-danger-500);
+}
+
+.disabled {
+  color: var(--color-dark-100);
+}

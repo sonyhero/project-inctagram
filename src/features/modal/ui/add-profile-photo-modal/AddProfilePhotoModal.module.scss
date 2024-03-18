@@ -1,0 +1,34 @@
+.modalBlock {
+  width: 30.75rem;
+
+  .modalContent {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    margin-bottom: 2.25rem;
+
+    .avatar {
+      width: 20.75rem;
+      height: 21.25rem;
+      margin-top: 1.75rem;
+      margin-bottom: 2.25rem;
+    }
+
+    .selectButtonGroup {
+      display: flex;
+      justify-content: space-between;
+      width: 20.75rem;
+    }
+
+    .selectButton {
+      display: flex;
+      justify-content: center;
+    }
+
+    .mainPhotoInput {
+      display: none;
+    }
+  }
+}

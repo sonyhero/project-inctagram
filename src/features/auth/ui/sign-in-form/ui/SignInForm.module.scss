@@ -1,0 +1,60 @@
+.signBlock {
+  display: flex;
+  flex-direction: column;
+
+  width: 23.625rem;
+  margin: 1.5rem auto 0;
+  padding: 1.5rem;
+
+  .title {
+    margin-bottom: 1.69rem;
+    text-align: center;
+  }
+
+  .gitAndGoogle {
+    display: flex;
+    gap: 3.75rem;
+    justify-content: center;
+    margin-bottom: 1.5rem;
+
+    .clickToGitAndGoogle {
+      padding: 0;
+    }
+  }
+
+  .email {
+    margin-bottom: 1.5rem;
+  }
+
+  .password {
+    margin-bottom: 2.25rem;
+  }
+
+  .forgotWrapper {
+    display: flex;
+    justify-content: right;
+    margin-bottom: 1.5rem;
+
+    .link {
+      color: var(--light-900, #8d9094);
+      text-decoration: none;
+
+      &:focus,
+      &:active,
+      &:hover {
+        text-decoration: none;
+      }
+    }
+  }
+
+  .submit {
+    margin-bottom: 1.5rem;
+    padding: 0.38rem 0;
+  }
+
+  .question {
+    margin-bottom: 0.38rem;
+    color: var(--light-100, #fff);
+    text-align: center;
+  }
+}

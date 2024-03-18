@@ -1,0 +1,23 @@
+.block {
+  margin-bottom: 1.06rem;
+
+  .head {
+    margin-bottom: 1.12rem;
+  }
+
+  .main {
+    display: flex;
+    gap: 3rem;
+
+    margin-bottom: 1.19rem;
+    padding: 0.75rem 0 0.75rem 1.5rem;
+
+    background: var(--color-dark-500);
+    border: 1px solid var(--color-dark-300);
+    border-radius: 0.125rem;
+
+    .mainHead {
+      margin-bottom: 0.75rem;
+    }
+  }
+}

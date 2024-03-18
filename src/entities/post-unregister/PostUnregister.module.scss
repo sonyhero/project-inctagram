@@ -1,0 +1,40 @@
+.postWrapper {
+  width: 14.625rem;
+  height: 24.4375rem;
+
+  .photoBlock {
+    position: relative;
+    width: 14.625rem;
+    height: 14.625rem;
+    margin-bottom: 0.75rem;
+
+    .postImage {
+      width: 100%;
+      height: auto;
+      object-fit: cover;
+    }
+  }
+
+  .collapsePhotoBlock {
+    height: 7.3rem;
+
+    .collapsePostImage {
+      height: 7.3rem;
+    }
+  }
+
+  .urlAndAvatar {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    margin-bottom: 0.75rem;
+
+    .link {
+      text-decoration: none;
+    }
+  }
+
+  .description {
+    word-wrap: break-word;
+  }
+}
