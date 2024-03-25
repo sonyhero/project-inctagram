@@ -44,7 +44,7 @@ export const ProfileHeader = ({ profileId }: Props) => {
       <div className={s.profileDescription}>
         <div className={s.nameAndSettings}>
           <Typography variant={'h1'}>{profileData?.userName}</Typography>
-          {isSuccess && (
+          {isSuccess && !isMe && (
             <Button
               disabled={isLoadingFollow}
               variant={userData?.isFollowing ? 'outline' : 'primary'}
